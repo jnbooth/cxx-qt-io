@@ -1,0 +1,30 @@
+[package]
+name = "cxx-qt-io"
+version = "0.1.0"
+edition = "2021"
+links = "cxx-qt-io"
+
+[dependencies]
+cxx = "1.0.95"
+cxx-qt = { git = "https://github.com/KDAB/cxx-qt" }
+cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt" }
+
+[build-dependencies]
+cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt" }
+
+[features]
+default = []
+qt_network = []
+link_qt_object_files = ["cxx-qt-build/link_qt_object_files"]
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+inline_always = "allow"
+manual_assert = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+missing_safety_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+struct_excessive_bools = "allow"
+too_many_lines = "allow"
