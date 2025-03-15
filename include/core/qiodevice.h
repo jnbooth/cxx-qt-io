@@ -2,9 +2,8 @@
 
 #include <QtCore/QIODevice>
 
-using QIODeviceBase_OpenModeFlag = QIODeviceBase::OpenModeFlag;
-
-using QIODeviceBase_OpenMode = QIODeviceBase::OpenMode;
+using OpenModeFlag = QIODeviceBase::OpenModeFlag;
+using OpenMode = QIODeviceBase::OpenMode;
 
 namespace rust {
 namespace cxxqtio1 {

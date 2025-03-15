@@ -6,16 +6,26 @@ use std::ptr;
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
-    enum QIODeviceBase_OpenModeFlag {
+    enum OpenModeFlag {
+        /// The device is not open.
         NotOpen = 0x0000,
+        /// The device is open for reading.
         ReadOnly = 0x0001,
+        /// The device is open for writing. Note that, for file-system subclasses (e.g. QFile), this mode implies Truncate unless combined with ReadOnly, Append or NewOnly.
         WriteOnly = 0x0002,
+        /// The device is open for reading and writing.
         ReadWrite = 0x003,
+        /// The device is opened in append mode so that all data is written to the end of the file.
         Append = 0x0004,
+        /// If possible, the device is truncated before it is opened. All earlier contents of the device are lost.
         Truncate = 0x0008,
+        /// When reading, the end-of-line terminators are translated to '\n'. When writing, the end-of-line terminators are translated to the local encoding, for example '\r\n' for Win32.
         Text = 0x0010,
+        /// Any buffer in the device is bypassed.
         Unbuffered = 0x0020,
+        /// Fail if the file to be opened already exists. Create and open the file only if it does not exist. There is a guarantee from the operating system that you are the only one creating and opening the file. Note that this mode implies `WriteOnly`, and combining it with `ReadWrite` is allowed. This flag currently only affects `QFile`. Other classes might use this flag in the future, but until then using this flag with any classes other than QFile may result in undefined behavior.
         NewOnly = 0x0040,
+        /// Fail if the file to be opened does not exist. This flag must be specified alongside `ReadOnly`, `WriteOnly`, or `ReadWrite`. Note that using this flag with `ReadOnly` alone is redundant, as `ReadOnly` already fails when the file does not exist. This flag currently only affects `QFile`. Other classes might use this flag in the future, but until then using this flag with any classes other than `QFile` may result in undefined behavior.
         ExistingOnly = 0x0080,
     }
 
@@ -26,8 +36,8 @@ mod ffi {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
 
-        type QIODeviceBase_OpenModeFlag;
-        type QIODeviceBase_OpenMode = super::OpenMode;
+        type OpenModeFlag;
+        type OpenMode = super::OpenMode;
     }
 
     unsafe extern "C++Qt" {
@@ -83,11 +93,11 @@ mod ffi {
         unsafe fn getChar(self: Pin<&mut QIODevice>, c: *mut c_char) -> bool;
 
         /// Opens the device and sets its OpenMode to `mode`. Returns `true` if successful; otherwise returns `false`. This function should be called from any reimplementations of `open()` or other functions that open the device.
-        fn open(self: Pin<&mut QIODevice>, mode: QIODeviceBase_OpenMode) -> bool;
+        fn open(self: Pin<&mut QIODevice>, mode: OpenMode) -> bool;
 
         /// Returns the mode in which the device has been opened; i.e. `ReadOnly` or `WriteOnly`.
         #[rust_name = "open_mode"]
-        fn openMode(self: &QIODevice) -> QIODeviceBase_OpenMode;
+        fn openMode(self: &QIODevice) -> OpenMode;
 
         /// Reads at most `max_size` bytes from the device into `data`, without side effects (i.e., if you call `read()` after `peek()`, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in `WriteOnly` mode, this function returns -1.
         ///
@@ -347,9 +357,9 @@ mod ffi {
 }
 
 use cxx_qt_lib::QByteArray;
-pub use ffi::{QIODevice, QIODeviceBase_OpenModeFlag as OpenModeFlag};
+pub use ffi::{OpenModeFlag, QIODevice};
 
-impl_qflag!(OpenModeFlag, OpenMode, "QIODeviceBase_OpenMode");
+impl_qflag!(OpenModeFlag, OpenMode, "OpenMode");
 
 #[allow(clippy::cast_possible_wrap)]
 impl QIODevice {

@@ -12,6 +12,11 @@ use std::io::{self, Read, Write};
 
 pub trait QIOAdaptable: Upcast<QIODevice> {
     fn flush(device: Pin<&mut Self>) -> bool;
+
+    #[cold]
+    fn get_error_kind(&self) -> io::ErrorKind {
+        io::ErrorKind::Other
+    }
 }
 
 pub struct QIOAdapter<'a, T> {
@@ -26,18 +31,22 @@ impl<'a, T: QIOAdaptable> QIOAdapter<'a, T> {
             _marker: PhantomData,
         }
     }
+
+    #[cold]
+    fn get_error(&self) -> io::Error {
+        let error_kind = (*self.inner)
+            .downcast::<T>()
+            .expect("failed to downcast device")
+            .get_error_kind();
+
+        io::Error::new(error_kind, String::from(&self.inner.error_string()))
+    }
 }
 
 impl<'a, T: QIOAdaptable> From<Pin<&'a mut T>> for QIOAdapter<'a, T> {
     fn from(value: Pin<&'a mut T>) -> Self {
         Self::new(value)
     }
-}
-
-#[cold]
-fn create_io_error(device: &QIODevice) -> io::Error {
-    let error = String::from(&device.error_string());
-    io::Error::new(io::ErrorKind::Other, error)
 }
 
 impl<'a, T: QIOAdaptable> Read for QIOAdapter<'a, T> {
@@ -47,7 +56,7 @@ impl<'a, T: QIOAdaptable> Read for QIOAdapter<'a, T> {
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
-        Err(create_io_error(&self.inner))
+        Err(self.get_error())
     }
 }
 
@@ -58,13 +67,20 @@ impl<'a, T: QIOAdaptable> Write for QIOAdapter<'a, T> {
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
-        Err(create_io_error(&self.inner))
+        Err(self.get_error())
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        if let Some(device) = self.inner.as_mut().downcast_pin() {
-            T::flush(device);
+        let device = self
+            .inner
+            .as_mut()
+            .downcast_pin()
+            .expect("failed to downcast device");
+
+        if T::flush(device) {
+            Ok(())
+        } else {
+            Err(self.get_error())
         }
-        Ok(())
     }
 }

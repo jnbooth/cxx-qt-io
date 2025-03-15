@@ -1,14 +1,20 @@
 mod qfiledevice;
-pub use qfiledevice::QFileDevice;
+pub use qfiledevice::{
+    FileError, FileHandleFlag, FileHandleFlags, FilePermission, FilePermissions, FileTime,
+    MemoryMapFlag, MemoryMapFlags, QFileDevice,
+};
 
 mod qfile;
 pub use qfile::QFile;
 
-mod qsavefile;
-pub use qsavefile::QSaveFile;
-
 mod qflags;
 pub use qflags::{QFlag, QFlags};
 
+mod qsavefile;
+pub use qsavefile::QSaveFile;
+
+mod qtemporaryfile;
+pub use qtemporaryfile::QTemporaryFile;
+
 mod qiodevice;
-pub use qiodevice::QIODevice;
+pub use qiodevice::{OpenMode, OpenModeFlag, QIODevice};
