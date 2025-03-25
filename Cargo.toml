@@ -5,7 +5,7 @@ edition = "2021"
 links = "cxx-qt-io"
 
 [dependencies]
-cxx = "1.0.95"
+cxx = "1.0.144"
 cxx-qt = { git = "https://github.com/KDAB/cxx-qt" }
 cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt" }
 
