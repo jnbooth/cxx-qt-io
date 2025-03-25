@@ -7,9 +7,6 @@ pub use qfiledevice::{
 mod qfile;
 pub use qfile::QFile;
 
-mod qflags;
-pub use qflags::{QFlag, QFlags};
-
 mod qsavefile;
 pub use qsavefile::QSaveFile;
 

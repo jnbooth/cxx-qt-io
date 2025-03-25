@@ -1,4 +1,4 @@
-use cxx_qt_lib::QDateTime;
+use cxx_qt_lib::{QDateTime, QFlags};
 use std::io;
 use std::pin::Pin;
 
@@ -252,6 +252,9 @@ impl QFileDevice {
     }
 }
 
-impl_qflag!(FilePermission, FilePermissions, "FilePermissions");
-impl_qflag!(FileHandleFlag, FileHandleFlags, "FileHandleFlags");
-impl_qflag!(MemoryMapFlag, MemoryMapFlags, "MemoryMapFlags");
+pub type FilePermissions = QFlags<FilePermission>;
+unsafe_impl_qflag!(FilePermission, "FilePermissions", i32);
+pub type FileHandleFlags = QFlags<FileHandleFlag>;
+unsafe_impl_qflag!(FileHandleFlag, "FileHandleFlags", i32);
+pub type MemoryMapFlags = QFlags<MemoryMapFlag>;
+unsafe_impl_qflag!(MemoryMapFlag, "MemoryMapFlags", i32);

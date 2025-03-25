@@ -356,10 +356,11 @@ mod ffi {
     }
 }
 
-use cxx_qt_lib::QByteArray;
+use cxx_qt_lib::{QByteArray, QFlags};
 pub use ffi::{OpenModeFlag, QIODevice};
 
-impl_qflag!(OpenModeFlag, OpenMode, "OpenMode");
+pub type OpenMode = QFlags<OpenModeFlag>;
+unsafe_impl_qflag!(OpenModeFlag, "OpenMode", i32);
 
 #[allow(clippy::cast_possible_wrap)]
 impl QIODevice {
