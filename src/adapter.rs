@@ -1,86 +1,70 @@
 #![allow(clippy::cast_sign_loss)]
 #![allow(clippy::cast_possible_truncation)]
 #![allow(clippy::cast_possible_wrap)]
+use crate::QIODevice;
 use std::ffi::c_char;
-use std::marker::PhantomData;
+use std::io;
 use std::pin::Pin;
 
-use cxx_qt::{Downcast, Upcast};
+#[allow(unused_variables)]
+#[allow(clippy::upper_case_acronyms)]
+pub(crate) trait QIO {
+    fn as_io_device(&self) -> &QIODevice;
 
-use crate::QIODevice;
-use std::io::{self, Read, Write};
+    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice>;
 
-pub trait QIOAdaptable: Upcast<QIODevice> {
-    fn flush(device: Pin<&mut Self>) -> bool;
+    fn flush(self: Pin<&mut Self>) -> bool {
+        true
+    }
 
-    #[cold]
     fn get_error_kind(&self) -> io::ErrorKind {
         io::ErrorKind::Other
     }
 }
 
-pub struct QIOAdapter<'a, T> {
-    inner: Pin<&'a mut QIODevice>,
-    _marker: PhantomData<T>,
+pub(crate) trait QIOExt {
+    fn read(self: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize>;
+
+    fn write(self: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize>;
+
+    fn flush(self: Pin<&mut Self>) -> io::Result<()>;
 }
 
-impl<'a, T: QIOAdaptable> QIOAdapter<'a, T> {
-    pub fn new(value: Pin<&'a mut T>) -> Self {
-        Self {
-            inner: value.upcast_pin(),
-            _marker: PhantomData,
-        }
-    }
-
-    #[cold]
-    fn get_error(&self) -> io::Error {
-        let error_kind = (*self.inner)
-            .downcast::<T>()
-            .expect("failed to downcast device")
-            .get_error_kind();
-
-        io::Error::new(error_kind, String::from(&self.inner.error_string()))
-    }
+#[cold]
+fn get_error<T: QIO>(device: &T) -> io::Error {
+    let error_kind = device.get_error_kind();
+    let error_string = device.as_io_device().error_string();
+    io::Error::new(error_kind, String::from(&error_string))
 }
 
-impl<'a, T: QIOAdaptable> From<Pin<&'a mut T>> for QIOAdapter<'a, T> {
-    fn from(value: Pin<&'a mut T>) -> Self {
-        Self::new(value)
-    }
-}
-
-impl<'a, T: QIOAdaptable> Read for QIOAdapter<'a, T> {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+impl<T: QIO> QIOExt for T {
+    fn read(mut self: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize> {
         let buf_ptr = buf.as_mut_ptr().cast::<c_char>();
-        let result = unsafe { self.inner.as_mut().read_unsafe(buf_ptr, buf.len() as i64) };
+        let device = self.as_mut().as_io_device_mut();
+        // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
+        let result = unsafe { device.read_unsafe(buf_ptr, buf.len() as i64) };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
-        Err(self.get_error())
+        Err(get_error(&*self))
     }
-}
 
-impl<'a, T: QIOAdaptable> Write for QIOAdapter<'a, T> {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+    fn write(mut self: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize> {
         let buf_ptr = buf.as_ptr().cast::<c_char>();
-        let result = unsafe { self.inner.as_mut().write_unsafe(buf_ptr, buf.len() as i64) };
+        let device = self.as_mut().as_io_device_mut();
+        // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
+        let result = unsafe { device.write_unsafe(buf_ptr, buf.len() as i64) };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
-        Err(self.get_error())
+        Err(get_error(&*self))
     }
 
-    fn flush(&mut self) -> io::Result<()> {
-        let device = self
-            .inner
-            .as_mut()
-            .downcast_pin()
-            .expect("failed to downcast device");
-
-        if T::flush(device) {
+    fn flush(mut self: Pin<&mut Self>) -> io::Result<()> {
+        if QIO::flush(self.as_mut()) {
             Ok(())
         } else {
-            Err(self.get_error())
+            Err(get_error(&*self))
         }
     }
 }

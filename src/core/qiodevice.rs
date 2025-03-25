@@ -1,4 +1,7 @@
+use crate::adapter::{QIOExt, QIO};
+use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
+use std::io::{self, Read, Write};
 use std::pin::Pin;
 use std::ptr;
 
@@ -356,7 +359,6 @@ mod ffi {
     }
 }
 
-use cxx_qt_lib::{QByteArray, QFlags};
 pub use ffi::{OpenModeFlag, QIODevice};
 
 pub type OpenMode = QFlags<OpenModeFlag>;
@@ -466,5 +468,31 @@ impl QIODevice {
     pub fn write_all(self: Pin<&mut Self>, data: &CStr) -> i64 {
         // SAFETY: `data` is a zero-terminated string of 8-bit characters.
         unsafe { self.write_all_unsafe(data.as_ptr()) }
+    }
+}
+
+impl QIO for QIODevice {
+    fn as_io_device(&self) -> &QIODevice {
+        self
+    }
+
+    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self
+    }
+}
+
+impl Read for Pin<&mut QIODevice> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        QIOExt::read(self.as_mut(), buf)
+    }
+}
+
+impl Write for Pin<&mut QIODevice> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        QIOExt::write(self.as_mut(), buf)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
     }
 }

@@ -1,8 +1,9 @@
+use crate::adapter::{QIOExt, QIO};
+use crate::QIODevice;
+use cxx_qt::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
-use std::io;
+use std::io::{self, Read, Write};
 use std::pin::Pin;
-
-use crate::adapter::{QIOAdaptable, QIOAdapter};
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -206,27 +207,14 @@ mod ffi {
 
 pub use ffi::{FileError, FileHandleFlag, FilePermission, FileTime, MemoryMapFlag, QFileDevice};
 
-impl QIOAdaptable for QFileDevice {
-    fn flush(device: Pin<&mut Self>) -> bool {
-        device.flush()
-    }
-
-    fn get_error_kind(&self) -> io::ErrorKind {
-        match self.error() {
-            FileError::AbortError => io::ErrorKind::Interrupted,
-            FileError::ResourceError => io::ErrorKind::OutOfMemory,
-            FileError::TimeOutError => io::ErrorKind::TimedOut,
-            FileError::PermissionsError => io::ErrorKind::PermissionDenied,
-            _ => io::ErrorKind::Other,
-        }
-    }
-}
+pub type FilePermissions = QFlags<FilePermission>;
+unsafe_impl_qflag!(FilePermission, "FilePermissions", i32);
+pub type FileHandleFlags = QFlags<FileHandleFlag>;
+unsafe_impl_qflag!(FileHandleFlag, "FileHandleFlags", i32);
+pub type MemoryMapFlags = QFlags<MemoryMapFlag>;
+unsafe_impl_qflag!(MemoryMapFlag, "MemoryMapFlags", i32);
 
 impl QFileDevice {
-    pub fn adapter(self: Pin<&mut Self>) -> QIOAdapter<Self> {
-        QIOAdapter::new(self)
-    }
-
     /// Returns the file time specified by time. If the time cannot be determined return `None`.
     pub fn file_time(&self, time: FileTime) -> Option<QDateTime> {
         let file_time = self.file_time_or_invalid(time);
@@ -252,9 +240,42 @@ impl QFileDevice {
     }
 }
 
-pub type FilePermissions = QFlags<FilePermission>;
-unsafe_impl_qflag!(FilePermission, "FilePermissions", i32);
-pub type FileHandleFlags = QFlags<FileHandleFlag>;
-unsafe_impl_qflag!(FileHandleFlag, "FileHandleFlags", i32);
-pub type MemoryMapFlags = QFlags<MemoryMapFlag>;
-unsafe_impl_qflag!(MemoryMapFlag, "MemoryMapFlags", i32);
+impl QIO for QFileDevice {
+    fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
+    }
+
+    fn flush(self: Pin<&mut Self>) -> bool {
+        self.flush()
+    }
+
+    fn get_error_kind(&self) -> io::ErrorKind {
+        match self.error() {
+            FileError::AbortError => io::ErrorKind::Interrupted,
+            FileError::ResourceError => io::ErrorKind::OutOfMemory,
+            FileError::TimeOutError => io::ErrorKind::TimedOut,
+            FileError::PermissionsError => io::ErrorKind::PermissionDenied,
+            _ => io::ErrorKind::Other,
+        }
+    }
+}
+
+impl Read for Pin<&mut QFileDevice> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        QIOExt::read(self.as_mut(), buf)
+    }
+}
+
+impl Write for Pin<&mut QFileDevice> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        QIOExt::write(self.as_mut(), buf)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        QIOExt::flush(self.as_mut())
+    }
+}

@@ -1,12 +1,11 @@
-use std::ops::Deref;
-use std::pin::Pin;
-
+use crate::adapter::{QIOExt, QIO};
+use crate::{QFile, QFileDevice, QIODevice};
 use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use cxx_qt_lib::QString;
-
-use crate::adapter::QIOAdapter;
-use crate::{QFile, QFileDevice, QIODevice};
+use std::io::{self, Read, Write};
+use std::ops::Deref;
+use std::pin::Pin;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -103,10 +102,6 @@ impl QTemporaryFile {
         ffi::qtemporaryfile_new(path)
     }
 
-    pub fn adapter(self: Pin<&mut Self>) -> QIOAdapter<QFileDevice> {
-        QIOAdapter::new(self.upcast_pin())
-    }
-
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()
     }
@@ -157,5 +152,39 @@ impl Upcast<QFileDevice> for QTemporaryFile {
 
     unsafe fn from_base_ptr(base: *const QFileDevice) -> *const Self {
         ffi::downcast_qfiledevice_qtemporaryfile(base)
+    }
+}
+
+impl QIO for QTemporaryFile {
+    fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
+    }
+
+    fn flush(self: Pin<&mut Self>) -> bool {
+        self.as_file_device_mut().flush()
+    }
+
+    fn get_error_kind(&self) -> io::ErrorKind {
+        self.as_file_device().get_error_kind()
+    }
+}
+
+impl Read for Pin<&mut QTemporaryFile> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        QIOExt::read(self.as_mut(), buf)
+    }
+}
+
+impl Write for Pin<&mut QTemporaryFile> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        QIOExt::write(self.as_mut(), buf)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        QIOExt::flush(self.as_mut())
     }
 }

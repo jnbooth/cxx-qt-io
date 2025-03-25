@@ -1,10 +1,10 @@
-use std::pin::Pin;
-
-use crate::adapter::QIOAdapter;
+use crate::adapter::{QIOExt, QIO};
 use crate::{QFileDevice, QIODevice};
 use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use cxx_qt_lib::QString;
+use std::io::{self, Read, Write};
+use std::pin::Pin;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -85,10 +85,6 @@ impl QSaveFile {
         ffi::qsavefile_new(path)
     }
 
-    pub fn adapter(self: Pin<&mut Self>) -> QIOAdapter<QFileDevice> {
-        QIOAdapter::new(self.upcast_pin())
-    }
-
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()
     }
@@ -113,5 +109,39 @@ impl Upcast<QIODevice> for QSaveFile {
 
     unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
         ffi::downcast_qiodevice_qsavefile(base)
+    }
+}
+
+impl QIO for QSaveFile {
+    fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
+    }
+
+    fn flush(self: Pin<&mut Self>) -> bool {
+        self.as_file_device_mut().flush()
+    }
+
+    fn get_error_kind(&self) -> io::ErrorKind {
+        self.as_file_device().get_error_kind()
+    }
+}
+
+impl Read for Pin<&mut QSaveFile> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        QIOExt::read(self.as_mut(), buf)
+    }
+}
+
+impl Write for Pin<&mut QSaveFile> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        QIOExt::write(self.as_mut(), buf)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        QIOExt::flush(self.as_mut())
     }
 }

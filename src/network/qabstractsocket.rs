@@ -1,6 +1,8 @@
+use crate::adapter::{QIOExt, QIO};
+use crate::QIODevice;
+use cxx_qt::Upcast;
+use std::io::{self, Read, Write};
 use std::pin::Pin;
-
-use crate::adapter::{QIOAdaptable, QIOAdapter};
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -19,14 +21,36 @@ mod ffi {
 
 pub use ffi::QAbstractSocket;
 
-impl QIOAdaptable for QAbstractSocket {
-    fn flush(device: Pin<&mut Self>) -> bool {
-        device.flush()
+impl QIO for QAbstractSocket {
+    fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
+    }
+
+    fn flush(self: Pin<&mut Self>) -> bool {
+        self.flush()
+    }
+
+    fn get_error_kind(&self) -> io::ErrorKind {
+        std::io::ErrorKind::Other
     }
 }
 
-impl QAbstractSocket {
-    pub fn adapter(self: Pin<&mut Self>) -> QIOAdapter<Self> {
-        QIOAdapter::new(self)
+impl Read for Pin<&mut QAbstractSocket> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        QIOExt::read(self.as_mut(), buf)
+    }
+}
+
+impl Write for Pin<&mut QAbstractSocket> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        QIOExt::write(self.as_mut(), buf)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        QIOExt::flush(self.as_mut())
     }
 }
