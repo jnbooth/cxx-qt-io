@@ -13,4 +13,12 @@ template<>
 struct IsRelocatable<QNetworkProxy> : ::std::true_type
 {};
 
+namespace cxxqtio1 {
+QNetworkProxy (*qnetworkproxyApplicationProxy)() =
+  QNetworkProxy::applicationProxy;
+
+void (*qnetworkproxySetApplicationProxy)(const QNetworkProxy&) =
+  QNetworkProxy::setApplicationProxy;
+}
+
 } // namespace rust

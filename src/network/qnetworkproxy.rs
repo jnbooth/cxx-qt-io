@@ -168,6 +168,17 @@ mod ffi {
 
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        #[doc(hidden)]
+        #[rust_name = "qnetworkproxy_application_proxy"]
+        fn qnetworkproxyApplicationProxy() -> QNetworkProxy;
+
+        #[doc(hidden)]
+        #[rust_name = "qnetworkproxy_set_application_proxy"]
+        fn qnetworkproxySetApplicationProxy(proxy: &QNetworkProxy);
+    }
+
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -239,6 +250,24 @@ impl Eq for QNetworkProxy {}
 impl Debug for QNetworkProxy {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "{}", ffi::qnetworkproxy_to_debug_qstring(self))
+    }
+}
+
+impl QNetworkProxy {
+    /// Returns the application level network proxying.
+    ///
+    /// If a `QAbstractSocket` or `QTcpSocket` has the `DefaultProxy` type, then the `QNetworkProxy` returned by this function is used.
+    pub fn application_proxy() -> Self {
+        ffi::qnetworkproxy_application_proxy()
+    }
+
+    /// Sets the application level network proxying to be `network_proxy`.
+    ///
+    /// If a `QAbstractSocket` or `QTcpSocket` has the `DefaultProxy` type, then the `QNetworkProxy` set with this function is used.
+    ///
+    /// Setting a default proxy value with this function will disable the use of a system proxy.
+    pub fn set_application_proxy(network_proxy: &Self) {
+        ffi::qnetworkproxy_set_application_proxy(network_proxy);
     }
 }
 
