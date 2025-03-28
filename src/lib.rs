@@ -27,7 +27,7 @@ macro_rules! unsafe_impl_qflag {
     };
 }
 
-mod adapter;
+mod qio;
 
 mod core;
 pub use crate::core::*;

@@ -1,4 +1,4 @@
-use crate::adapter::{QIOExt, QIO};
+use crate::qio::{QIOExt, QIO};
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};

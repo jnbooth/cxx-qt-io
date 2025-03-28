@@ -1,4 +1,4 @@
-use crate::adapter::{QIOExt, QIO};
+use crate::qio::{QIOExt, QIO};
 use crate::{QFileDevice, QIODevice};
 use cxx::UniquePtr;
 use cxx_qt::Upcast;

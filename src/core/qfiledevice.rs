@@ -1,4 +1,4 @@
-use crate::adapter::{QIOExt, QIO};
+use crate::qio::{QIOExt, QIO};
 use crate::QIODevice;
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
