@@ -32,13 +32,14 @@ mod ffi {
         ExistingOnly = 0x0080,
     }
 
-    unsafe extern "C++" {
+    extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
 
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
 
+        include!("cxx-qt-io/qiodevice.h");
         type OpenModeFlag;
         type OpenMode = super::OpenMode;
     }
@@ -177,7 +178,7 @@ mod ffi {
         ///
         /// # Safety
         ///
-        /// `data` must be non-null and valid for reads for `max_size` many bytes.
+        /// `data` must be valid for reads for `max_size` many bytes.
         #[rust_name = "read_line_unsafe"]
         unsafe fn readLine(self: Pin<&mut QIODevice>, data: *mut c_char, max_size: i64) -> i64;
 
@@ -270,7 +271,7 @@ mod ffi {
         ///
         /// # Safety
         ///
-        /// `data` must be non-null and valid for reads for `max_size` many bytes.
+        /// `data` must be valid for reads for `max_size` many bytes.
         #[rust_name = "write_unsafe"]
         unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char, max_size: i64) -> i64;
 
@@ -331,8 +332,6 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/qiodevice.h");
-
         #[doc(hidden)]
         #[rust_name = "qiodevice_is_open"]
         fn qiodeviceIsOpen(device: &QIODevice) -> bool;

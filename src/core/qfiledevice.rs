@@ -53,28 +53,6 @@ mod ffi {
 
     #[repr(i32)]
     #[derive(Debug)]
-    enum FileTime {
-        /// When the file was most recently accessed (e.g. read or written to).
-        FileAccessTime,
-        /// When the file was created (may not be not supported on UNIX).
-        FileBirthTime,
-        /// When the file's metadata was last changed.
-        FileMetadataChangeTime,
-        /// When the file was most recently modified.
-        FileModificationTime,
-    }
-
-    #[repr(i32)]
-    #[derive(Debug)]
-    enum MemoryMapFlag {
-        /// No options.
-        NoOptions = 0,
-        /// The mapped memory will be private, so any modifications will not be visible to other processes and will not be written to disk. Any such modifications will be lost when the memory is unmapped. It is unspecified whether modifications made to the file made after the mapping is created will be visible through the mapped memory.
-        MapPrivateOption = 0x0001,
-    }
-
-    #[repr(i32)]
-    #[derive(Debug)]
     enum FilePermission {
         /// The file is readable by the owner of the file.
         ReadOwner = 0x4000,
@@ -102,7 +80,29 @@ mod ffi {
         ExeOther = 0x0001,
     }
 
-    unsafe extern "C++" {
+    #[repr(i32)]
+    #[derive(Debug)]
+    enum FileTime {
+        /// When the file was most recently accessed (e.g. read or written to).
+        FileAccessTime,
+        /// When the file was created (may not be not supported on UNIX).
+        FileBirthTime,
+        /// When the file's metadata was last changed.
+        FileMetadataChangeTime,
+        /// When the file was most recently modified.
+        FileModificationTime,
+    }
+
+    #[repr(i32)]
+    #[derive(Debug)]
+    enum MemoryMapFlag {
+        /// No options.
+        NoOptions = 0,
+        /// The mapped memory will be private, so any modifications will not be visible to other processes and will not be written to disk. Any such modifications will be lost when the memory is unmapped. It is unspecified whether modifications made to the file made after the mapping is created will be visible through the mapped memory.
+        MapPrivateOption = 0x0001,
+    }
+
+    extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
 
@@ -112,8 +112,6 @@ mod ffi {
         include!("cxx-qt-io/qfiledevice.h");
         type FileError;
         type FileHandleFlag;
-        #[allow(unused)]
-        type FileHandleFlags = super::FileHandleFlags;
         type FileTime;
         type MemoryMapFlag;
         type MemoryMapFlags = super::MemoryMapFlags;
@@ -122,8 +120,6 @@ mod ffi {
     }
 
     unsafe extern "C++Qt" {
-        include!(<QtCore/QFileDevice>);
-
         type QIODevice = crate::QIODevice;
 
         #[qobject]
@@ -209,8 +205,10 @@ pub use ffi::{FileError, FileHandleFlag, FilePermission, FileTime, MemoryMapFlag
 
 pub type FilePermissions = QFlags<FilePermission>;
 unsafe_impl_qflag!(FilePermission, "FilePermissions", i32);
+
 pub type FileHandleFlags = QFlags<FileHandleFlag>;
 unsafe_impl_qflag!(FileHandleFlag, "FileHandleFlags", i32);
+
 pub type MemoryMapFlags = QFlags<MemoryMapFlag>;
 unsafe_impl_qflag!(MemoryMapFlag, "MemoryMapFlags", i32);
 
@@ -254,13 +252,7 @@ impl QIO for QFileDevice {
     }
 
     fn get_error_kind(&self) -> io::ErrorKind {
-        match self.error() {
-            FileError::AbortError => io::ErrorKind::Interrupted,
-            FileError::ResourceError => io::ErrorKind::OutOfMemory,
-            FileError::TimeOutError => io::ErrorKind::TimedOut,
-            FileError::PermissionsError => io::ErrorKind::PermissionDenied,
-            _ => io::ErrorKind::Other,
-        }
+        self.error().into()
     }
 }
 
@@ -277,5 +269,16 @@ impl Write for Pin<&mut QFileDevice> {
 
     fn flush(&mut self) -> io::Result<()> {
         QIOExt::flush(self.as_mut())
+    }
+}
+
+impl From<FileError> for io::ErrorKind {
+    fn from(value: FileError) -> Self {
+        match value {
+            FileError::AbortError => Self::Interrupted,
+            FileError::TimeOutError => Self::TimedOut,
+            FileError::PermissionsError => Self::PermissionDenied,
+            _ => Self::Other,
+        }
     }
 }
