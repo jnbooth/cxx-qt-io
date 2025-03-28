@@ -14,31 +14,8 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
-
-        #[doc(hidden)]
-        #[rust_name = "qtemporaryfile_new"]
-        fn constructNew(path: &QString) -> UniquePtr<QTemporaryFile>;
-
-        #[doc(hidden)]
-        #[rust_name = "upcast_qtemporaryfile_qiodevice"]
-        unsafe fn upcast(file: *const QTemporaryFile) -> *const QIODevice;
-        #[doc(hidden)]
-        #[rust_name = "downcast_qiodevice_qtemporaryfile"]
-        unsafe fn downcast(file: *const QIODevice) -> *const QTemporaryFile;
-
-        #[doc(hidden)]
-        #[rust_name = "upcast_qtemporaryfile_qfiledevice"]
-        unsafe fn upcast(file: *const QTemporaryFile) -> *const QFileDevice;
-        #[doc(hidden)]
-        #[rust_name = "downcast_qfiledevice_qtemporaryfile"]
-        unsafe fn downcast(file: *const QFileDevice) -> *const QTemporaryFile;
-    }
-
     unsafe extern "C++Qt" {
-        include!(<QtCore/QTemporaryFile>);
+        include!("cxx-qt-io/qtemporaryfile.h");
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
         type QFile = crate::QFile;
@@ -93,6 +70,33 @@ mod ffi {
         #[rust_name = "set_file_template"]
         fn setFileTemplate(self: Pin<&mut QTemporaryFile>, template_name: &QString);
     }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        #[doc(hidden)]
+        #[rust_name = "qtemporaryfile_create_native_file"]
+        unsafe fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
+
+        include!("cxx-qt-io/common.h");
+
+        #[doc(hidden)]
+        #[rust_name = "qtemporaryfile_new"]
+        fn constructNew(path: &QString) -> UniquePtr<QTemporaryFile>;
+
+        #[doc(hidden)]
+        #[rust_name = "upcast_qtemporaryfile_qiodevice"]
+        unsafe fn upcast(file: *const QTemporaryFile) -> *const QIODevice;
+        #[doc(hidden)]
+        #[rust_name = "downcast_qiodevice_qtemporaryfile"]
+        unsafe fn downcast(file: *const QIODevice) -> *const QTemporaryFile;
+
+        #[doc(hidden)]
+        #[rust_name = "upcast_qtemporaryfile_qfiledevice"]
+        unsafe fn upcast(file: *const QTemporaryFile) -> *const QFileDevice;
+        #[doc(hidden)]
+        #[rust_name = "downcast_qfiledevice_qtemporaryfile"]
+        unsafe fn downcast(file: *const QFileDevice) -> *const QTemporaryFile;
+    }
 }
 
 pub use ffi::QTemporaryFile;
@@ -100,6 +104,18 @@ pub use ffi::QTemporaryFile;
 impl QTemporaryFile {
     pub fn new(path: &QString) -> UniquePtr<Self> {
         ffi::qtemporaryfile_new(path)
+    }
+
+    /// If `file` is not already a native file, then a `QTemporaryFile` is created in `QDir::temp_path()`, the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns `None` if file is already a native file.
+    pub fn create_native_file(file: Pin<&mut QFile>) -> Option<Pin<&mut Self>> {
+        // SAFETY: QTemporaryFile::createNativeFile returns either a valid pointer or nullptr.
+        unsafe {
+            let file_ptr = ffi::qtemporaryfile_create_native_file(file);
+            if file_ptr.is_null() {
+                return None;
+            }
+            Some(Pin::new_unchecked(&mut *file_ptr))
+        }
     }
 
     pub fn as_io_device(&self) -> &QIODevice {

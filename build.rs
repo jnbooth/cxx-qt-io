@@ -91,6 +91,7 @@ fn main() {
         include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qpair.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
+        include_header!("include/core/qtemporaryfile.h"),
     ]);
 
     let interface = cxx_qt_build::Interface::default()
