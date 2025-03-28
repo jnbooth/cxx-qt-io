@@ -1,4 +1,3 @@
-use crate::QHttpHeadersEntry;
 use cxx::type_id;
 use cxx_qt_lib::{QList, QListElement};
 
@@ -68,9 +67,8 @@ macro_rules! impl_qlist_element {
     };
 }
 
-#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
 impl_qlist_element!(
-    QHttpHeadersEntry,
-    qlist_qhttpheadersentry,
-    "QList_QHttpHeadersEntry"
+    crate::QPair<crate::QPairPair_QByteArray_QByteArray>,
+    qlist_qpair_qbytearray_qbytearray,
+    "QList_QPair_QByteArray_QByteArray"
 );

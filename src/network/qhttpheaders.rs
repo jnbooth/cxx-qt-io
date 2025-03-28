@@ -204,10 +204,12 @@ mod ffi {
     }
 
     extern "C++" {
+        include!("cxx-qt-io/qlist_qpair_qbytearray_qbytearray.h");
+        type QPair_QByteArray_QByteArray = crate::QPair<crate::QPairPair_QByteArray_QByteArray>;
+        type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;
+
         include!("cxx-qt-io/qhttpheaders.h");
         type WellKnownHeader;
-        type QHttpHeadersEntry = super::QHttpHeadersEntry;
-        type QList_QHttpHeadersEntry = cxx_qt_lib::QList<QHttpHeadersEntry>;
     }
 
     unsafe extern "C++" {
@@ -312,7 +314,7 @@ mod ffi {
         fn size(self: &QHttpHeaders) -> qsizetype;
 
         #[rust_name = "to_list_of_pairs"]
-        fn toListOfPairs(self: &QHttpHeaders) -> QList_QHttpHeadersEntry;
+        fn toListOfPairs(self: &QHttpHeaders) -> QList_QPair_QByteArray_QByteArray;
 
         #[doc(hidden)]
         #[rust_name = "values_by_name"]
@@ -357,14 +359,6 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qhttpheaders_to_debug_qstring"]
         fn toDebugQString(value: &QHttpHeaders) -> QString;
-
-        #[doc(hidden)]
-        #[rust_name = "qhttpheadersentry_drop"]
-        fn drop(headers: &mut QHttpHeadersEntry);
-
-        #[doc(hidden)]
-        #[rust_name = "qhttpheadersentry_clone"]
-        fn construct(other: &QHttpHeadersEntry) -> QHttpHeadersEntry;
     }
 }
 
@@ -591,29 +585,5 @@ impl Debug for QHttpHeaders {
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QHttpHeaders {
     type Id = type_id!("QHttpHeaders");
-    type Kind = cxx::kind::Trivial;
-}
-
-#[repr(C)]
-pub struct QHttpHeadersEntry {
-    pub name: QByteArray,
-    pub value: QByteArray,
-}
-
-impl Clone for QHttpHeadersEntry {
-    fn clone(&self) -> Self {
-        ffi::qhttpheadersentry_clone(self)
-    }
-}
-
-impl Drop for QHttpHeadersEntry {
-    fn drop(&mut self) {
-        ffi::qhttpheadersentry_drop(self);
-    }
-}
-
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
-unsafe impl ExternType for QHttpHeadersEntry {
-    type Id = type_id!("QHttpHeadersEntry");
     type Kind = cxx::kind::Trivial;
 }

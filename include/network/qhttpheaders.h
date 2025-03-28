@@ -5,16 +5,10 @@
 #include "rust/cxx.h"
 
 using WellKnownHeader = QHttpHeaders::WellKnownHeader;
-using QHttpHeadersEntry = ::std::pair<QByteArray, QByteArray>;
-using QList_QHttpHeadersEntry = QList<QHttpHeadersEntry>;
 
 namespace rust {
 template<>
 struct IsRelocatable<QHttpHeaders> : ::std::true_type
-{};
-
-template<>
-struct IsRelocatable<QHttpHeadersEntry> : ::std::true_type
 {};
 
 namespace cxxqtio1 {

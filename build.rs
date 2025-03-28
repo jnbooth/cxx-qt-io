@@ -87,7 +87,10 @@ fn main() {
         include_header!("include/common.h"),
         include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
+        include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qiodevice.h"),
+        include_header!("include/core/qpair.h"),
+        include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
     ]);
 
     let interface = cxx_qt_build::Interface::default()
@@ -96,13 +99,16 @@ fn main() {
         .export_include_directory(&header_dir, "cxx-qt-io")
         .reexport_dependency("cxx-qt-lib");
 
-    let mut builder = CxxQtBuilder::library(interface).build_rust(&[
-        "core/qiodevice",
-        "core/qfiledevice",
-        "core/qfile",
-        "core/qsavefile",
-        "core/qtemporaryfile",
-    ]);
+    let mut builder = CxxQtBuilder::library(interface)
+        .build_cpp(&["core/qpair/qpair"])
+        .build_rust(&[
+            "core/qiodevice",
+            "core/qfiledevice",
+            "core/qfile",
+            "core/qlist/qlist_qpair_qbytearray_qbytearray",
+            "core/qsavefile",
+            "core/qtemporaryfile",
+        ]);
 
     if include_network {
         header_dir.write_headers(&[
@@ -123,13 +129,10 @@ fn main() {
             ]);
 
         if version.major > 6 || (version.major == 6 && version.minor > 6) {
-            header_dir.write_headers(&[
-                include_header!("include/core/qlist/qlist_qhttpheadersentry.h"),
-                include_header!("include/network/qhttpheaders.h"),
-            ]);
+            header_dir.write_headers(&[include_header!("include/network/qhttpheaders.h")]);
             builder = builder
                 .build_cpp(&["network/qhttpheaders"])
-                .build_rust(&["core/qlist/qlist_qhttpheadersentry", "network/qhttpheaders"]);
+                .build_rust(&["network/qhttpheaders"]);
         }
     }
 

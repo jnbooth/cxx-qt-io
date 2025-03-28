@@ -9,6 +9,9 @@ pub use qfile::QFile;
 
 mod qlist;
 
+mod qpair;
+pub use qpair::{QPair, QPairPair, QPairPair_QByteArray_QByteArray};
+
 mod qsavefile;
 pub use qsavefile::QSaveFile;
 
