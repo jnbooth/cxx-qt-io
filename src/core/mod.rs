@@ -7,6 +7,8 @@ pub use qfiledevice::{
 mod qfile;
 pub use qfile::QFile;
 
+mod qlist;
+
 mod qsavefile;
 pub use qsavefile::QSaveFile;
 
