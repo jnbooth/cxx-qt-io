@@ -327,6 +327,14 @@ mod ffi {
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         #[doc(hidden)]
+        #[rust_name = "qhttpheaders_from_list_of_pairs"]
+        fn qhttpheadersFromListOfPairs(pairs: &QList_QPair_QByteArray_QByteArray) -> QHttpHeaders;
+
+        #[doc(hidden)]
+        #[rust_name = "qhttpheaders_well_known_header_name"]
+        fn qhttpheadersWellKnownHeaderName(name: WellKnownHeader) -> &'static [u8];
+
+        #[doc(hidden)]
         #[rust_name = "qhttpheaders_name_at"]
         fn qhttpheadersNameAt(headers: &QHttpHeaders, i: isize) -> &str;
 
@@ -364,6 +372,8 @@ mod ffi {
 
 pub use ffi::WellKnownHeader;
 
+use crate::{QPair, QPairPair_QByteArray_QByteArray};
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum HttpHeader<'a> {
     Named(QAnyStringView<'a>),
@@ -390,7 +400,36 @@ pub struct QHttpHeaders {
     _space: MaybeUninit<usize>,
 }
 
+impl Clone for QHttpHeaders {
+    fn clone(&self) -> Self {
+        ffi::qhttpheaders_clone(self)
+    }
+}
+
+impl Default for QHttpHeaders {
+    fn default() -> Self {
+        ffi::qhttpheaders_init_default()
+    }
+}
+
+impl Drop for QHttpHeaders {
+    fn drop(&mut self) {
+        ffi::qhttpheaders_drop(self);
+    }
+}
+
+impl Debug for QHttpHeaders {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", ffi::qhttpheaders_to_debug_qstring(self))
+    }
+}
+
 impl QHttpHeaders {
+    /// Returns a header name corresponding to the provided `name` as a view.
+    pub fn well_known_header_name(name: WellKnownHeader) -> &'static [u8] {
+        ffi::qhttpheaders_well_known_header_name(name)
+    }
+
     /// Appends a header entry with `name` and `value` and returns `true` if successful.
     pub fn append<'a, N, V>(&mut self, name: N, value: V) -> bool
     where
@@ -558,27 +597,9 @@ impl QHttpHeaders {
     }
 }
 
-impl Clone for QHttpHeaders {
-    fn clone(&self) -> Self {
-        ffi::qhttpheaders_clone(self)
-    }
-}
-
-impl Default for QHttpHeaders {
-    fn default() -> Self {
-        ffi::qhttpheaders_init_default()
-    }
-}
-
-impl Drop for QHttpHeaders {
-    fn drop(&mut self) {
-        ffi::qhttpheaders_drop(self);
-    }
-}
-
-impl Debug for QHttpHeaders {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", ffi::qhttpheaders_to_debug_qstring(self))
+impl From<&QList<QPair<QPairPair_QByteArray_QByteArray>>> for QHttpHeaders {
+    fn from(value: &QList<QPair<QPairPair_QByteArray_QByteArray>>) -> Self {
+        ffi::qhttpheaders_from_list_of_pairs(value)
     }
 }
 

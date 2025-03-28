@@ -12,7 +12,7 @@ static_assert(!::std::is_trivially_destructible<QHttpHeaders>::value);
 static_assert(QTypeInfo<QHttpHeaders>::isRelocatable);
 
 ::rust::Slice<const ::std::uint8_t>
-convertByteView(QByteArrayView view)
+convertBytesView(QByteArrayView view)
 {
   return ::rust::Slice(reinterpret_cast<const ::std::uint8_t*>(view.data()),
                        view.size());
@@ -26,6 +26,13 @@ convertStringView(QLatin1StringView view)
 
 namespace rust {
 namespace xxqtio1 {
+
+::rust::Slice<const ::std::uint8_t>
+qhttpheadersWellKnownHeaderName(WellKnownHeader name)
+{
+  return convertBytesView(QHttpHeaders::wellKnownHeaderName(name));
+}
+
 ::rust::Str
 qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i)
 {
@@ -35,18 +42,18 @@ qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i)
 ::rust::Slice<const ::rust::u8>
 qhttpheadersValue(const QHttpHeaders& headers, QAnyStringView name)
 {
-  return convertByteView(headers.value(name));
+  return convertBytesView(headers.value(name));
 }
 ::rust::Slice<const ::rust::u8>
 qhttpheadersValue(const QHttpHeaders& headers, WellKnownHeader name)
 {
-  return convertByteView(headers.value(name));
+  return convertBytesView(headers.value(name));
 }
 
 ::rust::Slice<const ::rust::u8>
 qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i)
 {
-  return convertByteView(headers.valueAt(static_cast<qsizetype>(i)));
+  return convertBytesView(headers.valueAt(static_cast<qsizetype>(i)));
 }
 }
 
