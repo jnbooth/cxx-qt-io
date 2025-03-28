@@ -112,6 +112,7 @@ fn main() {
 
     if include_network {
         header_dir.write_headers(&[
+            include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
             include_header!("include/network/qnetworkproxy.h"),
@@ -121,6 +122,7 @@ fn main() {
             .qt_module("Network")
             .build_cpp(&["network/qhostaddress", "network/qnetworkproxy"])
             .build_rust(&[
+                "core/qpair/qpair_qhostaddress_i32",
                 "network/qauthenticator",
                 "network/qabstractsocket",
                 "network/qhostaddress",

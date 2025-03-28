@@ -12,6 +12,9 @@ mod qlist;
 mod qpair;
 pub use qpair::{QPair, QPairPair, QPairPair_QByteArray_QByteArray};
 
+#[cfg(feature = "qt_network")]
+pub use qpair::QPairPair_QHostAddress_i32;
+
 mod qsavefile;
 pub use qsavefile::QSaveFile;
 

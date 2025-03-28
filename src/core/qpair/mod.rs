@@ -75,3 +75,12 @@ impl_qpair_pair!(
     QPairPair_QByteArray_QByteArray,
     "QPair_QByteArray_QByteArray"
 );
+
+#[cfg(feature = "qt_network")]
+impl_qpair_pair!(
+    crate::QHostAddress,
+    i32,
+    qpair_qhostaddress_i32,
+    QPairPair_QHostAddress_i32,
+    "QPair_QHostAddress_i32"
+);

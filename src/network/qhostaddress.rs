@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
 
-use crate::NetworkLayerProtocol;
+use crate::{NetworkLayerProtocol, QPair, QPairPair_QHostAddress_i32};
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QFlag, QFlags, QString};
 
@@ -45,6 +45,8 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-io/qpair_qhostaddress_i32.h");
+        type QPair_QHostAddress_i32 = crate::QPair<crate::QPairPair_QHostAddress_i32>;
     }
 
     extern "C++" {
@@ -161,6 +163,10 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qhostaddress_to_ipv6_address"]
         fn qhostaddressToIPv6Address(address: &QHostAddress) -> QIpv6Addr;
+
+        #[doc(hidden)]
+        #[rust_name = "qhostaddress_parse_subnet"]
+        fn qhostaddressParseSubnet(subnet: &QString) -> QPair_QHostAddress_i32;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -253,6 +259,12 @@ impl Display for QHostAddress {
 impl Debug for QHostAddress {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "{}", ffi::qhostaddress_to_debug_qstring(self))
+    }
+}
+
+impl QHostAddress {
+    pub fn parse_subnet(subnet: &QString) -> QPair<QPairPair_QHostAddress_i32> {
+        ffi::qhostaddress_parse_subnet(subnet)
     }
 }
 

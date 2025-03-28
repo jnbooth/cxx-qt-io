@@ -8,6 +8,10 @@
 
 #include <QtCore/QByteArray>
 
+#ifdef CXX_QT_NETWORK_FEATURE
+#include <QtNetwork/QHostAddress>
+#endif
+
 #include <cxx-qt-lib/assertion_utils.h>
 
 #define CXX_QT_IO_QPAIR_ASSERTS(firstTypeName, secondTypeName)                 \
@@ -35,3 +39,7 @@
   static_assert(::std::is_copy_constructible<secondTypeName>::value);
 
 CXX_QT_IO_QPAIR_ASSERTS(QByteArray, QByteArray);
+
+#ifdef CXX_QT_NETWORK_FEATURE
+CXX_QT_IO_QPAIR_ASSERTS(QHostAddress, i32);
+#endif
