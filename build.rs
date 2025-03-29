@@ -89,6 +89,7 @@ fn main() {
         include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
         include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
+        include_header!("include/core/qlist/qlist.h"),
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
@@ -102,7 +103,7 @@ fn main() {
         .reexport_dependency("cxx-qt-lib");
 
     let mut builder = CxxQtBuilder::library(interface)
-        .build_cpp(&["core/qiodevice", "core/qpair/qpair"])
+        .build_cpp(&["core/qiodevice", "core/qlist/qlist", "core/qpair/qpair"])
         .build_rust(&[
             "core/qfile",
             "core/qfiledevice",
