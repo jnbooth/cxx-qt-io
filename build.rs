@@ -86,9 +86,9 @@ fn main() {
     header_dir.write_headers(&[
         include_header!("include/common.h"),
         include_header!("include/core/qfiledevice.h"),
+        include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
         include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
-        include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
@@ -104,9 +104,9 @@ fn main() {
     let mut builder = CxxQtBuilder::library(interface)
         .build_cpp(&["core/qiodevice", "core/qpair/qpair"])
         .build_rust(&[
-            "core/qiodevice",
-            "core/qfiledevice",
             "core/qfile",
+            "core/qfiledevice",
+            "core/qiodevice",
             "core/qlist/qlist_qpair_qbytearray_qbytearray",
             "core/qsavefile",
             "core/qtemporaryfile",
@@ -125,8 +125,8 @@ fn main() {
             .build_cpp(&["network/qhostaddress", "network/qnetworkproxy"])
             .build_rust(&[
                 "core/qpair/qpair_qhostaddress_i32",
-                "network/qauthenticator",
                 "network/qabstractsocket",
+                "network/qauthenticator",
                 "network/qhostaddress",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest",
