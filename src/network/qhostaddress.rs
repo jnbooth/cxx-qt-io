@@ -263,6 +263,14 @@ impl Debug for QHostAddress {
 }
 
 impl QHostAddress {
+    pub(crate) fn ok(self) -> Option<Self> {
+        if self.is_null() {
+            None
+        } else {
+            Some(self)
+        }
+    }
+
     pub fn parse_subnet(subnet: &QString) -> QPair<QPairPair_QHostAddress_i32> {
         ffi::qhostaddress_parse_subnet(subnet)
     }

@@ -12,23 +12,50 @@ macro_rules! include_header {
     };
 }
 
+struct Features {
+    pub network: bool,
+}
+
+impl Features {
+    fn env(key: &str) -> bool {
+        env::var(format!("CARGO_FEATURE_{key}")).is_ok()
+    }
+
+    pub fn from_env() -> Self {
+        Self {
+            network: Self::env("QT_NETWORK"),
+        }
+    }
+}
+
 struct HeaderBuilder {
     dir: PathBuf,
 }
 
 impl HeaderBuilder {
-    fn new() -> Self {
+    pub fn new() -> Self {
         let dir = PathBuf::from(env::var("OUT_DIR").unwrap())
             .join("include")
             .join("cxx-qt-io");
         Self { dir }
     }
 
-    fn create_header_dir(&self) {
+    pub fn create_header_dir(&self) {
         fs::create_dir_all(&self.dir).expect("Failed to create include directory");
     }
 
-    fn write_headers(&self, files: &[(&[u8], &OsStr)]) {
+    pub fn write_definitions(&self, features: &Features) {
+        let mut definitions = "#pragma once\n".to_owned();
+
+        if features.network {
+            definitions.push_str("#define CXX_QT_IO_NETWORK_FEATURE\n");
+        }
+
+        fs::write(self.dir.join("definitions.h"), definitions)
+            .expect("Failed to write definitions.h");
+    }
+
+    pub fn write_headers(&self, files: &[(&[u8], &OsStr)]) {
         for &(file_contents, file_name) in files {
             let out_path = self.dir.join(file_name);
             let mut header = File::create(out_path).expect("Could not create header");
@@ -69,10 +96,10 @@ impl BridgeBuilder for CxxQtBuilder {
 }
 
 fn main() {
-    let include_network = env::var("CARGO_FEATURE_QT_NETWORK").is_ok();
+    let features = Features::from_env();
 
     let mut qt_modules = vec!["Core".to_owned()];
-    if include_network {
+    if features.network {
         qt_modules.push("Network".to_owned());
     }
 
@@ -82,6 +109,8 @@ fn main() {
     let header_dir = HeaderBuilder::new();
 
     header_dir.create_header_dir();
+
+    header_dir.write_definitions(&features);
 
     header_dir.write_headers(&[
         include_header!("include/common.h"),
@@ -113,22 +142,33 @@ fn main() {
             "core/qtemporaryfile",
         ]);
 
-    if include_network {
+    if features.network {
         header_dir.write_headers(&[
+            include_header!("include/core/qlist/qlist_qhostaddress.h"),
+            include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
+            include_header!("include/core/qlist/qlist_qnetworkinterface.h"),
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
+            include_header!("include/network/qnetworkaddressentry.h"),
+            include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
         ]);
         builder = builder
             .qt_module("Network")
-            .build_cpp(&["network/qhostaddress", "network/qnetworkproxy"])
+            .build_cpp(&[
+                "network/qhostaddress",
+                "network/qnetworkaddressentry",
+                "network/qnetworkproxy",
+            ])
             .build_rust(&[
                 "core/qpair/qpair_qhostaddress_i32",
                 "network/qabstractsocket",
                 "network/qauthenticator",
                 "network/qhostaddress",
+                "network/qnetworkaddressentry",
+                "network/qnetworkinterface",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest",
             ]);

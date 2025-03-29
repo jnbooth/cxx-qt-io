@@ -72,3 +72,21 @@ impl_qlist_element!(
     qlist_qpair_qbytearray_qbytearray,
     "QList_QPair_QByteArray_QByteArray"
 );
+
+impl_qlist_element!(
+    crate::QHostAddress,
+    qlist_qhostaddress,
+    "QList_QHostAddress"
+);
+
+impl_qlist_element!(
+    crate::QNetworkAddressEntry,
+    qlist_qnetworkaddressentry,
+    "QList_QNetworkAddressEntry"
+);
+
+impl_qlist_element!(
+    crate::QNetworkInterface,
+    qlist_qnetworkinterface,
+    "QList_QNetworkInterface"
+);

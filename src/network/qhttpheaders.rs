@@ -1,6 +1,7 @@
 use std::fmt::{self, Debug, Formatter};
 use std::mem::MaybeUninit;
 
+use crate::{QPair, QPairPair_QByteArray_QByteArray};
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QAnyStringView, QByteArray, QList};
 
@@ -371,8 +372,6 @@ mod ffi {
 }
 
 pub use ffi::WellKnownHeader;
-
-use crate::{QPair, QPairPair_QByteArray_QByteArray};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum HttpHeader<'a> {

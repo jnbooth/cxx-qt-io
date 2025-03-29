@@ -2,6 +2,8 @@
 
 #include "qpair_qbytearray_qbytearray.h"
 
-#ifdef CXX_QT_NETWORK_FEATURE
+#include <cxx-qt-io/definitions.h>
+
+#ifdef CXX_QT_IO_NETWORK_FEATURE
 #include "qpair_qhostaddress_i32.h"
 #endif

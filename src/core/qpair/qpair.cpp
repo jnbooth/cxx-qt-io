@@ -8,38 +8,36 @@
 
 #include <QtCore/QByteArray>
 
-#ifdef CXX_QT_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NETWORK_FEATURE
 #include <QtNetwork/QHostAddress>
 #endif
 
 #include <cxx-qt-lib/assertion_utils.h>
 
-#define CXX_QT_IO_QPAIR_ASSERTS(firstTypeName, secondTypeName)                 \
-  using QPair_##firstTypeName##_##secondTypeName =                             \
-    ::std::pair<firstTypeName, secondTypeName>;                                \
+#define CXX_QT_IO_QPAIR_ASSERTS(firstTypeName, secondTypeName, combinedName)   \
+  using QPair_##combinedName = ::std::pair<firstTypeName, secondTypeName>;     \
                                                                                \
-  assert_alignment_and_size(QPair_##firstTypeName##_##secondTypeName, {        \
+  assert_alignment_and_size(QPair_##combinedName, {                            \
     firstTypeName first;                                                       \
     secondTypeName second;                                                     \
   });                                                                          \
                                                                                \
-  static_assert(!::std::is_trivially_copy_assignable<                          \
-                QPair_##firstTypeName##_##secondTypeName>::value);             \
-  static_assert(!::std::is_trivially_copy_constructible<                       \
-                QPair_##firstTypeName##_##secondTypeName>::value);             \
-  static_assert(!::std::is_trivially_destructible<                             \
-                QPair_##firstTypeName##_##secondTypeName>::value);             \
-                                                                               \
   static_assert(                                                               \
-    QTypeInfo<QPair_##firstTypeName##_##secondTypeName>::isRelocatable);       \
+    !::std::is_trivially_copy_assignable<QPair_##combinedName>::value);        \
+  static_assert(                                                               \
+    !::std::is_trivially_copy_constructible<QPair_##combinedName>::value);     \
+  static_assert(                                                               \
+    !::std::is_trivially_destructible<QPair_##combinedName>::value);           \
+                                                                               \
+  static_assert(QTypeInfo<QPair_##combinedName>::isRelocatable);               \
                                                                                \
   static_assert(::std::is_copy_assignable<firstTypeName>::value);              \
   static_assert(::std::is_copy_constructible<firstTypeName>::value);           \
   static_assert(::std::is_copy_assignable<secondTypeName>::value);             \
   static_assert(::std::is_copy_constructible<secondTypeName>::value);
 
-CXX_QT_IO_QPAIR_ASSERTS(QByteArray, QByteArray);
+CXX_QT_IO_QPAIR_ASSERTS(QByteArray, QByteArray, QByteArray_QByteArray);
 
-#ifdef CXX_QT_NETWORK_FEATURE
-CXX_QT_IO_QPAIR_ASSERTS(QHostAddress, i32);
+#ifdef CXX_QT_IO_NETWORK_FEATURE
+CXX_QT_IO_QPAIR_ASSERTS(QHostAddress, ::std::int32_t, QPair_QHostAddress_i32);
 #endif

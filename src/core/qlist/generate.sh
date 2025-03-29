@@ -13,6 +13,11 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 function generate_bridge() {
     local LOWER
     LOWER=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    local IMPORT="$2"
+
+    if [[ -z "$IMPORT" ]]; then
+        IMPORT="$1"
+    fi
 
     tee "$SCRIPTPATH/../../../include/core/qlist/qlist_$LOWER.h" <<EOF
 //! This is an auto-generated file. Do not edit.
@@ -33,7 +38,7 @@ EOF
 pub mod ffi {
     extern "C++" {
         include!("cxx-qt-io/$LOWER.h");
-        type $1 = crate::$2;
+        type $1 = crate::$IMPORT;
 
         include!("cxx-qt-io/qlist_$LOWER.h");
         type QList_$1 = cxx_qt_lib::QList<$1>;
@@ -136,3 +141,6 @@ EOF
 }
 
 generate_bridge "QPair_QByteArray_QByteArray" "QPair<crate::QPairPair_QByteArray_QByteArray>"
+generate_bridge "QHostAddress"
+generate_bridge "QNetworkAddressEntry"
+generate_bridge "QNetworkInterface"

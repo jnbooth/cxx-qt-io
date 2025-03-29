@@ -238,11 +238,8 @@ mod ffi {
         #[rust_name = "is_valid"]
         fn isValid(self: &QAbstractSocket) -> bool;
 
-        /// Returns the host address of the local socket if available; otherwise returns QHostAddress::Null.
-        ///
-        /// This is normally the main IP address of the host, but can be `QHostAddress::LocalHost` (127.0.0.1) for connections to the local host.
         #[doc(hidden)]
-        #[rust_name = "local_address_or_default"]
+        #[rust_name = "local_address_or_null"]
         fn localAddress(self: &QAbstractSocket) -> QHostAddress;
 
         /// Returns the host port number (in native byte order) of the local socket if available; otherwise returns 0.
@@ -253,14 +250,12 @@ mod ffi {
         #[rust_name = "pause_mode"]
         fn pauseMode(self: &QAbstractSocket) -> SocketPauseModes;
 
-        /// Returns the address of the connected peer if the socket is in `ConnectedState`; otherwise returns `QHostAddress::Null`.
         #[doc(hidden)]
-        #[rust_name = "peer_address_or_default"]
+        #[rust_name = "peer_address_or_null"]
         fn peerAddress(self: &QAbstractSocket) -> QHostAddress;
 
-        /// Returns the name of the peer as specified by `connect_to_host()`, or an empty QString if `connect_to_host()` has not been called.
         #[doc(hidden)]
-        #[rust_name = "peer_name_or_default"]
+        #[rust_name = "peer_name_or_empty"]
         fn peerName(self: &QAbstractSocket) -> QString;
 
         /// Returns the port of the econnected peer if the socket is in `ConnectedState`; otherwise returns 0.
@@ -416,27 +411,17 @@ impl QAbstractSocket {
     ///
     /// This is normally the main IP address of the host, but can be `QHostAddress::LocalHost` (127.0.0.1) for connections to the local host.
     pub fn local_address(&self) -> Option<QHostAddress> {
-        let address = self.local_address_or_default();
-        if address.is_null() {
-            None
-        } else {
-            Some(address)
-        }
+        self.local_address_or_null().ok()
     }
 
     /// Returns the address of the connected peer if the socket is in `ConnectedState`; otherwise returns `None`.
     pub fn peer_address(&self) -> Option<QHostAddress> {
-        let address = self.peer_address_or_default();
-        if address.is_null() {
-            None
-        } else {
-            Some(address)
-        }
+        self.peer_address_or_null().ok()
     }
 
     /// Returns the name of the peer as specified by `connect_to_host()`, or `None` if `connect_to_host()` has not been called.
     pub fn peer_name(&self) -> Option<QString> {
-        let name = self.peer_name_or_default();
+        let name = self.peer_name_or_empty();
         if name.is_empty() {
             None
         } else {
