@@ -1,3 +1,6 @@
+//! This is an auto-generated file. Do not edit.
+//! Edit instead: src/core/qpair/generate.sh
+
 use cxx::{type_id, ExternType};
 
 #[cxx::bridge]
