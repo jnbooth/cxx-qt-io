@@ -14,10 +14,10 @@ struct IsRelocatable<QNetworkProxy> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-QNetworkProxy (*qnetworkproxyApplicationProxy)() =
+inline QNetworkProxy (*qnetworkproxyApplicationProxy)() =
   QNetworkProxy::applicationProxy;
 
-void (*qnetworkproxySetApplicationProxy)(const QNetworkProxy&) =
+inline void (*qnetworkproxySetApplicationProxy)(const QNetworkProxy&) =
   QNetworkProxy::setApplicationProxy;
 }
 

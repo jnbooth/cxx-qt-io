@@ -101,7 +101,7 @@ fn main() {
         .reexport_dependency("cxx-qt-lib");
 
     let mut builder = CxxQtBuilder::library(interface)
-        .build_cpp(&["core/qpair/qpair"])
+        .build_cpp(&["core/qiodevice", "core/qpair/qpair"])
         .build_rust(&[
             "core/qiodevice",
             "core/qfiledevice",

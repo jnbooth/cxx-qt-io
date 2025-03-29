@@ -7,41 +7,23 @@ using OpenMode = QIODeviceBase::OpenMode;
 
 namespace rust {
 namespace cxxqtio1 {
-inline bool
-qiodeviceIsOpen(const QIODevice& device)
-{
-  return device.isOpen();
-}
+bool
+qiodeviceIsOpen(const QIODevice& device);
 
-inline bool
-qiodeviceIsReadable(const QIODevice& device)
-{
-  return device.isReadable();
-}
+bool
+qiodeviceIsReadable(const QIODevice& device);
 
-inline bool
-qiodeviceIsSequential(const QIODevice& device)
-{
-  return device.isSequential();
-}
+bool
+qiodeviceIsSequential(const QIODevice& device);
 
-inline bool
-qiodeviceIsTextModeEnabled(const QIODevice& device)
-{
-  return device.isTextModeEnabled();
-}
+bool
+qiodeviceIsTextModeEnabled(const QIODevice& device);
 
-inline bool
-qiodeviceIsTransactionStarted(const QIODevice& device)
-{
-  return device.isTransactionStarted();
-}
+bool
+qiodeviceIsTransactionStarted(const QIODevice& device);
 
-inline bool
-qiodeviceIsWritable(const QIODevice& device)
-{
-  return device.isWritable();
-}
+bool
+qiodeviceIsWritable(const QIODevice& device);
 
 }
 }

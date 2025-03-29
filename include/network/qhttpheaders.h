@@ -12,11 +12,12 @@ struct IsRelocatable<QHttpHeaders> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-QHttpHeaders (*qhttpheadersFromListOfPairs)(
+inline QHttpHeaders (*qhttpheadersFromListOfPairs)(
   const QList<::std::pair<QByteArray, QByteArray>>&) =
   QHttpHeaders::fromListOfPairs;
 
-::rust::Slice<const ::std::uint8_t> qhttpheadersWellKnownHeaderName(WellKnownHeader name);
+::rust::Slice<const ::std::uint8_t>
+qhttpheadersWellKnownHeaderName(WellKnownHeader name);
 
 ::rust::Str
 qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i);

@@ -22,8 +22,8 @@ namespace cxxqtio1 {
 Q_IPV6ADDR
 qhostaddressToIPv6Address(const QHostAddress& address);
 
-::std::pair<QHostAddress, i32> (*qhostaddressParseSubnet)(const QString&) =
-  QHostAddress::parseSubnet;
+inline ::std::pair<QHostAddress, i32> (*qhostaddressParseSubnet)(
+  const QString&) = QHostAddress::parseSubnet;
 }
 
 } // namespace rust
