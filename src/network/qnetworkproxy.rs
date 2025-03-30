@@ -6,26 +6,45 @@ use cxx_qt_lib::{QFlag, QFlags};
 
 #[cxx::bridge]
 mod ffi {
+    /// A capability that a given proxy server supports.
+    ///
+    /// `QNetworkProxy` sets different capabilities by default when the object is created (see `ProxyType` for a list of the defaults). However, it is possible to change the capabilities after the object has been created with `set_capabilities()`.
     #[repr(i32)]
     #[derive(Debug)]
     enum ProxyCapability {
+        /// Ability to open transparent, tunneled TCP connections to a remote host. The proxy server relays the transmission verbatim from one side to the other and does no caching.
         TunnelingCapability = 0x0001,
+        /// Ability to create a listening socket and wait for an incoming TCP connection from a remote host.
         ListeningCapability = 0x0002,
+        /// Ability to relay UDP datagrams via the proxy server to and from a remote host.
         UdpTunnelingCapability = 0x0004,
+        /// Ability to cache the contents of the transfer. This capability is specific to each protocol and proxy type. For example, HTTP proxies can cache the contents of web data transferred with "GET" commands.
         CachingCapability = 0x0008,
+        /// Ability to connect to perform the lookup on a remote host name and connect to it, as opposed to requiring the application to perform the name lookup and request connection to IP addresses only.
         HostNameLookupCapability = 0x0010,
+        /// Ability to open transparent, tunneled SCTP connections to a remote host.
         SctpTunnelingCapability = 0x00020,
+        /// Ability to create a listening socket and wait for an incoming SCTP connection from a remote host.
         SctpListeningCapability = 0x00040,
     }
 
+    /// This enum describes the types of network proxying provided in Qt.
+    ///
+    /// There are two types of proxies that Qt understands: transparent proxies and caching proxies. The first group consists of proxies that can handle any arbitrary data transfer, while the second can only handle specific requests. The caching proxies only make sense for the specific classes where they can be used.
     #[repr(i32)]
     #[derive(Debug)]
     enum ProxyType {
+        /// Proxy is determined based on the application proxy set using `set_application_proxy()`.
         DefaultProxy,
+        /// Socks5 proxying is used.
         Socks5Proxy,
+        /// No proxying is used.
         NoProxy,
+        /// HTTP transparent proxying is used.
         HttpProxy,
+        /// Proxying for HTTP requests only.
         HttpCachingProxy,
+        /// Proxying for FTP requests only.
         FtpCachingProxy,
     }
 

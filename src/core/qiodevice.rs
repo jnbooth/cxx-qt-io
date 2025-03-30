@@ -7,6 +7,9 @@ use std::ptr;
 
 #[cxx_qt::bridge]
 mod ffi {
+    /// This enum is used with `QIODevice::open()` to describe the mode in which a device is opened. It is also returned by `QIODevice::open_mode()`.
+    ///
+    /// Certain flags, such as `Unbuffered` and `Truncate`, are meaningless when used with some subclasses. Some of these restrictions are implied by the type of device that is represented by a subclass. In other cases, the restriction may be due to the implementation, or may be imposed by the underlying platform; for example, `QTcpSocket` does not support `Unbuffered` mode, and limitations in the native API prevent `QFile` from supporting `Unbuffered` on Windows.
     #[repr(i32)]
     #[derive(Debug)]
     enum OpenModeFlag {

@@ -7,6 +7,7 @@ use std::pin::Pin;
 
 #[cxx_qt::bridge]
 mod ffi {
+    /// This enum describes the network layer protocol values used in Qt.
     #[repr(i32)]
     #[derive(Debug)]
     enum NetworkLayerProtocol {
@@ -20,6 +21,7 @@ mod ffi {
         UnknownNetworkLayerProtocol = -1,
     }
 
+    /// This enum describes the different flags you can pass to modify the behavior of `QAbstractSocket::bind()`.
     #[repr(i32)]
     #[derive(Debug)]
     enum SocketBindFlag {
@@ -33,6 +35,7 @@ mod ffi {
         ReuseAddressHint = 0x4,
     }
 
+    /// This enum describes the socket errors that can occur.
     #[repr(i32)]
     #[derive(Debug)]
     enum SocketError {
@@ -86,6 +89,7 @@ mod ffi {
         UnknownSocketError = -1,
     }
 
+    /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the `connected()` signal from the socket or after having received a new socket from a `QTcpServer`.
     #[repr(i32)]
     #[derive(Debug)]
     enum SocketOption {
@@ -118,6 +122,7 @@ mod ffi {
         PathMtuSocketOption,
     }
 
+    /// This enum describes the behavior of when the socket should hold back with continuing data transfer. The only notification currently supported is `QSslSocket::ssl_errors()`.
     #[repr(i32)]
     #[derive(Debug)]
     enum SocketPauseMode {
@@ -127,6 +132,7 @@ mod ffi {
         PauseOnSslErrors = 0x1,
     }
 
+    /// This enum describes the different states in which a socket can be.
     #[repr(i32)]
     #[derive(Debug)]
     enum SocketState {
@@ -146,6 +152,7 @@ mod ffi {
         ClosingState,
     }
 
+    /// This enum describes the transport layer protocol.
     #[repr(i32)]
     #[derive(Debug)]
     enum SocketType {

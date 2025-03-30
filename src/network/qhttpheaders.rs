@@ -7,6 +7,7 @@ use cxx_qt_lib::{QAnyStringView, QByteArray, QList};
 
 #[cxx::bridge]
 mod ffi {
+    /// List of well known headers as per [IANA registry](https://www.iana.org/assignments/http-fields).
     #[repr(i32)]
     #[derive(Debug)]
     enum WellKnownHeader {

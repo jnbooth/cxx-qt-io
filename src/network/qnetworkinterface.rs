@@ -9,6 +9,9 @@ use crate::QHostAddress;
 
 #[cxx::bridge]
 mod ffi {
+    /// Specifies the flags associated with this network interface.
+    ///
+    /// Note that one network interface cannot be both broadcast-based and point-to-point.
     #[repr(i32)]
     #[derive(Debug)]
     enum NetworkInterfaceFlag {
@@ -26,6 +29,7 @@ mod ffi {
         CanMulticast = 0x20,
     }
 
+    /// Specifies the type of hardware (PHY layer, OSI level 1) this interface is, if it could be determined. Interface types that are not among those listed below will generally be listed as Unknown, though future versions of Qt may add new enumeration values.
     #[repr(i32)]
     #[derive(Debug)]
     enum NetworkInterfaceType {

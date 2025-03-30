@@ -7,6 +7,7 @@ use std::pin::Pin;
 
 #[cxx_qt::bridge]
 mod ffi {
+    /// This enum describes the errors that may be returned by the `error()` function.
     #[repr(i32)]
     #[derive(Debug)]
     enum FileError {
@@ -42,6 +43,7 @@ mod ffi {
         CopyError,
     }
 
+    /// This enum is used when opening a file to specify additional options which only apply to files and not to a generic `QIODevice`.
     #[repr(i32)]
     #[derive(Debug)]
     enum FileHandleFlag {
@@ -51,6 +53,11 @@ mod ffi {
         DontCloseHandle = 0,
     }
 
+    /// This enum is used by the `permission()` function to report the permissions and ownership of a file. The values may be OR-ed together to test multiple permissions and ownership values.
+    ///
+    /// **Warning:** Because of differences in the platforms supported by Qt, the semantics of `ReadUser`, `WriteUser` and `ExeUser` are platform-dependent: On Unix, the rights of the owner of the file are returned and on Windows the rights of the current user are returned. This behavior might change in a future Qt version.
+    ///
+    /// [Qt Documentation: QFile::Permission](https://doc.qt.io/qt-6/qfiledevice.html#Permission-enum)
     #[repr(i32)]
     #[derive(Debug)]
     enum FilePermission {
@@ -80,6 +87,7 @@ mod ffi {
         ExeOther = 0x0001,
     }
 
+    /// This enum is used by the `file_time()` and `set_file_time()` functions.
     #[repr(i32)]
     #[derive(Debug)]
     enum FileTime {
@@ -93,6 +101,7 @@ mod ffi {
         FileModificationTime,
     }
 
+    /// This enum describes special options that may be used by the map() function.
     #[repr(i32)]
     #[derive(Debug)]
     enum MemoryMapFlag {
