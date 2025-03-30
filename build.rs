@@ -151,6 +151,7 @@ fn main() {
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
             include_header!("include/network/qnetworkaddressentry.h"),
+            include_header!("include/network/qnetworkdatagram.h"),
             include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
@@ -160,6 +161,7 @@ fn main() {
             .build_cpp(&[
                 "network/qhostaddress",
                 "network/qnetworkaddressentry",
+                "network/qnetworkdatagram",
                 "network/qnetworkproxy",
             ])
             .build_rust(&[
@@ -168,9 +170,11 @@ fn main() {
                 "network/qauthenticator",
                 "network/qhostaddress",
                 "network/qnetworkaddressentry",
+                "network/qnetworkdatagram",
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest",
+                "network/qudpsocket",
             ]);
 
         if version.major > 6 || (version.major == 6 && version.minor > 6) {

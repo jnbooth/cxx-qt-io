@@ -11,3 +11,22 @@ static_assert(
 static_assert(!::std::is_trivially_destructible<QNetworkInterface>::value);
 
 static_assert(QTypeInfo<QNetworkInterface>::isRelocatable);
+
+namespace rust {
+namespace cxxqtio1 {
+QNetworkDatagram
+qnetworkdatagramMakeReply(const QNetworkDatagram& datagram,
+                          const QByteArray& payload)
+{
+  return datagram.makeReply(payload);
+}
+
+QNetworkDatagram
+qnetworkdatagramIntoReply(QNetworkDatagram&& datagram,
+                          const QByteArray& payload)
+{
+  return datagram.makeReply(payload);
+}
+}
+
+} // namespace rust

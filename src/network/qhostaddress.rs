@@ -11,7 +11,7 @@ use cxx_qt_lib::{QFlag, QFlags, QString};
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
-    enum QHostAddressConversionModeFlag {
+    enum AddressConversionModeFlag {
         /// Convert IPv4-mapped IPv6 addresses (RFC 4291 sect. 2.5.5.2) when comparing. Therefore `QHostAddress("::ffff:192.168.1.1")` will compare equal to `QHostAddress("192.168.1.1")`.
         ConvertV4MappedToIPv4 = 1,
         ConvertV4CompatToIPv4 = 2,
@@ -25,8 +25,8 @@ mod ffi {
 
     #[repr(i32)]
     #[derive(Debug)]
-    enum QHostAddressSpecialAddress {
-        /// The null address object. Equivalent to QHostAddress::default(). See also `QHostAddress::is_null()`.
+    enum SpecialHostAddress {
+        /// The null address object. Equivalent to `QHostAddress::default()`. See also `QHostAddress::is_null()`.
         Null,
         /// The IPv4 localhost address. Equivalent to `QHostAddress("127.0.0.1")`.
         Broadcast,
@@ -52,10 +52,10 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qhostaddress.h");
         type NetworkLayerProtocol = super::NetworkLayerProtocol;
-        type QHostAddressConversionModeFlag;
+        type AddressConversionModeFlag;
         #[allow(unused)]
-        type QHostAddressConversionMode = super::QHostAddressConversionMode;
-        type QHostAddressSpecialAddress;
+        type AddressConversionMode = super::AddressConversionMode;
+        type SpecialHostAddress;
 
         #[cxx_name = "Q_IPV6ADDR"]
         type QIpv6Addr = super::QIpv6Addr;
@@ -188,7 +188,7 @@ mod ffi {
         fn construct(index: &QString) -> QHostAddress;
         #[doc(hidden)]
         #[rust_name = "qhostaddress_from_specialaddress"]
-        fn construct(address: &QHostAddressSpecialAddress) -> QHostAddress;
+        fn construct(address: &SpecialHostAddress) -> QHostAddress;
         #[doc(hidden)]
         #[rust_name = "qhostaddress_from_uint32"]
         fn construct(address: u32) -> QHostAddress;
@@ -204,12 +204,12 @@ mod ffi {
     }
 }
 
-pub use ffi::{QHostAddressConversionModeFlag, QHostAddressSpecialAddress};
+pub use ffi::{AddressConversionModeFlag, SpecialHostAddress};
 
-pub type QHostAddressConversionMode = QFlags<QHostAddressConversionModeFlag>;
+pub type AddressConversionMode = QFlags<AddressConversionModeFlag>;
 
-unsafe impl QFlag for QHostAddressConversionModeFlag {
-    type TypeId = type_id!("QHostAddressConversionMode");
+unsafe impl QFlag for AddressConversionModeFlag {
+    type TypeId = type_id!("AddressConversionMode");
 
     type Repr = i32;
 
@@ -288,8 +288,8 @@ impl From<&QString> for QHostAddress {
     }
 }
 
-impl From<QHostAddressSpecialAddress> for QHostAddress {
-    fn from(value: QHostAddressSpecialAddress) -> Self {
+impl From<SpecialHostAddress> for QHostAddress {
+    fn from(value: SpecialHostAddress) -> Self {
         ffi::qhostaddress_from_specialaddress(&value)
     }
 }

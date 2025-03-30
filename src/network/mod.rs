@@ -9,8 +9,7 @@ pub use qauthenticator::QAuthenticator;
 
 mod qhostaddress;
 pub use qhostaddress::{
-    QHostAddress, QHostAddressConversionMode, QHostAddressConversionModeFlag,
-    QHostAddressSpecialAddress,
+    AddressConversionMode, AddressConversionModeFlag, QHostAddress, SpecialHostAddress,
 };
 
 #[cfg(cxxqt_qt_version_at_least_6_7)]
@@ -20,6 +19,9 @@ pub use qhttpheaders::{QHttpHeaders, WellKnownHeader};
 
 mod qnetworkaddressentry;
 pub use qnetworkaddressentry::{DnsEligibilityStatus, QNetworkAddressEntry};
+
+mod qnetworkdatagram;
+pub use qnetworkdatagram::QNetworkDatagram;
 
 mod qnetworkinterface;
 pub use qnetworkinterface::{
@@ -31,3 +33,6 @@ pub use qnetworkproxy::{ProxyCapabilities, ProxyCapability, ProxyType, QNetworkP
 
 mod qnetworkrequest;
 pub use qnetworkrequest::KnownHeaders;
+
+mod qudpsocket;
+pub use qudpsocket::QUdpSocket;
