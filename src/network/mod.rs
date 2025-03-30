@@ -20,6 +20,12 @@ pub use qhttpheaders::{QHttpHeaders, WellKnownHeader};
 mod qnetworkaddressentry;
 pub use qnetworkaddressentry::{DnsEligibilityStatus, QNetworkAddressEntry};
 
+mod qnetworkcookie;
+pub use qnetworkcookie::{CookieRawForm, QNetworkCookie};
+
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+pub use qnetworkcookie::SameSitePolicy;
+
 mod qnetworkdatagram;
 pub use qnetworkdatagram::QNetworkDatagram;
 

@@ -133,6 +133,7 @@ fn main() {
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
         include_header!("include/core/qtemporaryfile.h"),
+        include_header!("include/views.h"),
     ]);
 
     let interface = cxx_qt_build::Interface::default()
@@ -156,11 +157,13 @@ fn main() {
         header_dir.write_headers(&[
             include_header!("include/core/qlist/qlist_qhostaddress.h"),
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
+            include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
             include_header!("include/core/qlist/qlist_qnetworkinterface.h"),
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
             include_header!("include/network/qnetworkaddressentry.h"),
+            include_header!("include/network/qnetworkcookie.h"),
             include_header!("include/network/qnetworkdatagram.h"),
             include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
@@ -187,6 +190,7 @@ fn main() {
             .build_cpp(&[
                 "network/qhostaddress",
                 "network/qnetworkaddressentry",
+                "network/qnetworkcookie",
                 "network/qnetworkdatagram",
                 "network/qnetworkproxy",
             ])
@@ -196,6 +200,7 @@ fn main() {
                 "network/qauthenticator",
                 "network/qhostaddress",
                 "network/qnetworkaddressentry",
+                "network/qnetworkcookie",
                 "network/qnetworkdatagram",
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",

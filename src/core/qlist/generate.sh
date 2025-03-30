@@ -143,4 +143,5 @@ EOF
 generate_bridge "QPair_QByteArray_QByteArray" "QPair<crate::QPairPair_QByteArray_QByteArray>"
 generate_bridge "QHostAddress"
 generate_bridge "QNetworkAddressEntry"
+generate_bridge "QNetworkCookie"
 generate_bridge "QNetworkInterface"

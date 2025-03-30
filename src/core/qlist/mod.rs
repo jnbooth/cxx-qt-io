@@ -86,6 +86,12 @@ impl_qlist_element!(
 );
 
 impl_qlist_element!(
+    crate::QNetworkCookie,
+    qlist_qnetworkcookie,
+    "QList_QNetworkCookie"
+);
+
+impl_qlist_element!(
     crate::QNetworkInterface,
     qlist_qnetworkinterface,
     "QList_QNetworkInterface"
