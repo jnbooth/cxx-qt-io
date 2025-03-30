@@ -1,5 +1,5 @@
 use cxx_qt_build::CxxQtBuilder;
-use qt_build_utils::QtBuild;
+use qt_build_utils::{QtBuild, SemVer};
 use std::env;
 use std::ffi::OsStr;
 use std::fs::{self, File};
@@ -95,6 +95,16 @@ impl BridgeBuilder for CxxQtBuilder {
     }
 }
 
+trait AtLeast {
+    fn at_least(&self, major: u32, minor: u32) -> bool;
+}
+
+impl AtLeast for SemVer {
+    fn at_least(&self, major: u32, minor: u32) -> bool {
+        self.major > major || (self.major == major && self.minor >= minor)
+    }
+}
+
 fn main() {
     let features = Features::from_env();
 
@@ -155,7 +165,23 @@ fn main() {
             include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
+            include_header!("include/network/qssl.h"),
         ]);
+
+        let qssl_alternative_name_entry_bridge = if version.at_least(5, 13) {
+            "network/qssl/alternative_name_entry_type_5_13"
+        } else {
+            "network/qssl/alternative_name_entry_type"
+        };
+
+        let qssl_protocol_bridge = if version.at_least(6, 3) {
+            "network/qssl/protocol_6_3"
+        } else if version.at_least(5, 12) {
+            "network/qssl/protocol_5_12"
+        } else {
+            "network/qssl/protocol"
+        };
+
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
@@ -174,11 +200,14 @@ fn main() {
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest",
+                "network/qssl/mod",
+                qssl_alternative_name_entry_bridge,
+                qssl_protocol_bridge,
                 "network/qtcpsocket",
                 "network/qudpsocket",
             ]);
 
-        if version.major > 6 || (version.major == 6 && version.minor > 6) {
+        if version.at_least(6, 6) {
             header_dir.write_headers(&[include_header!("include/network/qhttpheaders.h")]);
             builder = builder
                 .build_cpp(&["network/qhttpheaders"])

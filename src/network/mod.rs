@@ -34,6 +34,17 @@ pub use qnetworkproxy::{ProxyCapabilities, ProxyCapability, ProxyType, QNetworkP
 mod qnetworkrequest;
 pub use qnetworkrequest::KnownHeaders;
 
+mod qssl;
+pub use qssl::{
+    SslAlternativeNameEntryType, SslEncodingFormat, SslKeyAlgorithm, SslKeyType, SslOption,
+    SslOptions, SslProtocol,
+};
+
+#[cfg(cxxqt_qt_version_at_least_6_0)]
+pub use qssl::{SslAlertLevel, SslAlertType};
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+pub use qssl::{SslImplementedClass, SslSupportedFeature};
+
 mod qtcpsocket;
 pub use qtcpsocket::QTcpSocket;
 
