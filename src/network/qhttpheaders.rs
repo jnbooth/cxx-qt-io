@@ -394,6 +394,9 @@ where
     }
 }
 
+/// `QHttpHeaders` is a class for holding HTTP headers.
+///
+/// Qt Documentation: [QHttpHeaders](https://doc.qt.io/qt-6/qhttpheaders.html#details)
 #[repr(C)]
 pub struct QHttpHeaders {
     _space: MaybeUninit<usize>,

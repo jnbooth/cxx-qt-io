@@ -34,6 +34,9 @@ mod ffi {
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
 
+        /// The `QFile` class provides an interface for reading from and writing to files.
+        ///
+        /// Qt Documentation: [QFile](https://doc.qt.io/qt-6/qfile.html#details)
         #[qobject]
         #[base = QFileDevice]
         type QFile;

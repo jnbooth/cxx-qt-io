@@ -218,6 +218,9 @@ unsafe impl QFlag for AddressConversionModeFlag {
     }
 }
 
+/// The `QHostAddress` class provides an IP address.
+///
+/// Qt Documentation: [QHostAddress](https://doc.qt.io/qt-6/qhostaddress.html#details)
 #[repr(C)]
 pub struct QHostAddress {
     _space: MaybeUninit<usize>,

@@ -190,6 +190,9 @@ mod ffi {
     unsafe extern "C++Qt" {
         type QIODevice = crate::QIODevice;
 
+        /// The `QAbstractSocket` class provides the base functionality common to all socket types.
+        ///
+        /// Qt Documentation: [QAbstractSocket](https://doc.qt.io/qt-6/qabstractsocket.html#details)
         #[qobject]
         #[base = QIODevice]
         type QAbstractSocket;

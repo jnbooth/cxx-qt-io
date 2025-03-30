@@ -122,6 +122,9 @@ mod ffi {
     unsafe extern "C++Qt" {
         type QIODevice = crate::QIODevice;
 
+        /// The `QFileDevice` class provides an interface for reading from and writing to open files.
+        ///
+        /// Qt Documentation: [QFileDevice](https://doc.qt.io/qt-6/qfiledevice.html#details)
         #[qobject]
         #[base = QIODevice]
         type QFileDevice;

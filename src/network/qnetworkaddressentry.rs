@@ -123,6 +123,9 @@ mod ffi {
 
 pub use ffi::DnsEligibilityStatus;
 
+/// The `QNetworkAddressEntry` class stores one IP address supported by a network interface, along with its associated netmask and broadcast address.
+///
+/// Qt Documentation: [QNetworkAddressEntry](https://doc.qt.io/qt-6/qnetworkaddressentry.html#details)
 #[repr(C)]
 pub struct QNetworkAddressEntry {
     _space: MaybeUninit<usize>,

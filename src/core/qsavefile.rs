@@ -35,6 +35,9 @@ mod ffi {
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
 
+        /// The `QSaveFile` class provides an interface for safely writing to files.
+        ///
+        /// Qt Documentation: [QSaveFile](https://doc.qt.io/qt-6/qsavefile.html#details)
         #[qobject]
         #[base = QFileDevice]
         type QSaveFile;

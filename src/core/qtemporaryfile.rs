@@ -20,6 +20,9 @@ mod ffi {
         type QFileDevice = crate::QFileDevice;
         type QFile = crate::QFile;
 
+        /// The `QTemporaryFile` class is an I/O device that operates on temporary files.
+        ///
+        /// Qt Documentation: [QTemporaryFile](https://doc.qt.io/qt-6/qtemporaryfile.html#details)
         #[qobject]
         #[base = QFile]
         type QTemporaryFile;

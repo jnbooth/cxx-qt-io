@@ -189,6 +189,9 @@ unsafe impl QFlag for NetworkInterfaceFlag {
     }
 }
 
+/// The `QNetworkInterface` class provides a listing of the host's IP addresses and network interfaces.
+///
+/// Qt Documentation: [QNetworkInterface](https://doc.qt.io/qt-6/qnetworkinterface.html#details)
 #[repr(C)]
 pub struct QNetworkInterface {
     _space: MaybeUninit<usize>,

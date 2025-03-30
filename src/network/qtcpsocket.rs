@@ -12,6 +12,9 @@ mod ffi {
         type QIODevice = crate::QIODevice;
         type QAbstractSocket = crate::QAbstractSocket;
 
+        /// The `QTcpSocket` class provides a TCP socket.
+        ///
+        /// Qt Documentation: [QTcpSocket](https://doc.qt.io/qt-6/qtcpsocket.html#details)
         #[qobject]
         #[base = QAbstractSocket]
         type QTcpSocket;

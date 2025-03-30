@@ -126,6 +126,9 @@ mod ffi {
     }
 }
 
+/// The `QNetworkDatagram` class provides the data and metadata of a UDP datagram.
+///
+/// Qt Documentation: [QNetworkDatagram](https://doc.qt.io/qt-6/qnetworkdatagram.html#details)
 #[repr(C)]
 pub struct QNetworkDatagram {
     _space: MaybeUninit<usize>,

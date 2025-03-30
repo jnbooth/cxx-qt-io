@@ -12,6 +12,9 @@ mod ffi {
     unsafe extern "C++" {
         include!(<QtNetwork/QAuthenticator>);
 
+        /// The `QAuthenticator` class provides an authentication object.
+        ///
+        /// Qt Documentation: [QAuthenticator](https://doc.qt.io/qt-6/qauthenticator.html#details)
         type QAuthenticator;
 
         /// Returns `true` if the object has not been initialized. Returns `false` if non-const member functions have been called, or the content was constructed or copied from another initialized `QAuthenticator` object.

@@ -23,6 +23,9 @@ mod ffi {
         type QIODevice = crate::QIODevice;
         type QAbstractSocket = crate::QAbstractSocket;
 
+        /// The `QUdpSocket` class provides a UDP socket.
+        ///
+        /// Qt Documentation: [QUdpSocket](https://doc.qt.io/qt-6/qudpsocket.html#details)
         #[qobject]
         #[base = QAbstractSocket]
         type QUdpSocket;

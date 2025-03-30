@@ -216,6 +216,9 @@ unsafe impl QFlag for ProxyCapability {
     }
 }
 
+/// The `QNetworkProxy` class provides a network layer proxy.
+///
+/// Qt Documentation: [QNetworkProxy](https://doc.qt.io/qt-6/qnetworkproxy.html#details)
 #[repr(C)]
 pub struct QNetworkProxy {
     _space: MaybeUninit<usize>,

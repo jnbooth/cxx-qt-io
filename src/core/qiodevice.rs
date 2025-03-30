@@ -45,6 +45,9 @@ mod ffi {
     }
 
     unsafe extern "C++Qt" {
+        /// The `QIODevice` class is the base interface class of all I/O devices in Qt.
+        ///
+        /// Qt Documentation: [QIODevice](https://doc.qt.io/qt-6/qiodevice.html#details)
         #[qobject]
         type QIODevice;
 
