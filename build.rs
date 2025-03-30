@@ -174,6 +174,7 @@ fn main() {
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest",
+                "network/qtcpsocket",
                 "network/qudpsocket",
             ]);
 

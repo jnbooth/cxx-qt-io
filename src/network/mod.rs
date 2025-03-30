@@ -34,5 +34,8 @@ pub use qnetworkproxy::{ProxyCapabilities, ProxyCapability, ProxyType, QNetworkP
 mod qnetworkrequest;
 pub use qnetworkrequest::KnownHeaders;
 
+mod qtcpsocket;
+pub use qtcpsocket::QTcpSocket;
+
 mod qudpsocket;
 pub use qudpsocket::QUdpSocket;
