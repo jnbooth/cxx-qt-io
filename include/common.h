@@ -5,13 +5,6 @@
 namespace rust {
 namespace cxxqtio1 {
 
-template<class T, class... Args>
-::std::unique_ptr<T>
-constructNew(Args&&... args)
-{
-  return ::std::make_unique<T>(std::forward<Args>(args)...);
-}
-
 template<typename Sub, typename Base>
 const Base*
 upcast(const Sub* sub)

@@ -109,7 +109,7 @@ mod ffi {
     unsafe extern "C++" {
         #[doc(hidden)]
         #[rust_name = "qnetworkcookie_parse_cookies"]
-        fn qnetworkcookieParseCookies(cookie_string: &QByteArray) -> QList_QNetworkCookie;
+        fn qnetworkcookieParseCookies(cookie_string: &[u8]) -> QList_QNetworkCookie;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -189,8 +189,8 @@ impl QNetworkCookie {
     /// Parses the cookie string `cookie_string` as received from a server response in the `"Set-Cookie:"` header. If there's a parsing error, this function returns an empty list.
     ///
     /// Since the HTTP header can set more than one cookie at the same time, this function returns a `QList<QNetworkCookie>`, one for each cookie that is parsed.
-    pub fn parse_cookies(cookie_string: &QByteArray) -> QList<Self> {
-        ffi::qnetworkcookie_parse_cookies(cookie_string)
+    pub fn parse_cookies<T: AsRef<[u8]>>(cookie_string: &T) -> QList<Self> {
+        ffi::qnetworkcookie_parse_cookies(cookie_string.as_ref())
     }
 
     /// Create a new `QNetworkCookie` object, initializing the cookie name to name and its value to value.

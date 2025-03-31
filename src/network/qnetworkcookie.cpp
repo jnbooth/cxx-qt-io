@@ -16,9 +16,13 @@ namespace rust {
 namespace cxxqtio1 {
 
 QList<QNetworkCookie>
-qnetworkcookieParseCookies(const QByteArray& cookieString)
+qnetworkcookieParseCookies(::rust::Slice<const ::std::uint8_t> cookieString)
 {
-  return QNetworkCookie::parseCookies(cookieString);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+  return QNetworkCookie::parseCookies(qbytearrayviewFromSlice(cookieString));
+#else
+  return QNetworkCookie::parseCookies(qbytearrayFromRawData(cookieString));
+#endif
 }
 
 }

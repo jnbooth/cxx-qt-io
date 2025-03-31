@@ -13,22 +13,6 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
-
-        #[doc(hidden)]
-        #[rust_name = "qfile_new"]
-        fn constructNew(path: &QString) -> UniquePtr<QFile>;
-
-        #[doc(hidden)]
-        #[rust_name = "upcast_qfile_qiodevice"]
-        unsafe fn upcast(file: *const QFile) -> *const QIODevice;
-        #[doc(hidden)]
-        #[rust_name = "downcast_qiodevice_qfile"]
-        unsafe fn downcast(file: *const QIODevice) -> *const QFile;
-    }
-
     unsafe extern "C++Qt" {
         include!(<QtCore/QFile>);
         type QIODevice = crate::QIODevice;
@@ -103,6 +87,27 @@ mod ffi {
         /// This name may not represent an existing file; it is only a string. `exists()` returns `true` if the symlink points to an existing file.
         #[rust_name = "sym_link_target"]
         fn symLinkTarget(self: &QFile) -> QString;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[doc(hidden)]
+        #[rust_name = "upcast_qfile_qiodevice"]
+        unsafe fn upcast(file: *const QFile) -> *const QIODevice;
+        #[doc(hidden)]
+        #[rust_name = "downcast_qiodevice_qfile"]
+        unsafe fn downcast(file: *const QIODevice) -> *const QFile;
+    }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[doc(hidden)]
+        #[rust_name = "qfile_new"]
+        fn make_unique(path: &QString) -> UniquePtr<QFile>;
     }
 }
 

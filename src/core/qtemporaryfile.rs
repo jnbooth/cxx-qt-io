@@ -83,10 +83,6 @@ mod ffi {
         include!("cxx-qt-io/common.h");
 
         #[doc(hidden)]
-        #[rust_name = "qtemporaryfile_new"]
-        fn constructNew(path: &QString) -> UniquePtr<QTemporaryFile>;
-
-        #[doc(hidden)]
         #[rust_name = "upcast_qtemporaryfile_qiodevice"]
         unsafe fn upcast(file: *const QTemporaryFile) -> *const QIODevice;
         #[doc(hidden)]
@@ -99,6 +95,15 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "downcast_qfiledevice_qtemporaryfile"]
         unsafe fn downcast(file: *const QFileDevice) -> *const QTemporaryFile;
+    }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[doc(hidden)]
+        #[rust_name = "qtemporaryfile_new"]
+        fn make_unique(path: &QString) -> UniquePtr<QTemporaryFile>;
     }
 }
 

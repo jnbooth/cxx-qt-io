@@ -13,22 +13,6 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
-
-        #[doc(hidden)]
-        #[rust_name = "qsavefile_new"]
-        fn constructNew(path: &QString) -> UniquePtr<QSaveFile>;
-
-        #[doc(hidden)]
-        #[rust_name = "upcast_qsavefile_qiodevice"]
-        unsafe fn upcast(file: *const QSaveFile) -> *const QIODevice;
-        #[doc(hidden)]
-        #[rust_name = "downcast_qiodevice_qsavefile"]
-        unsafe fn downcast(file: *const QIODevice) -> *const QSaveFile;
-    }
-
     #[auto_rust_name]
     unsafe extern "C++Qt" {
         include!(<QtCore/QSaveFile>);
@@ -78,6 +62,27 @@ mod ffi {
         /// Sets the `name` of the file. The name can have no path, a relative path, or an absolute path.
         #[rust_name = "set_file_name"]
         fn setFileName(self: Pin<&mut QSaveFile>, name: &QString);
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[doc(hidden)]
+        #[rust_name = "upcast_qsavefile_qiodevice"]
+        unsafe fn upcast(file: *const QSaveFile) -> *const QIODevice;
+        #[doc(hidden)]
+        #[rust_name = "downcast_qiodevice_qsavefile"]
+        unsafe fn downcast(file: *const QIODevice) -> *const QSaveFile;
+    }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[doc(hidden)]
+        #[rust_name = "qsavefile_new"]
+        fn make_unique(path: &QString) -> UniquePtr<QSaveFile>;
     }
 }
 

@@ -17,7 +17,7 @@ struct IsRelocatable<QNetworkCookie> : ::std::true_type
 
 namespace cxxqtio1 {
 QList<QNetworkCookie>
-qnetworkcookieParseCookies(const QByteArray& cookieString);
+qnetworkcookieParseCookies(::rust::Slice<const ::std::uint8_t> cookieString);
 
 }
 
