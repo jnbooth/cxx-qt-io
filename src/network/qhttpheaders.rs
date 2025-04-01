@@ -219,32 +219,32 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "append_by_name"]
-        fn append(self: &mut QHttpHeaders, name: QAnyStringView, value: QAnyStringView) -> bool;
+        fn append(&mut self, name: QAnyStringView, value: QAnyStringView) -> bool;
         #[doc(hidden)]
         #[rust_name = "append_by_wellknown"]
-        fn append(self: &mut QHttpHeaders, name: WellKnownHeader, value: QAnyStringView) -> bool;
+        fn append(&mut self, name: WellKnownHeader, value: QAnyStringView) -> bool;
 
         /// Clears all header entries.
-        fn clear(self: &mut QHttpHeaders);
+        fn clear(&mut self);
 
         #[doc(hidden)]
         #[rust_name = "combined_value_by_name"]
-        fn combinedValue(self: &QHttpHeaders, name: QAnyStringView) -> QByteArray;
+        fn combinedValue(&self, name: QAnyStringView) -> QByteArray;
         #[doc(hidden)]
         #[rust_name = "combined_value_by_wellknown"]
-        fn combinedValue(self: &QHttpHeaders, name: WellKnownHeader) -> QByteArray;
+        fn combinedValue(&self, name: WellKnownHeader) -> QByteArray;
 
         #[doc(hidden)]
         #[rust_name = "contains_by_name"]
-        fn contains(self: &QHttpHeaders, name: QAnyStringView) -> bool;
+        fn contains(&self, name: QAnyStringView) -> bool;
         #[doc(hidden)]
         #[rust_name = "contains_by_wellknown"]
-        fn contains(self: &QHttpHeaders, name: WellKnownHeader) -> bool;
+        fn contains(&self, name: WellKnownHeader) -> bool;
 
         #[doc(hidden)]
         #[rust_name = "insert_by_name"]
         fn insert(
-            self: &mut QHttpHeaders,
+            &mut self,
             i: qsizetype,
             name: QAnyStringView,
             value: QAnyStringView,
@@ -252,7 +252,7 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "insert_by_wellknown"]
         fn insert(
-            self: &mut QHttpHeaders,
+            &mut self,
             i: qsizetype,
             name: WellKnownHeader,
             value: QAnyStringView,
@@ -260,23 +260,23 @@ mod ffi {
 
         /// Returns `true` if the headers have size 0; otherwise returns `false`.
         #[rust_name = "is_empty"]
-        fn isEmpty(self: &QHttpHeaders) -> bool;
+        fn isEmpty(&self) -> bool;
 
         #[doc(hidden)]
         #[rust_name = "remove_all_by_name"]
-        fn removeAll(self: &mut QHttpHeaders, name: QAnyStringView);
+        fn removeAll(&mut self, name: QAnyStringView);
         #[doc(hidden)]
         #[rust_name = "remove_all_by_wellknown"]
-        fn removeAll(self: &mut QHttpHeaders, name: WellKnownHeader);
+        fn removeAll(&mut self, name: WellKnownHeader);
 
         #[doc(hidden)]
         #[rust_name = "remove_at_qsizetype"]
-        fn removeAt(self: &mut QHttpHeaders, i: qsizetype);
+        fn removeAt(&mut self, i: qsizetype);
 
         #[doc(hidden)]
         #[rust_name = "replace_by_name"]
         fn replace(
-            self: &mut QHttpHeaders,
+            &mut self,
             i: qsizetype,
             name: QAnyStringView,
             value: QAnyStringView,
@@ -284,7 +284,7 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "replace_by_wellknown"]
         fn replace(
-            self: &mut QHttpHeaders,
+            &mut self,
             i: qsizetype,
             name: WellKnownHeader,
             value: QAnyStringView,
@@ -294,7 +294,7 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "replace_or_append_by_name"]
         fn replaceOrAppend(
-            self: &mut QHttpHeaders,
+            &mut self,
             name: QAnyStringView,
             new_value: QAnyStringView,
         ) -> bool;
@@ -302,28 +302,28 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "replace_or_append_by_wellknown"]
         fn replaceOrAppend(
-            self: &mut QHttpHeaders,
+            &mut self,
             name: WellKnownHeader,
             new_value: QAnyStringView,
         ) -> bool;
 
         #[doc(hidden)]
         #[rust_name = "reserve_qsizetype"]
-        fn reserve(self: &mut QHttpHeaders, size: qsizetype);
+        fn reserve(&mut self, size: qsizetype);
 
         #[doc(hidden)]
         #[rust_name = "size_qsizetype"]
-        fn size(self: &QHttpHeaders) -> qsizetype;
+        fn size(&self) -> qsizetype;
 
         #[rust_name = "to_list_of_pairs"]
-        fn toListOfPairs(self: &QHttpHeaders) -> QList_QPair_QByteArray_QByteArray;
+        fn toListOfPairs(&self) -> QList_QPair_QByteArray_QByteArray;
 
         #[doc(hidden)]
         #[rust_name = "values_by_name"]
-        fn values(self: &QHttpHeaders, name: QAnyStringView) -> QList_QByteArray;
+        fn values(&self, name: QAnyStringView) -> QList_QByteArray;
         #[doc(hidden)]
         #[rust_name = "values_by_wellknown"]
-        fn values(self: &QHttpHeaders, name: WellKnownHeader) -> QList_QByteArray;
+        fn values(&self, name: WellKnownHeader) -> QList_QByteArray;
     }
 
     #[namespace = "rust::cxxqtio1"]

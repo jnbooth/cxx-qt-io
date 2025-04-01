@@ -87,41 +87,41 @@ mod ffi {
         ///
         /// If the netmask or broadcast address or other information is not necessary, you can call the `all_addresses()` function to obtain just the IP addresses of the active interfaces.
         #[rust_name = "address_entries"]
-        fn addressEntries(self: &QNetworkInterface) -> QList_QNetworkAddressEntry;
+        fn addressEntries(&self) -> QList_QNetworkAddressEntry;
 
         /// Returns the flags associated with this network interface.
-        fn flags(self: &QNetworkInterface) -> NetworkInterfaceFlags;
+        fn flags(&self) -> NetworkInterfaceFlags;
 
         /// Returns the low-level hardware address for this interface. On Ethernet interfaces, this will be a MAC address in string representation, separated by colons.
         ///
         /// Other interface types may have other types of hardware addresses. Implementations should not depend on this function returning a valid MAC address.
         #[rust_name = "hardware_address"]
-        fn hardwareAddress(self: &QNetworkInterface) -> QString;
+        fn hardwareAddress(&self) -> QString;
 
         /// Returns the human-readable name of this network interface on Windows, such as "Local Area Connection", if the name could be determined. If it couldn't, this function returns the same as `name()`. The human-readable name is a name that the user can modify in the Windows Control Panel, so it may change during the execution of the program.
         ///
         /// On Unix, this function currently always returns the same as `name()`, since Unix systems don't store a configuration for human-readable names.
         #[rust_name = "human_readable_name"]
-        fn humanReadableName(self: &QNetworkInterface) -> QString;
+        fn humanReadableName(&self) -> QString;
 
         #[doc(hidden)]
         #[rust_name = "index_or_zero"]
-        fn index(self: &QNetworkInterface) -> i32;
+        fn index(&self) -> i32;
 
         /// Returns true if this `QNetworkInterface` object contains valid information about a network interface.
         #[rust_name = "is_valid"]
-        fn isValid(self: &QNetworkInterface) -> bool;
+        fn isValid(&self) -> bool;
 
         #[doc(hidden)]
         #[rust_name = "maximum_transmission_unit_or_zero"]
-        fn maximumTransmissionUnit(self: &QNetworkInterface) -> i32;
+        fn maximumTransmissionUnit(&self) -> i32;
 
         /// Returns the name of this network interface. On Unix systems, this is a string containing the type of the interface and optionally a sequence number, such as "eth0", "lo" or "pcn0". On Windows, it's an internal ID that cannot be changed by the user.
-        fn name(self: &QNetworkInterface) -> QString;
+        fn name(&self) -> QString;
 
         /// Returns the type of this interface, if it could be determined. If it could not be determined, this function returns `QNetworkInterface::Unknown`.
         #[cxx_name = "type"]
-        fn interface_type(self: &QNetworkInterface) -> NetworkInterfaceType;
+        fn interface_type(&self) -> NetworkInterfaceType;
     }
 
     #[namespace = "rust::cxxqtio1"]

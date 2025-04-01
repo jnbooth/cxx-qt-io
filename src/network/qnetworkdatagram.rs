@@ -21,64 +21,64 @@ mod ffi {
         type QNetworkDatagram = super::QNetworkDatagram;
 
         /// Clears the payload data and metadata in this `QNetworkDatagram` object, resetting them to their default values.
-        fn clear(self: &mut QNetworkDatagram);
+        fn clear(&mut self);
 
         /// Returns the data payload of this datagram. For a datagram received from the network, it contains the payload of the datagram. For an outgoing datagram, it is the datagram to be sent.
         ///
         /// Note that datagrams can be transmitted with no data, so the returned `QByteArray` may be empty.
-        fn data(self: &QNetworkDatagram) -> QByteArray;
+        fn data(&self) -> QByteArray;
 
         #[doc(hidden)]
         #[rust_name = "destination_address_or_null"]
-        fn destinationAddress(self: &QNetworkDatagram) -> QHostAddress;
+        fn destinationAddress(&self) -> QHostAddress;
 
         #[doc(hidden)]
         #[rust_name = "destination_port_or_negative"]
-        fn destinationPort(self: &QNetworkDatagram) -> i32;
+        fn destinationPort(&self) -> i32;
 
         #[doc(hidden)]
         #[rust_name = "hop_limit_or_negative"]
-        fn hopLimit(self: &QNetworkDatagram) -> i32;
+        fn hopLimit(&self) -> i32;
 
         #[doc(hidden)]
         #[rust_name = "interface_index_or_zero"]
-        fn interfaceIndex(self: &QNetworkDatagram) -> u32;
+        fn interfaceIndex(&self) -> u32;
 
         /// Returns true if this `QNetworkDatagram` object is null. This function is the opposite of `is_valid()`.
         #[rust_name = "is_null"]
-        fn isNull(self: &QNetworkDatagram) -> bool;
+        fn isNull(&self) -> bool;
 
         /// Returns `true` if this QNetworkDatagram object is valid. A valid `QNetworkDatagram` object contains at least one sender or receiver address. Valid datagrams can contain empty payloads.
         #[rust_name = "is_valid"]
-        fn isValid(self: &QNetworkDatagram) -> bool;
+        fn isValid(&self) -> bool;
 
         #[doc(hidden)]
         #[rust_name = "sender_address_or_null"]
-        fn senderAddress(self: &QNetworkDatagram) -> QHostAddress;
+        fn senderAddress(&self) -> QHostAddress;
 
         #[doc(hidden)]
         #[rust_name = "sender_port_or_negative"]
-        fn senderPort(self: &QNetworkDatagram) -> i32;
+        fn senderPort(&self) -> i32;
 
         /// Sets the data payload of this datagram to data. It is usually not necessary to call this function on received datagrams. For outgoing datagrams, this function sets the data to be sent on the network.
         ///
         /// Since datagrams can empty, an empty `QByteArray` is a valid value for data.
         #[rust_name = "set_data"]
-        fn setData(self: &mut QNetworkDatagram, data: &QByteArray);
+        fn setData(&mut self, data: &QByteArray);
 
         /// Sets the destination address associated with this datagram to be the address address and port number port. The destination address and port numbers are usually set by `QUdpSocket` upon reception, so there's no need to call this function on a received datagram.
         ///
         /// For outgoing datagrams, this function can be used to set the address the datagram should be sent to. It can be the unicast address used to communicate with the peer or a broadcast or multicast address to send to a group of devices.
         #[rust_name = "set_destination"]
-        fn setDestination(self: &mut QNetworkDatagram, address: &QHostAddress, port: u16);
+        fn setDestination(&mut self, address: &QHostAddress, port: u16);
 
         #[doc(hidden)]
         #[rust_name = "set_hop_limit_or_negative"]
-        fn setHopLimit(self: &mut QNetworkDatagram, count: i32);
+        fn setHopLimit(&mut self, count: i32);
 
         #[doc(hidden)]
         #[rust_name = "set_interface_index_or_zero"]
-        fn setInterfaceIndex(self: &mut QNetworkDatagram, index: u32);
+        fn setInterfaceIndex(&mut self, index: u32);
 
         /// Sets the sender address associated with this datagram to be the address `address` and port number `port`. The sender address and port numbers are usually set by `QUdpSocket` upon reception, so there's no need to call this function on a received datagram.
         ///
@@ -86,7 +86,7 @@ mod ffi {
         ///
         /// The port number port must be the port number associated with the socket, if there is one. The value of 0 can be used to indicate that the operating system should choose the port number.
         #[rust_name = "set_sender"]
-        fn setSender(self: &mut QNetworkDatagram, address: &QHostAddress, port: u16);
+        fn setSender(&mut self, address: &QHostAddress, port: u16);
     }
 
     #[namespace = "rust::cxxqtio1"]

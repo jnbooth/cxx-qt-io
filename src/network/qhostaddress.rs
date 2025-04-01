@@ -71,7 +71,7 @@ mod ffi {
         ///
         /// Note that this function does not return `true` for an IPv4 network's local broadcast address. For that, please use `QNetworkInterface` to obtain the broadcast addresses of the local machine.
         #[rust_name = "is_broadcast"]
-        fn isBroadcast(self: &QHostAddress) -> bool;
+        fn isBroadcast(&self) -> bool;
 
         /// Returns `true` if the address is an IPv4 or IPv6 global address, `false` otherwise. A global address is an address that is not reserved for special purposes (like loopback or multicast) or future purposes.
         ///
@@ -79,7 +79,7 @@ mod ffi {
         ///
         /// Also note that IPv6 site-local addresses are deprecated and should be considered as global in new applications. This function returns true for site-local addresses too.
         #[rust_name = "is_global"]
-        fn isGlobal(self: &QHostAddress) -> bool;
+        fn isGlobal(&self) -> bool;
 
         /// Returns true if this IP is in the subnet described by the network prefix `subnet` and netmask `netmask`.
         ///
@@ -87,30 +87,30 @@ mod ffi {
         ///
         /// The `subnet` argument does not have to be the actual network address (the lowest address in the subnet). It can be any valid IP belonging to that subnet. In particular, if it is equal to the IP address held by this object, this function will always return true (provided the netmask is a valid value).
         #[rust_name = "is_in_subnet"]
-        fn isInSubnet(self: &QHostAddress, subnet: &QHostAddress, netmask: i32) -> bool;
+        fn isInSubnet(&self, subnet: &QHostAddress, netmask: i32) -> bool;
 
         /// Returns `true` if the address is an IPv4 or IPv6 link-local address, `false` otherwise.
         ///
         /// An IPv4 link-local address is an address in the network 169.254.0.0/16. An IPv6 link-local address is one in the network fe80::/10. See the IANA IPv6 Address Space registry for more information.
         #[rust_name = "is_link_local"]
-        fn isLinkLocal(self: &QHostAddress) -> bool;
+        fn isLinkLocal(&self) -> bool;
 
         /// Returns `true` if the address is the IPv6 loopback address, or any of the IPv4 loopback addresses.
         #[rust_name = "is_loopback"]
-        fn isLoopback(self: &QHostAddress) -> bool;
+        fn isLoopback(&self) -> bool;
 
         /// Returns `true` if the address is an IPv4 or IPv6 multicast address, `false` otherwise.
         #[rust_name = "is_multicast"]
-        fn isMulticast(self: &QHostAddress) -> bool;
+        fn isMulticast(&self) -> bool;
 
         /// Returns `true` if this host address is not valid for any host or interface.
         #[rust_name = "is_null"]
-        fn isNull(self: &QHostAddress) -> bool;
+        fn isNull(&self) -> bool;
 
         /// Returns `true` if the address is an IPv6 unique local unicast address or IPv4 address reserved for local networks by RFC 1918, `false` otherwise.
         #[cfg(cxxqt_qt_version_at_least_6_6)]
         #[rust_name = "is_private_use"]
-        fn isPrivateUse(self: &QHostAddress) -> bool;
+        fn isPrivateUse(&self) -> bool;
 
         /// Returns `true` if the address is an IPv6 site-local address, `false` otherwise.
         ///
@@ -118,7 +118,7 @@ mod ffi {
         ///
         /// IPv6 site-local addresses are deprecated and should not be depended upon in new applications. New applications should not depend on this function and should consider site-local addresses the same as global (which is why `is_global()` also returns `true`). Site-local addresses were replaced by Unique Local Addresses (ULA).
         #[rust_name = "is_site_local"]
-        fn isSiteLocal(self: &QHostAddress) -> bool;
+        fn isSiteLocal(&self) -> bool;
 
         /// Returns `true` if the address is an IPv6 unique local unicast address, `false` otherwise.
         ///
@@ -126,10 +126,10 @@ mod ffi {
         ///
         /// Note that Unique local unicast addresses count as global addresses too. RFC 4193 says that, in practice, "applications may treat these addresses like global scoped addresses." Only routers need care about the distinction.
         #[rust_name = "is_unique_local_unicast"]
-        fn isUniqueLocalUnicast(self: &QHostAddress) -> bool;
+        fn isUniqueLocalUnicast(&self) -> bool;
 
         /// Returns the network layer protocol of the host address.
-        fn protocol(self: &QHostAddress) -> NetworkLayerProtocol;
+        fn protocol(&self) -> NetworkLayerProtocol;
 
         /// Returns the scope ID of an IPv6 address. For IPv4 addresses, or if the address does not contain a scope ID, an empty `QString` is returned.
         ///
@@ -143,7 +143,7 @@ mod ffi {
         ///
         /// When using a link-local or site-local address for IPv6 connections, you must specify the scope ID. The scope ID for a link-local address is usually the same as the interface name (e.g., "eth0", "en1") or number (e.g., "1", "2").
         #[rust_name = "scope_id"]
-        fn scopeId(self: &QHostAddress) -> QString;
+        fn scopeId(&self) -> QString;
 
         /// Sets the IPv6 scope ID of the address to `id`. If the address protocol is not IPv6, this function does nothing. The scope ID may be set as an interface name (such as `"eth0"` or `"en1"`) or as an integer representing the interface index. If `id` is an interface name, QtNetwork will convert to an interface index using `QNetworkInterface::interface_index_from_name()` before calling the operating system networking functions.
         #[rust_name = "set_scope_id"]
@@ -151,10 +151,10 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "to_ipv4_address"]
-        unsafe fn toIPv4Address(self: &QHostAddress, ok: *mut bool) -> u32;
+        unsafe fn toIPv4Address(&self, ok: *mut bool) -> u32;
 
         #[rust_name = "to_qstring"]
-        fn toString(self: &QHostAddress) -> QString;
+        fn toString(&self) -> QString;
 
     }
 

@@ -34,11 +34,11 @@ mod ffi {
         /// Returns the broadcast address associated with the IPv4 address and netmask. It can usually be derived from those two by setting to 1 the bits of the IP address where the netmask contains a 0. (In other words, by bitwise-OR'ing the IP address with the inverse of the netmask)
         ///
         /// This member is always empty for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address FF02::1).
-        fn broadcast(self: &QNetworkAddressEntry) -> QHostAddress;
+        fn broadcast(&self) -> QHostAddress;
 
         /// Resets both the preferred and valid lifetimes for this address. After this call, `is_lifetime_known()` will return `false`.
         #[rust_name = "clear_address_lifetime"]
-        fn clearAddressLifetime(self: &mut QNetworkAddressEntry);
+        fn clearAddressLifetime(&mut self);
 
         /// Returns whether this address is eligible for publication in the Domain Name System (DNS) or similar name resolution mechanisms.
         ///
@@ -46,14 +46,14 @@ mod ffi {
         ///
         /// On some systems, QNetworkInterface will need to heuristically determine which addresses are eligible.
         #[rust_name = "dns_eligibility"]
-        fn dnsEligibility(self: &QNetworkAddressEntry) -> DnsEligibilityStatus;
+        fn dnsEligibility(&self) -> DnsEligibilityStatus;
 
         /// This function returns one IPv4 or IPv6 address found, that was found in a network interface.
-        fn ip(self: &QNetworkAddressEntry) -> QHostAddress;
+        fn ip(&self) -> QHostAddress;
 
         /// Returns `true` if the address lifetime is known, `false` if not. If the lifetime is not known, both `preferred_lifetime()` and `validity_lifetime()` will return `Forever`.
         #[rust_name = "is_lifetime_known"]
-        fn isLifetimeKnown(self: &QNetworkAddressEntry) -> bool;
+        fn isLifetimeKnown(&self) -> bool;
 
         /// Returns `true` if this address is permanent on this interface, `false` if it's temporary. A permanent address is one which has no expiration time and is often static (manually configured).
         ///
@@ -61,42 +61,42 @@ mod ffi {
         ///
         /// **Note:** Depending on the operating system and the networking configuration tool, it is possible for a temporary address to be interpreted as permanent, if the tool did not inform the details correctly to the operating system.
         #[rust_name = "is_permanent"]
-        fn isPermanent(self: &QNetworkAddressEntry) -> bool;
+        fn isPermanent(&self) -> bool;
 
         /// Returns `true` if this address is temporary on this interface, `false` if it's permanent.
         #[rust_name = "is_temporary"]
-        fn isTemporary(self: &QNetworkAddressEntry) -> bool;
+        fn isTemporary(&self) -> bool;
 
         /// Returns the netmask associated with the IP address. The netmask is expressed in the form of an IP address, such as 255.255.0.0.
         ///
         /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a QHostAddress holding the address FFFF:FFFF:FFFF:FFFF::
-        fn netmask(self: &QNetworkAddressEntry) -> QHostAddress;
+        fn netmask(&self) -> QHostAddress;
 
         #[doc(hidden)]
         #[rust_name = "prefix_length_or_negative"]
-        fn prefixLength(self: &QNetworkAddressEntry) -> i32;
+        fn prefixLength(&self) -> i32;
 
         /// Sets the broadcast IP address of this `QNetworkAddressEntry` object to `new_broadcast`.
         #[rust_name = "set_broadcast"]
-        fn setBroadcast(self: &mut QNetworkAddressEntry, new_broadcast: &QHostAddress);
+        fn setBroadcast(&mut self, new_broadcast: &QHostAddress);
 
         /// Sets the DNS eligibility flag for this address to `status`.
         #[rust_name = "set_dns_eligibility"]
-        fn setDnsEligibility(self: &mut QNetworkAddressEntry, status: DnsEligibilityStatus);
+        fn setDnsEligibility(&mut self, status: DnsEligibilityStatus);
 
         /// Sets the IP address the `QNetworkAddressEntry` object contains to `new_ip`.
         #[rust_name = "set_ip"]
-        fn setIp(self: &mut QNetworkAddressEntry, new_ip: &QHostAddress);
+        fn setIp(&mut self, new_ip: &QHostAddress);
 
         /// Sets the netmask that this `QNetworkAddressEntry` object contains to `new_netmask`. Setting the netmask also sets the prefix length to match the new netmask.
         #[rust_name = "set_netmask"]
-        fn setNetmask(self: &mut QNetworkAddressEntry, new_netmask: &QHostAddress);
+        fn setNetmask(&mut self, new_netmask: &QHostAddress);
 
         /// Sets the prefix length of this IP address to `length`. The value of `length` must be valid for this type of IP address: between 0 and 32 for IPv4 addresses, between 0 and 128 for IPv6 addresses. Setting to any invalid value is equivalent to setting to -1, which means "no prefix length".
         ///
         /// Setting the prefix length also sets the netmask (see `netmask()`).
         #[rust_name = "set_prefix_length"]
-        fn setPrefixLength(self: &mut QNetworkAddressEntry, length: i32);
+        fn setPrefixLength(&mut self, length: i32);
     }
 
     #[namespace = "rust::cxxqtlib1"]

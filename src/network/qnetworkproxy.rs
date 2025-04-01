@@ -78,64 +78,64 @@ mod ffi {
         type QNetworkProxy = super::QNetworkProxy;
 
         /// Returns the capabilities of this proxy server.
-        fn capabilities(self: &QNetworkProxy) -> ProxyCapabilities;
+        fn capabilities(&self) -> ProxyCapabilities;
 
         /// Returns `true` if the raw header `header_name` is in use for this proxy. Returns `false` if the proxy is not of type `HttpProxy` or `HttpCachingProxy`.
         #[rust_name = "has_raw_header"]
-        fn hasRawHeader(self: &QNetworkProxy, header_name: &QByteArray) -> bool;
+        fn hasRawHeader(&self, header_name: &QByteArray) -> bool;
 
         /// Returns the value of the known network header `header` if it is in use for this proxy. If it is not present, returns `QVariant()` (i.e., an invalid variant).
-        fn header(self: &QNetworkProxy, header: KnownHeaders) -> QVariant;
+        fn header(&self, header: KnownHeaders) -> QVariant;
 
         /// Returns headers that are set in this network request.
         ///
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy`, default constructed `QHttpHeaders` is returned.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
-        fn headers(self: &QNetworkProxy) -> QHttpHeaders;
+        fn headers(&self) -> QHttpHeaders;
 
         /// Returns the host name of the proxy host.
         #[rust_name = "host_name"]
-        fn hostName(self: &QNetworkProxy) -> QString;
+        fn hostName(&self) -> QString;
 
         /// Returns `true` if this proxy supports the `CachingCapability` capability.
         ///
         /// It is possible to remove the capability of caching from a proxy by calling `set_capabilities()`.
         #[rust_name = "is_caching_proxy"]
-        fn isCachingProxy(self: &QNetworkProxy) -> bool;
+        fn isCachingProxy(&self) -> bool;
 
         /// Returns `true` if this proxy supports transparent tunneling of TCP connections. This matches the `TunnelingCapability` capability.
         ///
         /// It is possible to remove the capability of caching from a proxy by calling `set_capabilities()`.
         #[rust_name = "is_transparent_proxy"]
-        fn isTransparentProxy(self: &QNetworkProxy) -> bool;
+        fn isTransparentProxy(&self) -> bool;
 
         /// Returns the password used for authentication.
-        fn password(self: &QNetworkProxy) -> QString;
+        fn password(&self) -> QString;
 
         /// Returns the port of the proxy host.
-        fn port(self: &QNetworkProxy) -> u16;
+        fn port(&self) -> u16;
 
         /// Returns the raw form of header `header_name`. If no such header is present or the proxy is not of type `HttpProxy` or `HttpCachingProxy`, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use `has_raw_header()` to find out if the header exists or not).
         ///
         /// Raw headers can be set with `set_raw_header()` or with `set_header()`.
         #[rust_name = "raw_header"]
-        fn rawHeader(self: &QNetworkProxy, header_name: &QByteArray) -> QByteArray;
+        fn rawHeader(&self, header_name: &QByteArray) -> QByteArray;
 
         /// Returns a list of all raw headers that are set in this network proxy. The list is in the order that the headers were set.
         ///
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` an empty `QList` is returned.
         #[rust_name = "raw_header_list"]
-        fn rawHeaderList(self: &QNetworkProxy) -> QList_QByteArray;
+        fn rawHeaderList(&self) -> QList_QByteArray;
 
         /// Sets the capabilities of this proxy to capabilities.
         #[rust_name = "set_capabilities"]
-        fn setCapabilities(self: &mut QNetworkProxy, capabilities: ProxyCapabilities);
+        fn setCapabilities(&mut self, capabilities: ProxyCapabilities);
 
         /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.
         ///
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
         #[rust_name = "set_header"]
-        fn setHeader(self: &mut QNetworkProxy, header: KnownHeaders, value: &QVariant);
+        fn setHeader(&mut self, header: KnownHeaders, value: &QVariant);
 
         /// Sets `new_headers` as headers in this network request, overriding any previously set headers.
         ///
@@ -144,26 +144,26 @@ mod ffi {
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         #[rust_name = "set_headers"]
-        fn setHeaders(self: &mut QNetworkProxy, new_headers: &QHttpHeaders);
+        fn setHeaders(&mut self, new_headers: &QHttpHeaders);
 
         /// Sets the host name of the proxy host to be `host_name`.
         #[rust_name = "set_host_name"]
-        fn setHostName(self: &mut QNetworkProxy, host_name: &QString);
+        fn setHostName(&mut self, host_name: &QString);
 
         /// Sets the password for proxy authentication to be `password`.
         #[rust_name = "set_password"]
-        fn setPassword(self: &mut QNetworkProxy, password: &QString);
+        fn setPassword(&mut self, password: &QString);
 
         /// Sets the port of the proxy host to be `port`.
         #[rust_name = "set_port"]
-        fn setPort(self: &mut QNetworkProxy, port: u16);
+        fn setPort(&mut self, port: u16);
 
         /// Sets the header `header_name` to be of value `header_value`. If `header_name` corresponds to a known header (see `KnownHeaders`), the raw format will be parsed and the corresponding "cooked" header will be set as well.
         ///
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
         #[rust_name = "set_raw_header"]
         fn setRawHeader(
-            self: &mut QNetworkProxy,
+            &mut self,
             header_name: &QByteArray,
             header_value: &QByteArray,
         );
@@ -172,18 +172,18 @@ mod ffi {
         ///
         /// Note that changing the type of a proxy does not change the set of capabilities this `QNetworkProxy` object holds if any capabilities have been set with `set_capabilities()`.
         #[rust_name = "set_type"]
-        fn setType(self: &mut QNetworkProxy, proxy_type: ProxyType);
+        fn setType(&mut self, proxy_type: ProxyType);
 
         /// Sets the user for proxy authentication to be `user`.
         #[rust_name = "set_user"]
-        fn setUser(self: &mut QNetworkProxy, user: &QString);
+        fn setUser(&mut self, user: &QString);
 
         /// Returns the proxy type for this instance.
         #[cxx_name = "type"]
-        fn proxy_type(self: &QNetworkProxy) -> ProxyType;
+        fn proxy_type(&self) -> ProxyType;
 
         /// Returns the user name used for authentication.
-        fn user(self: &QNetworkProxy) -> QString;
+        fn user(&self) -> QString;
 
     }
 
