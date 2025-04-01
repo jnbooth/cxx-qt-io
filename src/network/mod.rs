@@ -40,16 +40,42 @@ pub use qnetworkproxy::{ProxyCapabilities, ProxyCapability, ProxyType, QNetworkP
 mod qnetworkrequest;
 pub use qnetworkrequest::KnownHeaders;
 
+#[cfg(feature = "ssl")]
 mod qssl;
+#[cfg(feature = "ssl")]
 pub use qssl::{
     SslAlternativeNameEntryType, SslEncodingFormat, SslKeyAlgorithm, SslKeyType, SslOption,
     SslOptions, SslProtocol,
 };
 
-#[cfg(cxxqt_qt_version_at_least_6_0)]
+#[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_0))]
 pub use qssl::{SslAlertLevel, SslAlertType};
-#[cfg(cxxqt_qt_version_at_least_6_1)]
+
+#[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_1))]
 pub use qssl::{SslImplementedClass, SslSupportedFeature};
+
+#[cfg(feature = "ssl")]
+mod qsslcertificate;
+#[cfg(feature = "ssl")]
+pub use qsslcertificate::{
+    QSslCertificate, SslCertificatePatternSyntax, SslCertificateSubjectInfo,
+    SslCertificateSubjectInfoOrAttribute,
+};
+
+#[cfg(feature = "ssl")]
+mod qsslcertificateextension;
+#[cfg(feature = "ssl")]
+pub use qsslcertificateextension::QSslCertificateExtension;
+
+#[cfg(feature = "ssl")]
+mod qsslerror;
+#[cfg(feature = "ssl")]
+pub use qsslerror::{QSslError, SslError};
+
+#[cfg(feature = "ssl")]
+mod qsslkey;
+#[cfg(feature = "ssl")]
+pub use qsslkey::QSslKey;
 
 mod qtcpsocket;
 pub use qtcpsocket::QTcpSocket;

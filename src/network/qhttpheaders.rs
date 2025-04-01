@@ -243,20 +243,10 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "insert_by_name"]
-        fn insert(
-            &mut self,
-            i: qsizetype,
-            name: QAnyStringView,
-            value: QAnyStringView,
-        ) -> bool;
+        fn insert(&mut self, i: qsizetype, name: QAnyStringView, value: QAnyStringView) -> bool;
         #[doc(hidden)]
         #[rust_name = "insert_by_wellknown"]
-        fn insert(
-            &mut self,
-            i: qsizetype,
-            name: WellKnownHeader,
-            value: QAnyStringView,
-        ) -> bool;
+        fn insert(&mut self, i: qsizetype, name: WellKnownHeader, value: QAnyStringView) -> bool;
 
         /// Returns `true` if the headers have size 0; otherwise returns `false`.
         #[rust_name = "is_empty"]
@@ -275,37 +265,19 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "replace_by_name"]
-        fn replace(
-            &mut self,
-            i: qsizetype,
-            name: QAnyStringView,
-            value: QAnyStringView,
-        ) -> bool;
+        fn replace(&mut self, i: qsizetype, name: QAnyStringView, value: QAnyStringView) -> bool;
         #[doc(hidden)]
         #[rust_name = "replace_by_wellknown"]
-        fn replace(
-            &mut self,
-            i: qsizetype,
-            name: WellKnownHeader,
-            value: QAnyStringView,
-        ) -> bool;
+        fn replace(&mut self, i: qsizetype, name: WellKnownHeader, value: QAnyStringView) -> bool;
 
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         #[doc(hidden)]
         #[rust_name = "replace_or_append_by_name"]
-        fn replaceOrAppend(
-            &mut self,
-            name: QAnyStringView,
-            new_value: QAnyStringView,
-        ) -> bool;
+        fn replaceOrAppend(&mut self, name: QAnyStringView, new_value: QAnyStringView) -> bool;
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         #[doc(hidden)]
         #[rust_name = "replace_or_append_by_wellknown"]
-        fn replaceOrAppend(
-            &mut self,
-            name: WellKnownHeader,
-            new_value: QAnyStringView,
-        ) -> bool;
+        fn replaceOrAppend(&mut self, name: WellKnownHeader, new_value: QAnyStringView) -> bool;
 
         #[doc(hidden)]
         #[rust_name = "reserve_qsizetype"]
@@ -422,7 +394,7 @@ impl Drop for QHttpHeaders {
 }
 
 impl Debug for QHttpHeaders {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{}", ffi::qhttpheaders_to_debug_qstring(self))
     }
 }
@@ -498,7 +470,7 @@ impl QHttpHeaders {
     ///
     /// Header names are case-insensitive, and the returned names are lower-cased.
     pub fn name_at(&self, i: isize) -> Option<&str> {
-        if (0..self.size()).contains(&i) {
+        if (0..self.len()).contains(&i) {
             Some(ffi::qhttpheaders_name_at(self, i))
         } else {
             None
@@ -548,7 +520,7 @@ impl QHttpHeaders {
     }
 
     /// Returns the number of header entries.
-    pub fn size(&self) -> isize {
+    pub fn len(&self) -> isize {
         self.size_qsizetype().into()
     }
 
@@ -581,7 +553,7 @@ impl QHttpHeaders {
 
     /// Returns the header value at index `i`, or `None` if `i` is not valid (see `size()`).
     pub fn value_at(&self, i: isize) -> Option<&[u8]> {
-        if (0..self.size()).contains(&i) {
+        if (0..self.len()).contains(&i) {
             Some(ffi::qhttpheaders_value_at(self, i))
         } else {
             None

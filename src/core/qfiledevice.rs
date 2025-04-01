@@ -1,6 +1,4 @@
 use crate::qio::{QIOExt, QIO};
-use crate::QIODevice;
-use cxx_qt::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
 use std::pin::Pin;
@@ -251,14 +249,6 @@ impl QFileDevice {
 }
 
 impl QIO for QFileDevice {
-    fn as_io_device(&self) -> &QIODevice {
-        self.upcast()
-    }
-
-    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
-    }
-
     fn flush(self: Pin<&mut Self>) -> bool {
         self.flush()
     }

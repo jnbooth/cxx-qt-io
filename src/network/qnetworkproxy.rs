@@ -162,11 +162,7 @@ mod ffi {
         ///
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
         #[rust_name = "set_raw_header"]
-        fn setRawHeader(
-            &mut self,
-            header_name: &QByteArray,
-            header_value: &QByteArray,
-        );
+        fn setRawHeader(&mut self, header_name: &QByteArray, header_value: &QByteArray);
 
         /// Sets the proxy type for this instance to be `proxy_type`.
         ///
@@ -212,9 +208,11 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qnetworkproxy_clone"]
         fn construct(other: &QNetworkProxy) -> QNetworkProxy;
+
         #[doc(hidden)]
         #[rust_name = "qnetworkproxy_eq"]
         fn operatorEq(a: &QNetworkProxy, b: &QNetworkProxy) -> bool;
+
         #[doc(hidden)]
         #[rust_name = "qnetworkproxy_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkProxy) -> QString;
@@ -270,7 +268,7 @@ impl PartialEq for QNetworkProxy {
 impl Eq for QNetworkProxy {}
 
 impl Debug for QNetworkProxy {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{}", ffi::qnetworkproxy_to_debug_qstring(self))
     }
 }

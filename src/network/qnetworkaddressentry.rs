@@ -105,7 +105,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_drop"]
-        fn drop(headers: &mut QNetworkAddressEntry);
+        fn drop(address: &mut QNetworkAddressEntry);
 
         #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_init_default"]
@@ -113,9 +113,11 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_clone"]
         fn construct(other: &QNetworkAddressEntry) -> QNetworkAddressEntry;
+
         #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_eq"]
         fn operatorEq(a: &QNetworkAddressEntry, b: &QNetworkAddressEntry) -> bool;
+
         #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkAddressEntry) -> QString;
@@ -159,7 +161,7 @@ impl PartialEq for QNetworkAddressEntry {
 impl Eq for QNetworkAddressEntry {}
 
 impl Debug for QNetworkAddressEntry {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{}", ffi::qnetworkaddressentry_to_debug_qstring(self))
     }
 }

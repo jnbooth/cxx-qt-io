@@ -16,6 +16,7 @@ qt-build-utils = { git = "https://github.com/KDAB/cxx-qt" }
 [features]
 default = []
 qt_network = []
+ssl = ["qt_network"]
 link_qt_object_files = ["cxx-qt-build/link_qt_object_files"]
 
 [lints.clippy]

@@ -1,4 +1,5 @@
 use crate::qio::{QIOExt, QIO};
+use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};
@@ -476,15 +477,28 @@ impl QIODevice {
     }
 }
 
-impl QIO for QIODevice {
-    fn as_io_device(&self) -> &QIODevice {
+impl Upcast<QIODevice> for QIODevice {
+    unsafe fn upcast_ptr(this: *const Self) -> *const Self {
+        this
+    }
+    unsafe fn from_base_ptr(base: *const Self) -> *const Self {
+        base
+    }
+
+    fn upcast(&self) -> &Self {
         self
     }
 
-    fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+    fn upcast_mut(&mut self) -> &mut Self {
+        self
+    }
+
+    fn upcast_pin(self: Pin<&mut Self>) -> Pin<&mut Self> {
         self
     }
 }
+
+impl QIO for QIODevice {}
 
 impl Read for Pin<&mut QIODevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {

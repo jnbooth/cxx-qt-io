@@ -118,7 +118,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "qnetworkcookie_drop"]
-        fn drop(headers: &mut QNetworkCookie);
+        fn drop(cookie: &mut QNetworkCookie);
 
         #[doc(hidden)]
         #[rust_name = "qnetworkcookie_init_default"]
@@ -130,9 +130,11 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qnetworkcookie_clone"]
         fn construct(other: &QNetworkCookie) -> QNetworkCookie;
+
         #[doc(hidden)]
         #[rust_name = "qnetworkcookie_eq"]
         fn operatorEq(a: &QNetworkCookie, b: &QNetworkCookie) -> bool;
+
         #[doc(hidden)]
         #[rust_name = "qnetworkcookie_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkCookie) -> QString;
@@ -180,7 +182,7 @@ impl PartialEq for QNetworkCookie {
 impl Eq for QNetworkCookie {}
 
 impl Debug for QNetworkCookie {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{}", ffi::qnetworkcookie_to_debug_qstring(self))
     }
 }

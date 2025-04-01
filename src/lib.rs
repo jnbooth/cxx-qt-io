@@ -36,3 +36,5 @@ pub use crate::core::*;
 mod network;
 #[cfg(feature = "qt_network")]
 pub use crate::network::*;
+
+mod util;

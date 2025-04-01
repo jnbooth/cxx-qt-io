@@ -5,6 +5,7 @@ use std::mem::MaybeUninit;
 
 use cxx_qt_lib::QString;
 
+use crate::util::Valid;
 use crate::QHostAddress;
 
 #[cxx::bridge]
@@ -157,7 +158,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "qnetworkinterface_drop"]
-        fn drop(headers: &mut QNetworkInterface);
+        fn drop(iface: &mut QNetworkInterface);
 
         #[doc(hidden)]
         #[rust_name = "qnetworkinterface_init_default"]
@@ -220,20 +221,18 @@ impl Drop for QNetworkInterface {
 }
 
 impl Debug for QNetworkInterface {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{}", ffi::qnetworkinterface_to_debug_qstring(self))
     }
 }
 
-impl QNetworkInterface {
-    pub(crate) fn ok(self) -> Option<Self> {
-        if self.is_valid() {
-            Some(self)
-        } else {
-            None
-        }
+impl Valid for QNetworkInterface {
+    fn is_valid(value: &Self) -> bool {
+        value.is_valid()
     }
+}
 
+impl QNetworkInterface {
     /// This convenience function returns all IP addresses found on the host machine. It is equivalent to calling `address_entries()` on all the objects returned by `all_interfaces()` that are in the `IsUp` state to obtain lists of `QNetworkAddressEntry` objects then calling `QNetworkAddressEntry::ip()` on each of these.
     pub fn all_addresses() -> QList<QHostAddress> {
         ffi::qnetworkinterface_all_addresses()
@@ -248,14 +247,14 @@ impl QNetworkInterface {
     ///
     /// This index is also found in the IPv6 address' scope ID field.
     pub fn interface_from_index(index: i32) -> Option<Self> {
-        ffi::qnetworkinterface_interface_from_index(index).ok()
+        ffi::qnetworkinterface_interface_from_index(index).valid()
     }
 
     /// Returns a `QNetworkInterface` object for the interface named `name`. If no such interface exists, this function returns `None`.
     ///
     /// The string `name` may be either an actual interface name (such as `"eth0"` or `"en1"`) or an interface index in string form (`"1"`, `"2"`, etc.).
     pub fn interface_from_name(name: &QString) -> Option<Self> {
-        ffi::qnetworkinterface_interface_from_name(name).ok()
+        ffi::qnetworkinterface_interface_from_name(name).valid()
     }
 
     /// Returns the index of the interface whose name is `name` or `None` if there is no interface with that name.

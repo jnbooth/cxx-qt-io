@@ -2,6 +2,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt_lib::QByteArray;
 use std::mem::MaybeUninit;
 
+use crate::util::Valid;
 use crate::QHostAddress;
 
 #[cxx::bridge]
@@ -9,6 +10,7 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
+
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
     }
@@ -105,7 +107,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_drop"]
-        fn drop(headers: &mut QNetworkDatagram);
+        fn drop(datagram: &mut QNetworkDatagram);
 
         #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_init_default"]
@@ -157,15 +159,13 @@ impl Drop for QNetworkDatagram {
     }
 }
 
-impl QNetworkDatagram {
-    pub(crate) fn ok(self) -> Option<Self> {
-        if self.is_valid() {
-            Some(self)
-        } else {
-            None
-        }
+impl Valid for QNetworkDatagram {
+    fn is_valid(value: &Self) -> bool {
+        value.is_valid()
     }
+}
 
+impl QNetworkDatagram {
     /// Creates a `QNetworkDatagram` object and sets `data` as the payload data, along with `destination_address` and `port` as the destination address of the datagram.
     pub fn new(data: &QByteArray, destination_address: &QHostAddress, port: u16) -> Self {
         ffi::qnetworkdatagram_init_data_addr(data, destination_address, port)
@@ -175,7 +175,7 @@ impl QNetworkDatagram {
     ///
     /// If no destination address was set on this datagram, this function returns `None`.
     pub fn destination_address(&self) -> Option<QHostAddress> {
-        self.destination_address_or_null().ok()
+        self.destination_address_or_null().valid()
     }
 
     /// Returns the port number of the destination associated with this datagram. For a datagram received from the network, it is the local port number that the peer node sent the datagram to. For an outgoing datagram, it is the peer port the datagram should be sent to.
@@ -232,7 +232,7 @@ impl QNetworkDatagram {
     ///
     /// If no sender address was set on this datagram, this function returns `None`.
     pub fn sender_address(&self) -> Option<QHostAddress> {
-        self.sender_address_or_null().ok()
+        self.sender_address_or_null().valid()
     }
 
     /// Returns the port number of the destination associated with this datagram. For a datagram received from the network, it is the port number that the peer node sent the datagram from. For an outgoing datagram, it is the local port the datagram should be sent from.

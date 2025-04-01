@@ -15,8 +15,6 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_clear_qlist_QNetworkInterface"]
         fn qlistClear(list: &mut QList_QNetworkInterface);
-        #[rust_name = "cxx_contains"]
-        fn qlistContains(list: &QList_QNetworkInterface, _: &QNetworkInterface) -> bool;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -42,8 +40,6 @@ pub mod ffi {
             set: &QList_QNetworkInterface,
             pos: isize,
         ) -> &QNetworkInterface;
-        #[rust_name = "index_of_QNetworkInterface"]
-        fn qlistIndexOf(_: &QList_QNetworkInterface, _: &QNetworkInterface) -> isize;
         #[rust_name = "insert_QNetworkInterface"]
         fn qlistInsert(_: &mut QList_QNetworkInterface, _: isize, _: &QNetworkInterface);
         #[rust_name = "remove_QNetworkInterface"]
@@ -57,8 +53,8 @@ pub(crate) fn clear(v: &mut ffi::QList_QNetworkInterface) {
     ffi::cxx_clear_qlist_QNetworkInterface(v);
 }
 
-pub(crate) fn contains(v: &ffi::QList_QNetworkInterface, item: &ffi::QNetworkInterface) -> bool {
-    ffi::cxx_contains(v, item)
+pub(crate) fn contains(_: &ffi::QList_QNetworkInterface, _: &ffi::QNetworkInterface) -> bool {
+    false
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkInterface, size: isize) {
@@ -88,8 +84,8 @@ pub(crate) unsafe fn get_unchecked(
     ffi::get_unchecked_QNetworkInterface(s, pos)
 }
 
-pub(crate) fn index_of(v: &ffi::QList_QNetworkInterface, value: &ffi::QNetworkInterface) -> isize {
-    ffi::index_of_QNetworkInterface(v, value)
+pub(crate) fn index_of(_: &ffi::QList_QNetworkInterface, _: &ffi::QNetworkInterface) -> isize {
+    -1
 }
 
 pub(crate) fn insert(

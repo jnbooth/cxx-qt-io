@@ -2,7 +2,7 @@ use cxx::type_id;
 use cxx_qt_lib::{QList, QListElement};
 
 macro_rules! impl_qlist_element {
-    ( $typeName:ty, $module:ident, $typeId:literal ) => {
+    ( $typeName:ty, $module:ident, $typeId:literal $(,)? ) => {
         mod $module;
 
         impl QListElement for $typeName {
@@ -70,33 +70,74 @@ macro_rules! impl_qlist_element {
 impl_qlist_element!(
     crate::QPair<crate::QPairPair_QByteArray_QByteArray>,
     qlist_qpair_qbytearray_qbytearray,
-    "QList_QPair_QByteArray_QByteArray"
+    "QList_QPair_QByteArray_QByteArray",
+);
+
+#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
+impl_qlist_element!(
+    crate::QHttpHeaders,
+    qlist_qhttpheaders,
+    "QList_QHttpHeaders",
 );
 
 #[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QHostAddress,
     qlist_qhostaddress,
-    "QList_QHostAddress"
+    "QList_QHostAddress",
 );
 
 #[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QNetworkAddressEntry,
     qlist_qnetworkaddressentry,
-    "QList_QNetworkAddressEntry"
+    "QList_QNetworkAddressEntry",
 );
 
-#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_1))]
+#[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QNetworkCookie,
     qlist_qnetworkcookie,
-    "QList_QNetworkCookie"
+    "QList_QNetworkCookie",
+);
+
+#[cfg(feature = "qt_network")]
+impl_qlist_element!(
+    crate::QNetworkDatagram,
+    qlist_qnetworkdatagram,
+    "QList_QNetworkDatagram"
 );
 
 #[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QNetworkInterface,
     qlist_qnetworkinterface,
-    "QList_QNetworkInterface"
+    "QList_QNetworkInterface",
 );
+
+#[cfg(feature = "qt_network")]
+impl_qlist_element!(
+    crate::QNetworkProxy,
+    qlist_qnetworkproxy,
+    "QList_QNetworkProxy",
+);
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(
+    crate::QSslCertificate,
+    qlist_qsslcertificate,
+    "QList_QSslCertificate"
+);
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(
+    crate::QSslCertificateExtension,
+    qlist_qsslcertificateextension,
+    "QList_QSslCertificateExtension"
+);
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(crate::QSslError, qlist_qsslerror, "QList_QSslError");
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(crate::QSslKey, qlist_qsslkey, "QList_QSslKey");

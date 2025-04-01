@@ -3,6 +3,7 @@ use std::mem::MaybeUninit;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
 
+use crate::util::Valid;
 use crate::{NetworkLayerProtocol, QPair, QPairPair_QHostAddress_i32};
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QFlag, QFlags, QString};
@@ -195,9 +196,11 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qhostaddress_clone"]
         fn construct(other: &QHostAddress) -> QHostAddress;
+
         #[doc(hidden)]
         #[rust_name = "qhostaddress_eq"]
         fn operatorEq(a: &QHostAddress, b: &QHostAddress) -> bool;
+
         #[doc(hidden)]
         #[rust_name = "qhostaddress_to_debug_qstring"]
         fn toDebugQString(value: &QHostAddress) -> QString;
@@ -260,20 +263,18 @@ impl Display for QHostAddress {
 }
 
 impl Debug for QHostAddress {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{}", ffi::qhostaddress_to_debug_qstring(self))
     }
 }
 
-impl QHostAddress {
-    pub(crate) fn ok(self) -> Option<Self> {
-        if self.is_null() {
-            None
-        } else {
-            Some(self)
-        }
+impl Valid for QHostAddress {
+    fn is_valid(value: &Self) -> bool {
+        !value.is_null()
     }
+}
 
+impl QHostAddress {
     pub fn parse_subnet(subnet: &QString) -> QPair<QPairPair_QHostAddress_i32> {
         ffi::qhostaddress_parse_subnet(subnet)
     }
