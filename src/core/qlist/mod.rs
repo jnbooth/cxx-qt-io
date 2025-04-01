@@ -73,24 +73,28 @@ impl_qlist_element!(
     "QList_QPair_QByteArray_QByteArray"
 );
 
+#[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QHostAddress,
     qlist_qhostaddress,
     "QList_QHostAddress"
 );
 
+#[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QNetworkAddressEntry,
     qlist_qnetworkaddressentry,
     "QList_QNetworkAddressEntry"
 );
 
+#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_1))]
 impl_qlist_element!(
     crate::QNetworkCookie,
     qlist_qnetworkcookie,
     "QList_QNetworkCookie"
 );
 
+#[cfg(feature = "qt_network")]
 impl_qlist_element!(
     crate::QNetworkInterface,
     qlist_qnetworkinterface,
