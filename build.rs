@@ -97,6 +97,15 @@ impl BridgeBuilder for CxxQtBuilder {
 
 trait AtLeast {
     fn at_least(&self, major: u32, minor: u32) -> bool;
+
+    fn find(&self, name: &str, versions: &[(u32, u32)]) -> String {
+        for &(major, minor) in versions {
+            if self.at_least(major, minor) {
+                return format!("{name}_{major}_{minor}");
+            }
+        }
+        name.to_owned()
+    }
 }
 
 impl AtLeast for SemVer {
@@ -171,20 +180,6 @@ fn main() {
             include_header!("include/network/qssl.h"),
         ]);
 
-        let qssl_alternative_name_entry_bridge = if version.at_least(5, 13) {
-            "network/qssl/alternative_name_entry_type_5_13"
-        } else {
-            "network/qssl/alternative_name_entry_type"
-        };
-
-        let qssl_protocol_bridge = if version.at_least(6, 3) {
-            "network/qssl/protocol_6_3"
-        } else if version.at_least(5, 12) {
-            "network/qssl/protocol_5_12"
-        } else {
-            "network/qssl/protocol"
-        };
-
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
@@ -206,8 +201,8 @@ fn main() {
                 "network/qnetworkproxy",
                 "network/qnetworkrequest",
                 "network/qssl/mod",
-                qssl_alternative_name_entry_bridge,
-                qssl_protocol_bridge,
+                &version.find("network/qssl/alternative_name_entry_type", &[(5, 13)]),
+                &version.find("network/qssl/protocol", &[(6, 3), (5, 12)]),
                 "network/qtcpsocket",
                 "network/qudpsocket",
             ]);
