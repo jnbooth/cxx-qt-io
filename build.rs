@@ -134,6 +134,7 @@ fn main() {
     header_dir.write_headers(&[
         include_header!("include/common.h"),
         include_header!("include/core/qfiledevice.h"),
+        include_header!("include/core/qcryptographichash.h"),
         include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
         include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
@@ -154,6 +155,10 @@ fn main() {
     let mut builder = CxxQtBuilder::library(interface)
         .build_cpp(&["core/qiodevice", "core/qlist/qlist", "core/qpair/qpair"])
         .build_rust(&[
+            &version.find(
+                "core/qcryptographichash/cryptographic_hash_algorithm",
+                &[(6, 0), (5, 9), (5, 1)],
+            ),
             "core/qfile",
             "core/qfiledevice",
             "core/qiodevice",

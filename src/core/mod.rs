@@ -1,3 +1,6 @@
+mod qcryptographichash;
+pub use qcryptographichash::CryptographicHashAlgorithm;
+
 mod qfiledevice;
 pub use qfiledevice::{
     FileError, FileHandleFlag, FileHandleFlags, FilePermission, FilePermissions, FileTime,
