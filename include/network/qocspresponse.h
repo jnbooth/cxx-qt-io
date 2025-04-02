@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QtNetwork/QOcspResponse>
 
 #include "rust/cxx.h"

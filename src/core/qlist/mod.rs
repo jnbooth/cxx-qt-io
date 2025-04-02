@@ -124,6 +124,13 @@ impl_qlist_element!(
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
+    crate::QOcspResponse,
+    qlist_qocspresponse,
+    "QList_QOcspResponse"
+);
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(
     crate::QSslCertificate,
     qlist_qsslcertificate,
     "QList_QSslCertificate"

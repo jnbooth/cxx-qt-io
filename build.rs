@@ -243,6 +243,7 @@ fn main() {
     }
     if features.ssl {
         header_dir.write_headers(&[
+            include_header!("include/core/qlist/qlist_qocspresponse.h"),
             include_header!("include/core/qlist/qlist_qsslcertificate.h"),
             include_header!("include/core/qlist/qlist_qsslcertificateextension.h"),
             include_header!("include/core/qlist/qlist_qsslerror.h"),
@@ -265,6 +266,7 @@ fn main() {
                 "network/qsslkey",
             ])
             .build_rust(&[
+                "core/qlist/qlist_qocspresponse",
                 "core/qlist/qlist_qsslcertificate",
                 "core/qlist/qlist_qsslcertificateextension",
                 "core/qlist/qlist_qsslerror",
