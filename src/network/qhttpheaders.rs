@@ -300,26 +300,20 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_from_list_of_pairs"]
         fn qhttpheadersFromListOfPairs(pairs: &QList_QPair_QByteArray_QByteArray) -> QHttpHeaders;
 
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_well_known_header_name"]
         fn qhttpheadersWellKnownHeaderName(name: WellKnownHeader) -> &'static [u8];
 
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_name_at"]
         fn qhttpheadersNameAt(headers: &QHttpHeaders, i: isize) -> &str;
 
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_value_by_name"]
         fn qhttpheadersValue<'a>(headers: &'a QHttpHeaders, name: QAnyStringView) -> &'a [u8];
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_value_by_wellknown"]
         fn qhttpheadersValue(headers: &QHttpHeaders, name: WellKnownHeader) -> &[u8];
 
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_value_at"]
         fn qhttpheadersValueAt(headers: &QHttpHeaders, i: isize) -> &[u8];
     }
@@ -328,17 +322,13 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_drop"]
         fn drop(headers: &mut QHttpHeaders);
 
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_init_default"]
         fn construct() -> QHttpHeaders;
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_clone"]
         fn construct(other: &QHttpHeaders) -> QHttpHeaders;
-        #[doc(hidden)]
         #[rust_name = "qhttpheaders_to_debug_qstring"]
         fn toDebugQString(value: &QHttpHeaders) -> QString;
     }

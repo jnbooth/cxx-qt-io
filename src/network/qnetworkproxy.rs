@@ -185,11 +185,9 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_application_proxy"]
         fn qnetworkproxyApplicationProxy() -> QNetworkProxy;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_set_application_proxy"]
         fn qnetworkproxySetApplicationProxy(proxy: &QNetworkProxy);
     }
@@ -198,22 +196,17 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_drop"]
         fn drop(proxy: &mut QNetworkProxy);
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_init_default"]
         fn construct() -> QNetworkProxy;
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_clone"]
         fn construct(other: &QNetworkProxy) -> QNetworkProxy;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_eq"]
         fn operatorEq(a: &QNetworkProxy, b: &QNetworkProxy) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkproxy_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkProxy) -> QString;
     }

@@ -66,14 +66,11 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qsslkey_drop"]
         fn drop(datagram: &mut QSslKey);
 
-        #[doc(hidden)]
         #[rust_name = "qsslkey_init_default"]
         fn construct() -> QSslKey;
-        #[doc(hidden)]
         #[rust_name = "qsslkey_init_device"]
         unsafe fn construct(
             device: *mut QIODevice,
@@ -90,15 +87,12 @@ mod ffi {
             key_type: SslKeyType,
             pass_phrase: &QByteArray,
         ) -> QSslKey;
-        #[doc(hidden)]
         #[rust_name = "qsslkey_clone"]
         fn construct(other: &QSslKey) -> QSslKey;
 
-        #[doc(hidden)]
         #[rust_name = "qsslkey_eq"]
         fn operatorEq(a: &QSslKey, b: &QSslKey) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qsslkey_to_debug_qstring"]
         fn toDebugQString(value: &QSslKey) -> QString;
     }

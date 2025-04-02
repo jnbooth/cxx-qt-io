@@ -161,11 +161,9 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_to_ipv6_address"]
         fn qhostaddressToIPv6Address(address: &QHostAddress) -> QIpv6Addr;
 
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_parse_subnet"]
         fn qhostaddressParseSubnet(subnet: &QString) -> QPair_QHostAddress_i32;
     }
@@ -174,34 +172,25 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_drop"]
         fn drop(address: &mut QHostAddress);
 
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_init_default"]
         fn construct() -> QHostAddress;
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_from_qipv6addr"]
         fn construct(address: &QIpv6Addr) -> QHostAddress;
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_from_qstring"]
         fn construct(index: &QString) -> QHostAddress;
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_from_specialaddress"]
         fn construct(address: &SpecialHostAddress) -> QHostAddress;
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_from_uint32"]
         fn construct(address: u32) -> QHostAddress;
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_clone"]
         fn construct(other: &QHostAddress) -> QHostAddress;
 
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_eq"]
         fn operatorEq(a: &QHostAddress, b: &QHostAddress) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qhostaddress_to_debug_qstring"]
         fn toDebugQString(value: &QHostAddress) -> QString;
     }

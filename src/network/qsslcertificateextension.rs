@@ -41,11 +41,9 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificateextension_drop"]
         fn drop(extension: &mut QSslCertificateExtension);
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificateextension_init_default"]
         fn construct() -> QSslCertificateExtension;
         #[rust_name = "qsslcertificateextension_clone"]

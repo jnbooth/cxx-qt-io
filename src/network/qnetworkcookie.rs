@@ -107,7 +107,6 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_parse_cookies"]
         fn qnetworkcookieParseCookies(cookie_string: &[u8]) -> QList_QNetworkCookie;
     }
@@ -116,26 +115,20 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_drop"]
         fn drop(cookie: &mut QNetworkCookie);
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_init_default"]
         fn construct() -> QNetworkCookie;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_init_name_val"]
         fn construct(name: &QByteArray, value: &QByteArray) -> QNetworkCookie;
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_clone"]
         fn construct(other: &QNetworkCookie) -> QNetworkCookie;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_eq"]
         fn operatorEq(a: &QNetworkCookie, b: &QNetworkCookie) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkcookie_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkCookie) -> QString;
     }

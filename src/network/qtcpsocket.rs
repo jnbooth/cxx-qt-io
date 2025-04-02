@@ -24,10 +24,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "upcast_qtcpsocket_qiodevice"]
         unsafe fn upcast(socket: *const QTcpSocket) -> *const QIODevice;
-        #[doc(hidden)]
         #[rust_name = "downcast_qiodevice_qtcpsocket"]
         unsafe fn downcast(socket: *const QIODevice) -> *const QTcpSocket;
     }

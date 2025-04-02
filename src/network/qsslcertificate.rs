@@ -170,21 +170,18 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_from_data"]
         fn qsslcertificateFromData(
             data: &QByteArray,
             format: SslEncodingFormat,
         ) -> QList_QSslCertificate;
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_from_device"]
         unsafe fn qsslcertificateFromDevice(
             device: *mut QIODevice,
             format: SslEncodingFormat,
         ) -> QList_QSslCertificate;
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_from_path"]
         fn qsslcertificateFromPath(
             path: &QString,
@@ -192,7 +189,6 @@ mod ffi {
             syntax: SslCertificatePatternSyntax,
         ) -> QList_QSslCertificate;
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_import_pkcs_12"]
         unsafe fn qsslcertificateImportPkcs12(
             device: *mut QIODevice,
@@ -202,7 +198,6 @@ mod ffi {
             pass_phrase: &QByteArray,
         ) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_verify"]
         fn qsslcertificateVerify(
             certificates: &QList_QSslCertificate,
@@ -214,25 +209,19 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_drop"]
         fn drop(certificate: &mut QSslCertificate);
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_init_device"]
         unsafe fn construct(device: *mut QIODevice, format: SslEncodingFormat) -> QSslCertificate;
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_init_data"]
         fn construct(data: &QByteArray, format: SslEncodingFormat) -> QSslCertificate;
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_clone"]
         fn construct(other: &QSslCertificate) -> QSslCertificate;
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_eq"]
         fn operatorEq(a: &QSslCertificate, b: &QSslCertificate) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qsslcertificate_to_debug_qstring"]
         fn toDebugQString(value: &QSslCertificate) -> QString;
     }

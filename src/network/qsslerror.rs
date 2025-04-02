@@ -81,14 +81,11 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qsslerror_drop"]
         fn drop(extension: &mut QSslError);
 
-        #[doc(hidden)]
         #[rust_name = "qsslerror_init_default"]
         fn construct() -> QSslError;
-        #[doc(hidden)]
         #[rust_name = "qsslerror_init_error"]
         fn construct(error: SslError) -> QSslError;
         #[rust_name = "qsslerror_init_certificate"]
@@ -96,11 +93,9 @@ mod ffi {
         #[rust_name = "qsslerror_clone"]
         fn construct(other: &QSslError) -> QSslError;
 
-        #[doc(hidden)]
         #[rust_name = "qsslerror_eq"]
         fn operatorEq(a: &QSslError, b: &QSslError) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qsslerror_to_debug_qstring"]
         fn toDebugQString(value: &QSslError) -> QString;
     }

@@ -103,22 +103,17 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_drop"]
         fn drop(address: &mut QNetworkAddressEntry);
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_init_default"]
         fn construct() -> QNetworkAddressEntry;
-        #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_clone"]
         fn construct(other: &QNetworkAddressEntry) -> QNetworkAddressEntry;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_eq"]
         fn operatorEq(a: &QNetworkAddressEntry, b: &QNetworkAddressEntry) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkaddressentry_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkAddressEntry) -> QString;
     }

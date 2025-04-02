@@ -339,27 +339,21 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qiodevice_is_open"]
         fn qiodeviceIsOpen(device: &QIODevice) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qiodevice_is_readable"]
         fn qiodeviceIsReadable(device: &QIODevice) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qiodevice_is_sequential"]
         fn qiodeviceIsSequential(device: &QIODevice) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qiodevice_is_text_mode_enabled"]
         fn qiodeviceIsTextModeEnabled(device: &QIODevice) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qiodevice_is_transaction_started"]
         fn qiodeviceIsTransactionStarted(device: &QIODevice) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "qiodevice_is_writable"]
         fn qiodeviceIsWritable(device: &QIODevice) -> bool;
     }

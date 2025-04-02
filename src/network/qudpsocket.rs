@@ -126,10 +126,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "upcast_qudpsocket_qiodevice"]
         unsafe fn upcast(socket: *const QUdpSocket) -> *const QIODevice;
-        #[doc(hidden)]
         #[rust_name = "downcast_qiodevice_qudpsocket"]
         unsafe fn downcast(socket: *const QIODevice) -> *const QUdpSocket;
     }

@@ -93,7 +93,6 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_make_reply"]
         fn qnetworkdatagramMakeReply(
             datagram: &QNetworkDatagram,
@@ -105,24 +104,19 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_drop"]
         fn drop(datagram: &mut QNetworkDatagram);
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_init_default"]
         fn construct() -> QNetworkDatagram;
-        #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_init_data"]
         fn construct(data: &QByteArray) -> QNetworkDatagram;
-        #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_init_data_addr"]
         fn construct(
             data: &QByteArray,
             destination_address: &QHostAddress,
             port: u16,
         ) -> QNetworkDatagram;
-        #[doc(hidden)]
         #[rust_name = "qnetworkdatagram_clone"]
         fn construct(other: &QNetworkDatagram) -> QNetworkDatagram;
     }

@@ -68,10 +68,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "upcast_qsavefile_qiodevice"]
         unsafe fn upcast(file: *const QSaveFile) -> *const QIODevice;
-        #[doc(hidden)]
         #[rust_name = "downcast_qiodevice_qsavefile"]
         unsafe fn downcast(file: *const QIODevice) -> *const QSaveFile;
     }
@@ -80,7 +78,6 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qsavefile_new"]
         fn make_unique(path: &QString) -> UniquePtr<QSaveFile>;
     }

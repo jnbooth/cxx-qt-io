@@ -127,27 +127,21 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_all_addresses"]
         fn qnetworkinterfaceAllAddresses() -> QList_QHostAddress;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_all_interfaces"]
         fn qnetworkinterfaceAllInterfaces() -> QList_QNetworkInterface;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_interface_from_index"]
         fn qnetworkinterfaceInterfaceFromIndex(index: i32) -> QNetworkInterface;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_interface_from_name"]
         fn qnetworkinterfaceInterfaceFromName(name: &QString) -> QNetworkInterface;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_interface_index_from_name"]
         fn qnetworkinterfaceInterfaceIndexFromName(name: &QString) -> i32;
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_interface_name_from_index"]
         fn qnetworkinterfaceInterfaceNameFromIndex(index: i32) -> QString;
     }
@@ -156,17 +150,13 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_drop"]
         fn drop(iface: &mut QNetworkInterface);
 
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_init_default"]
         fn construct() -> QNetworkInterface;
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_clone"]
         fn construct(other: &QNetworkInterface) -> QNetworkInterface;
-        #[doc(hidden)]
         #[rust_name = "qnetworkinterface_to_debug_qstring"]
         fn toDebugQString(value: &QNetworkInterface) -> QString;
     }
