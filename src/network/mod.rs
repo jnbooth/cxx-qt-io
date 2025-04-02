@@ -84,6 +84,11 @@ mod qsslcipher;
 pub use qsslcipher::QSslCipher;
 
 #[cfg(feature = "ssl")]
+mod qssldiffiehellmanparameters;
+#[cfg(feature = "ssl")]
+pub use qssldiffiehellmanparameters::QSslDiffieHellmanParameters;
+
+#[cfg(feature = "ssl")]
 mod qsslerror;
 #[cfg(feature = "ssl")]
 pub use qsslerror::{QSslError, QSslErrorSslError};

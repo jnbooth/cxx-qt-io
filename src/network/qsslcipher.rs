@@ -84,7 +84,7 @@ impl Valid for QSslCipher {
     }
 }
 
-/// This class represents Online Certificate Status Protocol response.
+/// The `QSslCipher` class represents an SSL cryptographic cipher.
 ///
 /// Qt Documentation: [QSslCipher](https://doc.qt.io/qt-6/qsslcipher.html#details)
 #[repr(C)]

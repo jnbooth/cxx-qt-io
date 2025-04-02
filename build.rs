@@ -245,6 +245,7 @@ fn main() {
             include_header!("include/network/qsslcertificate.h"),
             include_header!("include/network/qsslcertificateextension.h"),
             include_header!("include/network/qsslcipher.h"),
+            include_header!("include/network/qssldiffiehellmanparameters.h"),
             include_header!("include/network/qsslerror.h"),
             include_header!("include/network/qsslkey.h"),
         ]);
@@ -255,6 +256,7 @@ fn main() {
                 "network/qocspresponse",
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
+                "network/qssldiffiehellmanparameters",
                 "network/qsslerror",
                 "network/qsslkey",
             ])
@@ -270,6 +272,7 @@ fn main() {
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
                 "network/qsslcipher",
+                "network/qssldiffiehellmanparameters",
                 "network/qsslerror",
                 "network/qsslkey",
             ]);
