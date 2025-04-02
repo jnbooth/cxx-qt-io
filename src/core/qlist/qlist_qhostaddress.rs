@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QHostAddress"]
+        #[rust_name = "cxx_qlist_clear_QHostAddress"]
         fn qlistClear(list: &mut QList_QHostAddress);
-        #[rust_name = "cxx_contains"]
+        #[rust_name = "cxx_qlist_contains"]
         fn qlistContains(list: &QList_QHostAddress, _: &QHostAddress) -> bool;
     }
 
@@ -52,11 +52,11 @@ pub mod ffi {
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QHostAddress) {
-    ffi::cxx_clear_qlist_QHostAddress(v);
+    ffi::cxx_qlist_clear_QHostAddress(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QHostAddress, item: &ffi::QHostAddress) -> bool {
-    ffi::cxx_contains(v, item)
+    ffi::cxx_qlist_contains(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QHostAddress, size: isize) {

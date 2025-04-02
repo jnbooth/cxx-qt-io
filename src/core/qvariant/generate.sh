@@ -6,6 +6,7 @@ SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 function generate_bridge_qt() {
+    local LOWER
     LOWER=$(echo "$1" | tr '[:upper:]' '[:lower:]')
 
 

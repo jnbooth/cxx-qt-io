@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QByteArray>
-
 #include <cxx-qt-lib/qlist_private.h>
 
 namespace rust {

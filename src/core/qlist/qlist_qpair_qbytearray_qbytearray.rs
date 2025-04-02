@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QPair_QByteArray_QByteArray"]
+        #[rust_name = "cxx_qlist_clear_QPair_QByteArray_QByteArray"]
         fn qlistClear(list: &mut QList_QPair_QByteArray_QByteArray);
-        #[rust_name = "cxx_contains"]
+        #[rust_name = "cxx_qlist_contains"]
         fn qlistContains(
             list: &QList_QPair_QByteArray_QByteArray,
             _: &QPair_QByteArray_QByteArray,
@@ -65,14 +65,14 @@ pub mod ffi {
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QPair_QByteArray_QByteArray) {
-    ffi::cxx_clear_qlist_QPair_QByteArray_QByteArray(v);
+    ffi::cxx_qlist_clear_QPair_QByteArray_QByteArray(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_QPair_QByteArray_QByteArray,
     item: &ffi::QPair_QByteArray_QByteArray,
 ) -> bool {
-    ffi::cxx_contains(v, item)
+    ffi::cxx_qlist_contains(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QPair_QByteArray_QByteArray, size: isize) {

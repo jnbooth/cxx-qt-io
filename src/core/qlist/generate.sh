@@ -42,9 +42,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_$1"]
+        #[rust_name = "cxx_qlist_clear_$1"]
         fn qlistClear(list: &mut QList_$1);
-        #[rust_name = "cxx_contains"]
+        #[rust_name = "cxx_qlist_contains"]
         fn qlistContains(
             list: &QList_$1,
             _: &$1,
@@ -83,14 +83,14 @@ pub mod ffi {
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_$1) {
-    ffi::cxx_clear_qlist_$1(v);
+    ffi::cxx_qlist_clear_$1(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_$1,
     item: &ffi::$1,
 ) -> bool {
-    ffi::cxx_contains(v, item)
+    ffi::cxx_qlist_contains(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_$1, size: isize) {

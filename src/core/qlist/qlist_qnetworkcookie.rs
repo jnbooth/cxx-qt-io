@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QNetworkCookie"]
+        #[rust_name = "cxx_qlist_clear_QNetworkCookie"]
         fn qlistClear(list: &mut QList_QNetworkCookie);
-        #[rust_name = "cxx_contains"]
+        #[rust_name = "cxx_qlist_contains"]
         fn qlistContains(list: &QList_QNetworkCookie, _: &QNetworkCookie) -> bool;
     }
 
@@ -52,11 +52,11 @@ pub mod ffi {
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkCookie) {
-    ffi::cxx_clear_qlist_QNetworkCookie(v);
+    ffi::cxx_qlist_clear_QNetworkCookie(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QNetworkCookie, item: &ffi::QNetworkCookie) -> bool {
-    ffi::cxx_contains(v, item)
+    ffi::cxx_qlist_contains(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkCookie, size: isize) {

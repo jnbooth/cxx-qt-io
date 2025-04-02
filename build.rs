@@ -149,6 +149,8 @@ fn main() {
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
+        include_header!("include/core/qset/qset_private.h"),
+        include_header!("include/core/qset/qset.h"),
         include_header!("include/core/qvariant/qvariant.h"),
         include_header!("include/core/qtemporaryfile.h"),
         include_header!("include/views.h"),
@@ -165,6 +167,7 @@ fn main() {
             "core/qiodevice",
             "core/qlist/qlist",
             "core/qpair/qpair",
+            "core/qset/qset",
             "core/qvariant/qvariant",
         ])
         .build_rust(&[
@@ -251,6 +254,10 @@ fn main() {
             include_header!("include/core/qlist/qlist_qsslellipticcurve.h"),
             include_header!("include/core/qlist/qlist_qsslerror.h"),
             include_header!("include/core/qlist/qlist_qsslkey.h"),
+            include_header!("include/core/qset/qset_qocspresponse.h"),
+            include_header!("include/core/qset/qset_qsslcertificate.h"),
+            include_header!("include/core/qset/qset_qsslellipticcurve.h"),
+            include_header!("include/core/qset/qset_qsslerror.h"),
             include_header!("include/network/qocspresponse.h"),
             include_header!("include/network/qssl.h"),
             include_header!("include/network/qsslcertificate.h"),

@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QSslCertificate"]
+        #[rust_name = "cxx_qlist_clear_QSslCertificate"]
         fn qlistClear(list: &mut QList_QSslCertificate);
-        #[rust_name = "cxx_contains"]
+        #[rust_name = "cxx_qlist_contains"]
         fn qlistContains(list: &QList_QSslCertificate, _: &QSslCertificate) -> bool;
     }
 
@@ -52,11 +52,11 @@ pub mod ffi {
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslCertificate) {
-    ffi::cxx_clear_qlist_QSslCertificate(v);
+    ffi::cxx_qlist_clear_QSslCertificate(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslCertificate, item: &ffi::QSslCertificate) -> bool {
-    ffi::cxx_contains(v, item)
+    ffi::cxx_qlist_contains(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslCertificate, size: isize) {

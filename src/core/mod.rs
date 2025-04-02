@@ -25,6 +25,8 @@ pub use qpair::QPairPair_QHostAddress_i32;
 mod qsavefile;
 pub use qsavefile::QSaveFile;
 
+mod qset;
+
 mod qtemporaryfile;
 pub use qtemporaryfile::QTemporaryFile;
 
