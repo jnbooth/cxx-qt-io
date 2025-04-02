@@ -148,6 +148,7 @@ fn main() {
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
+        include_header!("include/core/qvariant/qvariant.h"),
         include_header!("include/core/qtemporaryfile.h"),
         include_header!("include/views.h"),
     ]);
@@ -159,7 +160,12 @@ fn main() {
         .reexport_dependency("cxx-qt-lib");
 
     let mut builder = CxxQtBuilder::library(interface)
-        .build_cpp(&["core/qiodevice", "core/qlist/qlist", "core/qpair/qpair"])
+        .build_cpp(&[
+            "core/qiodevice",
+            "core/qlist/qlist",
+            "core/qpair/qpair",
+            "core/qvariant/qvariant",
+        ])
         .build_rust(&[
             &version.find(
                 "core/qcryptographichash/cryptographic_hash_algorithm",
@@ -178,6 +184,7 @@ fn main() {
             include_header!("include/core/qlist/qlist_qhostaddress.h"),
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
             include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
+            include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
             include_header!("include/core/qlist/qlist_qnetworkdatagram.h"),
             include_header!("include/core/qlist/qlist_qnetworkinterface.h"),
             include_header!("include/core/qlist/qlist_qnetworkproxy.h"),
@@ -209,6 +216,7 @@ fn main() {
                 "core/qlist/qlist_qnetworkinterface",
                 "core/qlist/qlist_qnetworkproxy",
                 "core/qpair/qpair_qhostaddress_i32",
+                "core/qvariant/qvariant_qnetworkcookie",
                 "network/qabstractsocket",
                 "network/qauthenticator",
                 "network/qhostaddress",

@@ -10,6 +10,9 @@ pub use qfiledevice::{
 mod qfile;
 pub use qfile::QFile;
 
+mod qiodevice;
+pub use qiodevice::{OpenMode, OpenModeFlag, QIODevice};
+
 mod qlist;
 
 mod qpair;
@@ -24,5 +27,4 @@ pub use qsavefile::QSaveFile;
 mod qtemporaryfile;
 pub use qtemporaryfile::QTemporaryFile;
 
-mod qiodevice;
-pub use qiodevice::{OpenMode, OpenModeFlag, QIODevice};
+mod qvariant;
