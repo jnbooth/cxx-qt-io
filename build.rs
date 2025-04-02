@@ -186,7 +186,9 @@ fn main() {
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
             include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
             include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
+            include_header!("include/core/qlist/qlist_qnetworkdatagram.h"),
             include_header!("include/core/qlist/qlist_qnetworkinterface.h"),
+            include_header!("include/core/qlist/qlist_qnetworkproxy.h"),
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
@@ -211,7 +213,9 @@ fn main() {
                 "core/qlist/qlist_qhostaddress",
                 "core/qlist/qlist_qnetworkaddressentry",
                 "core/qlist/qlist_qnetworkcookie",
+                "core/qlist/qlist_qnetworkdatagram",
                 "core/qlist/qlist_qnetworkinterface",
+                "core/qlist/qlist_qnetworkproxy",
                 "core/qpair/qpair_qhostaddress_i32",
                 "core/qvariant/qvariant_qnetworkcookie",
                 "network/qabstractsocket",
@@ -228,10 +232,13 @@ fn main() {
             ]);
 
         if version.at_least(6, 7) {
-            header_dir.write_headers(&[include_header!("include/network/qhttpheaders.h")]);
+            header_dir.write_headers(&[
+                include_header!("include/core/qlist/qlist_qhttpheaders.h"),
+                include_header!("include/network/qhttpheaders.h"),
+            ]);
             builder = builder
                 .build_cpp(&["network/qhttpheaders"])
-                .build_rust(&["network/qhttpheaders"]);
+                .build_rust(&["core/qlist/qlist_qhttpheaders", "network/qhttpheaders"]);
         }
     }
     if features.ssl {
@@ -239,7 +246,11 @@ fn main() {
             include_header!("include/core/qlist/qlist_qocspresponse.h"),
             include_header!("include/core/qlist/qlist_qsslcertificate.h"),
             include_header!("include/core/qlist/qlist_qsslcertificateextension.h"),
+            include_header!("include/core/qlist/qlist_qsslcipher.h"),
+            include_header!("include/core/qlist/qlist_qssldiffiehellmanparameters.h"),
+            include_header!("include/core/qlist/qlist_qsslellipticcurve.h"),
             include_header!("include/core/qlist/qlist_qsslerror.h"),
+            include_header!("include/core/qlist/qlist_qsslkey.h"),
             include_header!("include/network/qocspresponse.h"),
             include_header!("include/network/qssl.h"),
             include_header!("include/network/qsslcertificate.h"),
@@ -266,7 +277,10 @@ fn main() {
                 "core/qlist/qlist_qocspresponse",
                 "core/qlist/qlist_qsslcertificate",
                 "core/qlist/qlist_qsslcertificateextension",
+                "core/qlist/qlist_qssldiffiehellmanparameters",
+                "core/qlist/qlist_qsslellipticcurve",
                 "core/qlist/qlist_qsslerror",
+                "core/qlist/qlist_qsslkey",
                 "network/qocspresponse",
                 "network/qssl/mod",
                 &version.find("network/qssl/alternative_name_entry_type", &[(5, 13)]),

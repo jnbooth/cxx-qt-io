@@ -1,5 +1,6 @@
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qlist/generate.sh
+#![allow(clippy::trivially_copy_pass_by_ref)]
 
 #[cxx::bridge]
 pub mod ffi {

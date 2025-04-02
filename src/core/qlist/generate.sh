@@ -28,6 +28,7 @@ EOF
     tee "$SCRIPTPATH/qlist_$LOWER.rs" <<EOF
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qlist/generate.sh
+#![allow(clippy::trivially_copy_pass_by_ref)]
 
 #[cxx::bridge]
 pub mod ffi {
@@ -263,9 +264,16 @@ generate_bridge "QPair_QByteArray_QByteArray" "QPair<crate::QPairPair_QByteArray
 generate_bridge "QHostAddress"
 generate_bridge "QNetworkAddressEntry"
 generate_bridge "QNetworkCookie"
+generate_bridge "QNetworkProxy"
 generate_bridge "QSslCertificate"
+generate_bridge "QSslCipher"
+generate_bridge "QSslDiffieHellmanParameters"
+generate_bridge "QSslEllipticCurve"
 generate_bridge "QSslError"
+generate_bridge "QSslKey"
 
+generate_bridge_neq "QHttpHeaders"
+generate_bridge_neq "QNetworkDatagram"
 generate_bridge_neq "QNetworkInterface"
 generate_bridge_neq "QSslCertificateExtension"
 generate_bridge_neq "QOcspResponse"
