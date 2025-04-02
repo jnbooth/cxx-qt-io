@@ -263,13 +263,9 @@ generate_bridge "QPair_QByteArray_QByteArray" "QPair<crate::QPairPair_QByteArray
 generate_bridge "QHostAddress"
 generate_bridge "QNetworkAddressEntry"
 generate_bridge "QNetworkCookie"
-generate_bridge "QNetworkProxy"
 generate_bridge "QSslCertificate"
 generate_bridge "QSslError"
-generate_bridge "QSslKey"
 
-generate_bridge_neq "QHttpHeaders"
-generate_bridge_neq "QNetworkDatagram"
 generate_bridge_neq "QNetworkInterface"
 generate_bridge_neq "QSslCertificateExtension"
 generate_bridge_neq "QOcspResponse"

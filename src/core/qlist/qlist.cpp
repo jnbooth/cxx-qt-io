@@ -32,20 +32,13 @@ CXX_QT_IO_QLIST_ASSERTS(QPair_QByteArray_QByteArray);
 CXX_QT_IO_QLIST_ASSERTS(QHostAddress);
 CXX_QT_IO_QLIST_ASSERTS(QNetworkAddressEntry);
 CXX_QT_IO_QLIST_ASSERTS(QNetworkCookie);
-CXX_QT_IO_QLIST_ASSERTS(QNetworkDatagram);
 CXX_QT_IO_QLIST_ASSERTS(QNetworkInterface);
-CXX_QT_IO_QLIST_ASSERTS(QNetworkProxy);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
-CXX_QT_IO_QLIST_ASSERTS(QHttpHeaders);
-#endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
 CXX_QT_IO_QLIST_ASSERTS(QOcspResponse);
 CXX_QT_IO_QLIST_ASSERTS(QSslCertificate);
 CXX_QT_IO_QLIST_ASSERTS(QSslCertificateExtension);
 CXX_QT_IO_QLIST_ASSERTS(QSslError);
-CXX_QT_IO_QLIST_ASSERTS(QSslKey);
 #endif
 
 #endif
