@@ -89,6 +89,11 @@ mod qssldiffiehellmanparameters;
 pub use qssldiffiehellmanparameters::QSslDiffieHellmanParameters;
 
 #[cfg(feature = "ssl")]
+mod qsslellipticcurve;
+#[cfg(feature = "ssl")]
+pub use qsslellipticcurve::QSslEllipticCurve;
+
+#[cfg(feature = "ssl")]
 mod qsslerror;
 #[cfg(feature = "ssl")]
 pub use qsslerror::{QSslError, QSslErrorSslError};
