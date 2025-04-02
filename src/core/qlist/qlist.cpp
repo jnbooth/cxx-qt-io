@@ -1,6 +1,6 @@
 #include "cxx-qt-io/qlist.h"
 
-#include <cxx-qt-lib/assertion_utils.h>
+#include <cxx-qt-io/assertion_utils.h>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 #define CXX_QT_IO_QLIST_ALIGN_AND_SIZE(name)                                   \

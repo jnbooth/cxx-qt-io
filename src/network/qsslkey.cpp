@@ -1,15 +1,8 @@
 #include "cxx-qt-io/qsslkey.h"
 
-#include <cxx-qt-lib/assertion_utils.h>
+#include <cxx-qt-io/assertion_utils.h>
 
-assert_alignment_and_size(QSslKey, { ::std::size_t a0; });
-
-static_assert(!::std::is_trivially_copy_assignable<QSslKey>::value);
-static_assert(!::std::is_trivially_copy_constructible<QSslKey>::value);
-
-static_assert(!::std::is_trivially_destructible<QSslKey>::value);
-
-static_assert(QTypeInfo<QSslKey>::isRelocatable);
+assert_shared_pointer_type(QSslKey);
 
 namespace rust {
 namespace cxxqtio1 {

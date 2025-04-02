@@ -1,15 +1,8 @@
 #include "cxx-qt-io/qnetworkdatagram.h"
 
-#include <cxx-qt-lib/assertion_utils.h>
+#include <cxx-qt-io/assertion_utils.h>
 
-assert_alignment_and_size(QNetworkDatagram, { ::std::size_t a0; });
-
-static_assert(!::std::is_trivially_copy_assignable<QNetworkDatagram>::value);
-static_assert(!::std::is_trivially_copy_constructible<QNetworkDatagram>::value);
-
-static_assert(!::std::is_trivially_destructible<QNetworkDatagram>::value);
-
-static_assert(QTypeInfo<QNetworkDatagram>::isRelocatable);
+assert_shared_pointer_type(QNetworkDatagram);
 
 namespace rust {
 namespace cxxqtio1 {

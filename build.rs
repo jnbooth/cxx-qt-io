@@ -138,6 +138,7 @@ fn main() {
     header_dir.write_definitions(&features);
 
     header_dir.write_headers(&[
+        include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
         include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qcryptographichash.h"),

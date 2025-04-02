@@ -1,15 +1,8 @@
 #include "cxx-qt-io/qhostaddress.h"
 
-#include <cxx-qt-lib/assertion_utils.h>
+#include <cxx-qt-io/assertion_utils.h>
 
-assert_alignment_and_size(QHostAddress, { ::std::size_t a0; });
-
-static_assert(!::std::is_trivially_copy_assignable<QHostAddress>::value);
-static_assert(!::std::is_trivially_copy_constructible<QHostAddress>::value);
-
-static_assert(!::std::is_trivially_destructible<QHostAddress>::value);
-
-static_assert(QTypeInfo<QHostAddress>::isRelocatable);
+assert_shared_pointer_type(QHostAddress);
 
 assert_alignment_and_size(Q_IPV6ADDR, { ::std::uint8_t c[16]; });
 

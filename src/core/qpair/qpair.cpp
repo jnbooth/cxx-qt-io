@@ -6,7 +6,7 @@
 #include <QtNetwork/QHostAddress>
 #endif
 
-#include <cxx-qt-lib/assertion_utils.h>
+#include <cxx-qt-io/assertion_utils.h>
 
 #define CXX_QT_IO_QPAIR_ASSERTS(firstTypeName, secondTypeName, combinedName)   \
   using QPair_##combinedName = ::std::pair<firstTypeName, secondTypeName>;     \

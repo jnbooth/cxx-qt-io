@@ -1,16 +1,9 @@
 #include "cxx-qt-io/qhttpheaders.h"
 
+#include <cxx-qt-io/assertion_utils.h>
 #include <cxx-qt-io/views.h>
-#include <cxx-qt-lib/assertion_utils.h>
 
-assert_alignment_and_size(QHttpHeaders, { ::std::size_t a0; });
-
-static_assert(!::std::is_trivially_copy_assignable<QHttpHeaders>::value);
-static_assert(!::std::is_trivially_copy_constructible<QHttpHeaders>::value);
-
-static_assert(!::std::is_trivially_destructible<QHttpHeaders>::value);
-
-static_assert(QTypeInfo<QHttpHeaders>::isRelocatable);
+assert_shared_pointer_type(QHttpHeaders);
 
 namespace rust {
 namespace cxxqtio1 {
