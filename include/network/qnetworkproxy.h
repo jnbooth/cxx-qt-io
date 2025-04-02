@@ -4,9 +4,9 @@
 
 #include "rust/cxx.h"
 
-using ProxyCapabilities = QNetworkProxy::Capabilities;
-using ProxyCapability = QNetworkProxy::Capability;
-using ProxyType = QNetworkProxy::ProxyType;
+using QNetworkProxyCapabilities = QNetworkProxy::Capabilities;
+using QNetworkProxyCapability = QNetworkProxy::Capability;
+using QNetworkProxyProxyType = QNetworkProxy::ProxyType;
 
 namespace rust {
 template<>

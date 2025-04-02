@@ -2,4 +2,4 @@
 
 #include <QtCore/QCryptographicHash>
 
-using CryptographicHashAlgorithm = QCryptographicHash::Algorithm;
+using QCryptographicHashAlgorithm = QCryptographicHash::Algorithm;

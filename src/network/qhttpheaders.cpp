@@ -9,7 +9,7 @@ namespace rust {
 namespace cxxqtio1 {
 
 ::rust::Slice<const ::std::uint8_t>
-qhttpheadersWellKnownHeaderName(WellKnownHeader name)
+qhttpheadersWellKnownHeaderName(QHttpHeaders::WellKnownHeader name)
 {
   return qbytearrayviewAsSlice(QHttpHeaders::wellKnownHeaderName(name));
 }
@@ -26,7 +26,8 @@ qhttpheadersValue(const QHttpHeaders& headers, QAnyStringView name)
   return qbytearrayviewAsSlice(headers.value(name));
 }
 ::rust::Slice<const ::rust::u8>
-qhttpheadersValue(const QHttpHeaders& headers, WellKnownHeader name)
+qhttpheadersValue(const QHttpHeaders& headers,
+                  QHttpHeaders::WellKnownHeader name)
 {
   return qbytearrayviewAsSlice(headers.value(name));
 }

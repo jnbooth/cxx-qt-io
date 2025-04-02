@@ -11,7 +11,7 @@ mod ffi {
     /// Describes all recognized errors that can occur during an SSL handshake.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SslError {
+    enum QSslErrorSslError {
         NoError,
         UnableToGetIssuerCertificate,
         UnableToDecryptCertificateSignature,
@@ -62,7 +62,7 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qsslerror.h");
-        type SslError;
+        type QSslErrorSslError;
     }
 
     unsafe extern "C++" {
@@ -73,7 +73,7 @@ mod ffi {
         fn certificate(&self) -> QSslCertificate;
 
         /// Returns the type of the error.
-        fn error(&self) -> SslError;
+        fn error(&self) -> QSslErrorSslError;
 
         /// Returns a short localized human-readable description of the error.
         #[rust_name = "error_string"]
@@ -90,9 +90,9 @@ mod ffi {
         #[rust_name = "qsslerror_init_default"]
         fn construct() -> QSslError;
         #[rust_name = "qsslerror_init_error"]
-        fn construct(error: SslError) -> QSslError;
+        fn construct(error: QSslErrorSslError) -> QSslError;
         #[rust_name = "qsslerror_init_certificate"]
-        fn construct(error: SslError, certificate: &QSslCertificate) -> QSslError;
+        fn construct(error: QSslErrorSslError, certificate: &QSslCertificate) -> QSslError;
         #[rust_name = "qsslerror_clone"]
         fn construct(other: &QSslError) -> QSslError;
 
@@ -104,7 +104,7 @@ mod ffi {
     }
 }
 
-pub use ffi::SslError;
+pub use ffi::QSslErrorSslError;
 
 /// The `QSslError` class provides an SSL error.
 ///
@@ -151,7 +151,7 @@ impl QSslError {
     /// Constructs a `QSslError` object. The two arguments specify the `error` that occurred, and which `certificate` the error relates to.
     ///
     /// If `certificate` is `None`, no certificate is provided.
-    pub fn new(error: SslError, certificate: Option<&QSslCertificate>) -> Self {
+    pub fn new(error: QSslErrorSslError, certificate: Option<&QSslCertificate>) -> Self {
         match certificate {
             Some(certificate) => ffi::qsslerror_init_certificate(error, certificate),
             None => ffi::qsslerror_init_error(error),

@@ -7,7 +7,7 @@ mod ffi {
     /// This enum indicates whether a given host address is eligible to be published in the Domain Name System (DNS) or other similar name resolution mechanisms. In general, an address is suitable for publication if it is an address this machine will be reached at for an indeterminate amount of time, though it need not be permanent. For example, addresses obtained via DHCP are often eligible, but cryptographically-generated temporary IPv6 addresses are not.
     #[repr(i8)]
     #[derive(Debug)]
-    enum DnsEligibilityStatus {
+    enum QNetworkAddressEntryDnsEligibilityStatus {
         /// Qt and the operating system could not determine whether this address should be published or not. The application may need to apply further heuristics if it cannot find any eligible addresses.
         DnsEligibilityUnknown = -1,
         /// This address should not be published in DNS and should not be transmitted to other parties, except maybe as the source address of an outgoing packet.
@@ -25,7 +25,7 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qnetworkaddressentry.h");
-        type DnsEligibilityStatus;
+        type QNetworkAddressEntryDnsEligibilityStatus;
     }
 
     unsafe extern "C++" {
@@ -46,7 +46,7 @@ mod ffi {
         ///
         /// On some systems, QNetworkInterface will need to heuristically determine which addresses are eligible.
         #[rust_name = "dns_eligibility"]
-        fn dnsEligibility(&self) -> DnsEligibilityStatus;
+        fn dnsEligibility(&self) -> QNetworkAddressEntryDnsEligibilityStatus;
 
         /// This function returns one IPv4 or IPv6 address found, that was found in a network interface.
         fn ip(&self) -> QHostAddress;
@@ -82,7 +82,7 @@ mod ffi {
 
         /// Sets the DNS eligibility flag for this address to `status`.
         #[rust_name = "set_dns_eligibility"]
-        fn setDnsEligibility(&mut self, status: DnsEligibilityStatus);
+        fn setDnsEligibility(&mut self, status: QNetworkAddressEntryDnsEligibilityStatus);
 
         /// Sets the IP address the `QNetworkAddressEntry` object contains to `new_ip`.
         #[rust_name = "set_ip"]
@@ -119,7 +119,7 @@ mod ffi {
     }
 }
 
-pub use ffi::DnsEligibilityStatus;
+pub use ffi::QNetworkAddressEntryDnsEligibilityStatus;
 
 /// The `QNetworkAddressEntry` class stores one IP address supported by a network interface, along with its associated netmask and broadcast address.
 ///

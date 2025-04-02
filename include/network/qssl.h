@@ -2,19 +2,19 @@
 
 #include <QtNetwork/QSsl>
 
-using SslKeyType = QSsl::KeyType;
-using SslEncodingFormat = QSsl::EncodingFormat;
-using SslKeyAlgorithm = QSsl::KeyAlgorithm;
-using SslAlternativeNameEntryType = QSsl::AlternativeNameEntryType;
-using SslProtocol = QSsl::SslProtocol;
-using SslOption = QSsl::SslOption;
+using QSslKeyType = QSsl::KeyType;
+using QSslEncodingFormat = QSsl::EncodingFormat;
+using QSslKeyAlgorithm = QSsl::KeyAlgorithm;
+using QSslAlternativeNameEntryType = QSsl::AlternativeNameEntryType;
+using QSslSslProtocol = QSsl::SslProtocol;
+using QSslSslOption = QSsl::SslOption;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-using SslAlertLevel = QSsl::AlertLevel;
-using SslAlertType = QSsl::AlertType;
+using QSslAlertLevel = QSsl::AlertLevel;
+using QSslAlertType = QSsl::AlertType;
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
-using SslImplementedClass = QSsl::ImplementedClass;
-using SslSupportedFeature = QSsl::SupportedFeature;
+using QSslImplementedClass = QSsl::ImplementedClass;
+using QSslSupportedFeature = QSsl::SupportedFeature;
 #endif

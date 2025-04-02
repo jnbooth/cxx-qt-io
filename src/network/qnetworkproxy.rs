@@ -2,7 +2,7 @@ use std::fmt::{self, Debug, Formatter};
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
-use cxx_qt_lib::{QFlag, QFlags};
+use cxx_qt_lib::QFlags;
 
 #[cxx::bridge]
 mod ffi {
@@ -11,7 +11,7 @@ mod ffi {
     /// `QNetworkProxy` sets different capabilities by default when the object is created (see `ProxyType` for a list of the defaults). However, it is possible to change the capabilities after the object has been created with `set_capabilities()`.
     #[repr(i32)]
     #[derive(Debug)]
-    enum ProxyCapability {
+    enum QNetworkProxyCapability {
         /// Ability to open transparent, tunneled TCP connections to a remote host. The proxy server relays the transmission verbatim from one side to the other and does no caching.
         TunnelingCapability = 0x0001,
         /// Ability to create a listening socket and wait for an incoming TCP connection from a remote host.
@@ -33,7 +33,7 @@ mod ffi {
     /// There are two types of proxies that Qt understands: transparent proxies and caching proxies. The first group consists of proxies that can handle any arbitrary data transfer, while the second can only handle specific requests. The caching proxies only make sense for the specific classes where they can be used.
     #[repr(i32)]
     #[derive(Debug)]
-    enum ProxyType {
+    enum QNetworkProxyProxyType {
         /// Proxy is determined based on the application proxy set using `set_application_proxy()`.
         DefaultProxy,
         /// Socks5 proxying is used.
@@ -58,7 +58,7 @@ mod ffi {
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-io/qnetworkrequest.h");
-        type KnownHeaders = crate::KnownHeaders;
+        type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
 
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         include!("cxx-qt-io/qhttpheaders.h");
@@ -68,24 +68,24 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qnetworkproxy.h");
-        type ProxyCapability;
+        type QNetworkProxyCapability;
         #[allow(unused)]
-        type ProxyCapabilities = super::ProxyCapabilities;
-        type ProxyType;
+        type QNetworkProxyCapabilities = super::QNetworkProxyCapabilities;
+        type QNetworkProxyProxyType;
     }
 
     unsafe extern "C++" {
         type QNetworkProxy = super::QNetworkProxy;
 
         /// Returns the capabilities of this proxy server.
-        fn capabilities(&self) -> ProxyCapabilities;
+        fn capabilities(&self) -> QNetworkProxyCapabilities;
 
         /// Returns `true` if the raw header `header_name` is in use for this proxy. Returns `false` if the proxy is not of type `HttpProxy` or `HttpCachingProxy`.
         #[rust_name = "has_raw_header"]
         fn hasRawHeader(&self, header_name: &QByteArray) -> bool;
 
         /// Returns the value of the known network header `header` if it is in use for this proxy. If it is not present, returns `QVariant()` (i.e., an invalid variant).
-        fn header(&self, header: KnownHeaders) -> QVariant;
+        fn header(&self, header: QNetworkRequestKnownHeaders) -> QVariant;
 
         /// Returns headers that are set in this network request.
         ///
@@ -129,13 +129,13 @@ mod ffi {
 
         /// Sets the capabilities of this proxy to capabilities.
         #[rust_name = "set_capabilities"]
-        fn setCapabilities(&mut self, capabilities: ProxyCapabilities);
+        fn setCapabilities(&mut self, capabilities: QNetworkProxyCapabilities);
 
         /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.
         ///
         /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
         #[rust_name = "set_header"]
-        fn setHeader(&mut self, header: KnownHeaders, value: &QVariant);
+        fn setHeader(&mut self, header: QNetworkRequestKnownHeaders, value: &QVariant);
 
         /// Sets `new_headers` as headers in this network request, overriding any previously set headers.
         ///
@@ -168,7 +168,7 @@ mod ffi {
         ///
         /// Note that changing the type of a proxy does not change the set of capabilities this `QNetworkProxy` object holds if any capabilities have been set with `set_capabilities()`.
         #[rust_name = "set_type"]
-        fn setType(&mut self, proxy_type: ProxyType);
+        fn setType(&mut self, proxy_type: QNetworkProxyProxyType);
 
         /// Sets the user for proxy authentication to be `user`.
         #[rust_name = "set_user"]
@@ -176,7 +176,7 @@ mod ffi {
 
         /// Returns the proxy type for this instance.
         #[cxx_name = "type"]
-        fn proxy_type(&self) -> ProxyType;
+        fn proxy_type(&self) -> QNetworkProxyProxyType;
 
         /// Returns the user name used for authentication.
         fn user(&self) -> QString;
@@ -212,19 +212,11 @@ mod ffi {
     }
 }
 
-pub use ffi::{ProxyCapability, ProxyType};
+pub use ffi::{QNetworkProxyCapability, QNetworkProxyProxyType};
 
-pub type ProxyCapabilities = QFlags<ProxyCapability>;
+pub type QNetworkProxyCapabilities = QFlags<QNetworkProxyCapability>;
 
-unsafe impl QFlag for ProxyCapability {
-    type TypeId = type_id!("ProxyCapabilities");
-
-    type Repr = i32;
-
-    fn to_repr(self) -> Self::Repr {
-        self.repr
-    }
-}
+unsafe_impl_qflag!(QNetworkProxyCapability, "QNetworkProxyCapabilities");
 
 /// The `QNetworkProxy` class provides a network layer proxy.
 ///

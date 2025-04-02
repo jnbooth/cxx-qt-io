@@ -10,7 +10,7 @@ mod ffi {
     /// This enum describes the network layer protocol values used in Qt.
     #[repr(i32)]
     #[derive(Debug)]
-    enum NetworkLayerProtocol {
+    enum QAbstractSocketNetworkLayerProtocol {
         /// IPv4
         IPv4Protocol,
         /// IPv6
@@ -24,7 +24,7 @@ mod ffi {
     /// This enum describes the different flags you can pass to modify the behavior of `QAbstractSocket::bind()`.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SocketBindFlag {
+    enum QAbstractSocketBindFlag {
         /// The default option for the current platform. On Unix and macOS, this is equivalent to (`DontShareAddress + ReuseAddressHint`), and on Windows, it is equivalent to `ShareAddress`.
         DefaultForPlatform = 0x0,
         /// Allow other services to bind to the same address and port. This is useful when multiple processes share the load of a single service by listening to the same address and port (e.g., a web server with several pre-forked listeners can greatly improve response time). However, because any service is allowed to rebind, this option is subject to certain security considerations. Note that by combining this option with `ReuseAddressHint`, you will also allow your service to rebind an existing shared address. On Unix, this is equivalent to the `SO_REUSEADDR` socket option. On Windows, this is the default behavior, so this option is ignored.
@@ -38,7 +38,7 @@ mod ffi {
     /// This enum describes the socket errors that can occur.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SocketError {
+    enum QAbstractSocketSocketError {
         /// The connection was refused by the peer (or timed out).
         ConnectionRefusedError,
         /// The remote host closed the connection. Note that the client socket (i.e., this socket) will be closed after the remote close notification has been sent.
@@ -92,7 +92,7 @@ mod ffi {
     /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the `connected()` signal from the socket or after having received a new socket from a `QTcpServer`.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SocketOption {
+    enum QAbstractSocketSocketOption {
         /// Try to optimize the socket for low latency. For a `QTcpSocket` this would set the `TCP_NODELAY` option and disable Nagle's algorithm. Set this to 1 to enable.
         LowDelayOption,
         /// Set this to 1 to enable the `SO_KEEPALIVE` socket option.
@@ -125,7 +125,7 @@ mod ffi {
     /// This enum describes the behavior of when the socket should hold back with continuing data transfer. The only notification currently supported is `QSslSocket::ssl_errors()`.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SocketPauseMode {
+    enum QAbstractSocketPauseMode {
         /// Do not pause data transfer on the socket. This is the default and matches the behavior of Qt 4.
         PauseNever = 0x0,
         /// Pause data transfer on the socket upon receiving an SSL error notification. I.E. `QSslSocket::ssl_errors()`.
@@ -135,7 +135,7 @@ mod ffi {
     /// This enum describes the different states in which a socket can be.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SocketState {
+    enum QAbstractSocketSocketState {
         /// The socket is not connected.
         UnconnectedState,
         /// The socket is performing a host name lookup.
@@ -155,7 +155,7 @@ mod ffi {
     /// This enum describes the transport layer protocol.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SocketType {
+    enum QAbstractSocketSocketType {
         /// TCP
         TcpSocket,
         /// UDP
@@ -174,7 +174,7 @@ mod ffi {
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-io/qiodevice.h");
-        type OpenMode = crate::OpenMode;
+        type QIODeviceOpenMode = crate::QIODeviceOpenMode;
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
         include!("cxx-qt-io/qnetworkproxy.h");
@@ -183,15 +183,15 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qabstractsocket.h");
-        type NetworkLayerProtocol;
-        type SocketType;
-        type SocketError;
-        type SocketState;
-        type SocketOption;
-        type SocketBindFlag;
-        type SocketBindMode = super::SocketBindMode;
-        type SocketPauseMode;
-        type SocketPauseModes = super::SocketPauseModes;
+        type QAbstractSocketNetworkLayerProtocol;
+        type QAbstractSocketSocketType;
+        type QAbstractSocketSocketError;
+        type QAbstractSocketSocketState;
+        type QAbstractSocketSocketOption;
+        type QAbstractSocketBindFlag;
+        type QAbstractSocketBindMode = super::QAbstractSocketBindMode;
+        type QAbstractSocketPauseMode;
+        type QAbstractSocketPauseModes = super::QAbstractSocketPauseModes;
     }
 
     unsafe extern "C++Qt" {
@@ -218,7 +218,7 @@ mod ffi {
             self: Pin<&mut QAbstractSocket>,
             address: &QHostAddress,
             port: u16,
-            mode: SocketBindMode,
+            mode: QAbstractSocketBindMode,
         ) -> bool;
 
         #[rust_name = "connect_to_host"]
@@ -226,8 +226,8 @@ mod ffi {
             self: Pin<&mut QAbstractSocket>,
             host_name: &QString,
             port: u16,
-            open_mode: OpenMode,
-            protocol: NetworkLayerProtocol,
+            open_mode: QIODeviceOpenMode,
+            protocol: QAbstractSocketNetworkLayerProtocol,
         );
 
         /// Attempts to close the socket. If there is pending data waiting to be written, `QAbstractSocket` will enter `ClosingState` and wait until all data has been written. Eventually, it will enter `UnconnectedState` and emit the `disconnected()` signal.
@@ -235,7 +235,7 @@ mod ffi {
         fn disconnectFromHost(self: Pin<&mut QAbstractSocket>);
 
         /// Returns the type of error that last occurred.
-        fn error(self: &QAbstractSocket) -> SocketError;
+        fn error(self: &QAbstractSocket) -> QAbstractSocketSocketError;
 
         /// This function writes as much as possible from the internal write buffer to the underlying network socket, without blocking. If any data was written, this function returns `true`; otherwise `false` is returned.
         ///
@@ -258,7 +258,7 @@ mod ffi {
 
         /// Returns the pause mode of this socket.
         #[rust_name = "pause_mode"]
-        fn pauseMode(self: &QAbstractSocket) -> SocketPauseModes;
+        fn pauseMode(self: &QAbstractSocket) -> QAbstractSocketPauseModes;
 
         #[doc(hidden)]
         #[rust_name = "peer_address_or_null"]
@@ -298,7 +298,10 @@ mod ffi {
         ///
         /// This option must be called before connecting to the server, otherwise it will result in undefined behavior.
         #[rust_name = "set_pause_mode"]
-        unsafe fn setPauseMode(self: Pin<&mut QAbstractSocket>, pause_mode: SocketPauseModes);
+        unsafe fn setPauseMode(
+            self: Pin<&mut QAbstractSocket>,
+            pause_mode: QAbstractSocketPauseModes,
+        );
 
         /// Sets the protocol tag for this socket to `tag`.
         #[rust_name = "set_protocol_tag"]
@@ -324,20 +327,23 @@ mod ffi {
         #[rust_name = "set_socket_option"]
         fn setSocketOption(
             self: Pin<&mut QAbstractSocket>,
-            option: SocketOption,
+            option: QAbstractSocketSocketOption,
             variant: &QVariant,
         );
 
         /// Returns the value of the `option` option.
         #[rust_name = "socket_option"]
-        fn socketOption(self: Pin<&mut QAbstractSocket>, option: SocketOption) -> QVariant;
+        fn socketOption(
+            self: Pin<&mut QAbstractSocket>,
+            option: QAbstractSocketSocketOption,
+        ) -> QVariant;
 
         /// Returns the socket type (TCP, UDP, or other).
         #[rust_name = "socket_type"]
-        fn socketType(self: &QAbstractSocket) -> SocketType;
+        fn socketType(self: &QAbstractSocket) -> QAbstractSocketSocketType;
 
         /// Returns the state of the socket.
-        fn state(self: &QAbstractSocket) -> SocketState;
+        fn state(self: &QAbstractSocket) -> QAbstractSocketSocketState;
 
         /// Waits until the socket is connected, up to `msecs` milliseconds. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call `error()` to determine the cause of the error.
         ///
@@ -374,7 +380,7 @@ mod ffi {
         /// When this signal is emitted, the socket may not be ready for a reconnect attempt. In that case, attempts to reconnect should be done from the event loop. For example, use `QChronoTimer::single_shot()` with 0ns as the timeout.
         #[qsignal]
         #[rust_name = "error_occurred"]
-        fn errorOccurred(self: Pin<&mut QAbstractSocket>, socket_error: SocketError);
+        fn errorOccurred(self: Pin<&mut QAbstractSocket>, socket_error: QAbstractSocketSocketError);
 
         /// This signal is emitted after connectToHost() has been called and the host lookup has succeeded.
         ///
@@ -401,20 +407,21 @@ mod ffi {
         /// This signal is emitted whenever `QAbstractSocket`'s state changes. The `socket_state` parameter is the new state.
         #[qsignal]
         #[rust_name = "state_changed"]
-        fn stateChanged(self: Pin<&mut QAbstractSocket>, socket_state: SocketState);
+        fn stateChanged(self: Pin<&mut QAbstractSocket>, socket_state: QAbstractSocketSocketState);
     }
 }
 
 pub use ffi::{
-    NetworkLayerProtocol, QAbstractSocket, SocketBindFlag, SocketError, SocketOption,
-    SocketPauseMode, SocketState, SocketType,
+    QAbstractSocket, QAbstractSocketBindFlag, QAbstractSocketNetworkLayerProtocol,
+    QAbstractSocketPauseMode, QAbstractSocketSocketError, QAbstractSocketSocketOption,
+    QAbstractSocketSocketState, QAbstractSocketSocketType,
 };
 
-pub type SocketBindMode = QFlags<SocketBindFlag>;
-unsafe_impl_qflag!(SocketBindFlag, "SocketBindMode", i32);
+pub type QAbstractSocketBindMode = QFlags<QAbstractSocketBindFlag>;
+unsafe_impl_qflag!(QAbstractSocketBindFlag, "QAbstractSocketBindMode");
 
-pub type SocketPauseModes = QFlags<SocketPauseMode>;
-unsafe_impl_qflag!(SocketPauseMode, "SocketPauseModes", i32);
+pub type QAbstractSocketPauseModes = QFlags<QAbstractSocketPauseMode>;
+unsafe_impl_qflag!(QAbstractSocketPauseMode, "QAbstractSocketPauseModes");
 
 impl QAbstractSocket {
     /// Returns the host address of the local socket if available; otherwise returns `None`.
@@ -466,28 +473,40 @@ impl Write for Pin<&mut QAbstractSocket> {
     }
 }
 
-impl From<SocketError> for io::ErrorKind {
-    fn from(value: SocketError) -> Self {
+impl From<QAbstractSocketSocketError> for io::ErrorKind {
+    fn from(value: QAbstractSocketSocketError) -> Self {
         #[allow(clippy::match_same_arms)]
         match value {
-            SocketError::ConnectionRefusedError => io::ErrorKind::ConnectionRefused,
-            SocketError::RemoteHostClosedError => io::ErrorKind::ConnectionAborted,
-            SocketError::HostNotFoundError => io::ErrorKind::NotFound,
-            SocketError::SocketAccessError => io::ErrorKind::PermissionDenied,
-            SocketError::SocketTimeoutError => io::ErrorKind::TimedOut,
-            SocketError::DatagramTooLargeError => io::ErrorKind::InvalidData,
-            SocketError::NetworkError => io::ErrorKind::BrokenPipe,
-            SocketError::AddressInUseError => io::ErrorKind::AddrInUse,
-            SocketError::SocketAddressNotAvailableError => io::ErrorKind::AddrNotAvailable,
-            SocketError::UnsupportedSocketOperationError => io::ErrorKind::Unsupported,
-            SocketError::UnfinishedSocketOperationError => io::ErrorKind::ConnectionRefused,
-            SocketError::ProxyAuthenticationRequiredError => io::ErrorKind::ConnectionAborted,
-            SocketError::SslHandshakeFailedError => io::ErrorKind::ConnectionAborted,
-            SocketError::ProxyConnectionRefusedError => io::ErrorKind::ConnectionRefused,
-            SocketError::ProxyConnectionClosedError => io::ErrorKind::ConnectionAborted,
-            SocketError::ProxyConnectionTimeoutError => io::ErrorKind::TimedOut,
-            SocketError::ProxyNotFoundError => io::ErrorKind::NotFound,
-            SocketError::TemporaryError => io::ErrorKind::WouldBlock,
+            QAbstractSocketSocketError::ConnectionRefusedError => io::ErrorKind::ConnectionRefused,
+            QAbstractSocketSocketError::RemoteHostClosedError => io::ErrorKind::ConnectionAborted,
+            QAbstractSocketSocketError::HostNotFoundError => io::ErrorKind::NotFound,
+            QAbstractSocketSocketError::SocketAccessError => io::ErrorKind::PermissionDenied,
+            QAbstractSocketSocketError::SocketTimeoutError => io::ErrorKind::TimedOut,
+            QAbstractSocketSocketError::DatagramTooLargeError => io::ErrorKind::InvalidData,
+            QAbstractSocketSocketError::NetworkError => io::ErrorKind::BrokenPipe,
+            QAbstractSocketSocketError::AddressInUseError => io::ErrorKind::AddrInUse,
+            QAbstractSocketSocketError::SocketAddressNotAvailableError => {
+                io::ErrorKind::AddrNotAvailable
+            }
+            QAbstractSocketSocketError::UnsupportedSocketOperationError => {
+                io::ErrorKind::Unsupported
+            }
+            QAbstractSocketSocketError::UnfinishedSocketOperationError => {
+                io::ErrorKind::ConnectionRefused
+            }
+            QAbstractSocketSocketError::ProxyAuthenticationRequiredError => {
+                io::ErrorKind::ConnectionAborted
+            }
+            QAbstractSocketSocketError::SslHandshakeFailedError => io::ErrorKind::ConnectionAborted,
+            QAbstractSocketSocketError::ProxyConnectionRefusedError => {
+                io::ErrorKind::ConnectionRefused
+            }
+            QAbstractSocketSocketError::ProxyConnectionClosedError => {
+                io::ErrorKind::ConnectionAborted
+            }
+            QAbstractSocketSocketError::ProxyConnectionTimeoutError => io::ErrorKind::TimedOut,
+            QAbstractSocketSocketError::ProxyNotFoundError => io::ErrorKind::NotFound,
+            QAbstractSocketSocketError::TemporaryError => io::ErrorKind::WouldBlock,
             _ => io::ErrorKind::Other,
         }
     }

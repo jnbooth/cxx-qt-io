@@ -2,4 +2,4 @@
 
 #include <QtNetwork/QNetworkRequest>
 
-using KnownHeaders = QNetworkRequest::KnownHeaders;
+using QNetworkRequestKnownHeaders = QNetworkRequest::KnownHeaders;

@@ -10,7 +10,7 @@ mod ffi {
     /// Note that only the Full form of the cookie can be parsed back into its original contents.
     #[repr(i32)]
     #[derive(Debug)]
-    enum CookieRawForm {
+    enum QNetworkCookieRawForm {
         /// makes `to_raw_form()` return only the `"NAME=VALUE"` part of the cookie, as suitable for sending back to a server in a client request's `"Cookie:"` header. Multiple cookies are separated by a semi-colon in the `"Cookie:"` header field.
         NameAndValueOnly,
         /// makes `to_raw_form()` return the full cookie contents, as suitable for sending to a client in a server's `"Set-Cookie:"` header.
@@ -20,7 +20,7 @@ mod ffi {
     #[cfg(cxxqt_qt_version_at_least_6_1)]
     #[repr(i32)]
     #[derive(Debug)]
-    enum SameSitePolicy {
+    enum QNetworkCookieSameSite {
         /// `SameSite` is not set. Can be interpreted as None or Lax by the browser.
         Default,
         /// Cookies can be sent in all contexts. This used to be default, but recent browsers made Lax default, and will now require the cookie to be both secure and to set `SameSite=None`.
@@ -44,9 +44,9 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qnetworkcookie.h");
-        type CookieRawForm;
+        type QNetworkCookieRawForm;
         #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type SameSitePolicy;
+        type QNetworkCookieSameSite;
     }
 
     unsafe extern "C++" {
@@ -58,7 +58,7 @@ mod ffi {
         /// Returns the `SameSite` option if specified in the cookie string, `SameSitePolicy::Default` if not present.
         #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "same_site_policy"]
-        fn sameSitePolicy(&self) -> SameSitePolicy;
+        fn sameSitePolicy(&self) -> QNetworkCookieSameSite;
 
         /// Sets the domain associated with this cookie to be `domain`.
         #[rust_name = "set_domain"]
@@ -83,7 +83,7 @@ mod ffi {
         /// Sets the `SameSite` option of this cookie to `same_site`.
         #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "set_same_site_policy"]
-        fn setSameSitePolicy(&mut self, policy: SameSitePolicy);
+        fn setSameSitePolicy(&mut self, policy: QNetworkCookieSameSite);
 
         /// Sets the secure flag of this cookie to `enable`.
         ///
@@ -97,7 +97,7 @@ mod ffi {
 
         /// Returns the raw form of this `QNetworkCookie`. The `QByteArray` returned by this function is suitable for an HTTP header, either in a server response (the `Set-Cookie` header) or the client request (the `Cookie` header). You can choose from one of two formats, using form.
         #[rust_name = "to_raw_form"]
-        fn toRawForm(&self, form: CookieRawForm) -> QByteArray;
+        fn toRawForm(&self, form: QNetworkCookieRawForm) -> QByteArray;
 
         /// Returns this cookies value, as specified in the cookie string. Note that a cookie is still valid if its value is empty.
         ///
@@ -134,10 +134,10 @@ mod ffi {
     }
 }
 
-pub use ffi::CookieRawForm;
+pub use ffi::QNetworkCookieRawForm;
 
 #[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use ffi::SameSitePolicy;
+pub use ffi::QNetworkCookieSameSite;
 
 /// The `QNetworkCookie` class holds one network cookie.
 ///

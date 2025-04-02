@@ -1,7 +1,7 @@
 #[cfg(cxxqt_qt_version_at_least_6_0)]
 mod cryptographic_hash_algorithm_6_0;
 #[cfg(cxxqt_qt_version_at_least_6_0)]
-pub use cryptographic_hash_algorithm_6_0::CryptographicHashAlgorithm;
+pub use cryptographic_hash_algorithm_6_0::QCryptographicHashAlgorithm;
 
 #[cfg(cxxqt_qt_version_at_least_5_9)]
 mod cryptographic_hash_algorithm_5_9;

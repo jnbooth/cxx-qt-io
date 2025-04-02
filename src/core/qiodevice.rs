@@ -13,7 +13,7 @@ mod ffi {
     /// Certain flags, such as `Unbuffered` and `Truncate`, are meaningless when used with some subclasses. Some of these restrictions are implied by the type of device that is represented by a subclass. In other cases, the restriction may be due to the implementation, or may be imposed by the underlying platform; for example, `QTcpSocket` does not support `Unbuffered` mode, and limitations in the native API prevent `QFile` from supporting `Unbuffered` on Windows.
     #[repr(i32)]
     #[derive(Debug)]
-    enum OpenModeFlag {
+    enum QIODeviceOpenModeFlag {
         /// The device is not open.
         NotOpen = 0x0000,
         /// The device is open for reading.
@@ -44,8 +44,8 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
 
         include!("cxx-qt-io/qiodevice.h");
-        type OpenModeFlag;
-        type OpenMode = super::OpenMode;
+        type QIODeviceOpenModeFlag;
+        type QIODeviceOpenMode = super::QIODeviceOpenMode;
     }
 
     unsafe extern "C++Qt" {
@@ -104,11 +104,11 @@ mod ffi {
         unsafe fn getChar(self: Pin<&mut QIODevice>, c: *mut c_char) -> bool;
 
         /// Opens the device and sets its OpenMode to `mode`. Returns `true` if successful; otherwise returns `false`. This function should be called from any reimplementations of `open()` or other functions that open the device.
-        fn open(self: Pin<&mut QIODevice>, mode: OpenMode) -> bool;
+        fn open(self: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
 
         /// Returns the mode in which the device has been opened; i.e. `ReadOnly` or `WriteOnly`.
         #[rust_name = "open_mode"]
-        fn openMode(self: &QIODevice) -> OpenMode;
+        fn openMode(self: &QIODevice) -> QIODeviceOpenMode;
 
         /// Reads at most `max_size` bytes from the device into `data`, without side effects (i.e., if you call `read()` after `peek()`, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in `WriteOnly` mode, this function returns -1.
         ///
@@ -359,10 +359,10 @@ mod ffi {
     }
 }
 
-pub use ffi::{OpenModeFlag, QIODevice};
+pub use ffi::{QIODevice, QIODeviceOpenModeFlag};
 
-pub type OpenMode = QFlags<OpenModeFlag>;
-unsafe_impl_qflag!(OpenModeFlag, "OpenMode", i32);
+pub type QIODeviceOpenMode = QFlags<QIODeviceOpenModeFlag>;
+unsafe_impl_qflag!(QIODeviceOpenModeFlag, "QIODeviceOpenMode");
 
 #[allow(clippy::cast_possible_wrap)]
 impl QIODevice {

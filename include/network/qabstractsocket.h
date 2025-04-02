@@ -2,12 +2,12 @@
 
 #include <QtNetwork/QAbstractSocket>
 
-using NetworkLayerProtocol = QAbstractSocket::NetworkLayerProtocol;
-using SocketType = QAbstractSocket::SocketType;
-using SocketError = QAbstractSocket::SocketError;
-using SocketState = QAbstractSocket::SocketState;
-using SocketOption = QAbstractSocket::SocketOption;
-using SocketBindFlag = QAbstractSocket::BindFlag;
-using SocketBindMode = QAbstractSocket::BindMode;
-using SocketPauseMode = QAbstractSocket::PauseMode;
-using SocketPauseModes = QAbstractSocket::PauseModes;
+using QAbstractSocketNetworkLayerProtocol = QAbstractSocket::NetworkLayerProtocol;
+using QAbstractSocketSocketType = QAbstractSocket::SocketType;
+using QAbstractSocketSocketError = QAbstractSocket::SocketError;
+using QAbstractSocketSocketState = QAbstractSocket::SocketState;
+using QAbstractSocketSocketOption = QAbstractSocket::SocketOption;
+using QAbstractSocketBindFlag = QAbstractSocket::BindFlag;
+using QAbstractSocketBindMode = QAbstractSocket::BindMode;
+using QAbstractSocketPauseMode = QAbstractSocket::PauseMode;
+using QAbstractSocketPauseModes = QAbstractSocket::PauseModes;

@@ -3,7 +3,7 @@ mod ffi {
     /// Describes the protocol of the cipher.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SslProtocol {
+    enum QSslSslProtocol {
         TlsV1_2 = 2,
         AnyProtocol,
         SecureProtocols,
@@ -21,8 +21,8 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qssl.h");
-        type SslProtocol;
+        type QSslSslProtocol;
     }
 }
 
-pub use ffi::SslProtocol;
+pub use ffi::QSslSslProtocol;

@@ -4,15 +4,15 @@ use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
 
 use crate::util::Valid;
-use crate::{NetworkLayerProtocol, QPair, QPairPair_QHostAddress_i32};
+use crate::{QAbstractSocketNetworkLayerProtocol, QPair, QPairPair_QHostAddress_i32};
 use cxx::{type_id, ExternType};
-use cxx_qt_lib::{QFlag, QFlags, QString};
+use cxx_qt_lib::{QFlags, QString};
 
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
-    enum AddressConversionModeFlag {
+    enum QHostAddressConversionModeFlag {
         /// Convert IPv4-mapped IPv6 addresses (RFC 4291 sect. 2.5.5.2) when comparing. Therefore `QHostAddress("::ffff:192.168.1.1")` will compare equal to `QHostAddress("192.168.1.1")`.
         ConvertV4MappedToIPv4 = 1,
         ConvertV4CompatToIPv4 = 2,
@@ -26,7 +26,7 @@ mod ffi {
 
     #[repr(i32)]
     #[derive(Debug)]
-    enum SpecialHostAddress {
+    enum QHostAddressSpecialAddress {
         /// The null address object. Equivalent to `QHostAddress::default()`. See also `QHostAddress::is_null()`.
         Null,
         /// The IPv4 localhost address. Equivalent to `QHostAddress("127.0.0.1")`.
@@ -46,17 +46,18 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-io/qabstractsocket.h");
+        type QAbstractSocketNetworkLayerProtocol = crate::QAbstractSocketNetworkLayerProtocol;
         include!("cxx-qt-io/qpair_qhostaddress_i32.h");
         type QPair_QHostAddress_i32 = crate::QPair<crate::QPairPair_QHostAddress_i32>;
     }
 
     extern "C++" {
         include!("cxx-qt-io/qhostaddress.h");
-        type NetworkLayerProtocol = super::NetworkLayerProtocol;
-        type AddressConversionModeFlag;
+        type QHostAddressConversionModeFlag;
         #[allow(unused)]
-        type AddressConversionMode = super::AddressConversionMode;
-        type SpecialHostAddress;
+        type QHostAddressConversionMode = crate::QHostAddressConversionMode;
+        type QHostAddressSpecialAddress;
 
         #[cxx_name = "Q_IPV6ADDR"]
         type QIpv6Addr = super::QIpv6Addr;
@@ -130,7 +131,7 @@ mod ffi {
         fn isUniqueLocalUnicast(&self) -> bool;
 
         /// Returns the network layer protocol of the host address.
-        fn protocol(&self) -> NetworkLayerProtocol;
+        fn protocol(&self) -> QAbstractSocketNetworkLayerProtocol;
 
         /// Returns the scope ID of an IPv6 address. For IPv4 addresses, or if the address does not contain a scope ID, an empty `QString` is returned.
         ///
@@ -182,7 +183,7 @@ mod ffi {
         #[rust_name = "qhostaddress_from_qstring"]
         fn construct(index: &QString) -> QHostAddress;
         #[rust_name = "qhostaddress_from_specialaddress"]
-        fn construct(address: &SpecialHostAddress) -> QHostAddress;
+        fn construct(address: &QHostAddressSpecialAddress) -> QHostAddress;
         #[rust_name = "qhostaddress_from_uint32"]
         fn construct(address: u32) -> QHostAddress;
         #[rust_name = "qhostaddress_clone"]
@@ -196,19 +197,11 @@ mod ffi {
     }
 }
 
-pub use ffi::{AddressConversionModeFlag, SpecialHostAddress};
+pub use ffi::{QHostAddressConversionModeFlag, QHostAddressSpecialAddress};
 
-pub type AddressConversionMode = QFlags<AddressConversionModeFlag>;
+pub type QHostAddressConversionMode = QFlags<QHostAddressConversionModeFlag>;
 
-unsafe impl QFlag for AddressConversionModeFlag {
-    type TypeId = type_id!("AddressConversionMode");
-
-    type Repr = i32;
-
-    fn to_repr(self) -> Self::Repr {
-        self.repr
-    }
-}
+unsafe_impl_qflag!(QHostAddressConversionModeFlag, "QHostAddressConversionMode");
 
 /// The `QHostAddress` class provides an IP address.
 ///
@@ -281,8 +274,8 @@ impl From<&QString> for QHostAddress {
     }
 }
 
-impl From<SpecialHostAddress> for QHostAddress {
-    fn from(value: SpecialHostAddress) -> Self {
+impl From<QHostAddressSpecialAddress> for QHostAddress {
+    fn from(value: QHostAddressSpecialAddress) -> Self {
         ffi::qhostaddress_from_specialaddress(&value)
     }
 }
@@ -330,7 +323,7 @@ impl From<IpAddr> for QHostAddress {
 
 impl From<QHostAddress> for IpAddr {
     fn from(value: QHostAddress) -> Self {
-        if value.protocol() != NetworkLayerProtocol::IPv4Protocol {
+        if value.protocol() != QAbstractSocketNetworkLayerProtocol::IPv4Protocol {
             return IpAddr::V6(value.into());
         }
         // SAFETY: Null pointer is ignored.

@@ -4,9 +4,9 @@
 
 #include "rust/cxx.h"
 
-using NetworkInterfaceFlag = QNetworkInterface::InterfaceFlag;
-using NetworkInterfaceFlags = QNetworkInterface::InterfaceFlags;
-using NetworkInterfaceType = QNetworkInterface::InterfaceType;
+using QNetworkInterfaceInterfaceFlag = QNetworkInterface::InterfaceFlag;
+using QNetworkInterfaceInterfaceFlags = QNetworkInterface::InterfaceFlags;
+using QNetworkInterfaceInterfaceType = QNetworkInterface::InterfaceType;
 
 namespace rust {
 template<>

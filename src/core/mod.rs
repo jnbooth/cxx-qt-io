@@ -1,17 +1,18 @@
 mod qcryptographichash;
-pub use qcryptographichash::CryptographicHashAlgorithm;
+pub use qcryptographichash::QCryptographicHashAlgorithm;
 
 mod qfiledevice;
 pub use qfiledevice::{
-    FileError, FileHandleFlag, FileHandleFlags, FilePermission, FilePermissions, FileTime,
-    MemoryMapFlag, MemoryMapFlags, QFileDevice,
+    QFileDevice, QFileDeviceFileError, QFileDeviceFileHandleFlag, QFileDeviceFileHandleFlags,
+    QFileDeviceFileTime, QFileDeviceMemoryMapFlag, QFileDeviceMemoryMapFlags,
+    QFileDevicePermission, QFileDevicePermissions,
 };
 
 mod qfile;
 pub use qfile::QFile;
 
 mod qiodevice;
-pub use qiodevice::{OpenMode, OpenModeFlag, QIODevice};
+pub use qiodevice::{QIODevice, QIODeviceOpenMode, QIODeviceOpenModeFlag};
 
 mod qlist;
 

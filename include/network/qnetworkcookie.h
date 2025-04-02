@@ -4,10 +4,10 @@
 
 #include "rust/cxx.h"
 
-using CookieRawForm = QNetworkCookie::RawForm;
+using QNetworkCookieRawForm = QNetworkCookie::RawForm;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
-using SameSitePolicy = QNetworkCookie::SameSite;
+using QNetworkCookieSameSite = QNetworkCookie::SameSite;
 #endif
 
 namespace rust {

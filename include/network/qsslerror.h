@@ -4,7 +4,7 @@
 
 #include "rust/cxx.h"
 
-using SslError = QSslError::SslError;
+using QSslErrorSslError = QSslError::SslError;
 
 namespace rust {
 template<>

@@ -4,7 +4,7 @@
 
 #include "rust/cxx.h"
 
-using DnsEligibilityStatus = QNetworkAddressEntry::DnsEligibilityStatus;
+using QNetworkAddressEntryDnsEligibilityStatus = QNetworkAddressEntry::DnsEligibilityStatus;
 
 namespace rust {
 template<>

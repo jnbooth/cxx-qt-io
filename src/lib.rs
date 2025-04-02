@@ -1,4 +1,7 @@
 macro_rules! unsafe_impl_qflag {
+    ( $typeName:ty, $typeId:literal ) => {
+        unsafe_impl_qflag!($typeName, $typeId, i32);
+    };
     ( $typeName:ty, $typeId:literal, $repr:ident ) => {
         unsafe impl ::cxx_qt_lib::QFlag for $typeName {
             type TypeId = ::cxx::type_id!($typeId);

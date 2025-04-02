@@ -4,7 +4,7 @@
 
 #include "rust/cxx.h"
 
-using WellKnownHeader = QHttpHeaders::WellKnownHeader;
+using QHttpHeadersWellKnownHeader = QHttpHeaders::WellKnownHeader;
 
 namespace rust {
 template<>
@@ -17,7 +17,7 @@ inline QHttpHeaders (*qhttpheadersFromListOfPairs)(
   QHttpHeaders::fromListOfPairs;
 
 ::rust::Slice<const ::std::uint8_t>
-qhttpheadersWellKnownHeaderName(WellKnownHeader name);
+qhttpheadersWellKnownHeaderName(QHttpHeaders::WellKnownHeader name);
 
 ::rust::Str
 qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i);
@@ -25,7 +25,7 @@ qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i);
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersValue(const QHttpHeaders& headers, QAnyStringView name);
 ::rust::Slice<const ::std::uint8_t>
-qhttpheadersValue(const QHttpHeaders& headers, WellKnownHeader name);
+qhttpheadersValue(const QHttpHeaders& headers, QHttpHeaders::WellKnownHeader name);
 
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i);

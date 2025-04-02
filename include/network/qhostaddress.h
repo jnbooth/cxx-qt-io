@@ -4,10 +4,9 @@
 
 #include "rust/cxx.h"
 
-using NetworkLayerProtocol = QAbstractSocket::NetworkLayerProtocol;
-using AddressConversionModeFlag = QHostAddress::ConversionModeFlag;
-using AddressConversionMode = QHostAddress::ConversionMode;
-using SpecialHostAddress = QHostAddress::SpecialAddress;
+using QHostAddressConversionModeFlag = QHostAddress::ConversionModeFlag;
+using QHostAddressConversionMode = QHostAddress::ConversionMode;
+using QHostAddressSpecialAddress = QHostAddress::SpecialAddress;
 
 namespace rust {
 template<>

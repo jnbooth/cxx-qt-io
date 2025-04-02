@@ -1,5 +1,5 @@
 use cxx::{type_id, ExternType};
-use cxx_qt_lib::{QFlag, QFlags, QList};
+use cxx_qt_lib::{QFlags, QList};
 use std::fmt::{self, Debug, Formatter};
 use std::mem::MaybeUninit;
 
@@ -15,7 +15,7 @@ mod ffi {
     /// Note that one network interface cannot be both broadcast-based and point-to-point.
     #[repr(i32)]
     #[derive(Debug)]
-    enum NetworkInterfaceFlag {
+    enum QNetworkInterfaceInterfaceFlag {
         /// The network interface is "up" - enabled by administrative action
         IsUp = 0x1,
         /// The network interface is operational: configured "up" and (typically) physically connected to a network
@@ -33,7 +33,7 @@ mod ffi {
     /// Specifies the type of hardware (PHY layer, OSI level 1) this interface is, if it could be determined. Interface types that are not among those listed below will generally be listed as Unknown, though future versions of Qt may add new enumeration values.
     #[repr(i32)]
     #[derive(Debug)]
-    enum NetworkInterfaceType {
+    enum QNetworkInterfaceInterfaceType {
         /// The interface type could not be determined or is not one of the other listed types.
         Unknown,
         /// The virtual loopback interface, which is assigned the loopback IP addresses (127.0.0.1, ::1).
@@ -75,10 +75,10 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qnetworkinterface.h");
-        type NetworkInterfaceFlag;
-        type NetworkInterfaceType;
+        type QNetworkInterfaceInterfaceFlag;
+        type QNetworkInterfaceInterfaceType;
         #[allow(unused)]
-        type NetworkInterfaceFlags = super::NetworkInterfaceFlags;
+        type QNetworkInterfaceInterfaceFlags = super::QNetworkInterfaceInterfaceFlags;
     }
 
     unsafe extern "C++" {
@@ -91,7 +91,7 @@ mod ffi {
         fn addressEntries(&self) -> QList_QNetworkAddressEntry;
 
         /// Returns the flags associated with this network interface.
-        fn flags(&self) -> NetworkInterfaceFlags;
+        fn flags(&self) -> QNetworkInterfaceInterfaceFlags;
 
         /// Returns the low-level hardware address for this interface. On Ethernet interfaces, this will be a MAC address in string representation, separated by colons.
         ///
@@ -122,7 +122,7 @@ mod ffi {
 
         /// Returns the type of this interface, if it could be determined. If it could not be determined, this function returns `QNetworkInterface::Unknown`.
         #[cxx_name = "type"]
-        fn interface_type(&self) -> NetworkInterfaceType;
+        fn interface_type(&self) -> QNetworkInterfaceInterfaceType;
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -162,9 +162,9 @@ mod ffi {
     }
 }
 
-pub use ffi::{NetworkInterfaceFlag, NetworkInterfaceType};
+pub use ffi::{QNetworkInterfaceInterfaceFlag, QNetworkInterfaceInterfaceType};
 
-impl NetworkInterfaceType {
+impl QNetworkInterfaceInterfaceType {
     /// An alias for `Wifi`.
     #[allow(non_upper_case_globals)]
     pub const Ieee80211: Self = Self {
@@ -172,17 +172,12 @@ impl NetworkInterfaceType {
     };
 }
 
-pub type NetworkInterfaceFlags = QFlags<NetworkInterfaceFlag>;
+pub type QNetworkInterfaceInterfaceFlags = QFlags<QNetworkInterfaceInterfaceFlag>;
 
-unsafe impl QFlag for NetworkInterfaceFlag {
-    type TypeId = type_id!("NetworkInterfaceFlags");
-
-    type Repr = i32;
-
-    fn to_repr(self) -> Self::Repr {
-        self.repr
-    }
-}
+unsafe_impl_qflag!(
+    QNetworkInterfaceInterfaceFlag,
+    "QNetworkInterfaceInterfaceFlags"
+);
 
 /// The `QNetworkInterface` class provides a listing of the host's IP addresses and network interfaces.
 ///

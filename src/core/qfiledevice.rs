@@ -8,7 +8,7 @@ mod ffi {
     /// This enum describes the errors that may be returned by the `error()` function.
     #[repr(i32)]
     #[derive(Debug)]
-    enum FileError {
+    enum QFileDeviceFileError {
         /// No error occurred.
         NoError,
         /// An error occurred when reading from the file.
@@ -44,7 +44,7 @@ mod ffi {
     /// This enum is used when opening a file to specify additional options which only apply to files and not to a generic `QIODevice`.
     #[repr(i32)]
     #[derive(Debug)]
-    enum FileHandleFlag {
+    enum QFileDeviceFileHandleFlag {
         /// The file handle passed into `open()` should be closed by `close()`, the default behavior is that `close` just flushes the file and the application is responsible for closing the file handle. When opening a file by name, this flag is ignored as Qt always owns the file handle and must close it.
         AutoCloseHandle = 0x0001,
         /// If not explicitly closed, the underlying file handle is left open when the `QFile` object is destroyed.
@@ -58,7 +58,7 @@ mod ffi {
     /// [Qt Documentation: QFile::Permission](https://doc.qt.io/qt-6/qfiledevice.html#Permission-enum)
     #[repr(i32)]
     #[derive(Debug)]
-    enum FilePermission {
+    enum QFileDevicePermission {
         /// The file is readable by the owner of the file.
         ReadOwner = 0x4000,
         /// The file is writable by the owner of the file.
@@ -88,7 +88,7 @@ mod ffi {
     /// This enum is used by the `file_time()` and `set_file_time()` functions.
     #[repr(i32)]
     #[derive(Debug)]
-    enum FileTime {
+    enum QFileDeviceFileTime {
         /// When the file was most recently accessed (e.g. read or written to).
         FileAccessTime,
         /// When the file was created (may not be not supported on UNIX).
@@ -102,7 +102,7 @@ mod ffi {
     /// This enum describes special options that may be used by the map() function.
     #[repr(i32)]
     #[derive(Debug)]
-    enum MemoryMapFlag {
+    enum QFileDeviceMemoryMapFlag {
         /// No options.
         NoOptions = 0,
         /// The mapped memory will be private, so any modifications will not be visible to other processes and will not be written to disk. Any such modifications will be lost when the memory is unmapped. It is unspecified whether modifications made to the file made after the mapping is created will be visible through the mapped memory.
@@ -117,13 +117,13 @@ mod ffi {
         type QDateTime = cxx_qt_lib::QDateTime;
 
         include!("cxx-qt-io/qfiledevice.h");
-        type FileError;
-        type FileHandleFlag;
-        type FileTime;
-        type MemoryMapFlag;
-        type MemoryMapFlags = super::MemoryMapFlags;
-        type FilePermission;
-        type FilePermissions = super::FilePermissions;
+        type QFileDeviceFileError;
+        type QFileDeviceFileHandleFlag;
+        type QFileDeviceFileTime;
+        type QFileDeviceMemoryMapFlag;
+        type QFileDeviceMemoryMapFlags = super::QFileDeviceMemoryMapFlags;
+        type QFileDevicePermission;
+        type QFileDevicePermissions = super::QFileDevicePermissions;
     }
 
     unsafe extern "C++Qt" {
@@ -139,7 +139,7 @@ mod ffi {
         /// Returns the file error status.
         ///
         /// The I/O device status returns an error code. For example, if `open()` returns `false`, or a read/write operation returns -1, this function can be called to find out the reason why the operation failed.
-        fn error(self: &QFileDevice) -> FileError;
+        fn error(self: &QFileDevice) -> QFileDeviceFileError;
 
         /// Returns the name of the file. The default implementation in `QFileDevice` returns a null string.
         #[rust_name = "file_name"]
@@ -147,7 +147,7 @@ mod ffi {
 
         /// Returns the file time specified by time. If the time cannot be determined return `QDateTime()` (an invalid date time).
         #[rust_name = "file_time_or_invalid"]
-        pub(self) fn fileTime(self: &QFileDevice, time: FileTime) -> QDateTime;
+        pub(self) fn fileTime(self: &QFileDevice, time: QFileDeviceFileTime) -> QDateTime;
 
         /// Flushes any buffered data to the file. Returns `true` if successful; otherwise returns `false`.
         fn flush(self: Pin<&mut QFileDevice>) -> bool;
@@ -171,11 +171,11 @@ mod ffi {
             self: Pin<&mut QFileDevice>,
             offset: i64,
             size: i64,
-            flags: MemoryMapFlags,
+            flags: QFileDeviceMemoryMapFlags,
         ) -> *mut u8;
 
         /// Returns the complete OR-ed together combination of `Permission` for the file.
-        fn permissions(self: &QFileDevice) -> FilePermissions;
+        fn permissions(self: &QFileDevice) -> QFileDevicePermissions;
 
         /// Sets the file size (in bytes) `sz`. Returns `true` if the resize succeeds; `false` otherwise. If `sz` is larger than the file currently is, the new bytes will be set to 0; if `sz` is smaller, the file is simply truncated.
         ///
@@ -187,14 +187,15 @@ mod ffi {
         fn setFileTime(
             self: Pin<&mut QFileDevice>,
             new_date: &QDateTime,
-            file_time: FileTime,
+            file_time: QFileDeviceFileTime,
         ) -> bool;
 
         /// Sets the permissions for the file to the `permissions` specified. Returns `true` if successful, or `false` if the permissions cannot be modified.
         ///
         /// **Warning:** This function does not manipulate ACLs, which may limit its effectiveness.
         #[rust_name = "set_permissions"]
-        fn setPermissions(self: Pin<&mut QFileDevice>, permissions: FilePermissions) -> bool;
+        fn setPermissions(self: Pin<&mut QFileDevice>, permissions: QFileDevicePermissions)
+            -> bool;
 
         /// Unmaps the memory address.
         ///
@@ -211,20 +212,23 @@ mod ffi {
     }
 }
 
-pub use ffi::{FileError, FileHandleFlag, FilePermission, FileTime, MemoryMapFlag, QFileDevice};
+pub use ffi::{
+    QFileDevice, QFileDeviceFileError, QFileDeviceFileHandleFlag, QFileDeviceFileTime,
+    QFileDeviceMemoryMapFlag, QFileDevicePermission,
+};
 
-pub type FilePermissions = QFlags<FilePermission>;
-unsafe_impl_qflag!(FilePermission, "FilePermissions", i32);
+pub type QFileDevicePermissions = QFlags<QFileDevicePermission>;
+unsafe_impl_qflag!(QFileDevicePermission, "QFileDevicePermissions");
 
-pub type FileHandleFlags = QFlags<FileHandleFlag>;
-unsafe_impl_qflag!(FileHandleFlag, "FileHandleFlags", i32);
+pub type QFileDeviceFileHandleFlags = QFlags<QFileDeviceFileHandleFlag>;
+unsafe_impl_qflag!(QFileDeviceFileHandleFlag, "QFileDeviceFileHandleFlags");
 
-pub type MemoryMapFlags = QFlags<MemoryMapFlag>;
-unsafe_impl_qflag!(MemoryMapFlag, "MemoryMapFlags", i32);
+pub type QFileDeviceMemoryMapFlags = QFlags<QFileDeviceMemoryMapFlag>;
+unsafe_impl_qflag!(QFileDeviceMemoryMapFlag, "QFileDeviceMemoryMapFlags");
 
 impl QFileDevice {
     /// Returns the file time specified by time. If the time cannot be determined return `None`.
-    pub fn file_time(&self, time: FileTime) -> Option<QDateTime> {
+    pub fn file_time(&self, time: QFileDeviceFileTime) -> Option<QDateTime> {
         let file_time = self.file_time_or_invalid(time);
         if file_time.is_valid() {
             Some(file_time)
@@ -274,12 +278,12 @@ impl Write for Pin<&mut QFileDevice> {
     }
 }
 
-impl From<FileError> for io::ErrorKind {
-    fn from(value: FileError) -> Self {
+impl From<QFileDeviceFileError> for io::ErrorKind {
+    fn from(value: QFileDeviceFileError) -> Self {
         match value {
-            FileError::AbortError => Self::Interrupted,
-            FileError::TimeOutError => Self::TimedOut,
-            FileError::PermissionsError => Self::PermissionDenied,
+            QFileDeviceFileError::AbortError => Self::Interrupted,
+            QFileDeviceFileError::TimeOutError => Self::TimedOut,
+            QFileDeviceFileError::PermissionsError => Self::PermissionDenied,
             _ => Self::Other,
         }
     }

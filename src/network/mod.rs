@@ -1,7 +1,9 @@
 mod qabstractsocket;
 pub use qabstractsocket::{
-    NetworkLayerProtocol, QAbstractSocket, SocketBindFlag, SocketBindMode, SocketError,
-    SocketOption, SocketPauseMode, SocketPauseModes, SocketState, SocketType,
+    QAbstractSocket, QAbstractSocketBindFlag, QAbstractSocketBindMode,
+    QAbstractSocketNetworkLayerProtocol, QAbstractSocketPauseMode, QAbstractSocketPauseModes,
+    QAbstractSocketSocketError, QAbstractSocketSocketOption, QAbstractSocketSocketState,
+    QAbstractSocketSocketType,
 };
 
 mod qauthenticator;
@@ -9,36 +11,40 @@ pub use qauthenticator::QAuthenticator;
 
 mod qhostaddress;
 pub use qhostaddress::{
-    AddressConversionMode, AddressConversionModeFlag, QHostAddress, SpecialHostAddress,
+    QHostAddress, QHostAddressConversionMode, QHostAddressConversionModeFlag,
+    QHostAddressSpecialAddress,
 };
 
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 mod qhttpheaders;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
-pub use qhttpheaders::{QHttpHeaders, WellKnownHeader};
+pub use qhttpheaders::{QHttpHeaders, QHttpHeadersWellKnownHeader};
 
 mod qnetworkaddressentry;
-pub use qnetworkaddressentry::{DnsEligibilityStatus, QNetworkAddressEntry};
+pub use qnetworkaddressentry::{QNetworkAddressEntry, QNetworkAddressEntryDnsEligibilityStatus};
 
 mod qnetworkcookie;
-pub use qnetworkcookie::{CookieRawForm, QNetworkCookie};
+pub use qnetworkcookie::{QNetworkCookie, QNetworkCookieRawForm};
 
 #[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use qnetworkcookie::SameSitePolicy;
+pub use qnetworkcookie::QNetworkCookieSameSite;
 
 mod qnetworkdatagram;
 pub use qnetworkdatagram::QNetworkDatagram;
 
 mod qnetworkinterface;
 pub use qnetworkinterface::{
-    NetworkInterfaceFlag, NetworkInterfaceFlags, NetworkInterfaceType, QNetworkInterface,
+    QNetworkInterface, QNetworkInterfaceInterfaceFlag, QNetworkInterfaceInterfaceFlags,
+    QNetworkInterfaceInterfaceType,
 };
 
 mod qnetworkproxy;
-pub use qnetworkproxy::{ProxyCapabilities, ProxyCapability, ProxyType, QNetworkProxy};
+pub use qnetworkproxy::{
+    QNetworkProxy, QNetworkProxyCapabilities, QNetworkProxyCapability, QNetworkProxyProxyType,
+};
 
 mod qnetworkrequest;
-pub use qnetworkrequest::KnownHeaders;
+pub use qnetworkrequest::QNetworkRequestKnownHeaders;
 
 #[cfg(feature = "ssl")]
 mod qocspresponse;
@@ -49,21 +55,21 @@ pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationRe
 mod qssl;
 #[cfg(feature = "ssl")]
 pub use qssl::{
-    SslAlternativeNameEntryType, SslEncodingFormat, SslKeyAlgorithm, SslKeyType, SslOption,
-    SslOptions, SslProtocol,
+    QSslAlternativeNameEntryType, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType, QSslOptions,
+    QSslSslOption, QSslSslProtocol,
 };
 
 #[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_0))]
-pub use qssl::{SslAlertLevel, SslAlertType};
+pub use qssl::{QSslAlertLevel, QSslAlertType};
 
 #[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_1))]
-pub use qssl::{SslImplementedClass, SslSupportedFeature};
+pub use qssl::{QSslImplementedClass, QSslSupportedFeature};
 
 #[cfg(feature = "ssl")]
 mod qsslcertificate;
 #[cfg(feature = "ssl")]
 pub use qsslcertificate::{
-    QSslCertificate, SslCertificatePatternSyntax, SslCertificateSubjectInfo,
+    QSslCertificate, QSslCertificatePatternSyntax, QSslCertificateSubjectInfo,
     SslCertificateSubjectInfoOrAttribute,
 };
 
@@ -75,7 +81,7 @@ pub use qsslcertificateextension::QSslCertificateExtension;
 #[cfg(feature = "ssl")]
 mod qsslerror;
 #[cfg(feature = "ssl")]
-pub use qsslerror::{QSslError, SslError};
+pub use qsslerror::{QSslError, QSslErrorSslError};
 
 #[cfg(feature = "ssl")]
 mod qsslkey;

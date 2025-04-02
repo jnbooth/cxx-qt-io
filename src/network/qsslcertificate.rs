@@ -8,14 +8,14 @@ use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
 use crate::util::Valid;
-use crate::{QIODevice, QSslError, QSslKey, SslEncodingFormat};
+use crate::{QIODevice, QSslEncodingFormat, QSslError, QSslKey};
 
 #[cxx::bridge]
 mod ffi {
     /// The syntax used to interpret the meaning of the pattern.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SslCertificatePatternSyntax {
+    enum QSslCertificatePatternSyntax {
         /// A rich Perl-like pattern matching syntax.
         RegularExpression,
         /// This provides a simple pattern matching syntax similar to that used by shells (command interpreters) for "file globbing". See `QRegularExpression::from_wildcard()`.
@@ -27,7 +27,7 @@ mod ffi {
     /// Describes keys that you can pass to `QSslCertificate::issuer_info()` or `QSslCertificate::subject_info()` to get information about the certificate issuer or subject.
     #[repr(i32)]
     #[derive(Debug)]
-    enum SslCertificateSubjectInfo {
+    enum QSslCertificateSubjectInfo {
         /// "O" The name of the organization.
         Organization,
         /// "CN" The common name; most often this is used to store the host name.
@@ -61,11 +61,11 @@ mod ffi {
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
 
         include!("cxx-qt-io/qcryptographichash.h");
-        type CryptographicHashAlgorithm = crate::CryptographicHashAlgorithm;
+        type QCryptographicHashAlgorithm = crate::QCryptographicHashAlgorithm;
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
         include!("cxx-qt-io/qssl.h");
-        type SslEncodingFormat = crate::SslEncodingFormat;
+        type QSslEncodingFormat = crate::QSslEncodingFormat;
         include!("cxx-qt-io/qsslkey.h");
         type QSslKey = crate::QSslKey;
         include!("cxx-qt-io/qlist.h");
@@ -76,8 +76,8 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qsslcertificate.h");
-        type SslCertificatePatternSyntax;
-        type SslCertificateSubjectInfo;
+        type QSslCertificatePatternSyntax;
+        type QSslCertificateSubjectInfo;
     }
 
     unsafe extern "C++" {
@@ -87,7 +87,7 @@ mod ffi {
         fn clear(&mut self);
 
         /// Returns a cryptographic digest of this certificate using `algorithm`.
-        fn digest(&self, algorithm: CryptographicHashAlgorithm) -> QByteArray;
+        fn digest(&self, algorithm: QCryptographicHashAlgorithm) -> QByteArray;
 
         #[doc(hidden)]
         #[rust_name = "effective_date_or_null"]
@@ -120,7 +120,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "issuer_info_by_subject"]
-        fn issuerInfo(&self, subject: SslCertificateSubjectInfo) -> QStringList;
+        fn issuerInfo(&self, subject: QSslCertificateSubjectInfo) -> QStringList;
         #[doc(hidden)]
         #[rust_name = "issuer_info_by_attribute"]
         fn issuerInfo(&self, attribute: &QByteArray) -> QStringList;
@@ -143,7 +143,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "subject_info_by_subject"]
-        fn subjectInfo(&self, subject: SslCertificateSubjectInfo) -> QStringList;
+        fn subjectInfo(&self, subject: QSslCertificateSubjectInfo) -> QStringList;
         #[doc(hidden)]
         #[rust_name = "subject_info_by_attribute"]
         fn subjectInfo(&self, attribute: &QByteArray) -> QStringList;
@@ -173,20 +173,20 @@ mod ffi {
         #[rust_name = "qsslcertificate_from_data"]
         fn qsslcertificateFromData(
             data: &QByteArray,
-            format: SslEncodingFormat,
+            format: QSslEncodingFormat,
         ) -> QList_QSslCertificate;
 
         #[rust_name = "qsslcertificate_from_device"]
         unsafe fn qsslcertificateFromDevice(
             device: *mut QIODevice,
-            format: SslEncodingFormat,
+            format: QSslEncodingFormat,
         ) -> QList_QSslCertificate;
 
         #[rust_name = "qsslcertificate_from_path"]
         fn qsslcertificateFromPath(
             path: &QString,
-            format: SslEncodingFormat,
-            syntax: SslCertificatePatternSyntax,
+            format: QSslEncodingFormat,
+            syntax: QSslCertificatePatternSyntax,
         ) -> QList_QSslCertificate;
 
         #[rust_name = "qsslcertificate_import_pkcs_12"]
@@ -213,9 +213,9 @@ mod ffi {
         fn drop(certificate: &mut QSslCertificate);
 
         #[rust_name = "qsslcertificate_init_device"]
-        unsafe fn construct(device: *mut QIODevice, format: SslEncodingFormat) -> QSslCertificate;
+        unsafe fn construct(device: *mut QIODevice, format: QSslEncodingFormat) -> QSslCertificate;
         #[rust_name = "qsslcertificate_init_data"]
-        fn construct(data: &QByteArray, format: SslEncodingFormat) -> QSslCertificate;
+        fn construct(data: &QByteArray, format: QSslEncodingFormat) -> QSslCertificate;
         #[rust_name = "qsslcertificate_clone"]
         fn construct(other: &QSslCertificate) -> QSslCertificate;
 
@@ -227,16 +227,16 @@ mod ffi {
     }
 }
 
-pub use ffi::{SslCertificatePatternSyntax, SslCertificateSubjectInfo};
+pub use ffi::{QSslCertificatePatternSyntax, QSslCertificateSubjectInfo};
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum SslCertificateSubjectInfoOrAttribute<'a> {
-    Subject(SslCertificateSubjectInfo),
+    Subject(QSslCertificateSubjectInfo),
     Attribute(&'a QByteArray),
 }
 
-impl From<SslCertificateSubjectInfo> for SslCertificateSubjectInfoOrAttribute<'static> {
-    fn from(value: SslCertificateSubjectInfo) -> Self {
+impl From<QSslCertificateSubjectInfo> for SslCertificateSubjectInfoOrAttribute<'static> {
+    fn from(value: QSslCertificateSubjectInfo) -> Self {
         Self::Subject(value)
     }
 }
@@ -349,14 +349,14 @@ impl QSslCertificate {
     /// Constructs a `QSslCertificate` by parsing the `format` encoded `data` and using the first available certificate found.
     ///
     /// Returns `None` if `data` did not contain a certificate or the certificate was not loaded successfully.
-    pub fn first_from_data(data: &QByteArray, format: SslEncodingFormat) -> Option<Self> {
+    pub fn first_from_data(data: &QByteArray, format: QSslEncodingFormat) -> Option<Self> {
         ffi::qsslcertificate_init_data(data, format).valid()
     }
 
     /// Constructs a `QSslCertificate` by reading `format` encoded data from `device` and using the first certificate found.
     ///
     /// Returns `None` if `device` did not contain a certificate or the certificate was not loaded successfully.
-    pub fn first_from_device<T>(device: Pin<&mut T>, format: SslEncodingFormat) -> Option<Self>
+    pub fn first_from_device<T>(device: Pin<&mut T>, format: QSslEncodingFormat) -> Option<Self>
     where
         T: Upcast<QIODevice>,
     {
@@ -366,12 +366,12 @@ impl QSslCertificate {
     }
 
     /// Searches for and parses all certificates in `data` that are encoded in the specified `format` and returns them in a list of certificates.
-    pub fn from_data(data: &QByteArray, format: SslEncodingFormat) -> QList<Self> {
+    pub fn from_data(data: &QByteArray, format: QSslEncodingFormat) -> QList<Self> {
         ffi::qsslcertificate_from_data(data, format)
     }
 
     /// Searches for and parses all certificates in `device` that are encoded in the specified `format` and returns them in a list of certificates.
-    pub fn from_device<T>(device: Pin<&mut T>, format: SslEncodingFormat) -> QList<Self>
+    pub fn from_device<T>(device: Pin<&mut T>, format: QSslEncodingFormat) -> QList<Self>
     where
         T: Upcast<QIODevice>,
     {
@@ -382,8 +382,8 @@ impl QSslCertificate {
     /// Searches all files in the `path` for certificates encoded in the specified `format` and returns them in a list. `path` must be a file or a pattern matching one or more files, as specified by `syntax`.
     pub fn from_path<T>(
         path: &QString,
-        format: SslEncodingFormat,
-        syntax: SslCertificatePatternSyntax,
+        format: QSslEncodingFormat,
+        syntax: QSslCertificatePatternSyntax,
     ) -> QList<Self>
     where
         T: Upcast<QIODevice>,

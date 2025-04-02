@@ -2,11 +2,11 @@
 
 #include <QtCore/QFileDevice>
 
-using FileError = QFileDevice::FileError;
-using FileHandleFlag = QFileDevice::FileHandleFlag;
-using FileHandleFlags = QFileDevice::FileHandleFlags;
-using FileTime = QFileDevice::FileTime;
-using MemoryMapFlag = QFileDevice::MemoryMapFlag;
-using MemoryMapFlags = QFileDevice::MemoryMapFlags;
-using FilePermission = QFileDevice::Permission;
-using FilePermissions = QFileDevice::Permissions;
+using QFileDeviceFileError = QFileDevice::FileError;
+using QFileDeviceFileHandleFlag = QFileDevice::FileHandleFlag;
+using QFileDeviceFileHandleFlags = QFileDevice::FileHandleFlags;
+using QFileDeviceFileTime = QFileDevice::FileTime;
+using QFileDeviceMemoryMapFlag = QFileDevice::MemoryMapFlag;
+using QFileDeviceMemoryMapFlags = QFileDevice::MemoryMapFlags;
+using QFileDevicePermission = QFileDevice::Permission;
+using QFileDevicePermissions = QFileDevice::Permissions;

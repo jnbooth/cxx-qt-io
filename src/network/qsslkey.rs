@@ -7,7 +7,7 @@ use std::pin::Pin;
 use std::ptr;
 
 use crate::util::Valid;
-use crate::{QIODevice, SslEncodingFormat, SslKeyAlgorithm, SslKeyType};
+use crate::{QIODevice, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType};
 
 #[cxx::bridge]
 mod ffi {
@@ -20,9 +20,9 @@ mod ffi {
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
         include!("cxx-qt-io/qssl.h");
-        type SslKeyAlgorithm = crate::SslKeyAlgorithm;
-        type SslEncodingFormat = crate::SslEncodingFormat;
-        type SslKeyType = crate::SslKeyType;
+        type QSslKeyAlgorithm = crate::QSslKeyAlgorithm;
+        type QSslEncodingFormat = crate::QSslEncodingFormat;
+        type QSslKeyType = crate::QSslKeyType;
     }
 
     extern "C++" {
@@ -33,7 +33,7 @@ mod ffi {
         type QSslKey = super::QSslKey;
 
         /// Returns the key algorithm.
-        fn algorithm(&self) -> SslKeyAlgorithm;
+        fn algorithm(&self) -> QSslKeyAlgorithm;
 
         /// Clears the contents of this key, making it a null key.
         fn clear(&mut self);
@@ -48,7 +48,7 @@ mod ffi {
 
         /// Returns the type of the key (i.e., `PublicKey` or `PrivateKey`).
         #[cxx_name = "type"]
-        fn key_type(&self) -> SslKeyType;
+        fn key_type(&self) -> QSslKeyType;
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -74,17 +74,17 @@ mod ffi {
         #[rust_name = "qsslkey_init_device"]
         unsafe fn construct(
             device: *mut QIODevice,
-            algorithm: SslKeyAlgorithm,
-            encoding: SslEncodingFormat,
-            key_type: SslKeyType,
+            algorithm: QSslKeyAlgorithm,
+            encoding: QSslEncodingFormat,
+            key_type: QSslKeyType,
             pass_phrase: &QByteArray,
         ) -> QSslKey;
         #[rust_name = "qsslkey_init_data"]
         fn construct(
             data: &QByteArray,
-            algorithm: SslKeyAlgorithm,
-            encoding: SslEncodingFormat,
-            key_type: SslKeyType,
+            algorithm: QSslKeyAlgorithm,
+            encoding: QSslEncodingFormat,
+            key_type: QSslKeyType,
             pass_phrase: &QByteArray,
         ) -> QSslKey;
         #[rust_name = "qsslkey_clone"]
@@ -153,9 +153,9 @@ impl QSslKey {
     /// Returns `None` if the device did not provide a valid key.
     pub fn from_device<T>(
         device: Pin<&mut T>,
-        algorithm: SslKeyAlgorithm,
-        encoding: SslEncodingFormat,
-        key_type: SslKeyType,
+        algorithm: QSslKeyAlgorithm,
+        encoding: QSslEncodingFormat,
+        key_type: QSslKeyType,
         pass_phrase: &QByteArray,
     ) -> Option<Self>
     where
@@ -181,9 +181,9 @@ impl QSslKey {
     /// Returns `None` if `encoded` did not contain a valid key.
     pub fn from_data(
         encoded: &QByteArray,
-        algorithm: SslKeyAlgorithm,
-        encoding: SslEncodingFormat,
-        key_type: SslKeyType,
+        algorithm: QSslKeyAlgorithm,
+        encoding: QSslEncodingFormat,
+        key_type: QSslKeyType,
         pass_phrase: &QByteArray,
     ) -> Option<Self> {
         ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase).valid()

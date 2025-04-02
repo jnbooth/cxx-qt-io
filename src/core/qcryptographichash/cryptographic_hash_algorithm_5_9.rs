@@ -2,7 +2,7 @@
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
-    enum CryptographicHashAlgorithm {
+    enum QCryptographicHashAlgorithm {
         Md4,
         Md5,
         Sha1,
@@ -22,8 +22,8 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qcryptographichash.h");
-        type CryptographicHashAlgorithm;
+        type QCryptographicHashAlgorithm;
     }
 }
 
-pub use ffi::CryptographicHashAlgorithm;
+pub use ffi::QCryptographicHashAlgorithm;

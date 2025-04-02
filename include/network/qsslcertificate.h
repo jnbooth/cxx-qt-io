@@ -4,8 +4,8 @@
 
 #include "rust/cxx.h"
 
-using SslCertificatePatternSyntax = QSslCertificate::PatternSyntax;
-using SslCertificateSubjectInfo = QSslCertificate::SubjectInfo;
+using QSslCertificatePatternSyntax = QSslCertificate::PatternSyntax;
+using QSslCertificateSubjectInfo = QSslCertificate::SubjectInfo;
 
 namespace rust {
 template<>
@@ -23,7 +23,7 @@ QList<QSslCertificate> (*qsslcertificateFromDevice)(QIODevice*,
 
 QList<QSslCertificate> (*qsslcertificateFromPath)(const QString&,
                                                   QSsl::EncodingFormat,
-                                                  SslCertificatePatternSyntax) =
+                                                  QSslCertificatePatternSyntax) =
   QSslCertificate::fromPath;
 
 bool (*qsslcertificateImportPkcs12)(QIODevice* device,
