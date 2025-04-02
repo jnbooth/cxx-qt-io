@@ -1,3 +1,4 @@
+#![allow(unused)]
 use cxx_qt_lib::{QVariant, QVariantValue};
 
 macro_rules! impl_qvariant_value {

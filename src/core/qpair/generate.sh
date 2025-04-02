@@ -76,7 +76,7 @@ EOF
 }
 
 generate_qpair_header "QByteArray_QByteArray" "::QByteArray" "::QByteArray" "QtCore/QByteArray" ""
-generate_qpair_header "QHostAddress_i32" "::QHostAddress" "::std::int32_t" "QtNetwork/QHostAddress" ""
-
 generate_bridge "QByteArray" "QByteArray" "cxx-qt-lib/qstring" ""
+
+generate_qpair_header "QHostAddress_i32" "::QHostAddress" "::std::int32_t" "QtNetwork/QHostAddress" ""
 generate_bridge "QHostAddress" "i32" "cxx-qt-io/qhostaddress" ""

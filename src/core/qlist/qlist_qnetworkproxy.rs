@@ -16,7 +16,7 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qlist_clear_QNetworkProxy"]
         fn qlistClear(list: &mut QList_QNetworkProxy);
-        #[rust_name = "cxx_qlist_contains"]
+        #[rust_name = "cxx_qlist_contains_QNetworkProxy"]
         fn qlistContains(list: &QList_QNetworkProxy, _: &QNetworkProxy) -> bool;
     }
 
@@ -56,7 +56,7 @@ pub(crate) fn clear(v: &mut ffi::QList_QNetworkProxy) {
 }
 
 pub(crate) fn contains(v: &ffi::QList_QNetworkProxy, item: &ffi::QNetworkProxy) -> bool {
-    ffi::cxx_qlist_contains(v, item)
+    ffi::cxx_qlist_contains_QNetworkProxy(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkProxy, size: isize) {

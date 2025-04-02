@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use cxx::type_id;
 use cxx_qt_lib::{QSet, QSetElement};
 

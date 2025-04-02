@@ -1,5 +1,7 @@
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qset/generate.sh
+#![allow(clippy::trivially_copy_pass_by_ref)]
+
 #[cxx::bridge]
 pub mod ffi {
     unsafe extern "C++" {
@@ -14,9 +16,9 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qset_clear_QOcspResponse"]
         fn qsetClear(set: &mut QSet_QOcspResponse);
-        #[rust_name = "cxx_qset_contains"]
+        #[rust_name = "cxx_qset_contains_QOcspResponse"]
         fn qsetContains(set: &QSet_QOcspResponse, _: &QOcspResponse) -> bool;
-        #[rust_name = "cxx_qset_remove"]
+        #[rust_name = "cxx_qset_remove_QOcspResponse"]
         fn qsetRemove(set: &QSet_QOcspResponse, _: &QOcspResponse) -> bool;
     }
 
@@ -50,11 +52,11 @@ pub(crate) fn clear(v: &mut ffi::QSet_QOcspResponse) {
 }
 
 pub(crate) fn contains(v: &ffi::QSet_QOcspResponse, item: &ffi::QOcspResponse) -> bool {
-    ffi::cxx_qset_contains(v, item)
+    ffi::cxx_qset_contains_QOcspResponse(v, item)
 }
 
 pub(crate) fn remove(v: &ffi::QSet_QOcspResponse, item: &ffi::QOcspResponse) -> bool {
-    ffi::cxx_qset_remove(v, item)
+    ffi::cxx_qset_remove_QOcspResponse(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_QOcspResponse) -> ffi::QSet_QOcspResponse {

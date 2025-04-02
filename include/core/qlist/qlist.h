@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cxx-qt-io/definitions.h>
+#include <cxx-qt-lib/qlist.h>
 
 #include "qlist_qpair_qbytearray_qbytearray.h"
 

@@ -16,7 +16,7 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qlist_clear_QSslDiffieHellmanParameters"]
         fn qlistClear(list: &mut QList_QSslDiffieHellmanParameters);
-        #[rust_name = "cxx_qlist_contains"]
+        #[rust_name = "cxx_qlist_contains_QSslDiffieHellmanParameters"]
         fn qlistContains(
             list: &QList_QSslDiffieHellmanParameters,
             _: &QSslDiffieHellmanParameters,
@@ -72,7 +72,7 @@ pub(crate) fn contains(
     v: &ffi::QList_QSslDiffieHellmanParameters,
     item: &ffi::QSslDiffieHellmanParameters,
 ) -> bool {
-    ffi::cxx_qlist_contains(v, item)
+    ffi::cxx_qlist_contains_QSslDiffieHellmanParameters(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslDiffieHellmanParameters, size: isize) {

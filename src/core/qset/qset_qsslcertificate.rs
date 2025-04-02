@@ -1,5 +1,7 @@
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qset/generate.sh
+#![allow(clippy::trivially_copy_pass_by_ref)]
+
 #[cxx::bridge]
 pub mod ffi {
     unsafe extern "C++" {
@@ -14,9 +16,9 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qset_clear_QSslCertificate"]
         fn qsetClear(set: &mut QSet_QSslCertificate);
-        #[rust_name = "cxx_qset_contains"]
+        #[rust_name = "cxx_qset_contains_QSslCertificate"]
         fn qsetContains(set: &QSet_QSslCertificate, _: &QSslCertificate) -> bool;
-        #[rust_name = "cxx_qset_remove"]
+        #[rust_name = "cxx_qset_remove_QSslCertificate"]
         fn qsetRemove(set: &QSet_QSslCertificate, _: &QSslCertificate) -> bool;
     }
 
@@ -50,11 +52,11 @@ pub(crate) fn clear(v: &mut ffi::QSet_QSslCertificate) {
 }
 
 pub(crate) fn contains(v: &ffi::QSet_QSslCertificate, item: &ffi::QSslCertificate) -> bool {
-    ffi::cxx_qset_contains(v, item)
+    ffi::cxx_qset_contains_QSslCertificate(v, item)
 }
 
 pub(crate) fn remove(v: &ffi::QSet_QSslCertificate, item: &ffi::QSslCertificate) -> bool {
-    ffi::cxx_qset_remove(v, item)
+    ffi::cxx_qset_remove_QSslCertificate(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_QSslCertificate) -> ffi::QSet_QSslCertificate {

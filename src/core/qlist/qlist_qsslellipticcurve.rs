@@ -16,7 +16,7 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qlist_clear_QSslEllipticCurve"]
         fn qlistClear(list: &mut QList_QSslEllipticCurve);
-        #[rust_name = "cxx_qlist_contains"]
+        #[rust_name = "cxx_qlist_contains_QSslEllipticCurve"]
         fn qlistContains(list: &QList_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
     }
 
@@ -59,7 +59,7 @@ pub(crate) fn clear(v: &mut ffi::QList_QSslEllipticCurve) {
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslEllipticCurve, item: &ffi::QSslEllipticCurve) -> bool {
-    ffi::cxx_qlist_contains(v, item)
+    ffi::cxx_qlist_contains_QSslEllipticCurve(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslEllipticCurve, size: isize) {

@@ -1,5 +1,7 @@
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qset/generate.sh
+#![allow(clippy::trivially_copy_pass_by_ref)]
+
 #[cxx::bridge]
 pub mod ffi {
     unsafe extern "C++" {
@@ -14,9 +16,9 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qset_clear_QSslEllipticCurve"]
         fn qsetClear(set: &mut QSet_QSslEllipticCurve);
-        #[rust_name = "cxx_qset_contains"]
+        #[rust_name = "cxx_qset_contains_QSslEllipticCurve"]
         fn qsetContains(set: &QSet_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
-        #[rust_name = "cxx_qset_remove"]
+        #[rust_name = "cxx_qset_remove_QSslEllipticCurve"]
         fn qsetRemove(set: &QSet_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
     }
 
@@ -50,11 +52,11 @@ pub(crate) fn clear(v: &mut ffi::QSet_QSslEllipticCurve) {
 }
 
 pub(crate) fn contains(v: &ffi::QSet_QSslEllipticCurve, item: &ffi::QSslEllipticCurve) -> bool {
-    ffi::cxx_qset_contains(v, item)
+    ffi::cxx_qset_contains_QSslEllipticCurve(v, item)
 }
 
 pub(crate) fn remove(v: &ffi::QSet_QSslEllipticCurve, item: &ffi::QSslEllipticCurve) -> bool {
-    ffi::cxx_qset_remove(v, item)
+    ffi::cxx_qset_remove_QSslEllipticCurve(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_QSslEllipticCurve) -> ffi::QSet_QSslEllipticCurve {

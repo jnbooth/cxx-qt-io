@@ -16,7 +16,7 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qlist_clear_QSslKey"]
         fn qlistClear(list: &mut QList_QSslKey);
-        #[rust_name = "cxx_qlist_contains"]
+        #[rust_name = "cxx_qlist_contains_QSslKey"]
         fn qlistContains(list: &QList_QSslKey, _: &QSslKey) -> bool;
     }
 
@@ -56,7 +56,7 @@ pub(crate) fn clear(v: &mut ffi::QList_QSslKey) {
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslKey, item: &ffi::QSslKey) -> bool {
-    ffi::cxx_qlist_contains(v, item)
+    ffi::cxx_qlist_contains_QSslKey(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslKey, size: isize) {

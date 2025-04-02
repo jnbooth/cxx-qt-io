@@ -27,6 +27,8 @@ EOF
     tee "$SCRIPTPATH/qset_$LOWER.rs" <<EOF
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qset/generate.sh
+#![allow(clippy::trivially_copy_pass_by_ref)]
+
 #[cxx::bridge]
 pub mod ffi {
     unsafe extern "C++" {
@@ -41,12 +43,12 @@ pub mod ffi {
     unsafe extern "C++" {
         #[rust_name = "cxx_qset_clear_$1"]
         fn qsetClear(set: &mut QSet_$1);
-        #[rust_name = "cxx_qset_contains"]
+        #[rust_name = "cxx_qset_contains_$1"]
         fn qsetContains(
             set: &QSet_$1,
             _: &$1,
         ) -> bool;
-        #[rust_name = "cxx_qset_remove"]
+        #[rust_name = "cxx_qset_remove_$1"]
         fn qsetRemove(
             set: &QSet_$1,
             _: &$1,
@@ -86,14 +88,14 @@ pub(crate) fn contains(
     v: &ffi::QSet_$1,
     item: &ffi::$1,
 ) -> bool {
-    ffi::cxx_qset_contains(v, item)
+    ffi::cxx_qset_contains_$1(v, item)
 }
 
 pub(crate) fn remove(
     v: &ffi::QSet_$1,
     item: &ffi::$1,
 ) -> bool {
-    ffi::cxx_qset_remove(v, item)
+    ffi::cxx_qset_remove_$1(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_$1) -> ffi::QSet_$1 {

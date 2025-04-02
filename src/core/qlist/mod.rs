@@ -105,7 +105,7 @@ impl_qlist_element!(
 impl_qlist_element!(
     crate::QNetworkDatagram,
     qlist_qnetworkdatagram,
-    "QList_QNetworkDatagram"
+    "QList_QNetworkDatagram",
 );
 
 #[cfg(feature = "qt_network")]
@@ -126,35 +126,35 @@ impl_qlist_element!(
 impl_qlist_element!(
     crate::QOcspResponse,
     qlist_qocspresponse,
-    "QList_QOcspResponse"
+    "QList_QOcspResponse",
 );
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
     crate::QSslCertificate,
     qlist_qsslcertificate,
-    "QList_QSslCertificate"
+    "QList_QSslCertificate",
 );
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
     crate::QSslCertificateExtension,
     qlist_qsslcertificateextension,
-    "QList_QSslCertificateExtension"
+    "QList_QSslCertificateExtension",
 );
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
     crate::QSslDiffieHellmanParameters,
     qlist_qssldiffiehellmanparameters,
-    "QList_QSslDiffieHellmanParameters"
+    "QList_QSslDiffieHellmanParameters",
 );
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
     crate::QSslEllipticCurve,
     qlist_qsslellipticcurve,
-    "QList_QSslEllipticCurve"
+    "QList_QSslEllipticCurve",
 );
 
 #[cfg(feature = "ssl")]
