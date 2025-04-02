@@ -41,6 +41,11 @@ mod qnetworkrequest;
 pub use qnetworkrequest::KnownHeaders;
 
 #[cfg(feature = "ssl")]
+mod qocspresponse;
+#[cfg(feature = "ssl")]
+pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationReason};
+
+#[cfg(feature = "ssl")]
 mod qssl;
 #[cfg(feature = "ssl")]
 pub use qssl::{

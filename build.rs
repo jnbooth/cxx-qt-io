@@ -247,6 +247,7 @@ fn main() {
             include_header!("include/core/qlist/qlist_qsslcertificateextension.h"),
             include_header!("include/core/qlist/qlist_qsslerror.h"),
             include_header!("include/core/qlist/qlist_qsslkey.h"),
+            include_header!("include/network/qocspresponse.h"),
             include_header!("include/network/qssl.h"),
             include_header!("include/network/qsslcertificate.h"),
             include_header!("include/network/qsslcertificateextension.h"),
@@ -257,6 +258,7 @@ fn main() {
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
+                "network/qocspresponse",
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
                 "network/qsslerror",
@@ -267,6 +269,7 @@ fn main() {
                 "core/qlist/qlist_qsslcertificateextension",
                 "core/qlist/qlist_qsslerror",
                 "core/qlist/qlist_qsslkey",
+                "network/qocspresponse",
                 "network/qssl/mod",
                 &version.find("network/qssl/alternative_name_entry_type", &[(5, 13)]),
                 &version.find("network/qssl/protocol", &[(6, 3), (5, 12)]),

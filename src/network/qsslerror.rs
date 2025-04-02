@@ -3,8 +3,12 @@ use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
 
+use crate::util::Valid;
+use crate::QSslCertificate;
+
 #[cxx::bridge]
 mod ffi {
+    /// Describes all recognized errors that can occur during an SSL handshake.
     #[repr(i32)]
     #[derive(Debug)]
     enum SslError {
@@ -45,7 +49,6 @@ mod ffi {
         OcspResponseCertIdUnknown,
         OcspResponseExpired,
         OcspStatusUnknown,
-
         UnspecifiedError = -1,
     }
 
@@ -102,9 +105,6 @@ mod ffi {
 }
 
 pub use ffi::SslError;
-
-use crate::util::Valid;
-use crate::QSslCertificate;
 
 /// The `QSslError` class provides an SSL error.
 ///
