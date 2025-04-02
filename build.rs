@@ -146,6 +146,9 @@ fn main() {
         include_header!("include/core/qlist/qlist_private.h"),
         include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qlist/qlist.h"),
+        include_header!("include/core/qmap/qmap_private.h"),
+        include_header!("include/core/qmap/qmap_qbytearray_qvariant.h"),
+        include_header!("include/core/qmap/qmap.h"),
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
@@ -167,6 +170,7 @@ fn main() {
             "core/qiodevice",
             "core/qlist/qlist",
             "core/qpair/qpair",
+            "core/qmap/qmap",
             "core/qset/qset",
             "core/qvariant/qvariant",
         ])
@@ -179,6 +183,7 @@ fn main() {
             "core/qfiledevice",
             "core/qiodevice",
             "core/qlist/qlist_qpair_qbytearray_qbytearray",
+            "core/qmap/qmap_qbytearray_qvariant",
             "core/qsavefile",
             "core/qtemporaryfile",
         ]);

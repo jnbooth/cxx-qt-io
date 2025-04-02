@@ -16,6 +16,9 @@ pub use qiodevice::{QIODevice, QIODeviceOpenMode, QIODeviceOpenModeFlag};
 
 mod qlist;
 
+mod qmap;
+pub use qmap::QMapPair_QByteArray_QVariant;
+
 mod qpair;
 pub use qpair::{QPair, QPairPair, QPairPair_QByteArray_QByteArray};
 
