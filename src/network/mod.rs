@@ -79,6 +79,11 @@ mod qsslcertificateextension;
 pub use qsslcertificateextension::QSslCertificateExtension;
 
 #[cfg(feature = "ssl")]
+mod qsslcipher;
+#[cfg(feature = "ssl")]
+pub use qsslcipher::QSslCipher;
+
+#[cfg(feature = "ssl")]
 mod qsslerror;
 #[cfg(feature = "ssl")]
 pub use qsslerror::{QSslError, QSslErrorSslError};

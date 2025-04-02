@@ -244,6 +244,7 @@ fn main() {
             include_header!("include/network/qssl.h"),
             include_header!("include/network/qsslcertificate.h"),
             include_header!("include/network/qsslcertificateextension.h"),
+            include_header!("include/network/qsslcipher.h"),
             include_header!("include/network/qsslerror.h"),
             include_header!("include/network/qsslkey.h"),
         ]);
@@ -268,6 +269,7 @@ fn main() {
                 &version.find("network/qssl/protocol", &[(6, 3), (5, 12)]),
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
+                "network/qsslcipher",
                 "network/qsslerror",
                 "network/qsslkey",
             ]);
