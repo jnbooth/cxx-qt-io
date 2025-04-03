@@ -113,6 +113,11 @@ mod qsslsocket;
 #[cfg(feature = "ssl")]
 pub use qsslsocket::QSslSocketPeerVerifyMode;
 
+#[cfg(feature = "ssl")]
+mod qsslpresharedkeyauthenticator;
+#[cfg(feature = "ssl")]
+pub use qsslpresharedkeyauthenticator::QSslPreSharedKeyAuthenticator;
+
 mod qtcpsocket;
 pub use qtcpsocket::QTcpSocket;
 

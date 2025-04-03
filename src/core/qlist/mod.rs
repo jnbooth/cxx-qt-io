@@ -172,3 +172,10 @@ impl_qlist_element!(crate::QSslError, qlist_qsslerror, "QList_QSslError");
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(crate::QSslKey, qlist_qsslkey, "QList_QSslKey");
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(
+    crate::QSslPreSharedKeyAuthenticator,
+    qlist_qsslpresharedkeyauthenticator,
+    "QList_QSslPreSharedKeyAuthenticator"
+);

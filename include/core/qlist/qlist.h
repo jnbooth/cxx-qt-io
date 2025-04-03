@@ -27,6 +27,7 @@
 #include "qlist_qsslellipticcurve.h"
 #include "qlist_qsslerror.h"
 #include "qlist_qsslkey.h"
+#include "qlist_qsslpresharedkeyauthenticator.h"
 #endif
 
 #endif

@@ -272,6 +272,7 @@ generate_bridge "QSslDiffieHellmanParameters"
 generate_bridge "QSslEllipticCurve"
 generate_bridge "QSslError"
 generate_bridge "QSslKey"
+generate_bridge "QSslPreSharedKeyAuthenticator"
 
 generate_bridge_neq "QHttpHeaders"
 generate_bridge_neq "QNetworkDatagram"

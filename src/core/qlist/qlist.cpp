@@ -47,6 +47,7 @@ CXX_QT_IO_QLIST_ASSERTS(QSslCertificateExtension);
 CXX_QT_IO_QLIST_ASSERTS(QSslConfiguration);
 CXX_QT_IO_QLIST_ASSERTS(QSslError);
 CXX_QT_IO_QLIST_ASSERTS(QSslKey);
+CXX_QT_IO_QLIST_ASSERTS(QSslPreSharedKeyAuthenticator);
 #endif
 
 #endif

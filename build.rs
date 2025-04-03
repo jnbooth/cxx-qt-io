@@ -260,6 +260,7 @@ fn main() {
             include_header!("include/core/qlist/qlist_qsslellipticcurve.h"),
             include_header!("include/core/qlist/qlist_qsslerror.h"),
             include_header!("include/core/qlist/qlist_qsslkey.h"),
+            include_header!("include/core/qlist/qlist_qsslpresharedkeyauthenticator.h"),
             include_header!("include/core/qset/qset_qocspresponse.h"),
             include_header!("include/core/qset/qset_qsslcertificate.h"),
             include_header!("include/core/qset/qset_qsslellipticcurve.h"),
@@ -274,6 +275,7 @@ fn main() {
             include_header!("include/network/qsslellipticcurve.h"),
             include_header!("include/network/qsslerror.h"),
             include_header!("include/network/qsslkey.h"),
+            include_header!("include/network/qsslpresharedkeyauthenticator.h"),
             include_header!("include/network/qsslsocket.h"),
         ]);
 
@@ -288,6 +290,7 @@ fn main() {
                 "network/qsslellipticcurve",
                 "network/qsslerror",
                 "network/qsslkey",
+                "network/qsslpresharedkeyauthenticator",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qocspresponse",
@@ -298,6 +301,7 @@ fn main() {
                 "core/qlist/qlist_qsslellipticcurve",
                 "core/qlist/qlist_qsslerror",
                 "core/qlist/qlist_qsslkey",
+                "core/qlist/qlist_qsslpresharedkeyauthenticator",
                 "network/qocspresponse",
                 "network/qssl/mod",
                 &version.find("network/qssl/alternative_name_entry_type", &[(5, 13)]),
@@ -310,6 +314,7 @@ fn main() {
                 "network/qsslellipticcurve",
                 "network/qsslerror",
                 "network/qsslkey",
+                "network/qsslpresharedkeyauthenticator",
                 "network/qsslsocket",
             ]);
     }
