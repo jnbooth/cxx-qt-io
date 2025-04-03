@@ -2,7 +2,9 @@ use std::fmt::{self, Debug, Formatter};
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
-use cxx_qt_lib::QFlags;
+use cxx_qt_lib::{QFlags, QVariant};
+
+use crate::QNetworkRequestKnownHeaders;
 
 #[cxx::bridge]
 mod ffi {
@@ -131,10 +133,8 @@ mod ffi {
         #[rust_name = "set_capabilities"]
         fn setCapabilities(&mut self, capabilities: QNetworkProxyCapabilities);
 
-        /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.
-        ///
-        /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
-        #[rust_name = "set_header"]
+        #[doc(hidden)]
+        #[rust_name = "set_header_variant"]
         fn setHeader(&mut self, header: QNetworkRequestKnownHeaders, value: &QVariant);
 
         /// Sets `new_headers` as headers in this network request, overriding any previously set headers.
@@ -273,6 +273,16 @@ impl QNetworkProxy {
     /// Setting a default proxy value with this function will disable the use of a system proxy.
     pub fn set_application_proxy(network_proxy: &Self) {
         ffi::qnetworkproxy_set_application_proxy(network_proxy);
+    }
+
+    /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.
+    ///
+    /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
+    pub fn set_header<T>(&mut self, header: QNetworkRequestKnownHeaders, value: T)
+    where
+        T: Into<QVariant>,
+    {
+        self.set_header_variant(header, &value.into());
     }
 }
 

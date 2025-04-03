@@ -159,7 +159,7 @@ impl QUdpSocket {
     ///
     /// This function returns `true` if successful; otherwise it returns `false` and sets the socket error accordingly.
     ///
-    /// Note: Joining IPv6 multicast groups without an interface selection (using `None`) is not supported in all operating systems.
+    /// **Note:** Joining IPv6 multicast groups without an interface selection (using `None`) is not supported in all operating systems.
     pub fn join_multicast_group(
         self: Pin<&mut Self>,
         group_address: &QHostAddress,
@@ -175,7 +175,7 @@ impl QUdpSocket {
     ///
     /// This function returns `true` if successful; otherwise it returns `false` and sets the socket error accordingly.
     ///
-    /// Note: This function should be called with the same arguments as were passed to `join_multicast_group()`.
+    /// **Note:** This function should be called with the same arguments as were passed to `join_multicast_group()`.
     pub fn leave_multicast_group(
         self: Pin<&mut Self>,
         group_address: &QHostAddress,

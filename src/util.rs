@@ -1,4 +1,4 @@
-use cxx_qt_lib::{QDate, QDateTime, QTime};
+use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime};
 
 #[allow(dead_code)]
 pub(crate) trait Valid: Sized {
@@ -13,6 +13,12 @@ pub(crate) trait Valid: Sized {
     }
 }
 
+impl Valid for QByteArray {
+    fn is_valid(value: &Self) -> bool {
+        !value.is_null()
+    }
+}
+
 impl Valid for QDate {
     fn is_valid(value: &Self) -> bool {
         value.is_valid()
@@ -22,6 +28,12 @@ impl Valid for QDate {
 impl Valid for QDateTime {
     fn is_valid(value: &Self) -> bool {
         value.is_valid()
+    }
+}
+
+impl Valid for QString {
+    fn is_valid(value: &Self) -> bool {
+        !value.is_null()
     }
 }
 

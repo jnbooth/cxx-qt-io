@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::Valid;
 use crate::QHostAddress;
-use cxx_qt_lib::{QFlags, QString};
+use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
 use std::pin::Pin;
 
@@ -323,8 +323,8 @@ mod ffi {
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: i64);
 
-        /// Sets the given `option` to the value described by `value`.
-        #[rust_name = "set_socket_option"]
+        #[doc(hidden)]
+        #[rust_name = "set_socket_option_variant"]
         fn setSocketOption(
             self: Pin<&mut QAbstractSocket>,
             option: QAbstractSocketSocketOption,
@@ -384,7 +384,7 @@ mod ffi {
 
         /// This signal is emitted after connectToHost() has been called and the host lookup has succeeded.
         ///
-        /// Note: `QAbstractSocket` may emit `host_found()` directly from the `connect_to_host()` call since a DNS result could have been cached.
+        /// **Note:** `QAbstractSocket` may emit `host_found()` directly from the `connect_to_host()` call since a DNS result could have been cached.
         #[qsignal]
         #[rust_name = "host_found"]
         fn hostFound(self: Pin<&mut QAbstractSocket>);
@@ -438,12 +438,18 @@ impl QAbstractSocket {
 
     /// Returns the name of the peer as specified by `connect_to_host()`, or `None` if `connect_to_host()` has not been called.
     pub fn peer_name(&self) -> Option<QString> {
-        let name = self.peer_name_or_empty();
-        if name.is_empty() {
-            None
-        } else {
-            Some(name)
-        }
+        self.peer_name_or_empty().valid()
+    }
+
+    /// Sets the given `option` to the value described by `value`.
+    pub fn set_socket_option<T>(
+        self: Pin<&mut QAbstractSocket>,
+        option: QAbstractSocketSocketOption,
+        variant: T,
+    ) where
+        T: Into<QVariant>,
+    {
+        self.set_socket_option_variant(option, &variant.into());
     }
 }
 

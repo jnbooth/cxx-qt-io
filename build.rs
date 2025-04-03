@@ -255,6 +255,7 @@ fn main() {
             include_header!("include/core/qlist/qlist_qsslcertificate.h"),
             include_header!("include/core/qlist/qlist_qsslcertificateextension.h"),
             include_header!("include/core/qlist/qlist_qsslcipher.h"),
+            include_header!("include/core/qlist/qlist_qsslconfiguration.h"),
             include_header!("include/core/qlist/qlist_qssldiffiehellmanparameters.h"),
             include_header!("include/core/qlist/qlist_qsslellipticcurve.h"),
             include_header!("include/core/qlist/qlist_qsslerror.h"),
@@ -268,10 +269,12 @@ fn main() {
             include_header!("include/network/qsslcertificate.h"),
             include_header!("include/network/qsslcertificateextension.h"),
             include_header!("include/network/qsslcipher.h"),
+            include_header!("include/network/qsslconfiguration.h"),
             include_header!("include/network/qssldiffiehellmanparameters.h"),
             include_header!("include/network/qsslellipticcurve.h"),
             include_header!("include/network/qsslerror.h"),
             include_header!("include/network/qsslkey.h"),
+            include_header!("include/network/qsslsocket.h"),
         ]);
 
         builder = builder
@@ -280,6 +283,7 @@ fn main() {
                 "network/qocspresponse",
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
+                "network/qsslconfiguration",
                 "network/qssldiffiehellmanparameters",
                 "network/qsslellipticcurve",
                 "network/qsslerror",
@@ -289,6 +293,7 @@ fn main() {
                 "core/qlist/qlist_qocspresponse",
                 "core/qlist/qlist_qsslcertificate",
                 "core/qlist/qlist_qsslcertificateextension",
+                "core/qlist/qlist_qsslconfiguration",
                 "core/qlist/qlist_qssldiffiehellmanparameters",
                 "core/qlist/qlist_qsslellipticcurve",
                 "core/qlist/qlist_qsslerror",
@@ -300,10 +305,12 @@ fn main() {
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
                 "network/qsslcipher",
+                "network/qsslconfiguration",
                 "network/qssldiffiehellmanparameters",
                 "network/qsslellipticcurve",
                 "network/qsslerror",
                 "network/qsslkey",
+                "network/qsslsocket",
             ]);
     }
 

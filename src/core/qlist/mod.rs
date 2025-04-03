@@ -144,6 +144,16 @@ impl_qlist_element!(
 );
 
 #[cfg(feature = "ssl")]
+impl_qlist_element!(crate::QSslCipher, qlist_qsslcipher, "QList_QSslCipher",);
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(
+    crate::QSslConfiguration,
+    qlist_qsslconfiguration,
+    "QList_QSslConfiguration",
+);
+
+#[cfg(feature = "ssl")]
 impl_qlist_element!(
     crate::QSslDiffieHellmanParameters,
     qlist_qssldiffiehellmanparameters,

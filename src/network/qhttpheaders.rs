@@ -427,7 +427,7 @@ impl QHttpHeaders {
 
     /// Returns the values of header `name` in a comma-combined string. Returns a null `QByteArray` if the header with `name` doesn't exist.
     ///
-    /// Note: Accessing the value(s) of 'Set-Cookie' header this way may not work as intended. It is a notable exception in the HTTP RFC in that its values cannot be combined this way. Prefer `values()` instead.
+    /// **Note:** Accessing the value(s) of 'Set-Cookie' header this way may not work as intended. It is a notable exception in the HTTP RFC in that its values cannot be combined this way. Prefer `values()` instead.
     pub fn combined_value<'a, N>(&self, name: N) -> QByteArray
     where
         N: Into<HttpHeader<'a>>,

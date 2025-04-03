@@ -1,3 +1,7 @@
+use std::pin::Pin;
+
+use cxx_qt_lib::{QString, QVariant};
+
 #[cxx::bridge]
 mod ffi {
     extern "C++" {
@@ -33,8 +37,8 @@ mod ffi {
         /// Returns the realm requiring authentication.
         fn realm(self: &QAuthenticator) -> QString;
 
-        /// Sets the outgoing option `opt` to value `value`.
-        #[rust_name = "set_option"]
+        #[doc(hidden)]
+        #[rust_name = "set_option_variant"]
         fn setOption(self: Pin<&mut QAuthenticator>, opt: &QString, value: &QVariant);
 
         /// Sets the `password` used for authentication.
@@ -51,3 +55,13 @@ mod ffi {
 }
 
 pub use ffi::QAuthenticator;
+
+impl QAuthenticator {
+    /// Sets the outgoing option `opt` to value `value`.
+    pub fn set_option<T>(self: Pin<&mut Self>, opt: &QString, value: T)
+    where
+        T: Into<QVariant>,
+    {
+        self.set_option_variant(opt, &value.into());
+    }
+}

@@ -166,8 +166,6 @@ impl QSslDiffieHellmanParameters {
     }
 
     /// Returns the default `QSslDiffieHellmanParameters` used by `QSslSocket`.
-    ///
-    /// This is currently the 2048-bit MODP group from RFC 3526.
     pub fn default_parameters() -> Self {
         ffi::qssldiffiehellmanparameters_default_parameters()
     }

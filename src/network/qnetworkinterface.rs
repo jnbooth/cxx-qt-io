@@ -254,12 +254,7 @@ impl QNetworkInterface {
 
     /// Returns the name of the interface whose index is `index` or an empty string if there is no interface with that index.
     pub fn interface_name_from_index(index: i32) -> Option<QString> {
-        let name = ffi::qnetworkinterface_interface_name_from_index(index);
-        if name.is_empty() {
-            None
-        } else {
-            Some(name)
-        }
+        ffi::qnetworkinterface_interface_name_from_index(index).valid()
     }
 
     /// Returns the interface system index, if known. This is an integer assigned by the operating system to identify this interface and it generally doesn't change. It matches the scope ID field in IPv6 addresses.

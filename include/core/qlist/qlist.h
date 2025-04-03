@@ -19,12 +19,13 @@
 
 #ifdef CXX_QT_IO_SSL_FEATURE
 #include "qlist_qocspresponse.h"
-#include "qlist_qsslcipher.h"
-#include "qlist_qssldiffiehellmanparameters.h"
 #include "qlist_qsslcertificate.h"
 #include "qlist_qsslcertificateextension.h"
-#include "qlist_qsslerror.h"
+#include "qlist_qsslcipher.h"
+#include "qlist_qsslconfiguration.h"
+#include "qlist_qssldiffiehellmanparameters.h"
 #include "qlist_qsslellipticcurve.h"
+#include "qlist_qsslerror.h"
 #include "qlist_qsslkey.h"
 #endif
 

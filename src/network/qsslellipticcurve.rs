@@ -90,7 +90,7 @@ impl QSslEllipticCurve {
     ///
     /// If the given `name` is not supported, returns `None`.
     ///
-    /// Note: The OpenSSL implementation of this function treats the name case-sensitively.
+    /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_long_name(name: &QString) -> Option<Self> {
         ffi::qsslellipticcurve_from_long_name(name).valid()
     }
@@ -99,7 +99,7 @@ impl QSslEllipticCurve {
     ///
     /// If the given `name` is not supported, returns `None`.
     ///
-    /// Note: The OpenSSL implementation of this function treats the name case-sensitively.
+    /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_short_name(name: &QString) -> Option<Self> {
         ffi::qsslellipticcurve_from_short_name(name).valid()
     }

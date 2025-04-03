@@ -84,6 +84,11 @@ mod qsslcipher;
 pub use qsslcipher::QSslCipher;
 
 #[cfg(feature = "ssl")]
+mod qsslconfiguration;
+#[cfg(feature = "ssl")]
+pub use qsslconfiguration::{QSslConfiguration, QSslConfigurationNextProtocolNegotiationStatus};
+
+#[cfg(feature = "ssl")]
 mod qssldiffiehellmanparameters;
 #[cfg(feature = "ssl")]
 pub use qssldiffiehellmanparameters::QSslDiffieHellmanParameters;
@@ -102,6 +107,11 @@ pub use qsslerror::{QSslError, QSslErrorSslError};
 mod qsslkey;
 #[cfg(feature = "ssl")]
 pub use qsslkey::QSslKey;
+
+#[cfg(feature = "ssl")]
+mod qsslsocket;
+#[cfg(feature = "ssl")]
+pub use qsslsocket::QSslSocketPeerVerifyMode;
 
 mod qtcpsocket;
 pub use qtcpsocket::QTcpSocket;
