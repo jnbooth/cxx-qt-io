@@ -77,7 +77,7 @@ mod ffi {
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         #[rust_name = "qtemporaryfile_create_native_file"]
-        unsafe fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
+        fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> UniquePtr<QTemporaryFile>;
 
         include!("cxx-qt-io/common.h");
 
@@ -108,16 +108,9 @@ impl QTemporaryFile {
         ffi::qtemporaryfile_new(path)
     }
 
-    /// If `file` is not already a native file, then a `QTemporaryFile` is created in `QDir::temp_path()`, the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns `None` if file is already a native file.
-    pub fn create_native_file(file: Pin<&mut QFile>) -> Option<Pin<&mut Self>> {
-        // SAFETY: QTemporaryFile::createNativeFile returns either a valid pointer or nullptr.
-        unsafe {
-            let file_ptr = ffi::qtemporaryfile_create_native_file(file);
-            if file_ptr.is_null() {
-                return None;
-            }
-            Some(Pin::new_unchecked(&mut *file_ptr))
-        }
+    /// If `file` is not already a native file, then a `QTemporaryFile` is created in `QDir::temp_path()`, the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.
+    pub fn create_native_file(file: Pin<&mut QFile>) -> UniquePtr<Self> {
+        ffi::qtemporaryfile_create_native_file(file)
     }
 
     pub fn as_io_device(&self) -> &QIODevice {
