@@ -7,6 +7,7 @@ use crate::{
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QList, QString};
 use std::io::{self, Read, Write};
+use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
 
@@ -619,6 +620,14 @@ impl QSslSocket {
     /// Returns `true` if this platform supports SSL; otherwise, returns `false`. If the platform doesn't support SSL, the socket will fail in the connection phase.
     pub fn supports_ssl() -> bool {
         ffi::qsslsocket_supports_ssl()
+    }
+}
+
+impl Deref for QSslSocket {
+    type Target = QTcpSocket;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
     }
 }
 

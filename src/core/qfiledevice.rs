@@ -1,6 +1,9 @@
 use crate::qio::{QIOExt, QIO};
+use crate::QIODevice;
+use cxx_qt::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
+use std::ops::Deref;
 use std::pin::Pin;
 
 #[cxx_qt::bridge]
@@ -249,6 +252,14 @@ impl QFileDevice {
         } else {
             Some(handle)
         }
+    }
+}
+
+impl Deref for QFileDevice {
+    type Target = QIODevice;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
     }
 }
 

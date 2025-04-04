@@ -4,6 +4,7 @@ use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use cxx_qt_lib::QString;
 use std::io::{self, Read, Write};
+use std::ops::Deref;
 use std::pin::Pin;
 
 #[cxx_qt::bridge]
@@ -129,6 +130,14 @@ impl QFile {
 
     pub fn as_file_device_mut(self: Pin<&mut Self>) -> Pin<&mut QFileDevice> {
         self.upcast_pin()
+    }
+}
+
+impl Deref for QFile {
+    type Target = QFileDevice;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
     }
 }
 

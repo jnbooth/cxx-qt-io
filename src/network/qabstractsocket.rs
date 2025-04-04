@@ -1,8 +1,10 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{MSecs, NonNull};
-use crate::QHostAddress;
+use crate::{QHostAddress, QIODevice};
+use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
+use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
 
@@ -458,6 +460,14 @@ impl QAbstractSocket {
         duration: Option<Duration>,
     ) -> bool {
         self.wait_for_disconnected_msecs(duration.msecs())
+    }
+}
+
+impl Deref for QAbstractSocket {
+    type Target = QIODevice;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
     }
 }
 
