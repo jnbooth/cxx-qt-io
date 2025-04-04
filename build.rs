@@ -180,6 +180,7 @@ fn main() {
                 "core/qcryptographichash/cryptographic_hash_algorithm",
                 &[(6, 0), (5, 9), (5, 1)],
             ),
+            "core/qbuffer",
             "core/qfile",
             "core/qfiledevice",
             "core/qiodevice",

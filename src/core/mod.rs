@@ -1,3 +1,6 @@
+mod qbuffer;
+pub use qbuffer::QBuffer;
+
 mod qcryptographichash;
 pub use qcryptographichash::QCryptographicHashAlgorithm;
 
