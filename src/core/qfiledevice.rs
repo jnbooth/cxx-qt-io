@@ -263,6 +263,12 @@ impl Deref for QFileDevice {
     }
 }
 
+impl AsRef<QIODevice> for QFileDevice {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
 impl QIO for QFileDevice {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.flush()

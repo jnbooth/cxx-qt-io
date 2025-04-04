@@ -471,6 +471,12 @@ impl Deref for QAbstractSocket {
     }
 }
 
+impl AsRef<QIODevice> for QAbstractSocket {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
 impl QIO for QAbstractSocket {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.flush()

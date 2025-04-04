@@ -651,6 +651,24 @@ impl Upcast<QAbstractSocket> for QSslSocket {
     }
 }
 
+impl AsRef<QIODevice> for QSslSocket {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl AsRef<QAbstractSocket> for QSslSocket {
+    fn as_ref(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+}
+
+impl AsRef<QTcpSocket> for QSslSocket {
+    fn as_ref(&self) -> &QTcpSocket {
+        self.upcast()
+    }
+}
+
 impl QIO for QSslSocket {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.as_abstract_socket_mut().flush()

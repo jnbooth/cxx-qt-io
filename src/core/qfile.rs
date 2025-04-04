@@ -151,6 +151,18 @@ impl Upcast<QIODevice> for QFile {
     }
 }
 
+impl AsRef<QFileDevice> for QFile {
+    fn as_ref(&self) -> &QFileDevice {
+        self.upcast()
+    }
+}
+
+impl AsRef<QIODevice> for QFile {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
 impl QIO for QFile {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.as_file_device_mut().flush()

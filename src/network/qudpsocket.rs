@@ -280,6 +280,18 @@ impl Upcast<QIODevice> for QUdpSocket {
     }
 }
 
+impl AsRef<QIODevice> for QUdpSocket {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl AsRef<QAbstractSocket> for QUdpSocket {
+    fn as_ref(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+}
+
 impl QIO for QUdpSocket {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.as_abstract_socket_mut().flush()

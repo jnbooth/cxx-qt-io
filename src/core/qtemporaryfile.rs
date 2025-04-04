@@ -169,6 +169,18 @@ impl Upcast<QFileDevice> for QTemporaryFile {
     }
 }
 
+impl AsRef<QIODevice> for QTemporaryFile {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl AsRef<QFileDevice> for QTemporaryFile {
+    fn as_ref(&self) -> &QFileDevice {
+        self.upcast()
+    }
+}
+
 impl QIO for QTemporaryFile {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.as_file_device_mut().flush()

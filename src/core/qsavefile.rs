@@ -126,6 +126,18 @@ impl Upcast<QIODevice> for QSaveFile {
     }
 }
 
+impl AsRef<QIODevice> for QSaveFile {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl AsRef<QFileDevice> for QSaveFile {
+    fn as_ref(&self) -> &QFileDevice {
+        self.upcast()
+    }
+}
+
 impl QIO for QSaveFile {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.as_file_device_mut().flush()

@@ -69,6 +69,18 @@ impl Upcast<QIODevice> for QTcpSocket {
     }
 }
 
+impl AsRef<QIODevice> for QTcpSocket {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl AsRef<QAbstractSocket> for QTcpSocket {
+    fn as_ref(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+}
+
 impl QIO for QTcpSocket {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.as_abstract_socket_mut().flush()

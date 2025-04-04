@@ -71,17 +71,17 @@ impl QBuffer {
     }
 }
 
-impl AsRef<[u8]> for QBuffer {
-    fn as_ref(&self) -> &[u8] {
-        self.as_slice()
-    }
-}
-
 impl Deref for QBuffer {
     type Target = QIODevice;
 
     fn deref(&self) -> &Self::Target {
         self.upcast()
+    }
+}
+
+impl AsRef<[u8]> for QBuffer {
+    fn as_ref(&self) -> &[u8] {
+        self.as_slice()
     }
 }
 
