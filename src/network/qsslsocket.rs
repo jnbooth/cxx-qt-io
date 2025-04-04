@@ -151,9 +151,8 @@ mod ffi {
         #[rust_name = "is_encrypted"]
         fn isEncrypted(self: &QSslSocket) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "local_certificate_or_empty"]
-        fn localCertificate(self: &QSslSocket) -> QSslCertificate;
+        pub(self) fn localCertificate(self: &QSslSocket) -> QSslCertificate;
 
         /// Returns the socket's local certificate chain, or an empty list if no local certificates have been assigned.
         #[rust_name = "local_certificate_chain"]
@@ -168,9 +167,8 @@ mod ffi {
         #[rust_name = "ocsp_responses"]
         fn ocspResponses(self: &QSslSocket) -> QList_QOcspResponse;
 
-        #[doc(hidden)]
         #[rust_name = "peer_certificate_or_null"]
-        fn peerCertificate(self: &QSslSocket) -> QSslCertificate;
+        pub(self) fn peerCertificate(self: &QSslSocket) -> QSslCertificate;
 
         /// Returns the peer's chain of digital certificates, or an empty list of certificates.
         ///
@@ -213,9 +211,8 @@ mod ffi {
         #[rust_name = "session_cipher"]
         fn sessionCipher(self: &QSslSocket) -> QSslCipher;
 
-        #[doc(hidden)]
         #[rust_name = "session_protocol_or_default"]
-        fn sessionProtocol(self: &QSslSocket) -> QSslSslProtocol;
+        pub(self) fn sessionProtocol(self: &QSslSocket) -> QSslSslProtocol;
 
         /// Sets the socket's local certificate to `certificate`. The local certificate is necessary if you need to confirm your identity to the peer. It is used together with the private key; if you set the local certificate, you must also set the private key.
         ///

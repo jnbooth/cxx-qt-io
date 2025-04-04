@@ -249,9 +249,8 @@ mod ffi {
         #[rust_name = "is_valid"]
         fn isValid(self: &QAbstractSocket) -> bool;
 
-        #[doc(hidden)]
         #[rust_name = "local_address_or_null"]
-        fn localAddress(self: &QAbstractSocket) -> QHostAddress;
+        pub(self) fn localAddress(self: &QAbstractSocket) -> QHostAddress;
 
         /// Returns the host port number (in native byte order) of the local socket if available; otherwise returns 0.
         #[rust_name = "local_port"]
@@ -261,13 +260,11 @@ mod ffi {
         #[rust_name = "pause_mode"]
         fn pauseMode(self: &QAbstractSocket) -> QAbstractSocketPauseModes;
 
-        #[doc(hidden)]
         #[rust_name = "peer_address_or_null"]
-        fn peerAddress(self: &QAbstractSocket) -> QHostAddress;
+        pub(self) fn peerAddress(self: &QAbstractSocket) -> QHostAddress;
 
-        #[doc(hidden)]
         #[rust_name = "peer_name_or_empty"]
-        fn peerName(self: &QAbstractSocket) -> QString;
+        pub(self) fn peerName(self: &QAbstractSocket) -> QString;
 
         /// Returns the port of the econnected peer if the socket is in `ConnectedState`; otherwise returns 0.
         #[rust_name = "peer_port"]
@@ -324,9 +321,8 @@ mod ffi {
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: i64);
 
-        #[doc(hidden)]
         #[rust_name = "set_socket_option_variant"]
-        fn setSocketOption(
+        pub(self) fn setSocketOption(
             self: Pin<&mut QAbstractSocket>,
             option: QAbstractSocketSocketOption,
             variant: &QVariant,
@@ -457,7 +453,10 @@ impl QAbstractSocket {
     /// If `duration` is `None`, this function will not time out.
     ///
     /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `disconnected()` signal if your software will run on Windows.
-    pub fn wait_for_disconnected(self: Pin<&mut QAbstractSocket>, duration: Option<Duration>) -> bool {
+    pub fn wait_for_disconnected(
+        self: Pin<&mut QAbstractSocket>,
+        duration: Option<Duration>,
+    ) -> bool {
         self.wait_for_disconnected_msecs(duration.msecs())
     }
 }
