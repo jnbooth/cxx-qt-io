@@ -1,10 +1,12 @@
 use crate::qio::{QIOExt, QIO};
+use crate::util::MSecs;
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};
 use std::pin::Pin;
 use std::ptr;
+use std::time::Duration;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -254,25 +256,11 @@ mod ffi {
         #[rust_name = "unget_char"]
         unsafe fn ungetChar(self: Pin<&mut QIODevice>, c: c_char);
 
-        /// For buffered devices, this function waits until a payload of buffered written data has been written to the device and the `bytes_written()` signal has been emitted, or until `msecs` milliseconds have passed. If `msecs` is -1, this function will not time out. For unbuffered devices, it returns immediately.
-        ///
-        /// Returns `true` if a payload of data was written to the device; otherwise returns `false` (i.e. if the operation timed out, or if an error occurred).
-        ///
-        /// This function can operate without an event loop. It is useful when writing non-GUI applications and when performing I/O operations in a non-GUI thread.
-        ///
-        /// If called from within a slot connected to the `bytes_written()` signal, `bytes_written()` will not be reemitted.
-        #[rust_name = "wait_for_bytes_written"]
-        fn waitForBytesWritten(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
+        #[rust_name = "wait_for_bytes_written_msecs"]
+        pub(self) fn waitForBytesWritten(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
 
-        /// Blocks until new data is available for reading and the `ready_read()` signal has been emitted, or until `msecs` milliseconds have passed. If `msecs` is -1, this function will not time out.
-        ///
-        /// Returns `true` if new data is available for reading; otherwise returns `false` (if the operation timed out or if an error occurred).
-        ///
-        /// This function can operate without an event loop. It is useful when writing non-GUI applications and when performing I/O operations in a non-GUI thread.
-        ///
-        /// If called from within a slot connected to the `ready_read()` signal, `ready_read()` will not be reemitted.
-        #[rust_name = "wait_for_ready_read"]
-        fn waitForReadyRead(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
+        #[rust_name = "wait_for_ready_read_msecs"]
+        pub(self) fn waitForReadyRead(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
 
         /// Writes at most `max_size` bytes of data from data to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
         ///
@@ -456,6 +444,28 @@ impl QIODevice {
     /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for reading, or that an error occurred.
     pub fn read_line_to_end(self: Pin<&mut Self>) -> QByteArray {
         self.read_line_to_array(0)
+    }
+
+    /// For buffered devices, this function waits until a payload of buffered written data has been written to the device and the `bytes_written()` signal has been emitted, or until `duration` has passed. If `duration` is `None`, this function will not time out. For unbuffered devices, it returns immediately.
+    ///
+    /// Returns `true` if a payload of data was written to the device; otherwise returns `false` (i.e. if the operation timed out, or if an error occurred).
+    ///
+    /// This function can operate without an event loop. It is useful when writing non-GUI applications and when performing I/O operations in a non-GUI thread.
+    ///
+    /// If called from within a slot connected to the `bytes_written()` signal, `bytes_written()` will not be reemitted.
+    pub fn wait_for_bytes_written(self: Pin<&mut QIODevice>, duration: Option<Duration>) -> bool {
+        self.wait_for_bytes_written_msecs(duration.msecs())
+    }
+
+    /// Blocks until new data is available for reading and the `ready_read()` signal has been emitted, or until `duration` has passed. If `duration` is `None`, this function will not time out.
+    ///
+    /// Returns `true` if new data is available for reading; otherwise returns `false` (if the operation timed out or if an error occurred).
+    ///
+    /// This function can operate without an event loop. It is useful when writing non-GUI applications and when performing I/O operations in a non-GUI thread.
+    ///
+    /// If called from within a slot connected to the `ready_read()` signal, `ready_read()` will not be reemitted.
+    pub fn wait_for_ready_read(self: Pin<&mut QIODevice>, duration: Option<Duration>) -> bool {
+        self.wait_for_ready_read_msecs(duration.msecs())
     }
 
     /// Writes at most `data.len()` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.

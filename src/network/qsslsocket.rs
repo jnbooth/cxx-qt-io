@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::Valid;
+use crate::util::{MSecs, Valid};
 use crate::{
     QAbstractSocket, QIODevice, QSslCertificate, QSslImplementedClass, QSslSslProtocol,
     QSslSupportedFeature, QTcpSocket,
@@ -8,6 +8,7 @@ use cxx_qt::Upcast;
 use cxx_qt_lib::{QList, QString};
 use std::io::{self, Read, Write};
 use std::pin::Pin;
+use std::time::Duration;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -309,11 +310,8 @@ mod ffi {
         #[rust_name = "start_server_encryption"]
         fn startServerEncryption(self: Pin<&mut QSslSocket>);
 
-        /// Waits until the socket has completed the SSL handshake and has emitted `encrypted()`, or `msecs` milliseconds, whichever comes first. If `encrypted()` has been emitted, this function returns true; otherwise (e.g., the socket is disconnected, or the SSL handshake fails), `false` is returned.
-        ///
-        /// If `msecs` is -1, this function will not time out.
-        #[rust_name = "wait_for_encrypted"]
-        fn waitForEncrypted(self: Pin<&mut QSslSocket>, msecs: i32) -> bool;
+        #[rust_name = "wait_for_encrypted_msecs"]
+        pub(self) fn waitForEncrypted(self: Pin<&mut QSslSocket>, msecs: i32) -> bool;
 
         /// `QSslSocket` emits this signal if an alert message was received from a peer. `level` tells if the alert was fatal or it was a warning. `type` is the code explaining why the alert was sent. When a textual description of the alert message is available, it is supplied in `description`.
         ///
@@ -511,6 +509,13 @@ impl QSslSocket {
         } else {
             Some(protocol)
         }
+    }
+
+    /// Waits until the socket has completed the SSL handshake and has emitted `encrypted()`, or `duration`, whichever comes first. If `encrypted()` has been emitted, this function returns `true`; otherwise (e.g., the socket is disconnected, or the SSL handshake fails), `false` is returned.
+    ///
+    /// If `duration` is `None`, this function will not time out.
+    pub fn wait_for_encrypted(self: Pin<&mut QSslSocket>, duration: Option<Duration>) -> bool {
+        self.wait_for_encrypted_msecs(duration.msecs())
     }
 
     /// Returns the version number of the SSL library in use at compile time. If no SSL support is available then this will return `None`.

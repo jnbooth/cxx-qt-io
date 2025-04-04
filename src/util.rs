@@ -1,4 +1,20 @@
+use std::time::Duration;
+
 use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime};
+
+#[allow(dead_code)]
+pub(crate) trait MSecs: Sized {
+    fn msecs(self) -> i32;
+}
+
+impl MSecs for Option<Duration> {
+    fn msecs(self) -> i32 {
+        match self {
+            Some(duration) => duration.as_millis().try_into().unwrap_or(i32::MAX),
+            None => -1,
+        }
+    }
+}
 
 #[allow(dead_code)]
 pub(crate) trait Valid: Sized {

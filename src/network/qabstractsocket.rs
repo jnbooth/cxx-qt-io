@@ -1,9 +1,10 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::Valid;
+use crate::util::{MSecs, Valid};
 use crate::QHostAddress;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
 use std::pin::Pin;
+use std::time::Duration;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -345,24 +346,10 @@ mod ffi {
         /// Returns the state of the socket.
         fn state(self: &QAbstractSocket) -> QAbstractSocketSocketState;
 
-        /// Waits until the socket is connected, up to `msecs` milliseconds. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call `error()` to determine the cause of the error.
-        ///
-        /// If `msecs` is -1, this function will not time out.
-        ///
-        /// **Note:** This function may wait slightly longer than `msecs`, depending on the time it takes to complete the host lookup.
-        ///
-        /// **Note:** Multiple calls to this functions do not accumulate the time. If the function times out, the connecting process will be aborted.
-        ///
-        /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `connected()` signal if your software will run on Windows.
-        #[rust_name = "wait_for_connected"]
-        fn waitForConnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;
+        #[rust_name = "wait_for_connected_msecs"]
+        pub(self) fn waitForConnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;
 
-        /// Waits until the socket has disconnected, up to msecs milliseconds. If the connection was successfully disconnected, this function returns true; otherwise it returns false (if the operation timed out, if an error occurred, or if this QAbstractSocket is already disconnected). In the case where it returns false, you can call error() to determine the cause of the error.
-        ///
-        /// If `msecs` is -1, this function will not time out.
-        ///
-        /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `disconnected()` signal if your software will run on Windows.
-        #[rust_name = "wait_for_disconnected"]
+        #[rust_name = "wait_for_disconnected_msecs"]
         fn waitForDisconnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;
 
         /// This signal is emitted after `connect_to_host()` has been called and a connection has been successfully established.
@@ -450,6 +437,28 @@ impl QAbstractSocket {
         T: Into<QVariant>,
     {
         self.set_socket_option_variant(option, &variant.into());
+    }
+
+    /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call `error()` to determine the cause of the error.
+    ///
+    /// If `duration` is `None`, this function will not time out.
+    ///
+    /// **Note:** This function may wait slightly longer than `duration`, depending on the time it takes to complete the host lookup.
+    ///
+    /// **Note:** Multiple calls to this functions do not accumulate the time. If the function times out, the connecting process will be aborted.
+    ///
+    /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `connected()` signal if your software will run on Windows.
+    pub fn wait_for_connected(self: Pin<&mut QAbstractSocket>, duration: Option<Duration>) -> bool {
+        self.wait_for_connected_msecs(duration.msecs())
+    }
+
+    /// Waits until the socket has disconnected, up to `duration`. If the connection was successfully disconnected, this function returns `true`; otherwise it returns `false` (if the operation timed out, if an error occurred, or if this `QAbstractSocket` is already disconnected). In the case where it returns `false`, you can `call error()` to determine the cause of the error.
+    ///
+    /// If `duration` is `None`, this function will not time out.
+    ///
+    /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `disconnected()` signal if your software will run on Windows.
+    pub fn wait_for_disconnected(self: Pin<&mut QAbstractSocket>, duration: Option<Duration>) -> bool {
+        self.wait_for_disconnected_msecs(duration.msecs())
     }
 }
 
