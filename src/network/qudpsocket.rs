@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
 use cxx_qt::Upcast;
 use std::ffi::c_char;
@@ -189,7 +189,7 @@ impl QUdpSocket {
 
     /// Returns the interface for the outgoing interface for multicast datagrams. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. If no interface has been previously set, this function returns an invalid `QNetworkInterface`. The socket must be in `BoundState`, otherwise an invalid `QNetworkInterface` is returned.
     pub fn multicast_interface(&self) -> Option<QNetworkInterface> {
-        self.multicast_interface_or_invalid().valid()
+        self.multicast_interface_or_invalid().nonnull()
     }
 
     /// Returns the size of the first pending UDP datagram. If there is no datagram available, this function returns `None`.
@@ -241,7 +241,7 @@ impl QUdpSocket {
         max_size: Option<i64>,
     ) -> Option<QNetworkDatagram> {
         self.receive_datagram_or_invalid(max_size.unwrap_or(-1))
-            .valid()
+            .nonnull()
     }
 
     /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.

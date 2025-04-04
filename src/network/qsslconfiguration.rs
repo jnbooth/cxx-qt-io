@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QByteArray, QList, QVariant};
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::{QSslCertificate, QSslCipher, QSslEllipticCurve, QSslKey};
 
 #[cxx::bridge]
@@ -470,7 +470,7 @@ impl QSslConfiguration {
     ///
     /// Returns `None` if no protocol could be negotiated or the extension was not enabled.
     pub fn next_negotiated_protocol(&self) -> Option<QByteArray> {
-        self.next_negotiated_protocol_or_empty().valid()
+        self.next_negotiated_protocol_or_empty().nonnull()
     }
 
     /// Returns the peer's digital certificate (i.e., the immediate certificate of the host you are connected to), or a null certificate, if the peer has not assigned a certificate.
@@ -483,26 +483,26 @@ impl QSslConfiguration {
     ///
     /// If you want to check the peer's complete chain of certificates, use `peer_certificate_chain()` to get them all at once.
     pub fn peer_certificate(&self) -> Option<QSslCertificate> {
-        self.peer_certificate_or_null().valid()
+        self.peer_certificate_or_null().nonnull()
     }
 
     /// Returns the SSL key assigned to this connection or `None` if none has been assigned yet.
     pub fn private_key(&self) -> Option<QSslKey> {
-        self.private_key_or_null().valid()
+        self.private_key_or_null().nonnull()
     }
 
     /// Returns the socket's cryptographic cipher, or `None` if the connection isn't encrypted. The socket's cipher for the session is set during the handshake phase. The cipher is used to encrypt and decrypt data transmitted through the socket.
     ///
     /// The SSL infrastructure also provides functions for setting the ordered list of ciphers from which the handshake phase will eventually select the session cipher. This ordered list must be in place before the handshake phase begins.
     pub fn session_cipher(&self) -> Option<QSslCipher> {
-        self.session_cipher_or_null().valid()
+        self.session_cipher_or_null().nonnull()
     }
 
     /// If `SslOptionDisableSessionPersistence` was turned off, this function returns the session ticket used in the SSL handshake in ASN.1 format, suitable to e.g. be persisted to disk. If no session ticket was used or `SslOptionDisableSessionPersistence` was not turned off, this function returns `None`.
     ///
     /// **Note:** When persisting the session ticket to disk or similar, be careful not to expose the session to a potential attacker, as knowledge of the session allows for eavesdropping on data encrypted with the session parameters.
     pub fn session_ticket(&self) -> Option<QByteArray> {
-        self.session_ticket_or_empty().valid()
+        self.session_ticket_or_empty().nonnull()
     }
 
     /// If `SslOptionDisableSessionPersistence` was turned off, this function returns the session ticket life time hint sent by the server (which might be 0). If the server did not send a session ticket (e.g. when resuming a session or when the server does not support it) or `SslOptionDisableSessionPersistence` was not turned off, this function returns `None`.

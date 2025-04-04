@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::{MSecs, Valid};
+use crate::util::{MSecs, NonNull};
 use crate::{
     QAbstractSocket, QIODevice, QSslCertificate, QSslImplementedClass, QSslSslProtocol,
     QSslSupportedFeature, QTcpSocket,
@@ -482,7 +482,7 @@ impl QSslSocket {
 
     /// Returns the socket's local certificate, or `None` if no local certificate has been assigned.
     pub fn local_certificate(&self) -> Option<QSslCertificate> {
-        self.local_certificate_or_empty().valid()
+        self.local_certificate_or_empty().nonnull()
     }
 
     /// Returns the peer's digital certificate (i.e., the immediate certificate of the host you are connected to), or `None`, if the peer has not assigned a certificate.
@@ -495,7 +495,7 @@ impl QSslSocket {
     ///
     /// If you want to check the peer's complete chain of certificates, use `peer_certificate_chain()` to get them all at once.
     pub fn peer_certificate(&self) -> Option<QSslCertificate> {
-        self.peer_certificate_or_null().valid()
+        self.peer_certificate_or_null().nonnull()
     }
 
     /// Returns the socket's SSL/TLS protocol or `None` if the connection isn't encrypted. The socket's protocol for the session is set during the handshake phase.
@@ -527,7 +527,7 @@ impl QSslSocket {
 
     /// Returns the version string of the SSL library in use at compile time. If no SSL support is available then this will return `None`.
     pub fn ssl_library_build_version_string() -> Option<QString> {
-        ffi::qsslsocket_ssl_library_build_version_string().valid()
+        ffi::qsslsocket_ssl_library_build_version_string().nonnull()
     }
 
     /// Returns the version number of the SSL library in use. If no SSL support is available then this will return `None`.
@@ -542,7 +542,7 @@ impl QSslSocket {
 
     /// Returns the version string of the SSL library in use. If no SSL support is available then this will return `None`.
     pub fn ssl_library_version_string() -> Option<QString> {
-        ffi::qsslsocket_ssl_library_version_string().valid()
+        ffi::qsslsocket_ssl_library_version_string().nonnull()
     }
 }
 

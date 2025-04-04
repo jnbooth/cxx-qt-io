@@ -6,7 +6,7 @@ use std::mem::MaybeUninit;
 use std::pin::Pin;
 use std::ptr;
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::{QIODevice, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType};
 
 #[cxx::bridge]
@@ -139,8 +139,8 @@ impl Debug for QSslKey {
     }
 }
 
-impl Valid for QSslKey {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QSslKey {
+    fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
@@ -171,7 +171,7 @@ impl QSslKey {
                 pass_phrase,
             )
         }
-        .valid()
+        .nonnull()
     }
 
     /// Constructs a `QSslKey` by decoding the string in the byte array `encoded` using a specified `algorithm` and `encoding` format. `key_type` specifies whether the key is public or private.
@@ -186,7 +186,7 @@ impl QSslKey {
         key_type: QSslKeyType,
         pass_phrase: &QByteArray,
     ) -> Option<Self> {
-        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase).valid()
+        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase).nonnull()
     }
 
     /// Returns the length of the key in bits, or `None` if the key is null.

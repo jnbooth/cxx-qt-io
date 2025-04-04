@@ -2,7 +2,7 @@ use std::fmt::{self, Debug, Formatter};
 
 use cxx::{type_id, ExternType};
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use cxx_qt_lib::QString;
 
 #[cxx::bridge]
@@ -57,8 +57,8 @@ mod ffi {
     }
 }
 
-impl Valid for QSslEllipticCurve {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QSslEllipticCurve {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
@@ -92,7 +92,7 @@ impl QSslEllipticCurve {
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_long_name(name: &QString) -> Option<Self> {
-        ffi::qsslellipticcurve_from_long_name(name).valid()
+        ffi::qsslellipticcurve_from_long_name(name).nonnull()
     }
 
     /// Returns a `QSslEllipticCurve` instance representing the named curve `name`. The `name` is the conventional short name for the curve, as represented by RFC 4492 (for instance secp521r1), or as NIST short names (for instance P-256). The actual set of recognized names depends on the SSL implementation.
@@ -101,7 +101,7 @@ impl QSslEllipticCurve {
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_short_name(name: &QString) -> Option<Self> {
-        ffi::qsslellipticcurve_from_short_name(name).valid()
+        ffi::qsslellipticcurve_from_short_name(name).nonnull()
     }
 }
 

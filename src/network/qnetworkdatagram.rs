@@ -2,7 +2,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt_lib::QByteArray;
 use std::mem::MaybeUninit;
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::QHostAddress;
 
 #[cxx::bridge]
@@ -153,8 +153,8 @@ impl Drop for QNetworkDatagram {
     }
 }
 
-impl Valid for QNetworkDatagram {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QNetworkDatagram {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
@@ -169,7 +169,7 @@ impl QNetworkDatagram {
     ///
     /// If no destination address was set on this datagram, this function returns `None`.
     pub fn destination_address(&self) -> Option<QHostAddress> {
-        self.destination_address_or_null().valid()
+        self.destination_address_or_null().nonnull()
     }
 
     /// Returns the port number of the destination associated with this datagram. For a datagram received from the network, it is the local port number that the peer node sent the datagram to. For an outgoing datagram, it is the peer port the datagram should be sent to.
@@ -226,7 +226,7 @@ impl QNetworkDatagram {
     ///
     /// If no sender address was set on this datagram, this function returns `None`.
     pub fn sender_address(&self) -> Option<QHostAddress> {
-        self.sender_address_or_null().valid()
+        self.sender_address_or_null().nonnull()
     }
 
     /// Returns the port number of the destination associated with this datagram. For a datagram received from the network, it is the port number that the peer node sent the datagram from. For an outgoing datagram, it is the local port the datagram should be sent from.

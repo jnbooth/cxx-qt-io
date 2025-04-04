@@ -5,7 +5,7 @@ use std::mem::MaybeUninit;
 
 use cxx_qt_lib::QString;
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::QHostAddress;
 
 #[cxx::bridge]
@@ -211,8 +211,8 @@ impl Debug for QNetworkInterface {
     }
 }
 
-impl Valid for QNetworkInterface {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QNetworkInterface {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
@@ -232,14 +232,14 @@ impl QNetworkInterface {
     ///
     /// This index is also found in the IPv6 address' scope ID field.
     pub fn interface_from_index(index: i32) -> Option<Self> {
-        ffi::qnetworkinterface_interface_from_index(index).valid()
+        ffi::qnetworkinterface_interface_from_index(index).nonnull()
     }
 
     /// Returns a `QNetworkInterface` object for the interface named `name`. If no such interface exists, this function returns `None`.
     ///
     /// The string `name` may be either an actual interface name (such as `"eth0"` or `"en1"`) or an interface index in string form (`"1"`, `"2"`, etc.).
     pub fn interface_from_name(name: &QString) -> Option<Self> {
-        ffi::qnetworkinterface_interface_from_name(name).valid()
+        ffi::qnetworkinterface_interface_from_name(name).nonnull()
     }
 
     /// Returns the index of the interface whose name is `name` or `None` if there is no interface with that name.
@@ -254,7 +254,7 @@ impl QNetworkInterface {
 
     /// Returns the name of the interface whose index is `index` or an empty string if there is no interface with that index.
     pub fn interface_name_from_index(index: i32) -> Option<QString> {
-        ffi::qnetworkinterface_interface_name_from_index(index).valid()
+        ffi::qnetworkinterface_interface_name_from_index(index).nonnull()
     }
 
     /// Returns the interface system index, if known. This is an integer assigned by the operating system to identify this interface and it generally doesn't change. It matches the scope ID field in IPv6 addresses.

@@ -4,7 +4,7 @@ use std::mem::MaybeUninit;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::QString;
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::QSslSslProtocol;
 
 #[cxx::bridge]
@@ -78,8 +78,8 @@ mod ffi {
     }
 }
 
-impl Valid for QSslCipher {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QSslCipher {
+    fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
@@ -134,7 +134,7 @@ impl QSslCipher {
             Some(protocol) => ffi::qsslcipher_init_protocol(name, protocol),
             None => ffi::qsslcipher_init_name(name),
         }
-        .valid()
+        .nonnull()
     }
 }
 

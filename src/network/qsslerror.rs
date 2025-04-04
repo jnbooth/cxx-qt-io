@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::QSslCertificate;
 
 #[cxx::bridge]
@@ -160,7 +160,7 @@ impl QSslError {
 
     /// Returns the certificate associated with this error, or a null certificate if the error does not relate to any certificate.
     pub fn certificate(&self) -> Option<QSslCertificate> {
-        self.certificate_or_null().valid()
+        self.certificate_or_null().nonnull()
     }
 }
 

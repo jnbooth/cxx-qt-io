@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::{QAbstractSocketNetworkLayerProtocol, QPair, QPairPair_QHostAddress_i32};
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QFlags, QString};
@@ -250,8 +250,8 @@ impl Debug for QHostAddress {
     }
 }
 
-impl Valid for QHostAddress {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QHostAddress {
+    fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }

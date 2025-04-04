@@ -17,11 +17,11 @@ impl MSecs for Option<Duration> {
 }
 
 #[allow(dead_code)]
-pub(crate) trait Valid: Sized {
-    fn is_valid(value: &Self) -> bool;
+pub(crate) trait NonNull: Sized {
+    fn is_nonnull(value: &Self) -> bool;
 
-    fn valid(self) -> Option<Self> {
-        if Self::is_valid(&self) {
+    fn nonnull(self) -> Option<Self> {
+        if Self::is_nonnull(&self) {
             Some(self)
         } else {
             None
@@ -29,32 +29,32 @@ pub(crate) trait Valid: Sized {
     }
 }
 
-impl Valid for QByteArray {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QByteArray {
+    fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
 
-impl Valid for QDate {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QDate {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
 
-impl Valid for QDateTime {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QDateTime {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
 
-impl Valid for QString {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QString {
+    fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
 
-impl Valid for QTime {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QTime {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }

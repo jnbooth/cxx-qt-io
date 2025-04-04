@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::{MSecs, Valid};
+use crate::util::{MSecs, NonNull};
 use crate::QHostAddress;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
@@ -411,17 +411,17 @@ impl QAbstractSocket {
     ///
     /// This is normally the main IP address of the host, but can be `QHostAddress::LocalHost` (127.0.0.1) for connections to the local host.
     pub fn local_address(&self) -> Option<QHostAddress> {
-        self.local_address_or_null().valid()
+        self.local_address_or_null().nonnull()
     }
 
     /// Returns the address of the connected peer if the socket is in `ConnectedState`; otherwise returns `None`.
     pub fn peer_address(&self) -> Option<QHostAddress> {
-        self.peer_address_or_null().valid()
+        self.peer_address_or_null().nonnull()
     }
 
     /// Returns the name of the peer as specified by `connect_to_host()`, or `None` if `connect_to_host()` has not been called.
     pub fn peer_name(&self) -> Option<QString> {
-        self.peer_name_or_empty().valid()
+        self.peer_name_or_empty().nonnull()
     }
 
     /// Sets the given `option` to the value described by `value`.

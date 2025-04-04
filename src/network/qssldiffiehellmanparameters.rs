@@ -7,7 +7,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt::Upcast;
 use cxx_qt_lib::QByteArray;
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::{QIODevice, QSslEncodingFormat};
 
 #[cxx::bridge]
@@ -105,8 +105,8 @@ mod ffi {
 
 pub use ffi::QSslDiffieHellmanParametersError;
 
-impl Valid for QSslDiffieHellmanParameters {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QSslDiffieHellmanParameters {
+    fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }

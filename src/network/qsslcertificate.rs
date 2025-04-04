@@ -7,7 +7,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
-use crate::util::Valid;
+use crate::util::NonNull;
 use crate::{QIODevice, QSslEncodingFormat, QSslError, QSslKey};
 
 #[cxx::bridge]
@@ -287,8 +287,8 @@ impl Display for QSslCertificate {
     }
 }
 
-impl Valid for QSslCertificate {
-    fn is_valid(value: &Self) -> bool {
+impl NonNull for QSslCertificate {
+    fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
@@ -350,7 +350,7 @@ impl QSslCertificate {
     ///
     /// Returns `None` if `data` did not contain a certificate or the certificate was not loaded successfully.
     pub fn first_from_data(data: &QByteArray, format: QSslEncodingFormat) -> Option<Self> {
-        ffi::qsslcertificate_init_data(data, format).valid()
+        ffi::qsslcertificate_init_data(data, format).nonnull()
     }
 
     /// Constructs a `QSslCertificate` by reading `format` encoded data from `device` and using the first certificate found.
@@ -362,7 +362,7 @@ impl QSslCertificate {
     {
         let device = device.upcast_pin();
         unsafe { ffi::qsslcertificate_init_device(ptr::from_ref(&*device).cast_mut(), format) }
-            .valid()
+            .nonnull()
     }
 
     /// Searches for and parses all certificates in `data` that are encoded in the specified `format` and returns them in a list of certificates.
@@ -393,12 +393,12 @@ impl QSslCertificate {
 
     /// Returns the date-time that the certificate becomes valid, or `None` if this is a null certificate.
     pub fn effective_date(&self) -> Option<QDateTime> {
-        self.effective_date_or_null().valid()
+        self.effective_date_or_null().nonnull()
     }
 
     /// Returns the date-time that the certificate expires, or `None` if this is a null certificate.
     pub fn expiry_date(&self) -> Option<QDateTime> {
-        self.expiry_date_or_null().valid()
+        self.expiry_date_or_null().nonnull()
     }
 
     /// Returns the issuer information for the `subject`, or an empty list if there is no information for `subject` in the certificate. There can be more than one entry of each type.
