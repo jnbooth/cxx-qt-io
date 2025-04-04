@@ -292,6 +292,7 @@ fn main() {
                 "network/qsslerror",
                 "network/qsslkey",
                 "network/qsslpresharedkeyauthenticator",
+                "network/qsslsocket",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qocspresponse",

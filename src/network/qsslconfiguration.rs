@@ -75,7 +75,7 @@ mod ffi {
         /// The CA certificate database is used by the socket during the handshake phase to validate the peer's certificate.
         ///
         /// For more precise control, use `add_ca_certificate()`.
-        #[rust_name = "add_ca_certificates_from_path"]
+        #[rust_name = "add_ca_certificates_from_file"]
         fn addCaCertificates(
             &mut self,
             path: &QString,

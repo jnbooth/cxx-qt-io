@@ -78,7 +78,10 @@ mod ffi {
     unsafe extern "C++" {
         #[rust_name = "qtemporaryfile_create_native_file"]
         fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> UniquePtr<QTemporaryFile>;
+    }
 
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
         #[rust_name = "upcast_qtemporaryfile_qiodevice"]

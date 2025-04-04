@@ -147,7 +147,7 @@ mod ffi {
         UnknownAlertMessage = 255,
     }
 
-    /// Enumerates classes that a TLS backend implements
+    /// Enumerates classes that a TLS backend implements.
     ///
     /// In `QtNetwork`, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
     #[cfg(cxxqt_qt_version_at_least_6_1)]
@@ -218,6 +218,6 @@ pub use ffi::{QSslAlertLevel, QSslAlertType};
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 pub use ffi::{QSslImplementedClass, QSslSupportedFeature};
 
-pub type QSslOptions = QFlags<QSslSslOption>;
+pub type QSslSslOptions = QFlags<QSslSslOption>;
 
 unsafe_impl_qflag!(QSslSslOption, "QSslSslOptions");

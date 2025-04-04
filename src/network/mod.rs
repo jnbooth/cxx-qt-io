@@ -55,8 +55,8 @@ pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationRe
 mod qssl;
 #[cfg(feature = "ssl")]
 pub use qssl::{
-    QSslAlternativeNameEntryType, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType, QSslOptions,
-    QSslSslOption, QSslSslProtocol,
+    QSslAlternativeNameEntryType, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType, QSslSslOption,
+    QSslSslOptions, QSslSslProtocol,
 };
 
 #[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_0))]
@@ -111,7 +111,7 @@ pub use qsslkey::QSslKey;
 #[cfg(feature = "ssl")]
 mod qsslsocket;
 #[cfg(feature = "ssl")]
-pub use qsslsocket::QSslSocketPeerVerifyMode;
+pub use qsslsocket::{QSslSocket, QSslSocketPeerVerifyMode, QSslSocketSslMode};
 
 #[cfg(feature = "ssl")]
 mod qsslpresharedkeyauthenticator;

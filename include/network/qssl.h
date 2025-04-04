@@ -8,6 +8,7 @@ using QSslKeyAlgorithm = QSsl::KeyAlgorithm;
 using QSslAlternativeNameEntryType = QSsl::AlternativeNameEntryType;
 using QSslSslProtocol = QSsl::SslProtocol;
 using QSslSslOption = QSsl::SslOption;
+using QSslSslOptions = QSsl::SslOptions;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 using QSslAlertLevel = QSsl::AlertLevel;
