@@ -109,7 +109,7 @@ impl QBuffer {
         self.upcast()
     }
 
-    /// Mutably casts this object to `QIODevice`.    /// Mutably casts this object to `QIODevice`.
+    /// Mutably casts this object to `QIODevice`.
     pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
         self.upcast_pin()
     }

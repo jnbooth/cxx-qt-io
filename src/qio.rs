@@ -21,11 +21,11 @@ pub(crate) trait QIO: Upcast<QIODevice> {
 }
 
 pub(crate) trait QIOExt {
-    fn read(self: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize>;
+    fn read(reader: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize>;
 
-    fn write(self: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize>;
+    fn write(writer: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize>;
 
-    fn flush(self: Pin<&mut Self>) -> io::Result<()>;
+    fn flush(writer: Pin<&mut Self>) -> io::Result<()>;
 }
 
 #[cold]
@@ -36,33 +36,33 @@ fn get_error<T: QIO>(device: &T) -> io::Error {
 }
 
 impl<T: QIO> QIOExt for T {
-    fn read(mut self: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize> {
+    fn read(mut reader: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize> {
         let buf_ptr = buf.as_mut_ptr().cast::<c_char>();
-        let device = self.as_mut().upcast_pin();
+        let device = reader.as_mut().upcast_pin();
         // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
         let result = unsafe { device.read_unsafe(buf_ptr, buf.len() as i64) };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
-        Err(get_error(&*self))
+        Err(get_error(&*reader))
     }
 
-    fn write(mut self: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize> {
+    fn write(mut writer: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize> {
         let buf_ptr = buf.as_ptr().cast::<c_char>();
-        let device = self.as_mut().upcast_pin();
+        let device = writer.as_mut().upcast_pin();
         // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
         let result = unsafe { device.write_unsafe(buf_ptr, buf.len() as i64) };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
-        Err(get_error(&*self))
+        Err(get_error(&*writer))
     }
 
-    fn flush(mut self: Pin<&mut Self>) -> io::Result<()> {
-        if QIO::flush(self.as_mut()) {
+    fn flush(mut writer: Pin<&mut Self>) -> io::Result<()> {
+        if QIO::flush(writer.as_mut()) {
             Ok(())
         } else {
-            Err(get_error(&*self))
+            Err(get_error(&*writer))
         }
     }
 }
