@@ -137,22 +137,6 @@ pub use ffi::QUdpSocket;
 
 #[allow(clippy::cast_possible_wrap)]
 impl QUdpSocket {
-    pub fn as_io_device(&self) -> &QIODevice {
-        self.upcast()
-    }
-
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
-    }
-
-    pub fn as_abstract_socket(&self) -> &QAbstractSocket {
-        self.upcast()
-    }
-
-    pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
-        self.upcast_pin()
-    }
-
     /// Joins the multicast group specified by `group_address` on a specified network `interface`, or the default interface chosen by the operating system if `interface` is `None`. The socket must be in `BoundState`, otherwise an error occurs.
     ///
     /// Note that if you are attempting to join an IPv4 group, your socket must not be bound using IPv6 (or in dual mode, using `SpecialHostAddress::Any`). You must use `SpecialHostAddress::Any` instead.
@@ -259,6 +243,26 @@ impl QUdpSocket {
     ) -> i64 {
         // SAFETY: `data.as_ptr()` is valid up to `data.len()`.
         unsafe { self.write_datagram_unsafe(data.as_ptr(), data.len() as i64, address, port) }
+    }
+
+    /// Casts this object to `QIODevice`.
+    pub fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QIODevice`.
+    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
+    }
+
+    /// Casts this object to `QAbstractSocket`.
+    pub fn as_abstract_socket(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QAbstractSocket`.
+    pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
+        self.upcast_pin()
     }
 }
 

@@ -34,18 +34,22 @@ mod ffi {
 pub use ffi::QTcpSocket;
 
 impl QTcpSocket {
+    /// Casts this object to `QIODevice`.
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QIODevice`.
     pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
         self.upcast_pin()
     }
 
+    /// Casts this object to `QAbstractSocket`.
     pub fn as_abstract_socket(&self) -> &QAbstractSocket {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QAbstractSocket`.
     pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
         self.upcast_pin()
     }

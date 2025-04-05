@@ -112,22 +112,27 @@ mod ffi {
 pub use ffi::QFile;
 
 impl QFile {
-    pub fn new(path: &QString) -> UniquePtr<Self> {
-        ffi::qfile_new(path)
+    /// Constructs a new file object to represent the file with the given `name`.
+    pub fn new(name: &QString) -> UniquePtr<Self> {
+        ffi::qfile_new(name)
     }
 
+    /// Casts this object to `QIODevice`.
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QIODevice`.
     pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
         self.upcast_pin()
     }
 
+    /// Casts this object to `QFileDevice`.
     pub fn as_file_device(&self) -> &QFileDevice {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QFileDevice`.
     pub fn as_file_device_mut(self: Pin<&mut Self>) -> Pin<&mut QFileDevice> {
         self.upcast_pin()
     }

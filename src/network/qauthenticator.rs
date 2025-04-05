@@ -52,9 +52,19 @@ mod ffi {
         /// Returns the user used for authentication.
         fn user(self: &QAuthenticator) -> QString;
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[rust_name = "qauthenticator_eq"]
+        fn operatorEq(a: &QAuthenticator, b: &QAuthenticator) -> bool;
+    }
 }
 
 pub use ffi::QAuthenticator;
+
+use crate::util::NonNull;
 
 impl QAuthenticator {
     /// Sets the outgoing option `opt` to value `value`.
@@ -63,5 +73,19 @@ impl QAuthenticator {
         T: Into<QVariant>,
     {
         self.set_option_variant(opt, &value.into());
+    }
+}
+
+impl PartialEq for QAuthenticator {
+    fn eq(&self, other: &Self) -> bool {
+        ffi::qauthenticator_eq(self, other)
+    }
+}
+
+impl Eq for QAuthenticator {}
+
+impl NonNull for QAuthenticator {
+    fn is_nonnull(value: &Self) -> bool {
+        !value.is_null()
     }
 }

@@ -116,26 +116,32 @@ impl QTemporaryFile {
         ffi::qtemporaryfile_create_native_file(file)
     }
 
+    /// Casts this object to `QIODevice`.
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QIODevice`.
     pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
         self.upcast_pin()
     }
 
+    /// Casts this object to `QFileDevice`.
     pub fn as_file_device(&self) -> &QFileDevice {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QFileDevice`.
     pub fn as_file_device_mut(self: Pin<&mut Self>) -> Pin<&mut QFileDevice> {
         self.upcast_pin()
     }
 
+    /// Casts this object to `QFile`.
     pub fn as_file(&self) -> &QFile {
         self.upcast()
     }
 
+    /// Mutably casts this object to `QFile`.
     pub fn as_file_mut(self: Pin<&mut Self>) -> Pin<&mut QFile> {
         self.upcast_pin()
     }

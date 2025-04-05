@@ -75,27 +75,10 @@ mod ffi {
 pub use ffi::QBuffer;
 
 impl QBuffer {
-    pub fn as_io_device(&self) -> &QIODevice {
-        self.upcast()
-    }
-
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
-    }
-
-    pub fn as_slice(&self) -> &[u8] {
-        self.buffer().as_slice()
-    }
-
-    pub fn as_mut_slice(self: Pin<&mut Self>) -> &mut [u8] {
-        self.buffer_mut().as_mut_slice()
-    }
-
     /// Constructs an empty buffer with the given parent. You can call `set_data()` to fill the buffer with data, or you can open it in write mode and use `write()`.
     pub fn new() -> UniquePtr<Self> {
         ffi::qbuffer_default()
     }
-
     /// Constructs a `QBuffer` that uses the `QByteArray` pointed to by `byte_array` as its internal buffer, and with the given parent. `QBuffer` doesn't take ownership of the `QByteArray`.
     ///
     /// If you open the buffer in write-only mode or read-write mode and write something into the `QBuffer`, `byte_array` will be modified.
@@ -107,9 +90,28 @@ impl QBuffer {
         unsafe { ffi::qbuffer_new(byte_array) }
     }
 
+    /// Extracts a slice containing the entire buffer.
+    pub fn as_slice(&self) -> &[u8] {
+        self.buffer().as_slice()
+    }
+
+    /// Extracts a mutable slice of the entire buffer.
+    pub fn as_mut_slice(self: Pin<&mut Self>) -> &mut [u8] {
+        self.buffer_mut().as_mut_slice()
+    }
+
     /// Sets the contents of the internal buffer to be `data`. This is the same as assigning data to `buffer()`.
     pub fn set_data<T: AsRef<[u8]>>(self: Pin<&mut Self>, data: T) {
         ffi::qbuffer_set_data(self, data.as_ref());
+    }
+    /// Casts this object to `QIODevice`.
+    pub fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QIODevice`.    /// Mutably casts this object to `QIODevice`.
+    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
     }
 }
 

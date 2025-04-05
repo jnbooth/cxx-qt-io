@@ -90,11 +90,11 @@ impl QSaveFile {
     pub fn new(path: &QString) -> UniquePtr<Self> {
         ffi::qsavefile_new(path)
     }
-
+    /// Casts this object to `QIODevice`.
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()
     }
-
+    /// Mutably casts this object to `QIODevice`.
     pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
         self.upcast_pin()
     }

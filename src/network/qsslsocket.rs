@@ -457,30 +457,6 @@ mod ffi {
 pub use ffi::{QSslSocket, QSslSocketPeerVerifyMode, QSslSocketSslMode};
 
 impl QSslSocket {
-    pub fn as_io_device(&self) -> &QIODevice {
-        self.upcast()
-    }
-
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
-    }
-
-    pub fn as_abstract_socket(&self) -> &QAbstractSocket {
-        self.upcast()
-    }
-
-    pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
-        self.upcast_pin()
-    }
-
-    pub fn as_tcp_socket(&self) -> &QTcpSocket {
-        self.upcast()
-    }
-
-    pub fn as_tcp_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QTcpSocket> {
-        self.upcast_pin()
-    }
-
     /// Returns the socket's local certificate, or `None` if no local certificate has been assigned.
     pub fn local_certificate(&self) -> Option<QSslCertificate> {
         self.local_certificate_or_empty().nonnull()
@@ -544,6 +520,36 @@ impl QSslSocket {
     /// Returns the version string of the SSL library in use. If no SSL support is available then this will return `None`.
     pub fn ssl_library_version_string() -> Option<QString> {
         ffi::qsslsocket_ssl_library_version_string().nonnull()
+    }
+
+    /// Casts this object to `QIODevice`.
+    pub fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QIODevice`.
+    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
+        self.upcast_pin()
+    }
+
+    /// Casts this object to `QAbstractSocket`.
+    pub fn as_abstract_socket(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QAbstractSocket`.
+    pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
+        self.upcast_pin()
+    }
+
+    /// Casts this object to `QTcpSocket`.
+    pub fn as_tcp_socket(&self) -> &QTcpSocket {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QSslSocket`.
+    pub fn as_tcp_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QTcpSocket> {
+        self.upcast_pin()
     }
 }
 
