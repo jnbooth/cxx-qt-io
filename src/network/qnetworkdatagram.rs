@@ -2,7 +2,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt_lib::QByteArray;
 use std::mem::MaybeUninit;
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::QHostAddress;
 
 #[cxx::bridge]
@@ -153,7 +153,7 @@ impl Drop for QNetworkDatagram {
     }
 }
 
-impl NonNull for QNetworkDatagram {
+impl IsNonNull for QNetworkDatagram {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }

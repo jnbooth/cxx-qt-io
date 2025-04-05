@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
 use cxx_qt::Upcast;
 use std::ffi::c_char;

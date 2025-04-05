@@ -2,7 +2,7 @@ use std::fmt::{self, Debug, Formatter};
 
 use cxx::{type_id, ExternType};
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use cxx_qt_lib::QString;
 
 #[cxx::bridge]
@@ -57,7 +57,7 @@ mod ffi {
     }
 }
 
-impl NonNull for QSslEllipticCurve {
+impl IsNonNull for QSslEllipticCurve {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }

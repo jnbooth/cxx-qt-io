@@ -6,7 +6,7 @@ use std::mem::MaybeUninit;
 use std::pin::Pin;
 use std::ptr;
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::{QIODevice, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType};
 
 #[cxx::bridge]
@@ -139,7 +139,7 @@ impl Debug for QSslKey {
     }
 }
 
-impl NonNull for QSslKey {
+impl IsNonNull for QSslKey {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }

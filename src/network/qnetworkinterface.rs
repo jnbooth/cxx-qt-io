@@ -5,7 +5,7 @@ use std::mem::MaybeUninit;
 
 use cxx_qt_lib::QString;
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::QHostAddress;
 
 #[cxx::bridge]
@@ -211,7 +211,7 @@ impl Debug for QNetworkInterface {
     }
 }
 
-impl NonNull for QNetworkInterface {
+impl IsNonNull for QNetworkInterface {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }

@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QByteArray, QList, QVariant};
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::{QSslCertificate, QSslCipher, QSslEllipticCurve, QSslKey};
 
 #[cxx::bridge]

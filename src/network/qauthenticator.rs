@@ -64,7 +64,7 @@ mod ffi {
 
 pub use ffi::QAuthenticator;
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 
 impl QAuthenticator {
     /// Sets the outgoing option `opt` to value `value`.
@@ -84,7 +84,7 @@ impl PartialEq for QAuthenticator {
 
 impl Eq for QAuthenticator {}
 
-impl NonNull for QAuthenticator {
+impl IsNonNull for QAuthenticator {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }

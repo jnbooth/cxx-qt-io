@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::{MSecs, NonNull};
+use crate::util::{IsNonNull, MSecs};
 use crate::{QHostAddress, QIODevice};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlags, QString, QVariant};

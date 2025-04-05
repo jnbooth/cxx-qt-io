@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::{MSecs, NonNull};
+use crate::util::{MSecs, IsNonNull};
 use crate::{
     QAbstractSocket, QIODevice, QSslCertificate, QSslImplementedClass, QSslSslProtocol,
     QSslSupportedFeature, QTcpSocket,

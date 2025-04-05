@@ -17,7 +17,7 @@ impl MSecs for Option<Duration> {
 }
 
 #[allow(dead_code)]
-pub(crate) trait NonNull: Sized {
+pub(crate) trait IsNonNull: Sized {
     fn is_nonnull(value: &Self) -> bool;
 
     fn nonnull(self) -> Option<Self> {
@@ -29,31 +29,31 @@ pub(crate) trait NonNull: Sized {
     }
 }
 
-impl NonNull for QByteArray {
+impl IsNonNull for QByteArray {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
 
-impl NonNull for QDate {
+impl IsNonNull for QDate {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
 
-impl NonNull for QDateTime {
+impl IsNonNull for QDateTime {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }
 }
 
-impl NonNull for QString {
+impl IsNonNull for QString {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }
 }
 
-impl NonNull for QTime {
+impl IsNonNull for QTime {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }

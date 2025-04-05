@@ -7,7 +7,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::{QIODevice, QSslEncodingFormat, QSslError, QSslKey};
 
 #[cxx::bridge]
@@ -287,7 +287,7 @@ impl Display for QSslCertificate {
     }
 }
 
-impl NonNull for QSslCertificate {
+impl IsNonNull for QSslCertificate {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
     }

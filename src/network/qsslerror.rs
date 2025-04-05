@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
 
-use crate::util::NonNull;
+use crate::util::IsNonNull;
 use crate::QSslCertificate;
 
 #[cxx::bridge]
