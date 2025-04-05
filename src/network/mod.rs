@@ -20,6 +20,12 @@ mod qhttpheaders;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 pub use qhttpheaders::{QHttpHeaders, QHttpHeadersWellKnownHeader};
 
+mod qlocalsocket;
+pub use qlocalsocket::{
+    QLocalSocket, QLocalSocketLocalSocketError, QLocalSocketLocalSocketState,
+    QLocalSocketSocketOption, QLocalSocketSocketOptions,
+};
+
 mod qnetworkaddressentry;
 pub use qnetworkaddressentry::{QNetworkAddressEntry, QNetworkAddressEntryDnsEligibilityStatus};
 
