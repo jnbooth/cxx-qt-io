@@ -140,6 +140,7 @@ fn main() {
     header_dir.write_headers(&[
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
+        include_header!("include/core/qbuffer.h"),
         include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qcryptographichash.h"),
         include_header!("include/core/qiodevice.h"),
@@ -167,6 +168,7 @@ fn main() {
 
     let mut builder = CxxQtBuilder::library(interface)
         .build_cpp(&[
+            "core/qbuffer",
             "core/qiodevice",
             "core/qlist/qlist",
             "core/qpair/qpair",
