@@ -40,7 +40,6 @@ use std::fmt::{self, Debug, Formatter};
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
-use cxx_qt_lib::{QFlags, QVariant};
 
 #[cxx::bridge]
 mod ffi {
@@ -51,10 +50,10 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/$CLASS_LOWER.h");
-        type $CLASS = super::$CLASS;
     }
 
     unsafe extern "C++" {
+        type $CLASS = super::$CLASS;
     }
 
     #[namespace = "rust::cxxqtlib1"]
