@@ -82,6 +82,13 @@ impl_qlist_element!(
     "QList_QHttp1Configuration",
 );
 
+#[cfg(feature = "qt_network")]
+impl_qlist_element!(
+    crate::QHttp2Configuration,
+    qlist_qhttp2configuration,
+    "QList_QHttp2Configuration",
+);
+
 #[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
 impl_qlist_element!(
     crate::QHttpHeaders,

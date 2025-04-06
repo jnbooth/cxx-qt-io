@@ -20,6 +20,9 @@ mod qhttp1configuration;
 #[cfg(cxxqt_qt_version_at_least_6_5)]
 pub use qhttp1configuration::QHttp1Configuration;
 
+mod qhttp2configuration;
+pub use qhttp2configuration::QHttp2Configuration;
+
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 mod qhttpheaders;
 #[cfg(cxxqt_qt_version_at_least_6_7)]

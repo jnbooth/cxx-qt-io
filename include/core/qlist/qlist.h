@@ -9,6 +9,7 @@
 
 #ifdef CXX_QT_IO_NETWORK_FEATURE
 #include "qlist_qhostaddress.h"
+#include "qlist_qhttp2configuration.h"
 #include "qlist_qnetworkaddressentry.h"
 #include "qlist_qnetworkcookie.h"
 #include "qlist_qnetworkdatagram.h"

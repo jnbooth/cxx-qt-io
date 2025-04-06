@@ -195,6 +195,7 @@ fn main() {
     if features.network {
         header_dir.write_headers(&[
             include_header!("include/core/qlist/qlist_qhostaddress.h"),
+            include_header!("include/core/qlist/qlist_qhttp2configuration.h"),
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
             include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
             include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
@@ -204,6 +205,7 @@ fn main() {
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
+            include_header!("include/network/qhttp2configuration.h"),
             include_header!("include/network/qlocalsocket.h"),
             include_header!("include/network/qnetworkaccessmanager.h"),
             include_header!("include/network/qnetworkaddressentry.h"),
@@ -219,6 +221,7 @@ fn main() {
             .qt_module("Network")
             .build_cpp(&[
                 "network/qhostaddress",
+                "network/qhttp2configuration",
                 "network/qnetworkaddressentry",
                 "network/qnetworkcookie",
                 "network/qnetworkdatagram",
@@ -227,6 +230,7 @@ fn main() {
             ])
             .build_rust(&[
                 "core/qlist/qlist_qhostaddress",
+                "core/qlist/qlist_qhttp2configuration",
                 "core/qlist/qlist_qnetworkaddressentry",
                 "core/qlist/qlist_qnetworkcookie",
                 "core/qlist/qlist_qnetworkdatagram",
@@ -237,6 +241,7 @@ fn main() {
                 "network/qabstractsocket",
                 "network/qauthenticator",
                 "network/qhostaddress",
+                "network/qhttp2configuration",
                 "network/qlocalsocket",
                 "network/qnetworkaccessmanager",
                 "network/qnetworkaddressentry",

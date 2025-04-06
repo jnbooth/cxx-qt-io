@@ -274,6 +274,7 @@ generate_bridge "QSslError"
 generate_bridge "QSslKey"
 generate_bridge "QSslPreSharedKeyAuthenticator"
 generate_bridge "QHttp1Configuration"
+generate_bridge "QHttp2Configuration"
 
 generate_bridge_neq "QHttpHeaders"
 generate_bridge_neq "QNetworkDatagram"
