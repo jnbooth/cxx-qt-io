@@ -101,7 +101,7 @@ mod ffi {
         ///
         /// This function can be called from the slot connected to the sslErrors() signal, which indicates which errors were found.
         ///
-        /// Note: If HTTP Strict Transport Security is enabled for QNetworkAccessManager, this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for QNetworkAccessManager, this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_all_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>);
@@ -110,7 +110,7 @@ mod ffi {
         ///
         /// Multiple calls to this function will replace the list of errors that were passed in previous calls. You can clear the list of errors you want to ignore by calling this function with an empty list.
         ///
-        /// Note: If HTTP Strict Transport Security is enabled for QNetworkAccessManager, this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for QNetworkAccessManager, this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>, errors: &QList_QSslError);
@@ -193,7 +193,7 @@ mod ffi {
         ///
         /// The code parameter contains the code of the error that was detected. Call `error_string()` to obtain a textual representation of the error condition.
         ///
-        /// Note: Do not delete the object in the slot connected to this signal. Use `delete_later()`.
+        /// **Note:** Do not delete the object in the slot connected to this signal. Use `delete_later()`.
         #[qsignal]
         #[rust_name = "error_occurred"]
         fn errorOccurred(self: Pin<&mut QNetworkReply>, code: QNetworkReplyNetworkError);
@@ -204,7 +204,7 @@ mod ffi {
         ///
         /// This signal is emitted in tandem with `QNetworkAccessManager::finished()` where that signal's reply parameter is this object.
         ///
-        /// Note: Do not delete the object in the slot connected to this signal. Use `delete_later()`.
+        /// **Note:** Do not delete the object in the slot connected to this signal. Use `delete_later()`.
         ///
         /// You can also use `is_finished()` to check if a `QNetworkReply` has finished even before you receive the `finished()` signal.
         #[qsignal]
@@ -219,9 +219,9 @@ mod ffi {
         ///
         /// When using PSK, the client must send to the server a valid identity and a valid pre shared key, in order for the SSL handshake to continue. Applications can provide this information in a slot connected to this signal, by filling in the passed `authenticator` object according to their needs.
         ///
-        /// Note: Ignoring this signal, or failing to provide the required credentials, will cause the handshake to fail, and therefore the connection to be aborted.
+        /// **Note:** Ignoring this signal, or failing to provide the required credentials, will cause the handshake to fail, and therefore the connection to be aborted.
         ///
-        /// Note: The `authenticator` object is owned by the socket and must not be deleted by the application.
+        /// **Note:** The `authenticator` object is owned by the socket and must not be deleted by the application.
         #[cfg(feature = "ssl")]
         #[qsignal]
         #[rust_name = "pre_shared_key_authentication_required"]

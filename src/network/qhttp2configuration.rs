@@ -26,7 +26,7 @@ mod ffi {
 
         /// Returns `true` if server push was enabled.
         ///
-        /// Note: By default, `QNetworkAccessManager` disables server push via the 'SETTINGS' frame.
+        /// **Note:** By default, `QNetworkAccessManager` disables server push via the 'SETTINGS' frame.
         #[rust_name = "server_push_enabled"]
         fn serverPushEnabled(&self) -> bool;
 
@@ -36,7 +36,7 @@ mod ffi {
 
         /// If `enable` is true, HPACK compression will additionally compress string using the Huffman coding. Enabled by default.
         ///
-        /// Note: This parameter only affects 'HEADERS' frames that `QNetworkAccessManager` is sending.
+        /// **Note:** This parameter only affects 'HEADERS' frames that `QNetworkAccessManager` is sending.
         #[rust_name = "set_huffman_compression_enabled"]
         fn setHuffmanCompressionEnabled(&mut self, enable: bool);
 

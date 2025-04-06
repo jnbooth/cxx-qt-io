@@ -1,5 +1,5 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::{MSecs, IsNonNull};
+use crate::util::{IsNonNull, MSecs};
 use crate::{
     QAbstractSocket, QIODevice, QSslCertificate, QSslImplementedClass, QSslSslProtocol,
     QSslSupportedFeature, QTcpSocket,
@@ -136,7 +136,7 @@ mod ffi {
 
         /// This method tells `QSslSocket` to ignore only the errors given in `errors`.
         ///
-        /// Note: Because most SSL errors are associated with a certificate, for most of them you must set the expected certificate this SSL error is related to.
+        /// **Note:** Because most SSL errors are associated with a certificate, for most of them you must set the expected certificate this SSL error is related to.
         ///
         /// Multiple calls to this function will replace the list of errors that were passed in previous calls. You can clear the list of errors you want to ignore by calling this function with an empty list.
         #[rust_name = "ignore_ssl_errors"]
@@ -219,7 +219,7 @@ mod ffi {
         ///
         /// The local certificate and private key are always necessary for server sockets, but are also rarely used by client sockets if the server requires the client to authenticate.
         ///
-        /// Note: Secure Transport SSL backend on macOS may update the default keychain (the default is probably your login keychain) by importing your local certificates and keys. This can also result in system dialogs showing up and asking for permission when your application is using these private keys. If such behavior is undesired, set the `QT_SSL_USE_TEMPORARY_KEYCHAIN` environment variable to a non-zero value; this will prompt `QSslSocket` to use its own temporary keychain.
+        /// **Note:** Secure Transport SSL backend on macOS may update the default keychain (the default is probably your login keychain) by importing your local certificates and keys. This can also result in system dialogs showing up and asking for permission when your application is using these private keys. If such behavior is undesired, set the `QT_SSL_USE_TEMPORARY_KEYCHAIN` environment variable to a non-zero value; this will prompt `QSslSocket` to use its own temporary keychain.
         #[rust_name = "set_local_certificate"]
         fn setLocalCertificate(self: Pin<&mut QSslSocket>, certificate: &QSslCertificate);
 
@@ -313,9 +313,9 @@ mod ffi {
 
         /// `QSslSocket` emits this signal if an alert message was received from a peer. `level` tells if the alert was fatal or it was a warning. `type` is the code explaining why the alert was sent. When a textual description of the alert message is available, it is supplied in `description`.
         ///
-        /// Note: The signal is mostly for informational and debugging purposes and does not require any handling in the application. If the alert was fatal, underlying backend will handle it and close the connection.
+        /// **Note:** The signal is mostly for informational and debugging purposes and does not require any handling in the application. If the alert was fatal, underlying backend will handle it and close the connection.
         ///
-        /// Note: Not all backends support this functionality.
+        /// **Note:** Not all backends support this functionality.
         #[qsignal]
         #[rust_name = "alert_received"]
         fn alertReceived(
@@ -327,9 +327,9 @@ mod ffi {
 
         /// `QSslSocket` emits this signal if an alert message was sent to a peer. `level` tells if the alert was fatal or it was a warning. `type` is the code explaining why the alert was sent. When a textual description of the alert message is available, it is supplied in `description`.
         ///
-        /// Note: The signal is mostly for informational and debugging purposes and does not require any handling in the application. If the alert was fatal, underlying backend will handle it and close the connection.
+        /// **Note:** The signal is mostly for informational and debugging purposes and does not require any handling in the application. If the alert was fatal, underlying backend will handle it and close the connection.
         ///
-        /// Note: Not all backends support this functionality.
+        /// **Note:** Not all backends support this functionality.
         #[qsignal]
         #[rust_name = "alert_sent"]
         fn alertSent(
@@ -360,7 +360,7 @@ mod ffi {
 
         /// If TLS 1.3 protocol was negotiated during a handshake, `QSslSocket` emits this signal after receiving NewSessionTicket message. Session and session ticket's lifetime hint are updated in the socket's configuration. The session can be used for session resumption (and a shortened handshake) in future TLS connections.
         ///
-        /// Note: This functionality enabled only with OpenSSL backend and requires OpenSSL v 1.1.1 or above.
+        /// **Note:** This functionality enabled only with OpenSSL backend and requires OpenSSL v 1.1.1 or above.
         #[qsignal]
         #[rust_name = "new_session_ticket_received"]
         fn newSessionTicketReceived(self: Pin<&mut QSslSocket>);
@@ -376,9 +376,9 @@ mod ffi {
         ///
         /// When using PSK, the client must send to the server a valid identity and a valid pre shared key, in order for the SSL handshake to continue. Applications can provide this information in a slot connected to this signal, by filling in the passed `authenticator` object according to their needs.
         ///
-        /// Note: Ignoring this signal, or failing to provide the required credentials, will cause the handshake to fail, and therefore the connection to be aborted.
+        /// **Note:** Ignoring this signal, or failing to provide the required credentials, will cause the handshake to fail, and therefore the connection to be aborted.
         ///
-        /// Note: The `authenticator` object is owned by the socket and must not be deleted by the application.
+        /// **Note:** The `authenticator` object is owned by the socket and must not be deleted by the application.
         #[qsignal]
         #[rust_name = "pre_shared_key_authentication_required"]
         unsafe fn preSharedKeyAuthenticationRequired(
@@ -392,7 +392,7 @@ mod ffi {
         ///
         /// `errors` contains one or more errors that prevent `QSslSocket` from verifying the identity of the peer.
         ///
-        /// Note: You cannot use `QueuedConnection` when connecting to this signal, or calling `ignore_ssl_errors()` will have no effect.
+        /// **Note:** You cannot use `QueuedConnection` when connecting to this signal, or calling `ignore_ssl_errors()` will have no effect.
         #[qsignal]
         #[rust_name = "ssl_errors"]
         fn sslErrors(self: Pin<&mut QSslSocket>, errors: &QList_QSslError);

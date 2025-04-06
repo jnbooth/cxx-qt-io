@@ -230,9 +230,9 @@ mod ffi {
 
         /// Sets request's HTTP/2 parameters from `configuration`.
         ///
-        /// Note: The configuration must be set prior to making a request.
+        /// **Note:** The configuration must be set prior to making a request.
         ///
-        /// Note: HTTP/2 multiplexes several streams in a single HTTP/2 connection. This implies that `QNetworkAccessManager` will use the configuration found in the first request from a series of requests sent to the same host.
+        /// **Note:** HTTP/2 multiplexes several streams in a single HTTP/2 connection. This implies that `QNetworkAccessManager` will use the configuration found in the first request from a series of requests sent to the same host.
         #[rust_name = "set_http2_configuration"]
         fn setHttp2Configuration(&mut self, configuration: &QHttp2Configuration);
 
@@ -246,15 +246,15 @@ mod ffi {
 
         /// Set the priority of this request to `priority`.
         ///
-        /// Note: The `priority` is only a hint to the network access manager. It can use it or not. Currently it is used for HTTP to decide which request should be sent first to a server.
+        /// **Note:** The `priority` is only a hint to the network access manager. It can use it or not. Currently it is used for HTTP to decide which request should be sent first to a server.
         #[rust_name = "set_priority"]
         fn setPriority(&mut self, priority: QNetworkRequestPriority);
 
         /// Sets the header `header_name` to be of value `header_value`. If `header_name` corresponds to a known header (see `QNetworkRequestKnownHeaders`), the raw format will be parsed and the corresponding "cooked" header will be set as well.
         ///
-        /// Note: Setting the same header twice overrides the previous setting. To accomplish the behaviour of multiple HTTP headers of the same name, you should concatenate the two values, separating them with a comma (",") and set one single raw header.
+        /// **Note:** Setting the same header twice overrides the previous setting. To accomplish the behaviour of multiple HTTP headers of the same name, you should concatenate the two values, separating them with a comma (",") and set one single raw header.
         ///
-        /// Note: Since Qt 6.8, the header field names are normalized by converting them to lowercase.
+        /// **Note:** Since Qt 6.8, the header field names are normalized by converting them to lowercase.
         #[rust_name = "set_raw_header"]
         fn setRawHeader(&mut self, header_name: &QByteArray, header_value: &QByteArray);
 

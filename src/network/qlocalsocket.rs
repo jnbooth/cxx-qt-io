@@ -122,13 +122,13 @@ mod ffi {
 
         /// Returns the server path that the socket is connected to.
         ///
-        /// Note: The return value of this function is platform specific.
+        /// **Note:** The return value of this function is platform specific.
         #[rust_name = "full_server_name"]
         fn fullServerName(self: &QLocalSocket) -> QString;
 
         /// Returns `true` if the socket is valid and ready for use; otherwise returns `false`.
         ///
-        /// Note: The socket's state must be `ConnectedState` before reading and writing can occur.
+        /// **Note:** The socket's state must be `ConnectedState` before reading and writing can occur.
         #[rust_name = "is_valid"]
         fn isValid(self: &QLocalSocket) -> bool;
 

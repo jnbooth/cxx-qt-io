@@ -42,7 +42,7 @@ mod ffi {
 
         /// Sets the PSK client identity (to be advised to the server) to `identity`.
         ///
-        /// Note: it is possible to set an identity whose length is greater than `maximum_identity_length()`; in this case, only the first `maximum_identity_length()` bytes will be actually sent to the server.
+        /// **Note:** it is possible to set an identity whose length is greater than `maximum_identity_length()`; in this case, only the first `maximum_identity_length()` bytes will be actually sent to the server.
         #[rust_name = "set_identity"]
         fn setIdentity(&mut self, identity: &QByteArray);
 
