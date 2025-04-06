@@ -10,8 +10,6 @@ using QNetworkRequestKnownHeaders = QNetworkRequest::KnownHeaders;
 using QNetworkRequestLoadControl = QNetworkRequest::LoadControl;
 using QNetworkRequestPriority = QNetworkRequest::Priority;
 using QNetworkRequestRedirectPolicy = QNetworkRequest::RedirectPolicy;
-using QNetworkRequestTransferTimeoutConstant =
-  QNetworkRequest::TransferTimeoutConstant;
 
 namespace rust {
 template<>

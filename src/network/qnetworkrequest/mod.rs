@@ -96,14 +96,6 @@ mod ffi {
         UserVerifiedRedirectPolicy,
     }
 
-    /// A constant that can be used for enabling transfer timeouts with a preset value.
-    #[repr(i32)]
-    #[derive(Debug)]
-    enum QNetworkRequestTransferTimeoutConstant {
-        /// The transfer timeout in milliseconds. Used if set_timeout() is called without an argument.
-        DefaultTransferTimeoutConstant = 30000,
-    }
-
     extern "C++" {
         include!("cxx-qt-lib/qurl.h");
         type QUrl = cxx_qt_lib::QUrl;
@@ -148,7 +140,6 @@ mod ffi {
         type QNetworkRequestLoadControl;
         type QNetworkRequestPriority;
         type QNetworkRequestRedirectPolicy;
-        type QNetworkRequestTransferTimeoutConstant;
     }
 
     unsafe extern "C++" {
@@ -324,7 +315,7 @@ mod ffi {
 
 pub use ffi::{
     QNetworkRequestCacheLoadControl, QNetworkRequestKnownHeaders, QNetworkRequestLoadControl,
-    QNetworkRequestPriority, QNetworkRequestRedirectPolicy, QNetworkRequestTransferTimeoutConstant,
+    QNetworkRequestPriority, QNetworkRequestRedirectPolicy,
 };
 
 #[repr(C)]

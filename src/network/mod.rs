@@ -64,7 +64,7 @@ mod qnetworkrequest;
 pub use qnetworkrequest::{
     QNetworkRequest, QNetworkRequestAttribute, QNetworkRequestCacheLoadControl,
     QNetworkRequestKnownHeaders, QNetworkRequestLoadControl, QNetworkRequestPriority,
-    QNetworkRequestRedirectPolicy, QNetworkRequestTransferTimeoutConstant,
+    QNetworkRequestRedirectPolicy,
 };
 
 mod qnetworkreply;

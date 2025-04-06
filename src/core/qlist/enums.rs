@@ -152,6 +152,19 @@ mod network {
     );
 
     impl_qlist_element!(
+        crate::QLocalSocketLocalSocketError,
+        "QList_QLocalSocketLocalSocketError"
+    );
+    impl_qlist_element!(
+        crate::QLocalSocketLocalSocketState,
+        "QList_QLocalSocketLocalSocketState"
+    );
+    impl_qlist_element!(
+        crate::QLocalSocketSocketOption,
+        "QList_QLocalSocketSocketOption"
+    );
+
+    impl_qlist_element!(
         crate::QNetworkAddressEntryDnsEligibilityStatus,
         "QList_QNetworkAddressEntryDnsEligibilityStatus",
         i8
@@ -183,8 +196,28 @@ mod network {
     );
 
     impl_qlist_element!(
+        crate::QNetworkRequestAttribute,
+        "QList_QNetworkRequestAttribute"
+    );
+    impl_qlist_element!(
+        crate::QNetworkRequestCacheLoadControl,
+        "QList_QNetworkRequestCacheLoadControl"
+    );
+    impl_qlist_element!(
         crate::QNetworkRequestKnownHeaders,
         "QList_QNetworkRequestKnownHeaders"
+    );
+    impl_qlist_element!(
+        crate::QNetworkRequestLoadControl,
+        "QList_QNetworkRequestLoadControl"
+    );
+    impl_qlist_element!(
+        crate::QNetworkRequestPriority,
+        "QList_QNetworkRequestPriority"
+    );
+    impl_qlist_element!(
+        crate::QNetworkRequestRedirectPolicy,
+        "QList_QNetworkRequestRedirectPolicy"
     );
 }
 
