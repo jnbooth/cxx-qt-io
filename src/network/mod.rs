@@ -15,6 +15,11 @@ pub use qhostaddress::{
     QHostAddressSpecialAddress,
 };
 
+#[cfg(cxxqt_qt_version_at_least_6_5)]
+mod qhttp1configuration;
+#[cfg(cxxqt_qt_version_at_least_6_5)]
+pub use qhttp1configuration::QHttp1Configuration;
+
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 mod qhttpheaders;
 #[cfg(cxxqt_qt_version_at_least_6_7)]

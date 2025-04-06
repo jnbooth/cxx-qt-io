@@ -75,6 +75,13 @@ impl_qlist_element!(
     "QList_QPair_QByteArray_QByteArray",
 );
 
+#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_5))]
+impl_qlist_element!(
+    crate::QHttp1Configuration,
+    qlist_qhttp1configuration,
+    "QList_QHttp1Configuration",
+);
+
 #[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
 impl_qlist_element!(
     crate::QHttpHeaders,

@@ -267,6 +267,19 @@ fn main() {
                 "network/qudpsocket",
             ]);
 
+        if version.at_least(6, 5) {
+            header_dir.write_headers(&[
+                include_header!("include/core/qlist/qlist_qhttp1configuration.h"),
+                include_header!("include/network/qhttp1configuration.h"),
+            ]);
+            builder = builder
+                .build_cpp(&["network/qhttp1configuration"])
+                .build_rust(&[
+                    "core/qlist/qlist_qhttp1configuration",
+                    "network/qhttp1configuration",
+                ]);
+        }
+
         if version.at_least(6, 7) {
             header_dir.write_headers(&[
                 include_header!("include/core/qlist/qlist_qhttpheaders.h"),

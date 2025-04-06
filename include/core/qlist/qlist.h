@@ -15,6 +15,10 @@
 #include "qlist_qnetworkinterface.h"
 #include "qlist_qnetworkproxy.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+#include "qlist_qhttp1configuration.h"
+#endif
+
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
 #include "qlist_qhttpheaders.h"
 #endif
