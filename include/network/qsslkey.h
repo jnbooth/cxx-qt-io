@@ -14,7 +14,7 @@ QByteArray
 qsslkeyToDer(const QSslKey& key);
 
 QByteArray
-qsslkeyToPem(const QSslKey& key, const QByteArray &passPhrase);
+qsslkeyToPem(const QSslKey& key, const QByteArray& passPhrase);
 }
 
-} // namespace rust
+}

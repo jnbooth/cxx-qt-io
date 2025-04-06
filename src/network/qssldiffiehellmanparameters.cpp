@@ -24,4 +24,4 @@ qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
 }
 
 }
-} // namespace rust
+}

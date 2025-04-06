@@ -22,4 +22,4 @@ qlistContains(const QList<T>& list, const T& item)
 
 }
 
-} // namespace rust
+}

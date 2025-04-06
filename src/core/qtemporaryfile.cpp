@@ -10,4 +10,4 @@ qtemporaryfileCreateNativeFile(QFile& file)
 }
 
 }
-} // namespace rust
+}

@@ -37,4 +37,4 @@ QList<QSsl::SslProtocol> (*qsslsocketSupportedProtocols)(const QString&) =
 #endif
 
 }
-} // namespace rust
+}

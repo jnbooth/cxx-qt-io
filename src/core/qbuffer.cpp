@@ -8,4 +8,4 @@ qbufferSetData(QBuffer& buffer, ::rust::Slice<const ::std::uint8_t> data)
   buffer.setData(reinterpret_cast<const char*>(data.data()), data.size());
 }
 }
-} // namespace rust
+}

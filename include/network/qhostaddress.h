@@ -25,4 +25,4 @@ inline ::std::pair<QHostAddress, i32> (*qhostaddressParseSubnet)(
   const QString&) = QHostAddress::parseSubnet;
 }
 
-} // namespace rust
+}

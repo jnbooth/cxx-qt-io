@@ -21,4 +21,4 @@ inline void (*qnetworkproxySetApplicationProxy)(const QNetworkProxy&) =
   QNetworkProxy::setApplicationProxy;
 }
 
-} // namespace rust
+}

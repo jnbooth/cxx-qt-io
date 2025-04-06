@@ -9,4 +9,4 @@ template<>
 struct IsRelocatable<QOcspResponse> : ::std::true_type
 {};
 
-} // namespace rust
+}

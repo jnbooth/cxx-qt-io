@@ -34,4 +34,4 @@ inline QString (*qnetworkinterfaceInterfaceNameFromIndex)(int) =
 
 }
 
-} // namespace rust
+}

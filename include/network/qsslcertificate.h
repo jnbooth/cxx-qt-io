@@ -21,10 +21,10 @@ QList<QSslCertificate> (*qsslcertificateFromDevice)(QIODevice*,
                                                     QSsl::EncodingFormat) =
   QSslCertificate::fromDevice;
 
-QList<QSslCertificate> (*qsslcertificateFromPath)(const QString&,
-                                                  QSsl::EncodingFormat,
-                                                  QSslCertificatePatternSyntax) =
-  QSslCertificate::fromPath;
+QList<QSslCertificate> (*qsslcertificateFromPath)(
+  const QString&,
+  QSsl::EncodingFormat,
+  QSslCertificatePatternSyntax) = QSslCertificate::fromPath;
 
 bool (*qsslcertificateImportPkcs12)(QIODevice* device,
                                     QSslKey* key,
@@ -39,4 +39,4 @@ QList<QSslError> (*qsslcertificateVerify)(const QList<QSslCertificate>&,
 
 }
 
-} // namespace rust
+}

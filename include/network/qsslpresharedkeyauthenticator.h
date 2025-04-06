@@ -9,4 +9,4 @@ template<>
 struct IsRelocatable<QSslPreSharedKeyAuthenticator> : ::std::true_type
 {};
 
-} // namespace rust
+}

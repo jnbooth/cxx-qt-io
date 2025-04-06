@@ -39,4 +39,4 @@ qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i)
 }
 }
 
-} // namespace rust
+}

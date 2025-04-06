@@ -9,4 +9,4 @@ template<>
 struct IsRelocatable<QSslCipher> : ::std::true_type
 {};
 
-} // namespace rust
+}

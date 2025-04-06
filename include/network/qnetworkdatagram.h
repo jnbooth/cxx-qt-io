@@ -15,4 +15,4 @@ qnetworkdatagramMakeReply(const QNetworkDatagram& datagram,
                           const QByteArray& payload);
 }
 
-} // namespace rust
+}

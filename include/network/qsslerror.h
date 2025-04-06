@@ -11,4 +11,4 @@ template<>
 struct IsRelocatable<QSslError> : ::std::true_type
 {};
 
-} // namespace rust
+}

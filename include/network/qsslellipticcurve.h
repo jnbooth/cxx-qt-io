@@ -16,4 +16,4 @@ QSslEllipticCurve (*qsslellipticcurveFromShortName)(const QString&) =
   QSslEllipticCurve::fromShortName;
 
 }
-} // namespace rust
+}

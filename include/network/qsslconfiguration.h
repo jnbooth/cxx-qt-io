@@ -35,4 +35,4 @@ QList<QSslCertificate> (*qsslconfigurationSystemCaCertificates)() =
   QSslConfiguration::systemCaCertificates;
 
 }
-} // namespace rust
+}

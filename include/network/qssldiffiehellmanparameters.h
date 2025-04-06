@@ -24,4 +24,4 @@ qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
                                        QSsl::EncodingFormat encoding);
 
 }
-} // namespace rust
+}

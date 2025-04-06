@@ -21,4 +21,4 @@ qnetworkcookieParseCookies(::rust::Slice<const ::std::uint8_t> cookieString);
 
 }
 
-} // namespace rust
+}

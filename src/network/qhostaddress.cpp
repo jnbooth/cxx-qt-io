@@ -23,4 +23,4 @@ qhostaddressToIPv6Address(const QHostAddress& address)
 }
 }
 
-} // namespace rust
+}

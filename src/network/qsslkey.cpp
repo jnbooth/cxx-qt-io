@@ -19,4 +19,4 @@ qsslkeyToPem(const QSslKey& key, const QByteArray& passPhrase)
 }
 }
 
-} // namespace rust
+}

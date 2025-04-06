@@ -9,4 +9,4 @@ template<typename K, typename V>
 struct IsRelocatable<::std::pair<K, V>> : ::std::true_type
 {};
 
-} // namespace rust
+}

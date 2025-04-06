@@ -28,4 +28,4 @@ qsetRemove(const QSet<T>& set, const T& item)
 
 }
 }
-} // namespace rust
+}

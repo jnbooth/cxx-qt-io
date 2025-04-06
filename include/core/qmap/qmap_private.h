@@ -22,4 +22,4 @@ qmapContains(const QMap<K, V>& map, const K& item)
 
 }
 
-} // namespace rust
+}

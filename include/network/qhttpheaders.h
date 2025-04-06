@@ -25,10 +25,11 @@ qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i);
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersValue(const QHttpHeaders& headers, QAnyStringView name);
 ::rust::Slice<const ::std::uint8_t>
-qhttpheadersValue(const QHttpHeaders& headers, QHttpHeaders::WellKnownHeader name);
+qhttpheadersValue(const QHttpHeaders& headers,
+                  QHttpHeaders::WellKnownHeader name);
 
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i);
 }
 
-} // namespace rust
+}
