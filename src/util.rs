@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime};
+use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime, QVariant};
 
 #[allow(dead_code)]
 pub(crate) trait MSecs: Sized {
@@ -54,6 +54,12 @@ impl IsNonNull for QString {
 }
 
 impl IsNonNull for QTime {
+    fn is_nonnull(value: &Self) -> bool {
+        value.is_valid()
+    }
+}
+
+impl IsNonNull for QVariant {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
     }

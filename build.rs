@@ -107,10 +107,10 @@ trait AtLeast {
     fn find(&self, name: &str, versions: &[(u32, u32)]) -> String {
         for &(major, minor) in versions {
             if self.at_least(major, minor) {
-                return format!("{name}_{major}_{minor}");
+                return format!("{name}/v{major}_{minor}");
             }
         }
-        name.to_owned()
+        format!("{name}/v5_0")
     }
 }
 
@@ -179,7 +179,7 @@ fn main() {
         ])
         .build_rust(&[
             &version.find(
-                "core/qcryptographichash/cryptographic_hash_algorithm",
+                "core/qcryptographichash/algorithm",
                 &[(6, 0), (5, 9), (5, 1)],
             ),
             "core/qbuffer",
@@ -205,12 +205,14 @@ fn main() {
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qhostaddress.h"),
             include_header!("include/network/qlocalsocket.h"),
+            include_header!("include/network/qnetworkaccessmanager.h"),
             include_header!("include/network/qnetworkaddressentry.h"),
             include_header!("include/network/qnetworkcookie.h"),
             include_header!("include/network/qnetworkdatagram.h"),
             include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
+            include_header!("include/network/qnetworkreply.h"),
         ]);
 
         builder = builder
@@ -221,6 +223,7 @@ fn main() {
                 "network/qnetworkcookie",
                 "network/qnetworkdatagram",
                 "network/qnetworkproxy",
+                "network/qnetworkrequest/qnetworkrequest",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qhostaddress",
@@ -235,12 +238,31 @@ fn main() {
                 "network/qauthenticator",
                 "network/qhostaddress",
                 "network/qlocalsocket",
+                "network/qnetworkaccessmanager",
                 "network/qnetworkaddressentry",
                 "network/qnetworkcookie",
                 "network/qnetworkdatagram",
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",
-                "network/qnetworkrequest",
+                "network/qnetworkrequest/mod",
+                &version.find(
+                    "network/qnetworkrequest/attribute",
+                    &[
+                        (6, 8),
+                        (6, 5),
+                        (6, 3),
+                        (6, 0),
+                        (5, 15),
+                        (5, 14),
+                        (5, 11),
+                        (5, 9),
+                        (5, 6),
+                        (5, 5),
+                        (5, 3),
+                    ],
+                ),
+                "network/qnetworkreply/mod",
+                &version.find("network/qnetworkreply/networkerror", &[(5, 6)]),
                 "network/qtcpsocket",
                 "network/qudpsocket",
             ]);
@@ -311,7 +333,7 @@ fn main() {
                 "core/qlist/qlist_qsslpresharedkeyauthenticator",
                 "network/qocspresponse",
                 "network/qssl/mod",
-                &version.find("network/qssl/alternative_name_entry_type", &[(5, 13)]),
+                &version.find("network/qssl/alternativenameentrytype", &[(5, 13)]),
                 &version.find("network/qssl/protocol", &[(6, 3), (5, 12)]),
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",

@@ -1,5 +1,6 @@
 use std::pin::Pin;
 
+use crate::util::IsNonNull;
 use cxx_qt_lib::{QString, QVariant};
 
 #[cxx::bridge]
@@ -25,7 +26,8 @@ mod ffi {
         #[rust_name = "is_null"]
         fn isNull(self: &QAuthenticator) -> bool;
 
-        /// Returns the value related to option `opt` if it was set by the server. If option `opt` isn't found, an invalid `QVariant` will be returned.
+        #[doc(hidden)]
+        #[rust_name = "option_or_invalid"]
         fn option(self: &QAuthenticator, opt: &QString) -> QVariant;
 
         /// Returns all incoming options set in this `QAuthenticator` object by parsing the server reply.
@@ -64,18 +66,6 @@ mod ffi {
 
 pub use ffi::QAuthenticator;
 
-use crate::util::IsNonNull;
-
-impl QAuthenticator {
-    /// Sets the outgoing option `opt` to value `value`.
-    pub fn set_option<T>(self: Pin<&mut Self>, opt: &QString, value: T)
-    where
-        T: Into<QVariant>,
-    {
-        self.set_option_variant(opt, &value.into());
-    }
-}
-
 impl PartialEq for QAuthenticator {
     fn eq(&self, other: &Self) -> bool {
         ffi::qauthenticator_eq(self, other)
@@ -87,5 +77,20 @@ impl Eq for QAuthenticator {}
 impl IsNonNull for QAuthenticator {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
+    }
+}
+
+impl QAuthenticator {
+    /// Sets the outgoing option `opt` to value `value`.
+    pub fn set_option<T>(self: Pin<&mut Self>, opt: &QString, value: T)
+    where
+        T: Into<QVariant>,
+    {
+        self.set_option_variant(opt, &value.into());
+    }
+
+    /// Returns the value related to option `opt` if it was set by the server. Returns `None` if option `opt` isn't found.
+    pub fn option(self: &QAuthenticator, opt: &QString) -> Option<QVariant> {
+        self.option_or_invalid(opt).nonnull()
     }
 }

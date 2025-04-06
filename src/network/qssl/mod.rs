@@ -1,34 +1,9 @@
 use cxx_qt_lib::QFlags;
 
-#[cfg(cxxqt_qt_version_at_least_5_13)]
-mod alternative_name_entry_type_5_13;
-#[cfg(cxxqt_qt_version_at_least_5_13)]
-pub use alternative_name_entry_type_5_13::QSslAlternativeNameEntryType;
+mod alternativenameentrytype;
+pub use alternativenameentrytype::QSslAlternativeNameEntryType;
 
-#[cfg(not(cxxqt_qt_version_at_least_5_13))]
-mod alternative_name_entry_type;
-#[cfg(not(cxxqt_qt_version_at_least_5_13))]
-pub use alternative_name_entry_type::QSslAlternativeNameEntryType;
-
-#[cfg(cxxqt_qt_version_at_least_6_3)]
-mod protocol_6_3;
-#[cfg(cxxqt_qt_version_at_least_6_3)]
-pub use protocol_6_3::QSslSslProtocol;
-
-#[cfg(all(
-    not(cxxqt_qt_version_at_least_6_3),
-    any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_12)
-))]
-mod protocol_5_12;
-#[cfg(all(
-    not(cxxqt_qt_version_at_least_6_3),
-    any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_12)
-))]
-pub use protocol_5_12::QSslSslProtocol;
-
-#[cfg(not(any(cxxqt_qt_version_at_least_5_12, cxxqt_qt_version_at_least_6_0)))]
 mod protocol;
-#[cfg(not(any(cxxqt_qt_version_at_least_5_12, cxxqt_qt_version_at_least_6_0)))]
 pub use protocol::QSslSslProtocol;
 
 #[cxx::bridge]

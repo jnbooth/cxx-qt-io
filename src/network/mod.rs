@@ -26,6 +26,9 @@ pub use qlocalsocket::{
     QLocalSocketSocketOption, QLocalSocketSocketOptions,
 };
 
+mod qnetworkaccessmanager;
+pub use qnetworkaccessmanager::QNetworkAccessManagerOperation;
+
 mod qnetworkaddressentry;
 pub use qnetworkaddressentry::{QNetworkAddressEntry, QNetworkAddressEntryDnsEligibilityStatus};
 
@@ -50,7 +53,10 @@ pub use qnetworkproxy::{
 };
 
 mod qnetworkrequest;
-pub use qnetworkrequest::QNetworkRequestKnownHeaders;
+pub use qnetworkrequest::{QNetworkRequest, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
+
+mod qnetworkreply;
+pub use qnetworkreply::QNetworkReply;
 
 #[cfg(feature = "ssl")]
 mod qocspresponse;

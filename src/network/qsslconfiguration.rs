@@ -418,6 +418,12 @@ impl PartialEq for QSslConfiguration {
 
 impl Eq for QSslConfiguration {}
 
+impl IsNonNull for QSslConfiguration {
+    fn is_nonnull(value: &Self) -> bool {
+        !value.is_null()
+    }
+}
+
 impl QSslConfiguration {
     /// Returns the default SSL configuration to be used in new SSL connections.
     ///

@@ -449,7 +449,7 @@ impl QHttpHeaders {
         }
     }
 
-    /// Inserts a header entry at index `i`, with `name` and `value`. The index must be valid (see `size()`). Returns whether the insert succeeded.
+    /// Inserts a header entry at index `i`, with `name` and `value`. The index must be valid (see `len()`). Returns whether the insert succeeded.
     pub fn insert<'a, N, V>(&mut self, i: isize, name: N, value: V) -> bool
     where
         N: Into<HttpHeader<'a>>,
@@ -470,7 +470,7 @@ impl QHttpHeaders {
         inner(self, i, name.into(), value.into())
     }
 
-    /// Returns the header name at index `i`, or `None` if `i` is not valid (see `size()`).
+    /// Returns the header name at index `i`, or `None` if `i` is not valid (see `len()`).
     ///
     /// Header names are case-insensitive, and the returned names are lower-cased.
     pub fn name_at(&self, i: isize) -> Option<&str> {
@@ -492,7 +492,7 @@ impl QHttpHeaders {
         }
     }
 
-    /// Removes the header at index `i`. The index `i` must be valid (see `size()`).
+    /// Removes the header at index `i`. The index `i` must be valid (see `len()`).
     pub fn remove_at(&mut self, i: isize) {
         self.remove_at_qsizetype(i.into());
     }
@@ -555,7 +555,7 @@ impl QHttpHeaders {
         inner(self, name.into())
     }
 
-    /// Returns the header value at index `i`, or `None` if `i` is not valid (see `size()`).
+    /// Returns the header value at index `i`, or `None` if `i` is not valid (see `len()`).
     pub fn value_at(&self, i: isize) -> Option<&[u8]> {
         if (0..self.len()).contains(&i) {
             Some(ffi::qhttpheaders_value_at(self, i))

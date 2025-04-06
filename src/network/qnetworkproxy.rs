@@ -4,6 +4,7 @@ use std::mem::MaybeUninit;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QFlags, QVariant};
 
+use crate::util::IsNonNull;
 use crate::QNetworkRequestKnownHeaders;
 
 #[cxx::bridge]
@@ -86,7 +87,8 @@ mod ffi {
         #[rust_name = "has_raw_header"]
         fn hasRawHeader(&self, header_name: &QByteArray) -> bool;
 
-        /// Returns the value of the known network header `header` if it is in use for this proxy. If it is not present, returns `QVariant()` (i.e., an invalid variant).
+        #[doc(hidden)]
+        #[rust_name = "header_or_invalid"]
         fn header(&self, header: QNetworkRequestKnownHeaders) -> QVariant;
 
         /// Returns headers that are set in this network request.
@@ -264,6 +266,11 @@ impl QNetworkProxy {
     /// If a `QAbstractSocket` or `QTcpSocket` has the `DefaultProxy` type, then the `QNetworkProxy` returned by this function is used.
     pub fn application_proxy() -> Self {
         ffi::qnetworkproxy_application_proxy()
+    }
+
+    /// Returns the value of the known network header `header` if it is in use for this proxy. If it is not present, returns `None`.
+    pub fn header(&self, header: QNetworkRequestKnownHeaders) -> Option<QVariant> {
+        self.header_or_invalid(header).nonnull()
     }
 
     /// Sets the application level network proxying to be `network_proxy`.
