@@ -39,6 +39,7 @@ mod ffi {
 
         #[cfg(feature = "ssl")]
         include!("cxx-qt-io/qsslconfiguration.h");
+        #[cfg(feature = "ssl")]
         type QSslConfiguration = crate::QSslConfiguration;
         include!("cxx-qt-io/qnetworkaccessmanager.h");
         type QNetworkAccessManagerOperation = crate::QNetworkAccessManagerOperation;

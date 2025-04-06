@@ -15,6 +15,7 @@
 #include "qlist_qnetworkdatagram.h"
 #include "qlist_qnetworkinterface.h"
 #include "qlist_qnetworkproxy.h"
+#include "qlist_qnetworkrequest.h"
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
 #include "qlist_qhttp1configuration.h"

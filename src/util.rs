@@ -16,6 +16,12 @@ impl MSecs for Option<Duration> {
     }
 }
 
+impl MSecs for Duration {
+    fn msecs(self) -> i32 {
+        self.as_millis().try_into().unwrap_or(i32::MAX)
+    }
+}
+
 #[allow(dead_code)]
 pub(crate) trait IsNonNull: Sized {
     fn is_nonnull(value: &Self) -> bool;

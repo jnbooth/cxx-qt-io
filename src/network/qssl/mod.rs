@@ -1,10 +1,10 @@
-use cxx_qt_lib::QFlags;
-
 mod alternativenameentrytype;
 pub use alternativenameentrytype::QSslAlternativeNameEntryType;
 
 mod protocol;
 pub use protocol::QSslSslProtocol;
+
+use cxx_qt_lib::QFlags;
 
 #[cxx::bridge]
 mod ffi {

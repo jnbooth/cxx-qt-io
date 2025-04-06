@@ -138,6 +138,13 @@ impl_qlist_element!(
     "QList_QNetworkProxy",
 );
 
+#[cfg(feature = "qt_network")]
+impl_qlist_element!(
+    crate::QNetworkRequest,
+    qlist_qnetworkrequest,
+    "QList_QNetworkRequest",
+);
+
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
     crate::QOcspResponse,
