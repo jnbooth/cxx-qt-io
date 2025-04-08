@@ -26,7 +26,7 @@ pub use qhttp2configuration::QHttp2Configuration;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 mod qhttpheaders;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
-pub use qhttpheaders::{QHttpHeaders, QHttpHeadersWellKnownHeader};
+pub use qhttpheaders::{HttpHeader, QHttpHeaders, QHttpHeadersWellKnownHeader};
 
 mod qlocalsocket;
 pub use qlocalsocket::{
@@ -68,7 +68,7 @@ pub use qnetworkrequest::{
 };
 
 mod qnetworkreply;
-pub use qnetworkreply::QNetworkReply;
+pub use qnetworkreply::{QNetworkReply, QNetworkReplyNetworkError};
 
 #[cfg(feature = "ssl")]
 mod qocspresponse;

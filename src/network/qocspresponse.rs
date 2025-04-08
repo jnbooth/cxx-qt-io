@@ -16,7 +16,7 @@ mod ffi {
         Unknown,
     }
 
-    /// Describes the reason for revocation
+    /// Describes the reason for revocation.
     ///
     /// This enumeration describes revocation reasons, defined in [RFC 5280, section 5.3.1](https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1).
     #[repr(i32)]
@@ -99,7 +99,7 @@ impl Drop for QOcspResponse {
 }
 
 impl Default for QOcspResponse {
-    /// Creates a new response with status `QOcspCertificateStatus::Unknown` and revocation reason `QOcspRevocationReason::None`.
+    /// Creates a new response with status [`QOcspCertificateStatus::Unknown`] and revocation reason [`QOcspRevocationReason::None`].
     fn default() -> Self {
         ffi::qocspresponse_init_default()
     }

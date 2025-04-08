@@ -8,6 +8,7 @@ use crate::{QSslCertificate, QSslCipher, QSslEllipticCurve, QSslKey};
 
 #[cxx::bridge]
 mod ffi {
+    /// Describes the status of the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN).
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslConfigurationNextProtocolNegotiationStatus {
@@ -74,7 +75,7 @@ mod ffi {
         ///
         /// The CA certificate database is used by the socket during the handshake phase to validate the peer's certificate.
         ///
-        /// For more precise control, use `add_ca_certificate()`.
+        /// For more precise control, use [`add_ca_certificate`](QSslConfiguration::add_ca_certificate).
         #[rust_name = "add_ca_certificates_from_file"]
         fn addCaCertificates(
             &mut self,
@@ -83,23 +84,23 @@ mod ffi {
             syntax: QSslCertificatePatternSyntax,
         ) -> bool;
 
-        /// This function returns the allowed protocols to be negotiated with the server through the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension, as set by `set_allowed_next_protocols()`.
+        /// This function returns the allowed protocols to be negotiated with the server through the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension, as set by [`set_allowed_next_protocols`](QSslConfiguration::set_allowed_next_protocols).
         #[rust_name = "allowed_next_protocols"]
         fn allowedNextProtocols(&self) -> QList_QByteArray;
 
         /// Returns the backend-specific configuration.
         ///
-        /// Only options set by `set_backend_configuration_option()` or `set_backend_configuration()` will be returned. The internal standard configuration of the backend is not reported.
+        /// Only options set by [`set_backend_configuration_option`](QSslConfiguration::set_backend_configuration_option) or [`set_backend_configuration`](QSslConfiguration::set_backend_configuration) will be returned. The internal standard configuration of the backend is not reported.
         #[rust_name = "backend_configuration"]
         fn backendConfiguration(&self) -> QMap_QByteArray_QVariant;
 
-        /// Returns this connection's CA certificate database. The CA certificate database is used by the socket during the handshake phase to validate the peer's certificate. It can be modified prior to the handshake with `set_ca_certificates()`, or with `add_ca_certificate()` and `add_ca_certificates()`.
+        /// Returns this connection's CA certificate database. The CA certificate database is used by the socket during the handshake phase to validate the peer's certificate. It can be modified prior to the handshake with [`set_ca_certificates`](QSslConfiguration::set_ca_certificates), or with [`add_ca_certificate`](QSslConfiguration::add_ca_certificate) and [`add_ca_certificates`](QSslConfiguration::add_ca_certificates).
         #[rust_name = "ca_certificates"]
         fn caCertificates(&self) -> QList_QSslCertificate;
 
         /// Returns this connection's current cryptographic cipher suite. This list is used during the handshake phase for choosing a session cipher. The returned list of ciphers is ordered by descending preference. (i.e., the first cipher in the list is the most preferred cipher). The session cipher will be the first one in the list that is also supported by the peer.
         ///
-        /// By default, the handshake phase can choose any of the ciphers supported by this system's SSL libraries, which may vary from system to system. The list of ciphers supported by this system's SSL libraries is returned by `supported_ciphers()`. You can restrict the list of ciphers used for choosing the session cipher for this socket by calling `set_ciphers()` with a subset of the supported ciphers. You can revert to using the entire set by calling `set_ciphers()` with the list returned by `supported_ciphers()`.
+        /// By default, the handshake phase can choose any of the ciphers supported by this system's SSL libraries, which may vary from system to system. The list of ciphers supported by this system's SSL libraries is returned by [`QSslConfiguration::supported_ciphers()`]. You can restrict the list of ciphers used for choosing the session cipher for this socket by calling [`set_ciphers`](QSslConfiguration::set_ciphers) with a subset of the supported ciphers. You can revert to using the entire set by calling [`set_ciphers`](QSslConfiguration::set_ciphers) with the list returned by [`QSslConfiguration::supported_ciphers()`].
         fn ciphers(&self) -> QList_QSslCipher;
 
         /// Retrieves the current set of Diffie-Hellman parameters.
@@ -112,20 +113,20 @@ mod ffi {
 
         /// Returns this connection's current list of elliptic curves. This list is used during the handshake phase for choosing an elliptic curve (when using an elliptic curve cipher). The returned list of curves is ordered by descending preference (i.e., the first curve in the list is the most preferred one).
         ///
-        /// By default, the handshake phase can choose any of the curves supported by this system's SSL libraries, which may vary from system to system. The list of curves supported by this system's SSL libraries is returned by `QSslSocket::supported_elliptic_curves()`.
+        /// By default, the handshake phase can choose any of the curves supported by this system's SSL libraries, which may vary from system to system. The list of curves supported by this system's SSL libraries is returned by [`QSslConfiguration::supported_elliptic_curves()`].
         ///
-        /// You can restrict the list of curves used for choosing the session cipher for this socket by calling `set_elliptic_curves()` with a subset of the supported ciphers. You can revert to using the entire set by calling `set_elliptic_curves()` with the list returned by `supported_elliptic_curves()`.
+        /// You can restrict the list of curves used for choosing the session cipher for this socket by calling [`set_elliptic_curves`](QSslConfiguration::set_elliptic_curves) with a subset of the supported ciphers. You can revert to using the entire set by calling [`set_elliptic_curves`](QSslConfiguration::set_elliptic_curves) with the list returned by [`QSslConfiguration::supported_elliptic_curves()`].
         #[rust_name = "elliptic_curves"]
         fn ellipticCurves(&self) -> QList_QSslEllipticCurve;
 
         /// Returns the ephemeral server key used for cipher algorithms with forward secrecy, e.g. DHE-RSA-AES128-SHA.
         ///
-        /// The ephemeral key is only available when running in client mode, i.e. `SslClientMode`. When running in server mode or using a cipher algorithm without forward secrecy a null key is returned. The ephemeral server key will be set before emitting the `encrypted()` signal.
+        /// The ephemeral key is only available when running in client mode, i.e. [`QSslSocketSslMode::SslClientMode`](crate::QSslSocketSslMode::SslClientMode). When running in server mode or using a cipher algorithm without forward secrecy a null key is returned. The ephemeral server key will be set before emitting the [`QSslSocket::encrypted`](crate::QSslSocket::encrypted) signal.
         #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "ephemeral_server_key"]
         fn ephemeralServerKey(&self) -> QSslKey;
 
-        /// Returns `true` if a verification callback will emit handshake_interrupted_on_error()` early, before concluding the handshake.
+        /// Returns `true` if a verification callback will emit [`QSslSocket::handshake_interrupted_on_error`](crate::QSslSocket::handshake_interrupted_on_error) early, before concluding the handshake.
         ///
         /// **Note:** This function always returns `false` for all backends but OpenSSL.
         #[rust_name = "handshake_must_interrupt_on_error"]
@@ -145,7 +146,7 @@ mod ffi {
         #[rust_name = "local_certificate_chain"]
         fn localCertificateChain(&self) -> QList_QSslCertificate;
 
-        /// Returns `true` if errors with code `NoPeerCertificate` cannot be ignored.
+        /// Returns `true` if errors with code [`QSslErrorSslError::NoPeerCertificate`](crate::QSslErrorSslError::NoPeerCertificate) cannot be ignored.
         ///
         /// **Note:** Always returns `false` for all TLS backends but OpenSSL.
         #[cfg(cxxqt_qt_version_at_least_6_0)]
@@ -156,11 +157,11 @@ mod ffi {
         #[rust_name = "next_negotiated_protocol_or_empty"]
         fn nextNegotiatedProtocol(&self) -> QByteArray;
 
-        /// This function returns the status of the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN). If the feature has not been enabled through `set_allowed_next_protocols()`, this function returns `NextProtocolNegotiationNone`. The status will be set before emitting the `encrypted()` signal.
+        /// This function returns the status of the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN). If the feature has not been enabled through [`set_allowed_next_protocols`](QSslConfiguration::set_allowed_next_protocol), this function returns [`QSslConfigurationNextProtocolNegotiationStatus::NextProtocolNegotiationNone`]. The status will be set before emitting the [`QSslSocket::encrypted`](crate::QSslSocket::encrypted) signal.
         #[rust_name = "next_protocol_negotiation_status"]
         fn nextProtocolNegotiationStatus(&self) -> QSslConfigurationNextProtocolNegotiationStatus;
 
-        /// Returns `true` if OCSP stapling was enabled by `set_ocsp_stapling_enabled()`, otherwise `false` (which is the default value).
+        /// Returns `true` if OCSP stapling was enabled by [`set_ocsp_stapling_enabled`](QSslConfiguration::set_ocsp_stapling_enabled), otherwise `false` (which is the default value).
         #[rust_name = "ocsp_stapling_enabled"]
         fn ocspStaplingEnabled(&self) -> bool;
 
@@ -172,11 +173,11 @@ mod ffi {
         ///
         /// Peer certificates are checked automatically during the handshake phase. This function is normally used to fetch certificates for display, or for performing connection diagnostics. Certificates contain information about the peer and the certificate issuers, including host name, issuer names, and issuer public keys.
         ///
-        /// Because the peer certificate is set during the handshake phase, it is safe to access the peer certificate from a slot connected to the `QSslSocket::ssl_errors()` signal, `QNetworkReply::ssl_errors()` signal, or the `QSslSocket::encrypted()` signal.
+        /// Because the peer certificate is set during the handshake phase, it is safe to access the peer certificate from a slot connected to the [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors) signal, [`QNetworkReply::ssl_errors`](crate::QNetworkReply::ssl_errors) signal, or the [`QSslSocket::encrypted`](crate::QSslSocket::encrypted) signal.
         ///
         /// If an empty list is returned, it can mean the SSL handshake failed, or it can mean the host you are connected to doesn't have a certificate, or it can mean there is no connection.
         ///
-        /// If you want to get only the peer's immediate certificate, use `peer_certificate()`.
+        /// If you want to get only the peer's immediate certificate, use [`peer_certificate`](QSslConfiguration::peer_certificate).
         #[rust_name = "peer_certificate_chain"]
         fn peerCertificateChain(&self) -> QList_QSslCertificate;
 
@@ -186,9 +187,9 @@ mod ffi {
         #[rust_name = "peer_verify_depth"]
         fn peerVerifyDepth(&self) -> i32;
 
-        /// Returns the verify mode. This mode decides whether `QSslSocket` should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
+        /// Returns the verify mode. This mode decides whether [`QSslSocket`](crate::QSslSocket) should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
         ///
-        /// The default mode is `AutoVerifyPeer`, which tells `QSslSocket` to use `VerifyPeer` for clients, `QueryPeer` for servers.
+        /// The default mode is [`QSslSocketPeerVerifyMode::AutoVerifyPeer`], which tells [`QSslSocket`](crate::QSslSocket) to use [`QSslSocketPeerVerifyMode::VerifyPeer` ]for clients, [`QSslSocketPeerVerifyMode::QueryPeer`] for servers.
         #[rust_name = "peer_verify_mode"]
         fn peerVerifyMode(&self) -> QSslSocketPeerVerifyMode;
 
@@ -207,7 +208,7 @@ mod ffi {
         #[rust_name = "session_cipher_or_null"]
         fn sessionCipher(&self) -> QSslCipher;
 
-        /// Returns the socket's SSL/TLS protocol or UnknownProtocol if the connection isn't encrypted. The socket's protocol for the session is set during the handshake phase.
+        /// Returns the socket's SSL/TLS protocol or [`QSslSslProtocol::UnknownProtocol`] if the connection isn't encrypted. The socket's protocol for the session is set during the handshake phase.
         #[rust_name = "session_protocol"]
         fn sessionProtocol(&self) -> QSslSslProtocol;
 
@@ -219,7 +220,7 @@ mod ffi {
         #[rust_name = "session_ticket_life_time_hint_or_negative"]
         fn sessionTicketLifeTimeHint(&self) -> i32;
 
-        /// This function sets the allowed protocols to be negotiated with the server through the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension; each element in protocols must define one allowed protocol. The function must be called explicitly before connecting to send the NPN/ALPN extension in the SSL handshake. Whether or not the negotiation succeeded can be queried through `next_protocol_negotiation_status()`.
+        /// This function sets the allowed protocols to be negotiated with the server through the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension; each element in protocols must define one allowed protocol. The function must be called explicitly before connecting to send the NPN/ALPN extension in the SSL handshake. Whether or not the negotiation succeeded can be queried through [`next_protocol_negotiation_status`](QSslConfiguration::next_protocol_negotiation_status).
         #[rust_name = "set_allowed_next_protocols"]
         fn setAllowedNextProtocols(&mut self, protocols: &QList_QByteArray);
 
@@ -237,7 +238,7 @@ mod ffi {
         #[rust_name = "set_ca_certificates"]
         fn setCaCertificates(&mut self, certificates: &QList_QSslCertificate);
 
-        /// Sets the cryptographic cipher suite for this socket to ciphers, which must contain a subset of the ciphers in the list returned by `supported_ciphers()`.
+        /// Sets the cryptographic cipher suite for this socket to ciphers, which must contain a subset of the ciphers in the list returned by [`QSslConfiguration::supported_ciphers()`].
         ///
         /// Restricting the cipher suite must be done before the handshake phase, where the session cipher is chosen.
         #[rust_name = "set_ciphers"]
@@ -251,17 +252,17 @@ mod ffi {
         #[rust_name = "set_dtls_cookie_verification_enabled"]
         fn setDtlsCookieVerificationEnabled(&mut self, enable: bool);
 
-        /// Sets the list of elliptic curves to be used by this socket to curves, which must contain a subset of the curves in the list returned by `supported_elliptic_curves()`.
+        /// Sets the list of elliptic curves to be used by this socket to curves, which must contain a subset of the curves in the list returned by [`QSslConfiguration::supported_elliptic_curves()`].
         ///
         /// Restricting the elliptic curves must be done before the handshake phase, where the session cipher is chosen.
         #[rust_name = "set_elliptic_curves"]
         fn setEllipticCurves(&mut self, curves: &QList_QSslEllipticCurve);
 
-        /// If `interrupt` is true and the underlying backend supports this option, errors found during certificate verification are reported immediately by emitting `QSslSocket::handshake_interrupted_on_error()`. This allows to stop the unfinished handshake and send a proper alert message to a peer. No special action is required from the application in this case. `QSslSocket` will close the connection after sending the alert message. If the application after inspecting the error wants to continue the handshake, it must call `QSslSocket::continue_interrupted_handshake()` from its slot function. The signal-slot connection must be direct.
+        /// If `interrupt` is true and the underlying backend supports this option, errors found during certificate verification are reported immediately by emitting [`QSslSocket::handshake_interrupted_on_error`](crate::QSslSocket::handshake_interrupted_on_error). This allows to stop the unfinished handshake and send a proper alert message to a peer. No special action is required from the application in this case. [`QSslSocket`](crate::QSslSocket) will close the connection after sending the alert message. If the application after inspecting the error wants to continue the handshake, it must call [`QSslSocket::continue_interrupted_handshake`](crate::QSslSocket::continue_interrupted_handshake) from its slot function. The signal-slot connection must be direct.
         ///
-        /// **Note:** When interrupting handshake is enabled, errors that would otherwise be reported by `QSslSocket::peer_verify_error()` are instead only reported by `QSslSocket::handshake_interrupted_on_error()`.
+        /// **Note:** When interrupting handshake is enabled, errors that would otherwise be reported by [`QSslSocket::peer_verify_error`](crate::QSslSocket::peer_verify_error) are instead only reported by [`QSslSocket::handshake_interrupted_on_error`](crate::QSslSocket::handshake_interrupted_on_error).
         ///
-        /// **Note:** Even if the handshake was continued, these errors will be reported when emitting `QSslSocket::ssl_errors()` signal (and thus must be ignored in the corresponding function slot).
+        /// **Note:** Even if the handshake was continued, these errors will be reported when emitting [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors) signal (and thus must be ignored in the corresponding function slot).
         #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "set_handshake_must_interrupt_on_error"]
         fn setHandshakeMustInterruptOnError(&mut self, interrupt: bool);
@@ -280,18 +281,18 @@ mod ffi {
         ///
         /// A certificate is the means of identification used in the SSL process. The local certificate is used by the remote end to verify the local user's identity against its list of Certification Authorities. In most cases, such as in HTTP web browsing, only servers identify to the clients, so the client does not send a certificate.
         ///
-        /// Unlike `set_local_certificate()` this method allows you to specify any intermediate certificates required in order to validate your certificate. The first item in the list must be the leaf certificate.
+        /// Unlike [`set_local_certificate`](QSslConfiguration::set_local_certificate) this method allows you to specify any intermediate certificates required in order to validate your certificate. The first item in the list must be the leaf certificate.
         #[rust_name = "set_local_certificate_chain"]
         fn setLocalCertificateChain(&mut self, local_chain: &QList_QSslCertificate);
 
-        /// If `cannot_recover` is true, and verification mode in use is `VerifyPeer` or `AutoVerifyPeer` (for a client-side socket), the missing peer's certificate would be treated as an unrecoverable error that cannot be ignored. A proper alert message will be sent to the peer before closing the connection.
+        /// If `cannot_recover` is true, and verification mode in use is [`QSslSocketPeerVerifyMode::VerifyPeer`](crate::QSslSocketPeerVerifyMode::VerifyPeer) or [`QSslSocketPeerVerifyMode::AutoVerifyPeer`](crate::QSslSocketPeerVerifyMode::AutoVerifyPeer) (for a client-side socket), the missing peer's certificate would be treated as an unrecoverable error that cannot be ignored. A proper alert message will be sent to the peer before closing the connection.
         ///
         /// **Note:** Only available if Qt was configured and built with OpenSSL backend.
         #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "set_missing_certificate_is_fatal"]
         fn setMissingCertificateIsFatal(&mut self, cannot_recover: bool);
 
-        /// If `enabled` is true, client `QSslSocket` will send a certificate status request to its peer when initiating a handshake. During the handshake `QSslSocket` will verify the server's response. This value must be set before the handshake starts.
+        /// If `enabled` is true, client [`QSslSocket`](crate::QSslSocket) will send a certificate status request to its peer when initiating a handshake. During the handshake [`QSslSocket`](crate::QSslSocket) will verify the server's response. This value must be set before the handshake starts.
         #[rust_name = "set_ocsp_stapling_enabled"]
         fn setOcspStaplingEnabled(&mut self, enabled: bool);
 
@@ -303,7 +304,7 @@ mod ffi {
 
         /// Sets the verify mode to `mode`. This mode decides whether `QSslSocket` should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
         ///
-        /// The default mode is `AutoVerifyPeer`, which tells `QSslSocket` to use `VerifyPeer` for clients, `QueryPeer` for servers.
+        /// The default mode is [`QSslSocketPeerVerifyMode::AutoVerifyPeer`](crate::QSslSocketPeerVerifyMode::AutoVerifyPeer), which tells [`QSslSocket`](crate::QSslSocket) to use [`QSslSocketPeerVerifyMode::VerifyPeer`](crate::QSslSocketPeerVerifyMode::VerifyPeer) for clients, [`QSslSocketPeerVerifyMode::QueryPeer`](crate::QSslSocketPeerVerifyMode::QueryPeer) for servers.
         #[rust_name = "set_peer_verify_mode"]
         fn setPeerVerifyMode(&mut self, mode: QSslSocketPeerVerifyMode);
 
@@ -325,7 +326,7 @@ mod ffi {
         #[rust_name = "set_protocol"]
         fn setProtocol(&mut self, protocol: QSslSslProtocol);
 
-        /// Sets the session ticket to be used in an SSL handshake. `SslOptionDisableSessionPersistence` must be turned off for this to work, and `session_ticket` must be in ASN.1 format as returned by `session_ticket()`.
+        /// Sets the session ticket to be used in an SSL handshake. [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) must be turned off for this to work, and `session_ticket` must be in ASN.1 format as returned by [`self.session_ticket()`](QSslConfiguration::session_ticket).
         #[rust_name = "set_session_ticket"]
         fn setSessionTicket(&mut self, session_ticket: &QByteArray);
 
@@ -402,9 +403,9 @@ impl Drop for QSslConfiguration {
 }
 
 impl Default for QSslConfiguration {
-    /// Constructs an empty SSL configuration. This configuration contains no valid settings and the state will be empty. `is_null()` will return true after this constructor is called.
+    /// Constructs an empty SSL configuration. This configuration contains no valid settings and the state will be empty. [`is_null`](QSslConfiguration::is_null) will return `true` after this constructor is called.
     ///
-    /// Once any setter methods are called, `is_null()` will return false.
+    /// Once any setter methods are called, [`is_null`](QSslConfiguration::is_null) will return false.
     fn default() -> Self {
         ffi::qsslconfiguration_init_default()
     }
@@ -425,28 +426,6 @@ impl IsNonNull for QSslConfiguration {
 }
 
 impl QSslConfiguration {
-    /// Returns the default SSL configuration to be used in new SSL connections.
-    ///
-    /// The default SSL configuration consists of:
-    /// * no local certificate and no private key
-    /// * protocol `SecureProtocols`
-    /// * the system's default CA certificate list
-    /// * the cipher list equal to the list of the SSL libraries' supported SSL ciphers that are 128 bits or more
-    pub fn default_configuration() -> Self {
-        ffi::qsslconfiguration_default_configuration()
-    }
-
-    /// Returns the default DTLS configuration to be used in new DTLS connections.
-    ///
-    /// The default DTLS configuration consists of:
-    /// * no local certificate and no private key
-    /// * protocol `DtlsV1_2OrLater`
-    /// * the system's default CA certificate list
-    /// * the cipher list equal to the list of the SSL libraries' supported TLS 1.2 ciphers that are 128 bits or more
-    pub fn default_dtls_configuration() -> Self {
-        ffi::qsslconfiguration_default_dtls_configuration()
-    }
-
     /// Sets the default SSL configuration to be used in new SSL connections to be `configuration`. Existing connections are not affected by this call.
     pub fn set_default_configuration(configuration: &QSslConfiguration) {
         ffi::qsslconfiguration_set_default_configuration(configuration);
@@ -458,21 +437,43 @@ impl QSslConfiguration {
     }
 
     /// Returns the list of cryptographic ciphers supported by this system. This list is set by the system's SSL libraries and may vary from system to system.
-    pub fn supported_ciphers(&self) -> QList<QSslCipher> {
+    pub fn supported_ciphers() -> QList<QSslCipher> {
         ffi::qsslconfiguration_supported_ciphers()
     }
 
     /// Returns the list of elliptic curves supported by this system. This list is set by the system's SSL libraries and may vary from system to system.
-    pub fn supported_elliptic_curves(&self) -> QList<QSslEllipticCurve> {
+    pub fn supported_elliptic_curves() -> QList<QSslEllipticCurve> {
         ffi::qsslconfiguration_supported_elliptic_curves()
     }
 
-    /// This function provides the CA certificate database provided by the operating system. The CA certificate database returned by this function is used to initialize the database returned by `ca_certificates()` on the default `QSslConfiguration`.
-    pub fn system_ca_certificates(&self) -> QList<QSslCertificate> {
+    /// This function provides the CA certificate database provided by the operating system. The CA certificate database returned by this function is used to initialize the database returned by [`QSslConfiguration::default_dtls_configuration()`]`.`[`ca_certificates()`](QSslConfiguration::ca_certificates).
+    pub fn system_ca_certificates() -> QList<QSslCertificate> {
         ffi::qsslconfiguration_system_ca_certificates()
     }
 
-    /// This function returns the protocol negotiated with the server if the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension was enabled. In order for the NPN/ALPN extension to be enabled, `set_allowed_next_protocols()` needs to be called explicitly before connecting to the server.
+    /// Returns the default SSL configuration to be used in new SSL connections.
+    ///
+    /// The default SSL configuration consists of:
+    /// * no local certificate and no private key
+    /// * protocol [`QSslSslProtocol::SecureProtocols`](crate::QSslSslProtocol::SecureProtocols)
+    /// * the system's default CA certificate list
+    /// * the cipher list equal to the list of the SSL libraries' supported SSL ciphers that are 128 bits or more
+    pub fn default_configuration() -> Self {
+        ffi::qsslconfiguration_default_configuration()
+    }
+
+    /// Returns the default DTLS configuration to be used in new DTLS connections.
+    ///
+    /// The default DTLS configuration consists of:
+    /// * no local certificate and no private key
+    /// * protocol [`QSslSslProtocol::DtlsV1_2OrLater`](crate::QSslSslProtocol::DtlsV1_2OrLater)
+    /// * the system's default CA certificate list
+    /// * the cipher list equal to the list of the SSL libraries' supported TLS 1.2 ciphers that are 128 bits or more
+    pub fn default_dtls_configuration() -> Self {
+        ffi::qsslconfiguration_default_dtls_configuration()
+    }
+
+    /// This function returns the protocol negotiated with the server if the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension was enabled. In order for the NPN/ALPN extension to be enabled, [`set_allowed_next_protocols`](QSslConfiguration::set_allowed_next_protocols) needs to be called explicitly before connecting to the server.
     ///
     /// Returns `None` if no protocol could be negotiated or the extension was not enabled.
     pub fn next_negotiated_protocol(&self) -> Option<QByteArray> {
@@ -483,11 +484,11 @@ impl QSslConfiguration {
     ///
     /// The peer certificate is checked automatically during the handshake phase, so this function is normally used to fetch the certificate for display or for connection diagnostic purposes. It contains information about the peer, including its host name, the certificate issuer, and the peer's public key.
     ///
-    /// Because the peer certificate is set during the handshake phase, it is safe to access the peer certificate from a slot connected to the `QSslSocket::ssl_errors()` signal, `QNetworkReply::ssl_errors()` signal, or the `QSslSocket::encrypted()` signal.
+    /// Because the peer certificate is set during the handshake phase, it is safe to access the peer certificate from a slot connected to the [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors) signal, [`QNetworkReply::ssl_errors`](crate::QNetworkReply::ssl_errors) signal, or the [`QSslSocket::encrypted`](crate::QSslSocket::encrypted) signal.
     ///
     /// If `None` is returned, it can mean the SSL handshake failed, or it can mean the host you are connected to doesn't have a certificate, or it can mean there is no connection.
     ///
-    /// If you want to check the peer's complete chain of certificates, use `peer_certificate_chain()` to get them all at once.
+    /// If you want to check the peer's complete chain of certificates, use [`peer_certificate_chain`](QSslConfiguration::peer_certificate_chain) to get them all at once.
     pub fn peer_certificate(&self) -> Option<QSslCertificate> {
         self.peer_certificate_or_null().nonnull()
     }
@@ -504,14 +505,14 @@ impl QSslConfiguration {
         self.session_cipher_or_null().nonnull()
     }
 
-    /// If `SslOptionDisableSessionPersistence` was turned off, this function returns the session ticket used in the SSL handshake in ASN.1 format, suitable to e.g. be persisted to disk. If no session ticket was used or `SslOptionDisableSessionPersistence` was not turned off, this function returns `None`.
+    /// If [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) was turned off, this function returns the session ticket used in the SSL handshake in ASN.1 format, suitable to e.g. be persisted to disk. If no session ticket was used or [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) was not turned off, this function returns `None`.
     ///
     /// **Note:** When persisting the session ticket to disk or similar, be careful not to expose the session to a potential attacker, as knowledge of the session allows for eavesdropping on data encrypted with the session parameters.
     pub fn session_ticket(&self) -> Option<QByteArray> {
         self.session_ticket_or_empty().nonnull()
     }
 
-    /// If `SslOptionDisableSessionPersistence` was turned off, this function returns the session ticket life time hint sent by the server (which might be 0). If the server did not send a session ticket (e.g. when resuming a session or when the server does not support it) or `SslOptionDisableSessionPersistence` was not turned off, this function returns `None`.
+    /// If [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) was turned off, this function returns the session ticket life time hint sent by the server (which might be 0). If the server did not send a session ticket (e.g. when resuming a session or when the server does not support it) or [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) was not turned off, this function returns `None`.
     pub fn session_ticket_life_time_hint(&self) -> Option<i32> {
         let hint = self.session_ticket_life_time_hint_or_negative();
         if hint == -1 {

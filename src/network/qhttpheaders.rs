@@ -350,9 +350,14 @@ mod ffi {
 
 pub use ffi::QHttpHeadersWellKnownHeader;
 
+/// Parameter for [`QHttpHeaders`] functions that reference a header.
+///
+/// Functions that accept `HttpHeader` are overloaded to accept either [`QAnyStringView`] or [`QHttpHeadersWellKnownHeader`]. You do not need to use this type directly.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum HttpHeader<'a> {
+    /// Specify by name.
     Named(QAnyStringView<'a>),
+    /// Specify by enum.
     WellKnown(QHttpHeadersWellKnownHeader),
 }
 
@@ -404,7 +409,7 @@ impl Debug for QHttpHeaders {
 }
 
 impl QHttpHeaders {
-    /// Returns a header name corresponding to the provided `name` as a view.
+    /// Returns a header name corresponding to the provided `name` as a slice.
     pub fn well_known_header_name(name: QHttpHeadersWellKnownHeader) -> &'static [u8] {
         ffi::qhttpheaders_well_known_header_name(name)
     }
@@ -427,7 +432,7 @@ impl QHttpHeaders {
 
     /// Returns the values of header `name` in a comma-combined string. Returns a null `QByteArray` if the header with `name` doesn't exist.
     ///
-    /// **Note:** Accessing the value(s) of 'Set-Cookie' header this way may not work as intended. It is a notable exception in the HTTP RFC in that its values cannot be combined this way. Prefer `values()` instead.
+    /// **Note:** Accessing the value(s) of `Set-Cookie` header this way may not work as intended. It is a notable exception in the HTTP RFC in that its values cannot be combined this way. Prefer [`values`](QHttpHeaders::values) instead.
     pub fn combined_value<'a, N>(&self, name: N) -> QByteArray
     where
         N: Into<HttpHeader<'a>>,
@@ -449,7 +454,7 @@ impl QHttpHeaders {
         }
     }
 
-    /// Inserts a header entry at index `i`, with `name` and `value`. The index must be valid (see `len()`). Returns whether the insert succeeded.
+    /// Inserts a header entry at index `i`, with `name` and `value`. The index must be valid (see [`len`](QHttpHeaders::len)). Returns whether the insert succeeded.
     pub fn insert<'a, N, V>(&mut self, i: isize, name: N, value: V) -> bool
     where
         N: Into<HttpHeader<'a>>,
@@ -470,7 +475,7 @@ impl QHttpHeaders {
         inner(self, i, name.into(), value.into())
     }
 
-    /// Returns the header name at index `i`, or `None` if `i` is not valid (see `len()`).
+    /// Returns the header name at index `i`, or `None` if `i` is not valid (see [`len`](QHttpHeaders::len)).
     ///
     /// Header names are case-insensitive, and the returned names are lower-cased.
     pub fn name_at(&self, i: isize) -> Option<&str> {
@@ -492,7 +497,7 @@ impl QHttpHeaders {
         }
     }
 
-    /// Removes the header at index `i`. The index `i` must be valid (see `len()`).
+    /// Removes the header at index `i`. The index `i` must be valid (see [`len`](QHttpHeaders::len)).
     pub fn remove_at(&mut self, i: isize) {
         self.remove_at_qsizetype(i.into());
     }
@@ -555,7 +560,7 @@ impl QHttpHeaders {
         inner(self, name.into())
     }
 
-    /// Returns the header value at index `i`, or `None` if `i` is not valid (see `len()`).
+    /// Returns the header value at index `i`, or `None` if `i` is not valid (see [`len`](QHttpHeaders::len)).
     pub fn value_at(&self, i: isize) -> Option<&[u8]> {
         if (0..self.len()).contains(&i) {
             Some(ffi::qhttpheaders_value_at(self, i))

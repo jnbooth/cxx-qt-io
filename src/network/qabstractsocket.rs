@@ -24,17 +24,17 @@ mod ffi {
         UnknownNetworkLayerProtocol = -1,
     }
 
-    /// This enum describes the different flags you can pass to modify the behavior of `QAbstractSocket::bind()`.
+    /// This enum describes the different flags you can pass to modify the behavior of [`QAbstractSocket::bind`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QAbstractSocketBindFlag {
-        /// The default option for the current platform. On Unix and macOS, this is equivalent to (`DontShareAddress + ReuseAddressHint`), and on Windows, it is equivalent to `ShareAddress`.
+        /// The default option for the current platform. On Unix and macOS, this is equivalent to [`DontShareAddress`](QAbstractSocketBindFlag::DontShareAddress)` + `[`ReuseAddressHint`](QAbstractSocketBindFlag::ReuseAddressHint)), and on Windows, it is equivalent to [`ShareAddress`](QAbstractSocketBindFlag::ShareAddress).
         DefaultForPlatform = 0x0,
-        /// Allow other services to bind to the same address and port. This is useful when multiple processes share the load of a single service by listening to the same address and port (e.g., a web server with several pre-forked listeners can greatly improve response time). However, because any service is allowed to rebind, this option is subject to certain security considerations. Note that by combining this option with `ReuseAddressHint`, you will also allow your service to rebind an existing shared address. On Unix, this is equivalent to the `SO_REUSEADDR` socket option. On Windows, this is the default behavior, so this option is ignored.
+        /// Allow other services to bind to the same address and port. This is useful when multiple processes share the load of a single service by listening to the same address and port (e.g., a web server with several pre-forked listeners can greatly improve response time). However, because any service is allowed to rebind, this option is subject to certain security considerations. Note that by combining this option with [`ReuseAddressHint`](QAbstractSocketBindFlag::ReuseAddressHint), you will also allow your service to rebind an existing shared address. On Unix, this is equivalent to the `SO_REUSEADDR` socket option. On Windows, this is the default behavior, so this option is ignored.
         ShareAddress = 0x1,
-        /// Bind the address and port exclusively, so that no other services are allowed to rebind. By passing this option to `QAbstractSocket::bind()`, you are guaranteed that on success, your service is the only one that listens to the address and port. No services are allowed to rebind, even if they pass `ReuseAddressHint`. This option provides more security than `ShareAddress`, but on certain operating systems, it requires you to run the server with administrator privileges. On Unix and macOS, not sharing is the default behavior for binding an address and port, so this option is ignored. On Windows, this option uses the `SO_EXCLUSIVEADDRUSE` socket option.
+        /// Bind the address and port exclusively, so that no other services are allowed to rebind. By passing this option to [`QAbstractSocket::bind`], you are guaranteed that on success, your service is the only one that listens to the address and port. No services are allowed to rebind, even if they pass [`ReuseAddressHint`](QAbstractSocketBindFlag::ReuseAddressHint). This option provides more security than [`ShareAddress`](QAbstractSocketBindFlag::ShareAddress), but on certain operating systems, it requires you to run the server with administrator privileges. On Unix and macOS, not sharing is the default behavior for binding an address and port, so this option is ignored. On Windows, this option uses the `SO_EXCLUSIVEADDRUSE` socket option.
         DontShareAddress = 0x2,
-        /// Provides a hint to `QAbstractSocket` that it should try to rebind the service even if the address and port are already bound by another socket. On Windows and Unix, this is equivalent to the `SO_REUSEADDR` socket option.
+        /// Provides a hint to [`QAbstractSocket`] that it should try to rebind the service even if the address and port are already bound by another socket. On Windows and Unix, this is equivalent to the `SO_REUSEADDR` socket option.
         ReuseAddressHint = 0x4,
     }
 
@@ -58,15 +58,15 @@ mod ffi {
         DatagramTooLargeError,
         /// An error occurred with the network (e.g., the network cable was accidentally plugged out).
         NetworkError,
-        /// The address specified to `QAbstractSocket::bind()` is already in use and was set to be exclusive.
+        /// The address specified to [`AbstractSocket::bind`] is already in use and was set to be exclusive.
         AddressInUseError,
-        /// The address specified to `QAbstractSocket::bind()` does not belong to the host.
+        /// The address specified to [`QAbstractSocket::bind`] does not belong to the host.
         SocketAddressNotAvailableError,
         /// The requested socket operation is not supported by the local operating system (e.g., lack of IPv6 support).
         UnsupportedSocketOperationError,
         /// The socket is using a proxy, and the proxy requires authentication.
         UnfinishedSocketOperationError,
-        /// The SSL/TLS handshake failed, so the connection was closed (only used in `QSslSocket`).
+        /// The SSL/TLS handshake failed, so the connection was closed (only used in [`QSslSocket`](crate::QSslSocket)).
         ProxyAuthenticationRequiredError,
         /// Used by `QAbstractSocketEngine` only, The last operation attempted has not finished yet (still in progress in the background).
         SslHandshakeFailedError,
@@ -76,7 +76,7 @@ mod ffi {
         ProxyConnectionClosedError,
         /// The connection to the proxy server timed out or the proxy server stopped responding in the authentication phase.
         ProxyConnectionTimeoutError,
-        /// The proxy address set with `set_proxy()` (or the application proxy) was not found.
+        /// The proxy address set with [`QAbstractSocket::set_proxy`] (or the application proxy) was not found.
         ProxyNotFoundError,
         /// The connection negotiation with the proxy server failed, because the response from the proxy server could not be understood.
         ProxyProtocolError,
@@ -92,11 +92,11 @@ mod ffi {
         UnknownSocketError = -1,
     }
 
-    /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the `connected()` signal from the socket or after having received a new socket from a `QTcpServer`.
+    /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the [`QAbstractSocket::connected`] signal from the socket or after having received a new socket from a `QTcpServer`.
     #[repr(i32)]
     #[derive(Debug)]
     enum QAbstractSocketSocketOption {
-        /// Try to optimize the socket for low latency. For a `QTcpSocket` this would set the `TCP_NODELAY` option and disable Nagle's algorithm. Set this to 1 to enable.
+        /// Try to optimize the socket for low latency. For a [`QTcpSocket`](crate::QTcpSocket) this would set the `TCP_NODELAY` option and disable Nagle's algorithm. Set this to 1 to enable.
         LowDelayOption,
         /// Set this to 1 to enable the `SO_KEEPALIVE` socket option.
         KeepAliveOption,
@@ -117,21 +117,21 @@ mod ffi {
         /// | 32    | Priority             |
         /// | 0     | Routine              |
         TypeOfServiceOption,
-        /// Sets the socket send buffer size in bytes at the OS level. This maps to the `SO_SNDBUF` socket option. This option does not affect the `QIODevice` or `QAbstractSocket` buffers.
+        /// Sets the socket send buffer size in bytes at the OS level. This maps to the `SO_SNDBUF` socket option. This option does not affect the [`QIODevice`] or [`QAbstractSocket`] buffers.
         SendBufferSizeSocketOption,
-        /// Sets the socket receive buffer size in bytes at the OS level. This maps to the `SO_RCVBUF` socket option. This option does not affect the `QIODevice` or `QAbstractSocket` buffers (see `set_read_buffer_size()`).
+        /// Sets the socket receive buffer size in bytes at the OS level. This maps to the `SO_RCVBUF` socket option. This option does not affect the [`QIODevice`] or [`QAbstractSocket`] buffers (see [`QAbstractSocket::set_read_buffer_size`]).
         ReceiveBufferSizeSocketOption,
         /// Retrieves the Path Maximum Transmission Unit (PMTU) value currently known by the IP stack, if any. Some IP stacks also allow setting the MTU for transmission.
         PathMtuSocketOption,
     }
 
-    /// This enum describes the behavior of when the socket should hold back with continuing data transfer. The only notification currently supported is `QSslSocket::ssl_errors()`.
+    /// This enum describes the behavior of when the socket should hold back with continuing data transfer. The only notification currently supported is [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors).
     #[repr(i32)]
     #[derive(Debug)]
     enum QAbstractSocketPauseMode {
         /// Do not pause data transfer on the socket. This is the default and matches the behavior of Qt 4.
         PauseNever = 0x0,
-        /// Pause data transfer on the socket upon receiving an SSL error notification. I.E. `QSslSocket::ssl_errors()`.
+        /// Pause data transfer on the socket upon receiving an SSL error notification. I.E. [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors).
         PauseOnSslErrors = 0x1,
     }
 
@@ -207,16 +207,16 @@ mod ffi {
         #[base = QIODevice]
         type QAbstractSocket;
 
-        /// Aborts the current connection and resets the socket. Unlike `disconnect_from_host()`, this function immediately closes the socket, discarding any pending data in the write buffer.
+        /// Aborts the current connection and resets the socket. Unlike [`disconnect_from_host`](QAbstractSocket::disconnect_from_host), this function immediately closes the socket, discarding any pending data in the write buffer.
         fn abort(self: Pin<&mut QAbstractSocket>);
 
-        /// Binds to address on port `port`, using the `BindMode` `mode`.
+        /// Binds to address on port `port`, using the bind mode `mode`.
         ///
-        /// For UDP sockets, after binding, the signal `QUdpSocket::ready_read()` is emitted whenever a UDP datagram arrives on the specified address and port. Thus, this function is useful to write UDP servers.
+        /// For UDP sockets, after binding, the signal [`QUdpSocket::ready_read`](crate::QUdpSocket::ready_read) is emitted whenever a UDP datagram arrives on the specified address and port. Thus, this function is useful to write UDP servers.
         ///
         /// For TCP sockets, this function may be used to specify which interface to use for an outgoing connection, which is useful in case of multiple network interfaces.
         ///
-        /// On success, the function returns `true` and the socket enters `BoundState`; otherwise it returns `false`.
+        /// On success, the function returns `true` and the socket enters [`QAbstractSocketSocketState::BoundState`]; otherwise it returns `false`.
         fn bind(
             self: Pin<&mut QAbstractSocket>,
             address: &QHostAddress,
@@ -233,7 +233,7 @@ mod ffi {
             protocol: QAbstractSocketNetworkLayerProtocol,
         );
 
-        /// Attempts to close the socket. If there is pending data waiting to be written, `QAbstractSocket` will enter `ClosingState` and wait until all data has been written. Eventually, it will enter `UnconnectedState` and emit the `disconnected()` signal.
+        /// Attempts to close the socket. If there is pending data waiting to be written, `QAbstractSocket` will enter [`QAbstractSocketSocketState::ClosingState`] and wait until all data has been written. Eventually, it will enter [`QAbstractSocketSocketState::UnconnectedState`] and emit the [`disconnected`](QAbstractSocket::disconnected) signal.
         #[rust_name = "disconnect_from_host"]
         fn disconnectFromHost(self: Pin<&mut QAbstractSocket>);
 
@@ -242,12 +242,12 @@ mod ffi {
 
         /// This function writes as much as possible from the internal write buffer to the underlying network socket, without blocking. If any data was written, this function returns `true`; otherwise `false` is returned.
         ///
-        /// Call this function if you need `QAbstractSocket` to start sending buffered data immediately. The number of bytes successfully written depends on the operating system. In most cases, you do not need to call this function, because `QAbstractSocket` will start sending data automatically once control goes back to the event loop. In the absence of an event loop, call `wait_for_bytes_written()` instead.
+        /// Call this function if you need `QAbstractSocket` to start sending buffered data immediately. The number of bytes successfully written depends on the operating system. In most cases, you do not need to call this function, because `QAbstractSocket` will start sending data automatically once control goes back to the event loop. In the absence of an event loop, call [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) instead.
         fn flush(self: Pin<&mut QAbstractSocket>) -> bool;
 
-        /// Returns true if the socket is valid and ready for use; otherwise returns false.
+        /// Returns `true` if the socket is valid and ready for use; otherwise returns `false`.
         ///
-        /// **Note:** The socket's state must be `ConnectedState` before reading and writing can occur.
+        /// **Note:** The socket's state must be [`QAbstractSocketSocketState::ConnectedState`] before reading and writing can occur.
         #[rust_name = "is_valid"]
         fn isValid(self: &QAbstractSocket) -> bool;
 
@@ -268,7 +268,7 @@ mod ffi {
         #[rust_name = "peer_name_or_empty"]
         pub(self) fn peerName(self: &QAbstractSocket) -> QString;
 
-        /// Returns the port of the econnected peer if the socket is in `ConnectedState`; otherwise returns 0.
+        /// Returns the port of the econnected peer if the socket is in [`QAbstractSocketSocketState::ConnectedState`]; otherwise returns 0.
         #[rust_name = "peer_port"]
         fn peerPort(self: &QAbstractSocket) -> u16;
 
@@ -276,23 +276,23 @@ mod ffi {
         #[rust_name = "protocol_tag"]
         fn protocolTag(self: &QAbstractSocket) -> QString;
 
-        /// Returns the network proxy for this socket. By default `QNetworkProxy::DefaultProxy` is used, which means this socket will query the default proxy settings for the application.
+        /// Returns the network proxy for this socket. By default [`QNetworkProxyProxyType::DefaultProxy`](crate::QNetworkProxyProxyType::DefaultProxy) is used, which means this socket will query the default proxy settings for the application.
         fn proxy(self: &QAbstractSocket) -> QNetworkProxy;
 
-        /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call `read()` or `read_all()`.
+        /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all).
         ///
         /// A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
         #[rust_name = "read_buffer_size"]
         fn readBufferSize(self: &QAbstractSocket) -> i64;
 
-        /// Continues data transfer on the socket. This method should only be used after the socket has been set to pause upon notifications and a notification has been received. The only notification currently supported is `QSslSocket::ssl_errors()`.
+        /// Continues data transfer on the socket. This method should only be used after the socket has been set to pause upon notifications and a notification has been received. The only notification currently supported is [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors).
         ///
         /// # Safety
         ///
         /// Calling this method if the socket is not paused results in undefined behavior.
         unsafe fn resume(self: Pin<&mut QAbstractSocket>);
 
-        /// Controls whether to pause upon receiving a notification. The pauseMode parameter specifies the conditions in which the socket should be paused. The only notification currently supported is `QSslSocket::ssl_errors()`. If set to `PauseOnSslErrors`, data transfer on the socket will be paused and needs to be enabled explicitly again by calling `resume()`. By default this option is set to `PauseNever`.
+        /// Controls whether to pause upon receiving a notification. The pauseMode parameter specifies the conditions in which the socket should be paused. The only notification currently supported is [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors). If set to [`QAbstractSocketPauseMode::PauseOnSslErrors`], data transfer on the socket will be paused and needs to be enabled explicitly again by calling [`resume`](QAbstractSocket::resume). By default this option is set to [`QAbstractSocketPauseMode::PauseNever`].
         ///
         /// # Safety
         ///
@@ -307,11 +307,11 @@ mod ffi {
         #[rust_name = "set_protocol_tag"]
         fn setProtocolTag(self: Pin<&mut QAbstractSocket>, tag: &QString);
 
-        /// Sets the explicit network proxy for this socket to networkProxy.
+        /// Sets the explicit network proxy for this socket to `network_proxy`.
         ///
-        /// To disable the use of a proxy for this socket, use the `QNetworkProxy::NoProxy` proxy type.
+        /// To disable the use of a proxy for this socket, use the [`QNetworkProxyProxyType::NoProxy`](crate::QNetworkProxyProxyType::NoProxy) proxy type.
         #[rust_name = "set_proxy"]
-        fn setProxy(self: Pin<&mut QAbstractSocket>, proxy: &QNetworkProxy);
+        fn setProxy(self: Pin<&mut QAbstractSocket>, network_proxy: &QNetworkProxy);
 
         /// Sets the size of `QAbstractSocket`'s internal read buffer to be size bytes.
         ///
@@ -319,7 +319,7 @@ mod ffi {
         ///
         /// This option is useful if you only read the data at certain points in time (e.g., in a real-time streaming application) or if you want to protect your socket against receiving too much data, which may eventually cause your application to run out of memory.
         ///
-        /// Only `QTcpSocket` uses `QAbstractSocket`'s internal buffer; `QUdpSocket` does not use any buffering at all, but rather relies on the implicit buffering provided by the operating system. Because of this, calling this function on `QUdpSocket` has no effect.
+        /// Only [`QTcpSocket`](crate::QTcpSocket) uses `QAbstractSocket`'s internal buffer; [`QUdpSocket`](crate::QUdpSocket) does not use any buffering at all, but rather relies on the implicit buffering provided by the operating system. Because of this, calling this function on [`QUdpSocket`](crate::QUdpSocket) has no effect.
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: i64);
 
@@ -350,9 +350,9 @@ mod ffi {
         #[rust_name = "wait_for_disconnected_msecs"]
         fn waitForDisconnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;
 
-        /// This signal is emitted after `connect_to_host()` has been called and a connection has been successfully established.
+        /// This signal is emitted after [`connect_to_host`](QAbstractSocket::connect_to_host) has been called and a connection has been successfully established.
         ///
-        /// **Note:** On some operating systems the `connected()` signal may be directly emitted from the `connect_to_host()` call for connections to the localhost.
+        /// **Note:** On some operating systems this signal may be directly emitted from the [`connect_to_host`](QAbstractSocket::connect_to_host) call for connections to the localhost.
         #[qsignal]
         fn connected(self: Pin<&mut QAbstractSocket>);
 
@@ -367,9 +367,9 @@ mod ffi {
         #[rust_name = "error_occurred"]
         fn errorOccurred(self: Pin<&mut QAbstractSocket>, socket_error: QAbstractSocketSocketError);
 
-        /// This signal is emitted after connectToHost() has been called and the host lookup has succeeded.
+        /// This signal is emitted after [`connect_to_host`](QAbstractSocket::connect_to_host) has been called and the host lookup has succeeded.
         ///
-        /// **Note:** `QAbstractSocket` may emit `host_found()` directly from the `connect_to_host()` call since a DNS result could have been cached.
+        /// **Note:** `QAbstractSocket` may emit this signal directly from the [`connect_to_host`](QAbstractSocket::connect_to_host) call since a DNS result could have been cached.
         #[qsignal]
         #[rust_name = "host_found"]
         fn hostFound(self: Pin<&mut QAbstractSocket>);
@@ -402,26 +402,28 @@ pub use ffi::{
     QAbstractSocketSocketState, QAbstractSocketSocketType,
 };
 
+/// [`QFlags`] of [`QAbstractSocketBindFlag`].
 pub type QAbstractSocketBindMode = QFlags<QAbstractSocketBindFlag>;
 unsafe_impl_qflag!(QAbstractSocketBindFlag, "QAbstractSocketBindMode");
 
+/// [`QFlags`] of [`QAbstractSocketPauseMode`].
 pub type QAbstractSocketPauseModes = QFlags<QAbstractSocketPauseMode>;
 unsafe_impl_qflag!(QAbstractSocketPauseMode, "QAbstractSocketPauseModes");
 
 impl QAbstractSocket {
     /// Returns the host address of the local socket if available; otherwise returns `None`.
     ///
-    /// This is normally the main IP address of the host, but can be `QHostAddress::LocalHost` (127.0.0.1) for connections to the local host.
+    /// This is normally the main IP address of the host, but can be [`QHostAddressSpecialAddress::LocalHost`](crate::QHostAddressSpecialAddress::LocalHost) (127.0.0.1) for connections to the local host.
     pub fn local_address(&self) -> Option<QHostAddress> {
         self.local_address_or_null().nonnull()
     }
 
-    /// Returns the address of the connected peer if the socket is in `ConnectedState`; otherwise returns `None`.
+    /// Returns the address of the connected peer if the socket is in [`QAbstractSocketSocketState::ConnectedState`]; otherwise returns `None`.
     pub fn peer_address(&self) -> Option<QHostAddress> {
         self.peer_address_or_null().nonnull()
     }
 
-    /// Returns the name of the peer as specified by `connect_to_host()`, or `None` if `connect_to_host()` has not been called.
+    /// Returns the name of the peer as specified by [`connect_to_host`](QAbstractSocket::connect_to_host), or `None` if [`connect_to_host`](QAbstractSocket::connect_to_host) has not been called.
     pub fn peer_name(&self) -> Option<QString> {
         self.peer_name_or_empty().nonnull()
     }
@@ -437,7 +439,7 @@ impl QAbstractSocket {
         self.set_socket_option_variant(option, &variant.into());
     }
 
-    /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call `error()` to determine the cause of the error.
+    /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call [`error`](QAbstractSocket::error) to determine the cause of the error.
     ///
     /// If `duration` is `None`, this function will not time out.
     ///
@@ -445,16 +447,16 @@ impl QAbstractSocket {
     ///
     /// **Note:** Multiple calls to this functions do not accumulate the time. If the function times out, the connecting process will be aborted.
     ///
-    /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `connected()` signal if your software will run on Windows.
+    /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the [`connected`](QAbstractSocket::connected) signal if your software will run on Windows.
     pub fn wait_for_connected(self: Pin<&mut QAbstractSocket>, duration: Option<Duration>) -> bool {
         self.wait_for_connected_msecs(duration.msecs())
     }
 
-    /// Waits until the socket has disconnected, up to `duration`. If the connection was successfully disconnected, this function returns `true`; otherwise it returns `false` (if the operation timed out, if an error occurred, or if this `QAbstractSocket` is already disconnected). In the case where it returns `false`, you can `call error()` to determine the cause of the error.
+    /// Waits until the socket has disconnected, up to `duration`. If the connection was successfully disconnected, this function returns `true`; otherwise it returns `false` (if the operation timed out, if an error occurred, or if this `QAbstractSocket` is already disconnected). In the case where it returns `false`, you can call [`error`](QAbstractSocket::error) to determine the cause of the error.
     ///
     /// If `duration` is `None`, this function will not time out.
     ///
-    /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the `disconnected()` signal if your software will run on Windows.
+    /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the [`disconnected`](QAbstractSocket::disconnected) signal if your software will run on Windows.
     pub fn wait_for_disconnected(
         self: Pin<&mut QAbstractSocket>,
         duration: Option<Duration>,

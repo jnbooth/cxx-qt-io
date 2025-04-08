@@ -17,7 +17,7 @@ mod ffi {
     enum QSslDiffieHellmanParametersError {
         /// No error occurred.
         NoError,
-        /// The given input data could not be used to construct a `QSslDiffieHellmanParameters` object.
+        /// The given input data could not be used to construct a [`QSslDiffieHellmanParameters`] object.
         InvalidInputDataError,
         /// The Diffie-Hellman parameters are unsafe and should not be used.
         UnsafeParametersError,
@@ -51,7 +51,7 @@ mod ffi {
 
         /// Returns `true` if this is a an empty `QSslDiffieHellmanParameters` instance.
         ///
-        /// Setting an empty `QSslDiffieHellmanParameters` instance on a `QSslSocket`-based server will disable Diffie-Hellman key exchange.
+        /// Setting an empty `QSslDiffieHellmanParameters` instance on a [`QSslSocket`](crate::QSslSocket)-based server will disable Diffie-Hellman key exchange.
         #[rust_name = "is_empty"]
         fn isEmpty(&self) -> bool;
 
@@ -59,7 +59,7 @@ mod ffi {
         ///
         /// This method should be used after constructing a `QSslDiffieHellmanParameters` object to determine its validity.
         ///
-        /// If a `QSslDiffieHellmanParameters` object is not valid, you can use the `error()` method to determine what error prevented the object from being constructed.
+        /// If a `QSslDiffieHellmanParameters` object is not valid, you can use the [`error`](QSslDiffieHellmanParameters::error) method to determine what error prevented the object from being constructed.
         #[rust_name = "is_valid"]
         fn isValid(&self) -> bool;
     }
@@ -165,7 +165,7 @@ impl QSslDiffieHellmanParameters {
         }
     }
 
-    /// Returns the default `QSslDiffieHellmanParameters` used by `QSslSocket`.
+    /// Returns the default `QSslDiffieHellmanParameters` used by [`QSslSocket`](crate::QSslSocket).
     pub fn default_parameters() -> Self {
         ffi::qssldiffiehellmanparameters_default_parameters()
     }

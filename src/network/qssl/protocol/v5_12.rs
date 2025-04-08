@@ -10,7 +10,7 @@ mod ffi {
         TlsV1_1,
         /// TLSv1.2.
         TlsV1_2,
-        /// Any supported protocol. This value is used by `QSslSocket` only.
+        /// Any supported protocol. This value is used by [`QSslSocket`](crate::QSslSocket) only.
         AnyProtocol,
         /// The default option, using protocols known to be secure.
         SecureProtocols,

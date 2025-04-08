@@ -1,6 +1,6 @@
 #[cxx::bridge]
 mod ffi {
-    /// Describes the key types for alternative name entries in `QSslCertificate`.
+    /// Describes the key types for alternative name entries in [`QSslCertificate`](crate::QSslCertificate).
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslAlternativeNameEntryType {

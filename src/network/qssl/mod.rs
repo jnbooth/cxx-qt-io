@@ -8,7 +8,7 @@ use cxx_qt_lib::QFlags;
 
 #[cxx::bridge]
 mod ffi {
-    /// Describes the two types of keys `QSslKey` supports.
+    /// Describes the two types of keys [`QSslKey`](crate::QSslKey) supports.
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslKeyType {
@@ -28,11 +28,11 @@ mod ffi {
         Der,
     }
 
-    /// Describes the different key algorithms supported by `QSslKey`.
+    /// Describes the different key algorithms supported by [`QSslKey`](crate::QSslKey).
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslKeyAlgorithm {
-        /// A key that should be treated as a 'black box' by `QSslKey`. Allows applications to add support for facilities such as PKCS#11 that Qt does not currently offer natively.
+        /// A key that should be treated as a 'black box' by [`QSslKey`](crate::QSslKey). Allows applications to add support for facilities such as PKCS#11 that Qt does not currently offer natively.
         Opaque,
         /// The RSA algorithm.
         Rsa,
@@ -46,7 +46,7 @@ mod ffi {
 
     /// Describes the options that can be used to control the details of SSL behaviour. These options are generally used to turn features off to work around buggy servers.
     ///
-    /// By default, `SslOptionDisableEmptyFragments` is turned on since this causes problems with a large number of servers. `SslOptionDisableLegacyRenegotiation` is also turned on, since it introduces a security risk. `SslOptionDisableCompression` is turned on to prevent the attack publicised by CRIME. `SslOptionDisableSessionPersistence` is turned on to optimize memory usage. The other options are turned off.
+    /// By default, [`SslOptionDisableEmptyFragments`](QSslSslOption::SslOptionDisableEmptyFragments) is turned on since this causes problems with a large number of servers. [`SslOptionDisableLegacyRenegotiation`](QSslSslOption::SslOptionDisableLegacyRenegotiation) is also turned on, since it introduces a security risk. [`SslOptionDisableCompression`](QSslSslOption::SslOptionDisableCompression) is turned on to prevent the attack publicised by CRIME. [`SslOptionDisableSessionPersistence`](QSslSslOption::SslOptionDisableSessionPersistence) is turned on to optimize memory usage. The other options are turned off.
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslSslOption {
@@ -62,7 +62,7 @@ mod ffi {
         SslOptionDisableLegacyRenegotiation = 0x10,
         /// Disables SSL session sharing via the session ID handshake attribute.
         SslOptionDisableSessionSharing = 0x20,
-        /// Disables storing the SSL session in ASN.1 format as returned by `QSslConfiguration::session_ticket()`. Enabling this feature adds memory overhead of approximately 1K per used session ticket.
+        /// Disables storing the SSL session in ASN.1 format as returned by [`QSslConfiguration::session_ticket`](crate::QSslConfiguration::session_ticket). Enabling this feature adds memory overhead of approximately 1K per used session ticket.
         SslOptionDisableSessionPersistence = 0x40,
         /// Disables selecting the cipher chosen based on the servers preferences rather than the order ciphers were sent by the client. This option is only relevant to server sockets, and is only honored by the OpenSSL backend.
         SslOptionDisableServerCipherPreference = 0x80,
@@ -124,20 +124,20 @@ mod ffi {
 
     /// Enumerates classes that a TLS backend implements.
     ///
-    /// In `QtNetwork`, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
+    /// In QtNetwork, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
     #[cfg(cxxqt_qt_version_at_least_6_1)]
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslImplementedClass {
-        /// Class `QSslKey`.
+        /// Class [`QSslKey`](crate::QSslKey).
         Key,
-        /// Class `QSslCertificate`.
+        /// Class [`QSslCertificate`](crate::QSslCertificate).
         Certificate,
-        /// Class `QSslSocket`.
+        /// Class [`QSslSocket`](crate::QSslSocket).
         Socket,
-        /// Class `QSslDiffieHellmanParameters`.
+        /// Class [`QSslDiffieHellmanParameters`](crate::QSslDiffieHellmanParameters).
         DiffieHellman,
-        /// Class `QSslEllipticCurve`.
+        /// Class [`QSslEllipticCurve`](crate::QSslEllipticCurve).
         EllipticCurve,
         /// Class `QDtls`.
         Dtls,
@@ -147,12 +147,12 @@ mod ffi {
 
     /// Enumerates possible features that a TLS backend supports.
     ///
-    /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from `SslSupportedFeature` enum indicate that a particular feature is supported.
+    /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from `QSslSupportedFeature` enum indicate that a particular feature is supported.
     #[cfg(cxxqt_qt_version_at_least_6_1)]
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslSupportedFeature {
-        /// Indicates that `QSslCertificate::verify()` is implemented by the backend.
+        /// Indicates that [`QSslCertificate::verify`](crate::QSslCertificate::verify) is implemented by the backend.
         CertificateVerification,
         /// Client-side ALPN (Application Layer Protocol Negotiation).
         ClientSideAlpn,
@@ -193,6 +193,7 @@ pub use ffi::{QSslAlertLevel, QSslAlertType};
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 pub use ffi::{QSslImplementedClass, QSslSupportedFeature};
 
+/// [`QFlags`] of [`QSslSslOption`].
 pub type QSslSslOptions = QFlags<QSslSslOption>;
 
 unsafe_impl_qflag!(QSslSslOption, "QSslSslOptions");

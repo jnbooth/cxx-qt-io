@@ -8,7 +8,7 @@ use std::pin::Pin;
 
 #[cxx_qt::bridge]
 mod ffi {
-    /// This enum describes the errors that may be returned by the `error()` function.
+    /// This enum describes the errors that may be returned by [`QFileDevice::error`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QFileDeviceFileError {
@@ -48,15 +48,15 @@ mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
     enum QFileDeviceFileHandleFlag {
-        /// The file handle passed into `open()` should be closed by `close()`, the default behavior is that `close` just flushes the file and the application is responsible for closing the file handle. When opening a file by name, this flag is ignored as Qt always owns the file handle and must close it.
+        /// The file handle passed into [`QIODevice::open`] should be closed by [`QIODevice::close`], the default behavior is that [`QIODevice::close`] just flushes the file and the application is responsible for closing the file handle. When opening a file by name, this flag is ignored as Qt always owns the file handle and must close it.
         AutoCloseHandle = 0x0001,
         /// If not explicitly closed, the underlying file handle is left open when the `QFile` object is destroyed.
         DontCloseHandle = 0,
     }
 
-    /// This enum is used by the `permission()` function to report the permissions and ownership of a file. The values may be OR-ed together to test multiple permissions and ownership values.
+    /// This enum is used by [`QFileDevice::permissions`] function to report the permissions and ownership of a file. The values may be OR-ed together to test multiple permissions and ownership values.
     ///
-    /// **Warning:** Because of differences in the platforms supported by Qt, the semantics of `ReadUser`, `WriteUser` and `ExeUser` are platform-dependent: On Unix, the rights of the owner of the file are returned and on Windows the rights of the current user are returned. This behavior might change in a future Qt version.
+    /// **Warning:** Because of differences in the platforms supported by Qt, the semantics of [`ReadUser`](QFileDevicePermission::ReadUser), [`WriteUser`](QFileDevicePermission::WriteUser) and [`ExeUser`](QFileDevicePermission::ExeUser) are platform-dependent: On Unix, the rights of the owner of the file are returned and on Windows the rights of the current user are returned. This behavior might change in a future Qt version.
     ///
     /// [Qt Documentation: QFile::Permission](https://doc.qt.io/qt-6/qfiledevice.html#Permission-enum)
     #[repr(i32)]
@@ -88,7 +88,7 @@ mod ffi {
         ExeOther = 0x0001,
     }
 
-    /// This enum is used by the `file_time()` and `set_file_time()` functions.
+    /// This enum is used by [`QFileDevice::file_time`] and [`QFileDevice::set_file_time`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QFileDeviceFileTime {
@@ -102,7 +102,7 @@ mod ffi {
         FileModificationTime,
     }
 
-    /// This enum describes special options that may be used by the map() function.
+    /// This enum describes special options that may be used by [`QFileDevice::map`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QFileDeviceMemoryMapFlag {
@@ -141,31 +141,25 @@ mod ffi {
 
         /// Returns the file error status.
         ///
-        /// The I/O device status returns an error code. For example, if `open()` returns `false`, or a read/write operation returns -1, this function can be called to find out the reason why the operation failed.
+        /// The I/O device status returns an error code. For example, if [`self.open()`](QIODevice::open) returns `false`, or a read/write operation returns -1, this function can be called to find out the reason why the operation failed.
         fn error(self: &QFileDevice) -> QFileDeviceFileError;
 
         /// Returns the name of the file. The default implementation in `QFileDevice` returns a null string.
         #[rust_name = "file_name"]
         fn fileName(self: &QFileDevice) -> QString;
 
-        /// Returns the file time specified by time. If the time cannot be determined return `QDateTime()` (an invalid date time).
         #[rust_name = "file_time_or_invalid"]
         pub(self) fn fileTime(self: &QFileDevice, time: QFileDeviceFileTime) -> QDateTime;
 
         /// Flushes any buffered data to the file. Returns `true` if successful; otherwise returns `false`.
         fn flush(self: Pin<&mut QFileDevice>) -> bool;
 
-        /// Returns the file handle of the file.
-        ///
-        /// This is a small positive integer, suitable for use with C library functions such as `fdopen()` and `fcntl()`. On systems that use file descriptors for sockets (i.e. Unix systems, but not Windows) the handle can be used with `QSocketNotifier` as well.
-        ///
-        /// If the file is not open, or there is an error, `handle()` returns -1.
         #[rust_name = "handle_or_negative"]
-        pub(super) fn handle(self: &QFileDevice) -> i32;
+        pub(self) fn handle(self: &QFileDevice) -> i32;
 
         /// Maps size bytes of the file into memory starting at `offset`. A file should be open for a map to succeed but the file does not need to stay open after the memory has been mapped. When the `QFile` is destroyed or a new file is opened with this object, any maps that have not been unmapped will automatically be unmapped.
         ///
-        /// The mapping will have the same open mode as the file (read and/or write), except when using `MapPrivateOption`, in which case it is always possible to write to the mapped memory.
+        /// The mapping will have the same open mode as the file (read and/or write), except when using [`QFileDeviceMemoryFlag::MapPrivateOption`], in which case it is always possible to write to the mapped memory.
         ///
         /// Any mapping options can be passed through flags.
         ///
@@ -177,7 +171,7 @@ mod ffi {
             flags: QFileDeviceMemoryMapFlags,
         ) -> *mut u8;
 
-        /// Returns the complete OR-ed together combination of `Permission` for the file.
+        /// Returns the complete OR-ed together combination of [`QFileDevicePermission`]s for the file.
         fn permissions(self: &QFileDevice) -> QFileDevicePermissions;
 
         /// Sets the file size (in bytes) `sz`. Returns `true` if the resize succeeds; `false` otherwise. If `sz` is larger than the file currently is, the new bytes will be set to 0; if `sz` is smaller, the file is simply truncated.
@@ -206,10 +200,10 @@ mod ffi {
         ///
         /// # Safety
         ///
-        /// `address` must be a valid pointer obtained from `map()`.
+        /// `address` must be a valid pointer obtained from [`self.map()`](QFileDevice::map).
         unsafe fn unmap(self: Pin<&mut QFileDevice>, address: *mut u8) -> bool;
 
-        /// Sets the file's error to `FileError::NoError`.
+        /// Sets the file's error to [`QFileDeviceFileError::NoError`].
         #[rust_name = "unset_error"]
         fn unsetError(self: Pin<&mut QFileDevice>);
     }
@@ -220,17 +214,20 @@ pub use ffi::{
     QFileDeviceMemoryMapFlag, QFileDevicePermission,
 };
 
+/// [`QFlags`] of [`QFileDevicePermission`].
 pub type QFileDevicePermissions = QFlags<QFileDevicePermission>;
 unsafe_impl_qflag!(QFileDevicePermission, "QFileDevicePermissions");
 
+/// [`QFlags`] of [`QFileDeviceFileHandleFlag`].
 pub type QFileDeviceFileHandleFlags = QFlags<QFileDeviceFileHandleFlag>;
 unsafe_impl_qflag!(QFileDeviceFileHandleFlag, "QFileDeviceFileHandleFlags");
 
+/// [`QFlags`] of [`QFileDeviceMemoryMapFlag`].
 pub type QFileDeviceMemoryMapFlags = QFlags<QFileDeviceMemoryMapFlag>;
 unsafe_impl_qflag!(QFileDeviceMemoryMapFlag, "QFileDeviceMemoryMapFlags");
 
 impl QFileDevice {
-    /// Returns the file time specified by time. If the time cannot be determined return `None`.
+    /// Returns the file time specified by `time`. If the time cannot be determined return `None`.
     pub fn file_time(&self, time: QFileDeviceFileTime) -> Option<QDateTime> {
         let file_time = self.file_time_or_invalid(time);
         if file_time.is_valid() {

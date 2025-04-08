@@ -33,10 +33,10 @@ mod ffi {
 
         /// Returns the broadcast address associated with the IPv4 address and netmask. It can usually be derived from those two by setting to 1 the bits of the IP address where the netmask contains a 0. (In other words, by bitwise-OR'ing the IP address with the inverse of the netmask)
         ///
-        /// This member is always empty for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address FF02::1).
+        /// This member is always empty for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address `FF02::1`).
         fn broadcast(&self) -> QHostAddress;
 
-        /// Resets both the preferred and valid lifetimes for this address. After this call, `is_lifetime_known()` will return `false`.
+        /// Resets both the preferred and valid lifetimes for this address. After this call, [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known) will return `false`.
         #[rust_name = "clear_address_lifetime"]
         fn clearAddressLifetime(&mut self);
 
@@ -44,7 +44,7 @@ mod ffi {
         ///
         /// In general, an address is suitable for publication if it is an address this machine will be reached at for an indeterminate amount of time, though it need not be permanent. For example, addresses obtained via DHCP are often eligible, but cryptographically-generated temporary IPv6 addresses are not.
         ///
-        /// On some systems, QNetworkInterface will need to heuristically determine which addresses are eligible.
+        /// On some systems, [`QNetworkInterface`](crate::QNetworkInterface) will need to heuristically determine which addresses are eligible.
         #[rust_name = "dns_eligibility"]
         fn dnsEligibility(&self) -> QNetworkAddressEntryDnsEligibilityStatus;
 
@@ -67,9 +67,9 @@ mod ffi {
         #[rust_name = "is_temporary"]
         fn isTemporary(&self) -> bool;
 
-        /// Returns the netmask associated with the IP address. The netmask is expressed in the form of an IP address, such as 255.255.0.0.
+        /// Returns the netmask associated with the IP address. The netmask is expressed in the form of an IP address, such as `255.255.0.0`.
         ///
-        /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a QHostAddress holding the address FFFF:FFFF:FFFF:FFFF::
+        /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a `QHostAddress` holding the address `FFFF:FFFF:FFFF:FFFF::`.
         fn netmask(&self) -> QHostAddress;
 
         #[doc(hidden)]
@@ -92,10 +92,8 @@ mod ffi {
         #[rust_name = "set_netmask"]
         fn setNetmask(&mut self, new_netmask: &QHostAddress);
 
-        /// Sets the prefix length of this IP address to `length`. The value of `length` must be valid for this type of IP address: between 0 and 32 for IPv4 addresses, between 0 and 128 for IPv6 addresses. Setting to any invalid value is equivalent to setting to -1, which means "no prefix length".
-        ///
-        /// Setting the prefix length also sets the netmask (see `netmask()`).
-        #[rust_name = "set_prefix_length"]
+        #[doc(hidden)]
+        #[rust_name = "set_prefix_length_or_negative"]
         fn setPrefixLength(&mut self, length: i32);
     }
 
@@ -162,9 +160,9 @@ impl Debug for QNetworkAddressEntry {
 }
 
 impl QNetworkAddressEntry {
-    /// Returns the prefix length of this IP address. The prefix length matches the number of bits set to 1 in the netmask (see `netmask()`). For IPv4 addresses, the value is between 0 and 32. For IPv6 addresses, it's contained between 0 and 128 and is the preferred form of representing addresses.
+    /// Returns the prefix length of this IP address. The prefix length matches the number of bits set to 1 in the netmask (see [`netmask`](QNetworkAddressEntry::netmask)). For IPv4 addresses, the value is between 0 and 32. For IPv6 addresses, it's contained between 0 and 128 and is the preferred form of representing addresses.
     ///
-    /// This function returns `None` if the prefix length could not be determined (i.e., `netmask()` returns a null `QHostAddress()`).
+    /// This function returns `None` if the prefix length could not be determined (i.e., [`self.netmask()`](QNetworkAddressEntry::netmask) returns a null [`QHostAddress`](crate::QHostAddress)).
     pub fn prefix_length(&self) -> Option<i32> {
         let prefix_length = self.prefix_length_or_negative();
         if prefix_length == -1 {
@@ -172,6 +170,13 @@ impl QNetworkAddressEntry {
         } else {
             Some(prefix_length)
         }
+    }
+
+    /// Sets the prefix length of this IP address to `length`. The value of `length` must be valid for this type of IP address: between 0 and 32 for IPv4 addresses, between 0 and 128 for IPv6 addresses. Setting to any invalid value is equivalent to setting to `None`, which means "no prefix length".
+    ///
+    /// Setting the prefix length also sets the netmask (see [`netmask`](QNetworkAddressEntry::netmask)).
+    pub fn set_prefix_length(&mut self, length: Option<i32>) {
+        self.set_prefix_length_or_negative(length.unwrap_or(-1));
     }
 }
 

@@ -13,29 +13,29 @@ use std::time::Duration;
 
 #[cxx_qt::bridge]
 mod ffi {
-    /// Describes the peer verification modes for `QSslSocket`. The default mode is `AutoVerifyPeer`, which selects an appropriate mode depending on the socket's `QSslSocketSslMode`.
+    /// Describes the peer verification modes for [`QSslSocket`]. The default mode is [`AutoVerifyPeer`](QSslSocketPeerVerifyMode::AutoVerifyPeer), which selects an appropriate mode depending on the socket's [`QSslSocketSslMode`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslSocketPeerVerifyMode {
-        /// `QSslSocket` will not request a certificate from the peer. You can set this mode if you are not interested in the identity of the other side of the connection. The connection will still be encrypted, and your socket will still send its local certificate to the peer if it's requested.
+        /// [`QSslSocket`] will not request a certificate from the peer. You can set this mode if you are not interested in the identity of the other side of the connection. The connection will still be encrypted, and your socket will still send its local certificate to the peer if it's requested.
         VerifyNone,
-        /// `QSslSocket` will request a certificate from the peer, but does not require this certificate to be valid. This is useful when you want to display peer certificate details to the user without affecting the actual SSL handshake. This mode is the default for servers. Note: In Schannel this value acts the same as `VerifyNone`.
+        /// [`QSslSocket`] will request a certificate from the peer, but does not require this certificate to be valid. This is useful when you want to display peer certificate details to the user without affecting the actual SSL handshake. This mode is the default for servers. Note: In Schannel this value acts the same as [`VerifyNone`](QSslSocketPeerVerifyMode::VerifyNone).
         QueryPeer,
-        /// `QSslSocket` will request a certificate from the peer during the SSL handshake phase, and requires that this certificate is valid. On failure, `QSslSocket` will emit the `QSslSocket::ssl_errors()` signal. This mode is the default for clients.
+        /// [`QSslSocket`] will request a certificate from the peer during the SSL handshake phase, and requires that this certificate is valid. On failure, [`QSslSocket`] will emit the [`QSslSocket::ssl_errors`] signal. This mode is the default for clients.
         VerifyPeer,
-        /// `QSslSocket` will automatically use `QueryPeer` for server sockets and `VerifyPeer` for client sockets.
+        /// [`QSslSocket`] will automatically use [`QueryPeer`](QSslSocketPeerVerifyMode::QueryPeer) for server sockets and [`VerifyPeer`](QSslSocketPeerVerifyMode::VerifyPeer) for client sockets.
         AutoVerifyPeer,
     }
 
-    /// Describes the connection modes available for QSslSocket.
+    /// Describes the connection modes available for [`QSslSocket`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslSocketSslMode {
-        /// The socket is unencrypted. Its behavior is identical to `QTcpSocket`.
+        /// The socket is unencrypted. Its behavior is identical to [`QTcpSocket`].
         UnencryptedMode,
-        /// The socket is a client-side SSL socket. It is either already encrypted, or it is in the SSL handshake phase (see `QSslSocket::is_encrypted()`).
+        /// The socket is a client-side SSL socket. It is either already encrypted, or it is in the SSL handshake phase (see [`QSslSocket::is_encrypted`]).
         SslClientMode,
-        /// The socket is a server-side SSL socket. It is either already encrypted, or it is in the SSL handshake phase (see `QSslSocket::is_encrypted()`).
+        /// The socket is a server-side SSL socket. It is either already encrypted, or it is in the SSL handshake phase (see [`QSslSocket::is_encrypted`]).
         SslServerMode,
     }
 
@@ -89,20 +89,20 @@ mod ffi {
     unsafe extern "C++Qt" {
         type QTcpSocket = crate::QTcpSocket;
 
-        /// The QSslSocket class provides an SSL encrypted socket for both clients and servers.
+        /// The `QSslSocket` class provides an SSL encrypted socket for both clients and servers.
         ///
         /// Qt Documentation: [QSslSocket](https://doc.qt.io/qt-6/qsslsocket.html#details)
         #[qobject]
         #[base = QTcpSocket]
         type QSslSocket;
 
-        /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the `OpenMode`. This is equivalent to calling `connect_to_host()` to establish the connection, followed by a call to `start_client_encryption()`. The `protocol` parameter can be used to specify which network protocol to use (eg. IPv4 or IPv6). The `ssl_peer_name` enables the usage of a different host name for the certificate validation instead of the one used for the TCP connection (`host_name`).
+        /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the `OpenMode`. This is equivalent to calling [`connect_to_host`](QAbstractSocket::connect_to_host) to establish the connection, followed by a call to [`start_client_encryption`](QSslSocket::start_client_encryption). The `protocol` parameter can be used to specify which network protocol to use (eg. IPv4 or IPv6). The `ssl_peer_name` enables the usage of a different host name for the certificate validation instead of the one used for the TCP connection (`host_name`).
         ///
-        /// `QSslSocket` first enters the `HostLookupState`. Then, after entering either the event loop or one of the `wait_for...()` functions, it enters the `ConnectingState`, emits `connected()`, and then initiates the SSL client handshake. At each state change, `QSslSocket` emits signal `state_changed()`.
+        /// `QSslSocket` first enters the [`QAbstractSocketSocketState::HostLookupState`](crate::QAbstractSocketSocketState::HostLookupState). Then, after entering either the event loop or one of the `wait_for...()` functions, it enters the [`QAbstractSocketSocketState::ConnectingState`](crate::QAbstractSocketSocketState::ConnectingState), emits [`connected`](QAbstractSocket::connected), and then initiates the SSL client handshake. At each state change, `QSslSocket` emits signal [`state_changed`](QAbstractSocket::state_changed).
         ///
-        /// After initiating the SSL client handshake, if the identity of the peer can't be established, signal `ssl_errors()` is emitted. If you want to ignore the errors and continue connecting, you must call `ignore_ssl_errors()`, either from inside a slot function connected to the `ssl_errors()` signal, or prior to entering encrypted mode. If `ignore_ssl_errors()` is not called, the connection is dropped, signal `disconnected()` is emitted, and `QSslSocket` returns to the `UnconnectedState`.
+        /// After initiating the SSL client handshake, if the identity of the peer can't be established, signal [`ssl_errors`](QSslSocket::ssl_errors) is emitted. If you want to ignore the errors and continue connecting, you must call [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors), either from inside a slot function connected to the [`ssl_errors`](QSslSocket::ssl_errors) signal, or prior to entering encrypted mode. If [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) is not called, the connection is dropped, signal [`disconnected`](QAbstractSocket::disconnected) is emitted, and `QSslSocket` returns to the [`QAbstractSocketSocketState::UnconnectedState`](crate::QAbstractSocketSocketState::UnconnectedState).
         ///
-        /// If the SSL handshake is successful, `QSslSocket` emits `encrypted()`.
+        /// If the SSL handshake is successful, `QSslSocket` emits [`encrypted`](QSslSocket::encrypted).
         #[rust_name = "connect_to_host_encrypted"]
         fn connectToHostEncrypted(
             self: Pin<&mut QSslSocket>,
@@ -113,7 +113,7 @@ mod ffi {
             protocol: QAbstractSocketNetworkLayerProtocol,
         );
 
-        /// If an application wants to conclude a handshake even after receiving `handshake_interrupted_on_error()` signal, it must call this function. This call must be done from a slot function attached to the signal. The signal-slot connection must be direct.
+        /// If an application wants to conclude a handshake even after receiving [`handshake_interrupted_on_error`](QSslSocket::handshake_interrupted_on_error) signal, it must call this function. This call must be done from a slot function attached to the signal. The signal-slot connection must be direct.
         #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "continue_interrupted_handshake"]
         fn continueInterruptedHandshake(self: Pin<&mut QSslSocket>);
@@ -126,11 +126,11 @@ mod ffi {
         #[rust_name = "encrypted_bytes_to_write"]
         fn encryptedBytesToWrite(self: &QSslSocket) -> i64;
 
-        /// This slot tells `QSslSocket` to ignore errors during `QSslSocket`'s handshake phase and continue connecting. If you want to continue with the connection even if errors occur during the handshake phase, then you must call this slot, either from a slot connected to `ssl_errors()`, or before the handshake phase. If you don't call this slot, either in response to errors or before the handshake, the connection will be dropped after the `ssl_errors()` signal has been emitted.
+        /// This slot tells `QSslSocket` to ignore errors during `QSslSocket`'s handshake phase and continue connecting. If you want to continue with the connection even if errors occur during the handshake phase, then you must call this slot, either from a slot connected to [`ssl_errors`](QSslSocket::ssl_errors), or before the handshake phase. If you don't call this slot, either in response to errors or before the handshake, the connection will be dropped after the [`ssl_errors`](QSslSocket::ssl_errors) signal has been emitted.
         ///
-        /// If there are no errors during the SSL handshake phase (i.e., the identity of the peer is established with no problems), QSslSocket will not emit the `ssl_errors()` signal, and it is unnecessary to call this function.
+        /// If there are no errors during the SSL handshake phase (i.e., the identity of the peer is established with no problems), QSslSocket will not emit the [`ssl_errors`](QSslSocket::ssl_errors) signal, and it is unnecessary to call this function.
         ///
-        /// **Warning:** Be sure to always let the user inspect the errors reported by the `ssl_errors()` signal, and only call this method upon confirmation from the user that proceeding is ok. If there are unexpected errors, the connection should be aborted. Calling this method without inspecting the actual errors will most likely pose a security risk for your application. Use it with great care!
+        /// **Warning:** Be sure to always let the user inspect the errors reported by the [`ssl_errors`](QSslSocket::ssl_errors) signal, and only call this method upon confirmation from the user that proceeding is ok. If there are unexpected errors, the connection should be aborted. Calling this method without inspecting the actual errors will most likely pose a security risk for your application. Use it with great care!
         #[rust_name = "ignore_all_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QSslSocket>);
 
@@ -144,11 +144,11 @@ mod ffi {
 
         /// Returns `true` if the socket is encrypted; otherwise, `false` is returned.
         ///
-        /// An encrypted socket encrypts all data that is written by calling `write()` or `put_char()` before the data is written to the network, and decrypts all incoming data as the data is received from the network, before you call `read()`, `read_line()` or `get_char()`.
+        /// An encrypted socket encrypts all data that is written by calling [`write`](QIODevice::write) or [`put_char`](QIODevice::put_char) before the data is written to the network, and decrypts all incoming data as the data is received from the network, before you call [`read`](QIODevice::read), [`read_line`](QIODevice::read_line) or [`get_char`](QIODevice::get_char).
         ///
-        /// `QSslSocket` emits `encrypted()` when it enters encrypted mode.
+        /// `QSslSocket` emits [`encrypted`](QSslSocket::encrypted) when it enters encrypted mode.
         ///
-        /// You can call `session_cipher()` to find which cryptographic cipher is used to encrypt and decrypt your data.
+        /// You can call [`session_cipher`](QSslSocket::session_cipher) to find which cryptographic cipher is used to encrypt and decrypt your data.
         #[rust_name = "is_encrypted"]
         fn isEncrypted(self: &QSslSocket) -> bool;
 
@@ -159,7 +159,7 @@ mod ffi {
         #[rust_name = "local_certificate_chain"]
         fn localCertificateChain(self: &QSslSocket) -> QList_QSslCertificate;
 
-        /// Returns the current mode for the socket; either `UnencryptedMode`, where `QSslSocket` behaves identially to `QTcpSocket`, or one of `SslClientMode` or `SslServerMode`, where the client is either negotiating or in encrypted mode.
+        /// Returns the current mode for the socket; either [`QSslSocketSslMode::UnencryptedMode`], where `QSslSocket` behaves identially to [`QTcpSocket`], or one of [`QSslSocketSslMode::SslClientMode`] or [`QSslSocketSslMode::SslServerMode`], where the client is either negotiating or in encrypted mode.
         ///
         /// When the mode changes, QSslSocket emits `mode_canged()`.
         fn mode(self: &QSslSocket) -> QSslSocketSslMode;
@@ -175,11 +175,11 @@ mod ffi {
         ///
         /// Peer certificates are checked automatically during the handshake phase. This function is normally used to fetch certificates for display, or for performing connection diagnostics. Certificates contain information about the peer and the certificate issuers, including host name, issuer names, and issuer public keys.
         ///
-        /// The peer certificates are set in `QSslSocket` during the handshake phase, so it is safe to call this function from a slot connected to the `ssl_errors()` signal or the `encrypted()` signal.
+        /// The peer certificates are set in `QSslSocket` during the handshake phase, so it is safe to call this function from a slot connected to the [`ssl_errors`](QSslSocket::ssl_errors) signal or the [`encrypted`](QSslSocket::encrypted) signal.
         ///
         /// If an empty list is returned, it can mean the SSL handshake failed, or it can mean the host you are connected to doesn't have a certificate, or it can mean there is no connection.
         ///
-        /// If you want to get only the peer's immediate certificate, use `peer_certificate()`.
+        /// If you want to get only the peer's immediate certificate, use [`peer_certificate`](QSslSocket::peer_certificate).
         #[rust_name = "peer_certificate_chain"]
         fn peerCertificateChain(self: &QSslSocket) -> QList_QSslCertificate;
 
@@ -191,11 +191,11 @@ mod ffi {
 
         /// Returns the socket's verify mode. This mode decides whether `QSslSocket` should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
         ///
-        /// The default mode is `AutoVerifyPeer`, which tells `QSslSocket` to use `VerifyPeer` for clients and `QueryPeer` for servers.
+        /// The default mode is [`QSslSocketPeerVerifyMode::AutoVerifyPeer`], which tells `QSslSocket` to use [`QSslSocketPeerVerifyMode::VerifyPeer`] for clients and [`QSslSocketPeerVerifyMode::QueryPeer`] for servers.
         #[rust_name = "peer_verify_mode"]
         fn peerVerifyMode(self: &QSslSocket) -> QSslSocketPeerVerifyMode;
 
-        /// Returns the different hostname for the certificate validation, as set by `set_peer_verify_name` or by `connect_to_host_encrypted`.
+        /// Returns the different hostname for the certificate validation, as set by [`set_peer_verify_name`](QSslSocket::set_peer_verify_name) or by [`connect_to_host_encrypted`](QSslSocket::connect_to_host_encrypted).
         #[rust_name = "peer_verify_name"]
         fn peerVerifyName(self: &QSslSocket) -> QString;
 
@@ -203,7 +203,7 @@ mod ffi {
         #[rust_name = "private_key"]
         fn privateKey(self: &QSslSocket) -> QSslKey;
 
-        /// Returns the socket's SSL protocol. By default, `SecureProtocols` is used.
+        /// Returns the socket's SSL protocol. By default, [`QSslSslProtocol::SecureProtocols`] is used.
         fn protocol(self: &QSslSocket) -> QSslSslProtocol;
 
         /// Returns the socket's cryptographic cipher, or a null cipher if the connection isn't encrypted. The socket's cipher for the session is set during the handshake phase. The cipher is used to encrypt and decrypt data transmitted through the socket.
@@ -246,7 +246,7 @@ mod ffi {
 
         /// Sets the verify mode to `mode`. This mode decides whether `QSslSocket` should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
         ///
-        /// The default mode is `AutoVerifyPeer`, which tells `QSslSocket` to use `VerifyPeer` for clients, `QueryPeer` for servers.
+        /// The default mode is [`QSslSocketPeerVerifyMode::AutoVerifyPeer`], which tells `QSslSocket` to use [`QSslSocketPeerVerifyMode::VerifyPeer`] for clients and [`QSslSocketPeerVerifyMode::QueryPeer`] for servers.
         #[rust_name = "set_peer_verify_mode"]
         fn setPeerVerifyMode(self: Pin<&mut QSslSocket>, mode: QSslSocketPeerVerifyMode);
 
@@ -290,21 +290,19 @@ mod ffi {
         #[rust_name = "ssl_configuration"]
         fn sslConfiguration(self: &QSslSocket) -> QSslConfiguration;
 
-        /// Returns a list of the last SSL errors that occurred. This is the same list as QSslSocket passes via the `ssl_errors()` signal. If the connection has been encrypted with no errors, this function will return an empty list.
+        /// Returns a list of the last SSL errors that occurred. This is the same list as QSslSocket passes via the [`ssl_errors`](QSslSocket::ssl_errors) signal. If the connection has been encrypted with no errors, this function will return an empty list.
         #[rust_name = "ssl_handshake_errors"]
         fn sslHandshakeErrors(self: &QSslSocket) -> QList_QSslError;
 
-        /// Starts a delayed SSL handshake for a client connection. This function can be called when the socket is in the `ConnectedState` but still in the `UnencryptedMode`. If it is not yet connected, or if it is already encrypted, this function has no effect.
+        /// Starts a delayed SSL handshake for a client connection. This function can be called when the socket is in the [`QAbstractSocketSocketState::ConnectedState`](crate::QAbstractSocketSocketState::ConnectedState) but still in the [`QSslSocketSslMode::UnencryptedMode`]. If it is not yet connected, or if it is already encrypted, this function has no effect.
         ///
-        /// Clients that implement `STARTTLS` functionality often make use of delayed SSL handshakes. Most other clients can avoid calling this function directly by using `connect_to_host_encrypted()` instead, which automatically performs the handshake.
+        /// Clients that implement `STARTTLS` functionality often make use of delayed SSL handshakes. Most other clients can avoid calling this function directly by using [`connect_to_host_encrypted`](QSslSocket::connect_to_host_encrypted) instead, which automatically performs the handshake.
         #[rust_name = "start_client_encryption"]
         fn startClientEncryption(self: Pin<&mut QSslSocket>);
 
-        /// Starts a delayed SSL handshake for a server connection. This function can be called when the socket is in the `ConnectedState` but still in `UnencryptedMode`. If it is not connected or it is already encrypted, the function has no effect.
+        /// Starts a delayed SSL handshake for a server connection. This function can be called when the socket is in the [`QAbstractSocketSocketState::ConnectedState`](crate::QAbstractSocketSocketState::ConnectedState) but still in the [`QSslSocketSslMode::UnencryptedMode`]. If it is not connected or it is already encrypted, the function has no effect.
         ///
         /// For server sockets, calling this function is the only way to initiate the SSL handshake. Most servers will call this function immediately upon receiving a connection, or as a result of having received a protocol-specific command to enter SSL mode (e.g, the server may respond to receiving the string `"STARTTLS\r\n"` by calling this function).
-        ///
-        /// The most common way to implement an SSL server is to create a subclass of `QTcpServer` and reimplement `QTcpServer::incoming_connection()`. The returned socket descriptor is then passed to `QSslSocket::set_socket_descriptor()`.
         #[rust_name = "start_server_encryption"]
         fn startServerEncryption(self: Pin<&mut QSslSocket>);
 
@@ -339,7 +337,7 @@ mod ffi {
             description: &QString,
         );
 
-        /// This signal is emitted when QSslSocket enters encrypted mode. After this signal has been emitted, `QSslSocket::is_encrypted()` will return `true`, and all further transmissions on the socket will be encrypted.
+        /// This signal is emitted when `QSslSocket` enters encrypted mode. After this signal has been emitted, [`QSslSocket::is_encrypted`] will return `true`, and all further transmissions on the socket will be encrypted.
         #[qsignal]
         fn encrypted(self: Pin<&mut QSslSocket>);
 
@@ -348,12 +346,12 @@ mod ffi {
         #[rust_name = "encrypted_bytes_written"]
         fn encryptedBytesWritten(self: Pin<&mut QSslSocket>, written: i64);
 
-        /// `QSslSocket` emits this signal if a certificate verification error was found and if early error reporting was enabled in `QSslConfiguration`. An application is expected to inspect the error and decide if it wants to continue the handshake, or abort it and send an alert message to the peer. The signal-slot connection must be direct.
+        /// `QSslSocket` emits this signal if a certificate verification error was found and if early error reporting was enabled in [`QSslConfiguration`](crate::QSslConfiguration). An application is expected to inspect the error and decide if it wants to continue the handshake, or abort it and send an alert message to the peer. The signal-slot connection must be direct.
         #[qsignal]
         #[rust_name = "handshake_interrupted_on_error"]
         fn handshakeInterruptedOnError(self: Pin<&mut QSslSocket>, error: &QSslError);
 
-        /// This signal is emitted when `QSslSocket` changes from `UnencryptedMode` to either `SslClientMode` or `SslServerMode`. `mode` is the new mode.
+        /// This signal is emitted when `QSslSocket` changes from [`QSslSocketSslMode::UnencryptedMode`] to either [`QSslSocketSslMode::SslClientMode`] or [`QSslSocketSslMode::SslServerMode`]. `mode` is the new mode.
         #[qsignal]
         #[rust_name = "mode_changed"]
         fn modeChanged(self: Pin<&mut QSslSocket>, mode: QSslSocketSslMode);
@@ -367,7 +365,7 @@ mod ffi {
 
         /// `QSslSocket` can emit this signal several times during the SSL handshake, before encryption has been established, to indicate that an error has occurred while establishing the identity of the peer. The error is usually an indication that `QSslSocket` is unable to securely identify the peer.
         ///
-        /// This signal provides you with an early indication when something's wrong. By connecting to this signal, you can manually choose to tear down the connection from inside the connected slot before the handshake has completed. If no action is taken, `QSslSocket` will proceed to emitting `ssl_errors()`.
+        /// This signal provides you with an early indication when something's wrong. By connecting to this signal, you can manually choose to tear down the connection from inside the connected slot before the handshake has completed. If no action is taken, `QSslSocket` will proceed to emitting [`ssl_errors`](QSslSocket::ssl_errors).
         #[qsignal]
         #[rust_name = "peer_verify_error"]
         fn peerVerifyError(self: Pin<&mut QSslSocket>, error: &QSslError);
@@ -388,11 +386,11 @@ mod ffi {
 
         /// `QSslSocket` emits this signal after the SSL handshake to indicate that one or more errors have occurred while establishing the identity of the peer. The errors are usually an indication that `QSslSocket` is unable to securely identify the peer. Unless any action is taken, the connection will be dropped after this signal has been emitted.
         ///
-        /// If you want to continue connecting despite the errors that have occurred, you must call `ignore_ssl_errors()` from inside a slot connected to this signal. If you need to access the error list at a later point, you can call `ssl_handshake_errors()`.
+        /// If you want to continue connecting despite the errors that have occurred, you must call [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) from inside a slot connected to this signal. If you need to access the error list at a later point, you can call [`ssl_handshake_errors`](QSslSocket::ssl_handshake_errors).
         ///
         /// `errors` contains one or more errors that prevent `QSslSocket` from verifying the identity of the peer.
         ///
-        /// **Note:** You cannot use `QueuedConnection` when connecting to this signal, or calling `ignore_ssl_errors()` will have no effect.
+        /// **Note:** You cannot use `QueuedConnection` when connecting to this signal, or calling [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) will have no effect.
         #[qsignal]
         #[rust_name = "ssl_errors"]
         fn sslErrors(self: Pin<&mut QSslSocket>, errors: &QList_QSslError);
@@ -466,11 +464,11 @@ impl QSslSocket {
     ///
     /// The peer certificate is checked automatically during the handshake phase, so this function is normally used to fetch the certificate for display or for connection diagnostic purposes. It contains information about the peer, including its host name, the certificate issuer, and the peer's public key.
     ///
-    /// Because the peer certificate is set during the handshake phase, it is safe to access the peer certificate from a slot connected to the `ssl_errors()` signal or the `encrypted()` signal.
+    /// Because the peer certificate is set during the handshake phase, it is safe to access the peer certificate from a slot connected to the [`ssl_errors`](QSslSocket::ssl_errors) signal or the [`encrypted`](QSslSocket::encrypted) signal.
     ///
     /// If `None` is returned, it can mean the SSL handshake failed, or it can mean the host you are connected to doesn't have a certificate, or it can mean there is no connection.
     ///
-    /// If you want to check the peer's complete chain of certificates, use `peer_certificate_chain()` to get them all at once.
+    /// If you want to check the peer's complete chain of certificates, use [`peer_certificate_chain`](QSslSocket::peer_certificate_chain) to get them all at once.
     pub fn peer_certificate(&self) -> Option<QSslCertificate> {
         self.peer_certificate_or_null().nonnull()
     }
@@ -485,7 +483,7 @@ impl QSslSocket {
         }
     }
 
-    /// Waits until the socket has completed the SSL handshake and has emitted `encrypted()`, or `duration`, whichever comes first. If `encrypted()` has been emitted, this function returns `true`; otherwise (e.g., the socket is disconnected, or the SSL handshake fails), `false` is returned.
+    /// Waits until the socket has completed the SSL handshake and has emitted [`encrypted`](QSslSocket::encrypted), or `duration`, whichever comes first. If [`encrypted`](QSslSocket::encrypted) has been emitted, this function returns `true`; otherwise (e.g., the socket is disconnected, or the SSL handshake fails), `false` is returned.
     ///
     /// If `duration` is `None`, this function will not time out.
     pub fn wait_for_encrypted(self: Pin<&mut QSslSocket>, duration: Option<Duration>) -> bool {
@@ -562,7 +560,7 @@ impl QSslSocket {
         ffi::qsslsocket_active_backend()
     }
 
-    /// Returns the names of the currently available backends. These names are in lower case, e.g. "openssl", "securetransport", "schannel" (similar to the already existing feature names for TLS backends in Qt).
+    /// Returns the names of the currently available backends. These names are in lower case, e.g. `"openssl"`, `"securetransport"`, `"schannel"` (similar to the already existing feature names for TLS backends in Qt).
     pub fn available_backends() -> QList<QString> {
         ffi::qsslsocket_available_backends()
     }
@@ -602,7 +600,7 @@ impl QSslSocket {
         }
     }
 
-    /// Returns `true` if a backend with name `backend_name` was set as active backend. `backend_name` must be one of names returned by `available_backends()`.
+    /// Returns `true` if a backend with name `backend_name` was set as active backend. `backend_name` must be one of names returned by [`QSslSocket::available_backends()`].
     pub fn set_active_backend(backend_name: &QString) -> bool {
         ffi::qsslsocket_set_active_backend(backend_name)
     }

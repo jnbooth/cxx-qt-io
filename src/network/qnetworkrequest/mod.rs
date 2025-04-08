@@ -26,7 +26,7 @@ mod ffi {
         AlwaysCache,
     }
 
-    /// List of known header types that `QNetworkRequest` parses. Each known header is also represented in raw form with its full HTTP name.
+    /// List of known header types that [`QNetworkRequest`] parses. Each known header is also represented in raw form with its full HTTP name.
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkRequestKnownHeaders {
@@ -36,11 +36,11 @@ mod ffi {
         ContentLengthHeader,
         /// Corresponds to the HTTP Location header and contains a URL representing the actual location of the data, including the destination URL in case of redirections.
         LocationHeader,
-        /// Corresponds to the HTTP Last-Modified header and contains a `QDateTime` representing the last modification date of the contents.
+        /// Corresponds to the HTTP Last-Modified header and contains a [`QDateTime`](cxx_qt_lib::QDateTime) representing the last modification date of the contents.
         LastModifiedHeader,
-        /// Corresponds to the HTTP Cookie header and contains a `QList<QNetworkCookie>` representing the cookies to be sent back to the server.
+        /// Corresponds to the HTTP Cookie header and contains a [`QList`](cxx_qt_lib::QList)[`<QNetworkCookie>`](crate::QNetworkCookie) representing the cookies to be sent back to the server.
         CookieHeader,
-        /// Corresponds to the HTTP Set-Cookie header and contains a `QList<QNetworkCookie>` representing the cookies sent by the server to be stored locally.
+        /// Corresponds to the HTTP Set-Cookie header and contains a [`QList`](cxx_qt_lib::QList)[`<QNetworkCookie>`](crate::QNetworkCookie) representing the cookies sent by the server to be stored locally.
         SetCookieHeader,
         /// Corresponds to the HTTP Content-Disposition header and contains a string containing the disposition type (for instance, attachment) and a parameter (for instance, filename).
         ContentDispositionHeader,
@@ -48,13 +48,13 @@ mod ffi {
         UserAgentHeader,
         /// The Server header received by HTTP clients.
         ServerHeader,
-        /// Corresponds to the HTTP If-Modified-Since header and contains a `QDateTime`. It is usually added to a QNetworkRequest. The server shall send a 304 (Not Modified) response if the resource has not changed since this time.
+        /// Corresponds to the HTTP If-Modified-Since header and contains a [`QDateTime`](cxx_qt_lib::QDateTime). It is usually added to a [`QNetworkRequest`]. The server shall send a 304 (Not Modified) response if the resource has not changed since this time.
         IfModifiedSinceHeader,
-        /// Corresponds to the HTTP ETag header and contains a `QString` representing the last modification state of the contents.
+        /// Corresponds to the HTTP ETag header and contains a [`QString`](cxx_qt_lib::QString) representing the last modification state of the contents.
         ETagHeader,
-        /// Corresponds to the HTTP If-Match header and contains a `QStringList`. It is usually added to a `QNetworkRequest`. The server shall send a 412 (Precondition Failed) response if the resource does not match.
+        /// Corresponds to the HTTP If-Match header and contains a [`QStringList`](cxx_qt_lib::QStringList). It is usually added to a [`QNetworkRequest`]. The server shall send a 412 (Precondition Failed) response if the resource does not match.
         IfMatchHeader,
-        /// Corresponds to the HTTP If-None-Match header and contains a `QStringList`. It is usually added to a QNetworkRequest. The server shall send a 304 (Not Modified) response if the resource does match.
+        /// Corresponds to the HTTP If-None-Match header and contains a [`QStringList`](cxx_qt_lib::QStringList). It is usually added to a [`QNetworkRequest`]. The server shall send a 304 (Not Modified) response if the resource does match.
         IfNoneMatchHeader,
     }
 
@@ -92,7 +92,7 @@ mod ffi {
         NoLessSafeRedirectPolicy,
         /// Require the same protocol, host and port. Note, http://example.com and http://example.com:80 will fail with this policy (implicit/explicit ports are considered to be a mismatch).
         SameOriginRedirectPolicy,
-        /// Client decides whether to follow each redirect by handling the `redirected()` signal, emitting `redirect_allowed()` on the `QNetworkReply` object to allow the redirect or aborting/finishing it to reject the redirect. This can be used, for example, to ask the user whether to accept the redirect, or to decide based on some app-specific configuration.
+        /// Client decides whether to follow each redirect by handling the [`QNetworkReply::redirected`](crate::QNetworkReply::redirected) signal, emitting [`QNetworkReply::redirect_allowed`](crate::QNetworkReply::redirect_allowed) on the [`QNetworkReply`](crate::QNetworkReply) object to allow the redirect or aborting/finishing it to reject the redirect. This can be used, for example, to ask the user whether to accept the redirect, or to decide based on some app-specific configuration.
         UserVerifiedRedirectPolicy,
     }
 
@@ -152,9 +152,10 @@ mod ffi {
         #[rust_name = "decompressed_safety_check_threshold"]
         fn decompressedSafetyCheckThreshold(&self) -> i64;
 
+        #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_7)]
         #[rust_name = "has_raw_header_view"]
-        pub(self) fn hasRawHeader(&self, header_name: QAnyStringView) -> bool;
+        pub(crate) fn hasRawHeader(&self, header_name: QAnyStringView) -> bool;
 
         /// Returns `true` if the raw header `header_name` is present in this network request.
         #[cfg(not(cxxqt_qt_version_at_least_6_7))]
@@ -181,20 +182,21 @@ mod ffi {
         #[rust_name = "maximum_redirects_allowed"]
         fn maximumRedirectsAllowed(&self) -> i32;
 
-        /// Returns the host name set for the certificate validation, as set by `set_peer_verify_name`. By default this returns a null string.
+        /// Returns the host name set for the certificate validation, as set by [`set_peer_verify_name`](QNetworkRequest::set_peer_verify_name). By default this returns a null string.
         #[rust_name = "peer_verify_name"]
         fn peerVerifyName(&self) -> QString;
 
         /// Return the priority of this request.
         fn priority(&self) -> QNetworkRequestPriority;
 
+        #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_7)]
         #[rust_name = "raw_header_view"]
-        pub(self) fn rawHeader(&self, header_name: QAnyStringView) -> QByteArray;
+        fn rawHeader(&self, header_name: QAnyStringView) -> QByteArray;
 
-        /// Returns the raw form of header `header_name`. If no such header is present, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use `has_raw_header()` to find out if the header exists or not).
+        /// Returns the raw form of header `header_name`. If no such header is present, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use [`has_raw_header`](QNetworkRequest::has_raw_header) to find out if the header exists or not).
         //
-        /// Raw headers can be set with `set_raw_header()` or with `set_header()`.
+        /// Raw headers can be set with [`set_raw_header`](QNetworkRequest::set_raw_header) or with [`set_header`](QNetworkRequest::set_header).
         #[cfg(not(cxxqt_qt_version_at_least_6_7))]
         #[rust_name = "raw_header"]
         fn rawHeader(&self, header_name: &QByteArray) -> bool;
@@ -250,7 +252,7 @@ mod ffi {
         #[rust_name = "set_priority"]
         fn setPriority(&mut self, priority: QNetworkRequestPriority);
 
-        /// Sets the header `header_name` to be of value `header_value`. If `header_name` corresponds to a known header (see `QNetworkRequestKnownHeaders`), the raw format will be parsed and the corresponding "cooked" header will be set as well.
+        /// Sets the header `header_name` to be of value `header_value`. If `header_name` corresponds to a known header (see [`QNetworkRequestKnownHeaders`]), the raw format will be parsed and the corresponding "cooked" header will be set as well.
         ///
         /// **Note:** Setting the same header twice overrides the previous setting. To accomplish the behaviour of multiple HTTP headers of the same name, you should concatenate the two values, separating them with a comma (",") and set one single raw header.
         ///
@@ -330,7 +332,7 @@ impl Clone for QNetworkRequest {
 }
 
 impl Default for QNetworkRequest {
-    /// Constructs a `QNetworkRequest` object with no URL to be requested. Use `set_url()` to set one.
+    /// Constructs a `QNetworkRequest` object with no URL to be requested. Use [`set_url`](crate::QNetworkRequest) to set one.
     fn default() -> Self {
         ffi::qnetworkrequest_init_default()
     }
@@ -370,9 +372,9 @@ impl QNetworkRequest {
         self.header_or_invalid(header).nonnull()
     }
 
-    /// Returns the raw form of header `header_name`. If no such header is present, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use `has_raw_header()` to find out if the header exists or not).
+    /// Returns the raw form of header `header_name`. If no such header is present, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use [`has_raw_header`](QNetworkRequest::has_raw_header) to find out if the header exists or not).
     //
-    /// Raw headers can be set with `set_raw_header()` or with `set_header()`.
+    /// Raw headers can be set with [`set_raw_header`](QNetworkRequest::set_raw_header) or with [`set_header`](QNetworkRequest::set_header).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn raw_header<'a, T>(&self, header_name: T) -> QByteArray
     where
@@ -394,7 +396,7 @@ impl QNetworkRequest {
     ///
     /// Some supported compression algorithms can, in a tiny compressed file, encode a spectacularly huge decompressed file. This is only possible if the decompressed content is extremely monotonous, which is seldom the case for real files being transmitted in good faith: files exercising such insanely high compression ratios are typically payloads of buffer-overrun attacks, or denial-of-service (by using up too much memory) attacks. Consequently, files that decompress to huge sizes, particularly from tiny compressed forms, are best rejected as suspected malware.
     ///
-    /// If a reply's decompressed size is bigger than this threshold (by default, 10 MiB, i.e. 10 * 1024 * 1024), Qt will check the compression ratio: if that is unreasonably large (40:1 for GZip and Deflate, or 100:1 for Brotli and ZStandard), the reply will be treated as an error. Setting the threshold to -1 disables this check.
+    /// If a reply's decompressed size is bigger than this threshold (by default, 10 MiB, i.e. 10 * 1024 * 1024), Qt will check the compression ratio: if that is unreasonably large (40:1 for GZip and Deflate, or 100:1 for Brotli and ZStandard), the reply will be treated as an error. Setting the threshold to `None` disables this check.
     #[cfg(cxxqt_qt_version_at_least_6_2)]
     pub fn set_decompressed_safety_check_threshold(&mut self, threshold: Option<i64>) {
         self.set_decompressed_safety_check_threshold_or_negative(threshold.unwrap_or(-1));
@@ -412,7 +414,7 @@ impl QNetworkRequest {
         self.set_transfer_timeout_msecs(msecs);
     }
 
-    /// Returns the timeout used for transfers,
+    /// Returns the timeout used for transfers.
     pub fn transfer_timeout(&self) -> Option<Duration> {
         let msecs = u64::try_from(self.transfer_timeout_msecs()).ok()?;
         if msecs == 0 {
@@ -421,8 +423,6 @@ impl QNetworkRequest {
             Some(Duration::from_millis(msecs))
         }
     }
-
-    /// Sets the URL this network request is referring to be `url`.
 
     /// Unsets the attribute associated with code `code`.
     pub fn unset_attribute(&mut self, code: QNetworkRequestAttribute) {

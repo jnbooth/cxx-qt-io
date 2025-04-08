@@ -38,7 +38,7 @@ mod ffi {
         /// Returns the name of the cipher, or an empty `QString` if this is a null cipher.
         fn name(&self) -> QString;
 
-        /// Returns the cipher's protocol type, or `UnknownProtocol` if `QSslCipher` is unable to determine the protocol (`protocol_string()` may contain more information).
+        /// Returns the cipher's protocol type, or [`QSslSslProtocol::UnknownProtocol`] if `QSslCipher` is unable to determine the protocol ([`self.protocol_string()`](QSslCipher::protocol_string) may contain more information).
         fn protocol(&self) -> QSslSslProtocol;
 
         /// Returns the cipher's protocol as a `QString`.
@@ -126,7 +126,7 @@ impl Debug for QSslCipher {
 }
 
 impl QSslCipher {
-    /// Constructs a `QSslCipher` object for the cipher determined by `name` and optional `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by `QSslSocket::supported_ciphers()`).
+    /// Constructs a `QSslCipher` object for the cipher determined by `name` and optional `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
     ///
     /// Returns `None` if `name` and `protocol` do not correctly identify a supported cipher.
     pub fn new(name: &QString, protocol: Option<QSslSslProtocol>) -> Option<Self> {

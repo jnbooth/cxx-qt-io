@@ -36,7 +36,7 @@ mod ffi {
     enum QNetworkInterfaceInterfaceType {
         /// The interface type could not be determined or is not one of the other listed types.
         Unknown,
-        /// The virtual loopback interface, which is assigned the loopback IP addresses (127.0.0.1, ::1).
+        /// The virtual loopback interface, which is assigned the loopback IP addresses (`127.0.0.1`, `::1`).
         Loopback,
         /// A type of interface determined to be virtual, but not any of the other possible types. For example, tunnel interfaces are (currently) detected as virtual ones.
         Virtual,
@@ -86,7 +86,7 @@ mod ffi {
 
         /// Returns the list of IP addresses that this interface possesses along with their associated netmasks and broadcast addresses.
         ///
-        /// If the netmask or broadcast address or other information is not necessary, you can call the `all_addresses()` function to obtain just the IP addresses of the active interfaces.
+        /// If the netmask or broadcast address or other information is not necessary, you can call the [`all_addresses`](QNetworkInterface::all_addresses) function to obtain just the IP addresses of the active interfaces.
         #[rust_name = "address_entries"]
         fn addressEntries(&self) -> QList_QNetworkAddressEntry;
 
@@ -99,9 +99,9 @@ mod ffi {
         #[rust_name = "hardware_address"]
         fn hardwareAddress(&self) -> QString;
 
-        /// Returns the human-readable name of this network interface on Windows, such as "Local Area Connection", if the name could be determined. If it couldn't, this function returns the same as `name()`. The human-readable name is a name that the user can modify in the Windows Control Panel, so it may change during the execution of the program.
+        /// Returns the human-readable name of this network interface on Windows, such as "Local Area Connection", if the name could be determined. If it couldn't, this function returns the same as [`self.name()`](QNetworkInterface::name). The human-readable name is a name that the user can modify in the Windows Control Panel, so it may change during the execution of the program.
         ///
-        /// On Unix, this function currently always returns the same as `name()`, since Unix systems don't store a configuration for human-readable names.
+        /// On Unix, this function currently always returns the same as [`self.name()`](QNetworkInterface::name), since Unix systems don't store a configuration for human-readable names.
         #[rust_name = "human_readable_name"]
         fn humanReadableName(&self) -> QString;
 
@@ -117,10 +117,10 @@ mod ffi {
         #[rust_name = "maximum_transmission_unit_or_zero"]
         fn maximumTransmissionUnit(&self) -> i32;
 
-        /// Returns the name of this network interface. On Unix systems, this is a string containing the type of the interface and optionally a sequence number, such as "eth0", "lo" or "pcn0". On Windows, it's an internal ID that cannot be changed by the user.
+        /// Returns the name of this network interface. On Unix systems, this is a string containing the type of the interface and optionally a sequence number, such as `"eth0"`, `"lo"` or `"pcn0"`. On Windows, it's an internal ID that cannot be changed by the user.
         fn name(&self) -> QString;
 
-        /// Returns the type of this interface, if it could be determined. If it could not be determined, this function returns `QNetworkInterface::Unknown`.
+        /// Returns the type of this interface, if it could be determined. If it could not be determined, this function returns [`QNetworkInterfaceInterfaceType::Unknown`].
         #[cxx_name = "type"]
         fn interface_type(&self) -> QNetworkInterfaceInterfaceType;
     }
@@ -172,6 +172,7 @@ impl QNetworkInterfaceInterfaceType {
     };
 }
 
+/// [`QFlags`] of [`QNetworkInterfaceInterfaceFlag`].
 pub type QNetworkInterfaceInterfaceFlags = QFlags<QNetworkInterfaceInterfaceFlag>;
 
 unsafe_impl_qflag!(
@@ -194,6 +195,7 @@ impl Clone for QNetworkInterface {
 }
 
 impl Default for QNetworkInterface {
+    /// Constructs an empty network interface object.
     fn default() -> Self {
         ffi::qnetworkinterface_init_default()
     }
@@ -218,7 +220,7 @@ impl IsNonNull for QNetworkInterface {
 }
 
 impl QNetworkInterface {
-    /// This convenience function returns all IP addresses found on the host machine. It is equivalent to calling `address_entries()` on all the objects returned by `all_interfaces()` that are in the `IsUp` state to obtain lists of `QNetworkAddressEntry` objects then calling `QNetworkAddressEntry::ip()` on each of these.
+    /// This convenience function returns all IP addresses found on the host machine. It is equivalent to calling [`address_entries`](QNetworkInterface::address_entries) on all the objects returned by [`self.all_interfaces()`](QNetworkInterface::all_interfaces) that are in the [`QNetworkInterfaceInterfaceFlag::IsUp`] state to obtain lists of [`QNetworkAddressEntry`](crate::QNetworkAddressEntry) objects then calling [`QNetworkAddressEntry::ip`](crate::QNetworkAddressEntry::ip) on each of these.
     pub fn all_addresses() -> QList<QHostAddress> {
         ffi::qnetworkinterface_all_addresses()
     }
@@ -252,7 +254,7 @@ impl QNetworkInterface {
         }
     }
 
-    /// Returns the name of the interface whose index is `index` or an empty string if there is no interface with that index.
+    /// Returns the name of the interface whose index is `index` or `None` if there is no interface with that index.
     pub fn interface_name_from_index(index: i32) -> Option<QString> {
         ffi::qnetworkinterface_interface_name_from_index(index).nonnull()
     }

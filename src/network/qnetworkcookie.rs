@@ -5,15 +5,15 @@ use std::mem::MaybeUninit;
 
 #[cxx::bridge]
 mod ffi {
-    /// This enum is used with the `to_raw_form()` function to declare which form of a cookie shall be returned.
+    /// This enum is used with [`QNetworkCookie::to_raw_form`] to declare which form of a cookie shall be returned.
     ///
-    /// Note that only the Full form of the cookie can be parsed back into its original contents.
+    /// Note that only the [`Full`](QNetworkCookieRawForm::Full) form of the cookie can be parsed back into its original contents.
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkCookieRawForm {
-        /// makes `to_raw_form()` return only the `"NAME=VALUE"` part of the cookie, as suitable for sending back to a server in a client request's `"Cookie:"` header. Multiple cookies are separated by a semi-colon in the `"Cookie:"` header field.
+        /// Makes [`QNetworkCookie::to_raw_form`] return only the `"NAME=VALUE"` part of the cookie, as suitable for sending back to a server in a client request's `Cookie` header. Multiple cookies are separated by a semi-colon in the `Cookie` header field.
         NameAndValueOnly,
-        /// makes `to_raw_form()` return the full cookie contents, as suitable for sending to a client in a server's `"Set-Cookie:"` header.
+        /// Makes [`QNetworkCookie::to_raw_form`] return the full cookie contents, as suitable for sending to a client in a server's `Set-Cookie` header.
         Full,
     }
 
@@ -21,9 +21,9 @@ mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkCookieSameSite {
-        /// `SameSite` is not set. Can be interpreted as None or Lax by the browser.
+        /// The `SameSite` attribute is not set. Can be interpreted as [`None`](QNetworkCookieSameSite::None) or [`Lax`](QNetworkCookieSameSite::Lax) by the browser.
         Default,
-        /// Cookies can be sent in all contexts. This used to be default, but recent browsers made Lax default, and will now require the cookie to be both secure and to set `SameSite=None`.
+        /// Cookies can be sent in all contexts. This used to be default, but recent browsers made [`Lax`](QNetworkCookieSameSite::Lax) default, and will now require the cookie to be both secure and to set `SameSite=None`.
         None,
         /// Cookies are sent on first party requests and GET requests initiated by third party website. This is the default in modern browsers (since mid 2020).
         Lax,
@@ -55,7 +55,7 @@ mod ffi {
         /// Returns the path associated with this cookie. This corresponds to the "path" field of the cookie string.
         fn path(&self) -> QString;
 
-        /// Returns the `SameSite` option if specified in the cookie string, `SameSitePolicy::Default` if not present.
+        /// Returns the `SameSite` option if specified in the cookie string, [`QNetworkCookieSameSite::Default`] if not present.
         #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "same_site_policy"]
         fn sameSitePolicy(&self) -> QNetworkCookieSameSite;
@@ -99,7 +99,7 @@ mod ffi {
         #[rust_name = "to_raw_form"]
         fn toRawForm(&self, form: QNetworkCookieRawForm) -> QByteArray;
 
-        /// Returns this cookies value, as specified in the cookie string. Note that a cookie is still valid if its value is empty.
+        /// Returns this cookie's value, as specified in the cookie string. Note that a cookie is still valid if its value is empty.
         ///
         /// Cookie name-value pairs are considered opaque to the application: that is, their values don't mean anything.
         fn value(&self) -> QByteArray;
@@ -181,7 +181,7 @@ impl Debug for QNetworkCookie {
 }
 
 impl QNetworkCookie {
-    /// Parses the cookie string `cookie_string` as received from a server response in the `"Set-Cookie:"` header. If there's a parsing error, this function returns an empty list.
+    /// Parses the cookie string `cookie_string` as received from a server response in the `Set-Cookie` header. If there's a parsing error, this function returns an empty list.
     ///
     /// Since the HTTP header can set more than one cookie at the same time, this function returns a `QList<QNetworkCookie>`, one for each cookie that is parsed.
     pub fn parse_cookies<T: AsRef<[u8]>>(cookie_string: &T) -> QList<Self> {
@@ -195,7 +195,7 @@ impl QNetworkCookie {
         ffi::qnetworkcookie_init_name_val(name, value)
     }
 
-    /// Sets the expiration date of this cookie to date. Setting an expiration date of `None` to this cookie will mean it's a session cookie.
+    /// Sets the expiration date of this cookie to `date`. Setting an expiration date of `None` to this cookie will mean it's a session cookie.
     pub fn set_expiration_date(&mut self, date: Option<&QDateTime>) {
         match date {
             Some(date) => self.set_expiration_date_or_null(date),

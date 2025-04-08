@@ -1,5 +1,6 @@
 #[cxx::bridge]
 mod ffi {
+    /// Indicates the operation this reply is processing.
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkAccessManagerOperation {

@@ -26,13 +26,13 @@ mod ffi {
 
         /// Returns the maximum length, in bytes, of the PSK client identity.
         ///
-        /// **Note:** it is possible to set an identity whose length is greater than `maximum_identity_length()`; in this case, only the first `maximum_identity_length()` bytes will be actually sent to the server.
+        /// **Note:** it is possible to set an identity whose length is greater than `self.maximum_identity_length()`; in this case, only the first `self.maximum_identity_length()` bytes will be actually sent to the server.
         #[rust_name = "maximum_identity_length"]
         fn maximumIdentityLength(&self) -> i32;
 
         /// Returns the maximum length, in bytes, of the pre shared key.
         ///
-        /// **Note:** it is possible to set a key whose length is greater than the `maximum_pre_shared_key_length()`; in this case, only the first maximumPreSharedKeyLength() bytes will be actually sent to the server.
+        /// **Note:** it is possible to set a key whose length is greater than the `self.maximum_pre_shared_key_length()`; in this case, only the first `self.maximum_pre_shared_key_length()` bytes will be actually sent to the server.
         #[rust_name = "maximum_pre_shared_key_length"]
         fn maximumPreSharedKeyLength(&self) -> i32;
 
@@ -42,13 +42,13 @@ mod ffi {
 
         /// Sets the PSK client identity (to be advised to the server) to `identity`.
         ///
-        /// **Note:** it is possible to set an identity whose length is greater than `maximum_identity_length()`; in this case, only the first `maximum_identity_length()` bytes will be actually sent to the server.
+        /// **Note:** it is possible to set an identity whose length is greater than [`self.maximum_identity_length()`](QSslPreSharedKeyAuthenticator::maximum_identity_length); in this case, only the first `self.maximum_identity_length()` bytes will be actually sent to the server.
         #[rust_name = "set_identity"]
         fn setIdentity(&mut self, identity: &QByteArray);
 
         /// Sets the pre shared key to `pre_shared_key`.
         ///
-        /// **Note:** it is possible to set a key whose length is greater than the `maximum_pre_shared_key_length()` in this case, only the first `maximum_pre_shared_key_length()` bytes will be actually sent to the server.
+        /// **Note:** it is possible to set a key whose length is greater than [`self.maximum_pre_shared_key_length()`](QSslPreSharedKeyAuthenticator::maximum_pre_shared_key_length); in this case, only the first `self.maximum_pre_shared_key_length()` bytes will be actually sent to the server.
         #[rust_name = "set_pre_shared_key"]
         fn setPreSharedKey(&mut self, pre_shared_key: &QByteArray);
     }

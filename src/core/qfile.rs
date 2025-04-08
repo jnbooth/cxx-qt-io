@@ -26,7 +26,7 @@ mod ffi {
         #[base = QFileDevice]
         type QFile;
 
-        /// Copies the file named `file_name()` to `new_nme`.
+        /// Copies the file named [`self.file_name()`](QFileDevice::file_name) to `new_name`.
         ///
         /// This file is closed before it is copied.
         ///
@@ -34,39 +34,39 @@ mod ffi {
         ///
         /// Returns `true` if successful; otherwise returns `false`.
         ///
-        /// Note that if a file with the name `new_name` already exists, `copy()` returns false. This means `QFile` will not overwrite it.
+        /// Note that if a file with the name `new_name` already exists, this function returns false. This means `QFile` will not overwrite it.
         fn copy(self: Pin<&mut QFile>, new_name: &QString) -> bool;
 
-        /// Returns `true` if the file specified by `file_name()` exists; otherwise returns `false`.
+        /// Returns `true` if the file specified by [`self.file_name()`](QFileDevice::file_name) exists; otherwise returns `false`.
         fn exists(self: &QFile) -> bool;
 
-        /// Creates a link named `link_name` that points to the file currently specified by `file_name()`. What a link is depends on the underlying filesystem (be it a shortcut on Windows or a symbolic link on Unix). Returns `true` if successful; otherwise returns `false`.
+        /// Creates a link named `link_name` that points to the file currently specified by [`self.file_name()`](QFileDevice::file_name). What a link is depends on the underlying filesystem (be it a shortcut on Windows or a symbolic link on Unix). Returns `true` if successful; otherwise returns `false`.
         ///
-        /// This function will not overwrite an already existing entity in the file system; in this case, `link()` will return false and set `error()` to return `RenameError`.
+        /// This function will not overwrite an already existing entity in the file system; in this case, this function will return false and set [`self.error()`](QFileDevice::error) to return [`QFileDeviceFileError::RenameError`](crate::QFileDeviceFileError::RenameError).
         ///
-        /// **Note:** To create a valid link on Windows, `link_nme` must have a ``.lnk` file extension.
+        /// **Note:** To create a valid link on Windows, `link_name` must have a `.lnk` file extension.
         fn link(self: Pin<&mut QFile>, link_name: &QString) -> bool;
 
-        /// Moves the file specified by `file_name()` to the trash. Returns `true` if successful, and sets the `file_name()` to the path at which the file can be found within the trash; otherwise returns `false`.
+        /// Moves the file specified by [`self.file_name()`](QFileDevice::file_name) to the trash. Returns `true` if successful, and sets [`self.file_name()`](QFileDevice::file_name) to the path at which the file can be found within the trash; otherwise returns `false`.
         ///
-        /// The time for this function to run is independent of the size of the file being trashed. If this function is called on a directory, it may be proportional to the number of files being trashed. If the current `file_name()` points to a symbolic link, this function will move the link to the trash, possibly breaking it, not the target of the link.
+        /// The time for this function to run is independent of the size of the file being trashed. If this function is called on a directory, it may be proportional to the number of files being trashed. If the current [`self.file_name()`](QFileDevice::file_name) points to a symbolic link, this function will move the link to the trash, possibly breaking it, not the target of the link.
         ///
-        /// This function uses the Windows and macOS APIs to perform the trashing on those two operating systems. Elsewhere (Unix systems), this function implements the FreeDesktop.org Trash specification version 1.0.
+        /// This function uses the Windows and macOS APIs to perform the trashing on those two operating systems. Elsewhere (Unix systems), this function implements the [FreeDesktop.org Trash specification version 1.0](https://specifications.freedesktop.org/trash-spec/1.0/).
         ///
         /// **Note:** When using the FreeDesktop.org Trash implementation, this function will fail if it is unable to move the files to the trash location by way of file renames and hardlinks. This condition arises if the file being trashed resides on a volume (mount point) on which the current user does not have permission to create the `.Trash` directory, or with some unusual filesystem types or configurations (such as sub-volumes that aren't themselves mount points).
         ///
-        /// **Note:** On systems where the system API doesn't report the location of the file in the trash, `file_name()` will be set to the null string once the file has been moved. On systems that don't have a trash can, this function always returns `false`.
+        /// **Note:** On systems where the system API doesn't report the location of the file in the trash, [`self.file_name()`](QFileDevice::file_name) will be set to the null string once the file has been moved. On systems that don't have a trash can, this function always returns `false`.
         #[rust_name = "move_to_trash"]
         fn moveToTrash(self: Pin<&mut QFile>) -> bool;
 
-        /// Removes the file specified by `file_name()`. Returns true if successful; otherwise returns false.
+        /// Removes the file specified by [`self.file_name()`](QFileDevice::file_name). Returns `true` if successful; otherwise returns `false`.
         ///
         /// The file is closed before it is removed.
         fn remove(self: Pin<&mut QFile>) -> bool;
 
-        /// Renames the file currently specified by `file_name()` to `new_name`. Returns `true` if successful; otherwise returns `false`.
+        /// Renames the file currently specified by [`self.file_name()`](QFileDevice::file_name) to `new_name`. Returns `true` if successful; otherwise returns `false`.
         ///
-        /// If a file with the name `new_name` already exists, `rename()` returns false (i.e., `QFile` will not overwrite it).
+        /// If a file with the name `new_name` already exists, this function returns `false` (i.e., `QFile` will not overwrite it).
         ///
         /// The file is closed before it is renamed.
         ///
@@ -77,7 +77,7 @@ mod ffi {
         ///
         /// Do not call this function if the file has already been opened.
         ///
-        /// If the file name has no path or a relative path, the path used will be the application's current directory path at the time of the `open()` call.
+        /// If the file name has no path or a relative path, the path used will be the application's current directory path at the time of the [`open`](QIODevice::open) call.
         ///
         /// Note that the directory separator "/" works for all operating systems supported by Qt.
         #[rust_name = "set_file_name"]
@@ -85,7 +85,7 @@ mod ffi {
 
         /// Returns the absolute path of the file or directory a symlink (or shortcut on Windows) points to, or a an empty string if the object isn't a symbolic link.
         ///
-        /// This name may not represent an existing file; it is only a string. `exists()` returns `true` if the symlink points to an existing file.
+        /// This name may not represent an existing file; it is only a string. [`self.exists()`](QFile::exists) returns `true` if the symlink points to an existing file.
         #[rust_name = "sym_link_target"]
         fn symLinkTarget(self: &QFile) -> QString;
     }

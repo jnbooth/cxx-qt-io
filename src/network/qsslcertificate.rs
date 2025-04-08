@@ -24,7 +24,7 @@ mod ffi {
         FixedString,
     }
 
-    /// Describes keys that you can pass to `QSslCertificate::issuer_info()` or `QSslCertificate::subject_info()` to get information about the certificate issuer or subject.
+    /// Describes keys that you can pass to [`QSslCertificate::issuer_info`] or [`QSslCertificate::subject_info`] to get information about the certificate issuer or subject.
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslCertificateSubjectInfo {
@@ -125,7 +125,7 @@ mod ffi {
         #[rust_name = "issuer_info_by_attribute"]
         fn issuerInfo(&self, attribute: &QByteArray) -> QStringList;
 
-        /// Returns a list of the attributes that have values in the issuer information of this certificate. The information associated with a given attribute can be accessed using the `subject_info()` method. Note that this list may include the OIDs for any elements that are not known by the SSL backend.
+        /// Returns a list of the attributes that have values in the issuer information of this certificate. The information associated with a given attribute can be accessed using the [`subject_info`](QSslCertificate::subject_info) method. Note that this list may include the OIDs for any elements that are not known by the SSL backend.
         #[rust_name = "issuer_info_attributes"]
         fn issuerInfoAttributes(&self) -> QList_QByteArray;
 
@@ -148,7 +148,7 @@ mod ffi {
         #[rust_name = "subject_info_by_attribute"]
         fn subjectInfo(&self, attribute: &QByteArray) -> QStringList;
 
-        /// Returns a list of the attributes that have values in the subject information of this certificate. The information associated with a given attribute can be accessed using the `subject_info()` method. Note that this list may include the OIDs for any elements that are not known by the SSL backend.
+        /// Returns a list of the attributes that have values in the subject information of this certificate. The information associated with a given attribute can be accessed using the [`subject_info`](QSslCertificate::subject_info) method. Note that this list may include the OIDs for any elements that are not known by the SSL backend.
         #[rust_name = "subject_info_attributes"]
         fn subjectInfoAttributes(&self) -> QList_QByteArray;
 
@@ -229,9 +229,14 @@ mod ffi {
 
 pub use ffi::{QSslCertificatePatternSyntax, QSslCertificateSubjectInfo};
 
+/// Parameter for [`QSslCertificate`] functions that reference certificate information.
+///
+/// Functions that accept `SslCertificateSubjectInfoOrAttribute` are overloaded to accept either [`QSslCertificateSubjectInfo`] or [`&QByteArray`](QByteArray). You do not need to use this type directly.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum SslCertificateSubjectInfoOrAttribute<'a> {
+    /// Specify by subject info type.
     Subject(QSslCertificateSubjectInfo),
+    /// Specify by certificate attribute.
     Attribute(&'a QByteArray),
 }
 
@@ -335,7 +340,7 @@ impl QSslCertificate {
 
     /// Verifies a certificate chain. The chain to be verified is passed in the `certificate_chain` parameter. The first certificate in the list should be the leaf certificate of the chain to be verified. If `host_name` is specified then the certificate is also checked to see if it is valid for the specified host name.
     ///
-    /// Note that the root (CA) certificate should not be included in the list to be verified, this will be looked up automatically using the CA list specified in the default `QSslConfiguration`, and, in addition, if possible, CA certificates loaded on demand on Unix and Windows.
+    /// Note that the root (CA) certificate should not be included in the list to be verified, this will be looked up automatically using the CA list specified in the default [`QSslConfiguration`](crate::QSslConfiguration), and, in addition, if possible, CA certificates loaded on demand on Unix and Windows.
     pub fn verify(
         certificate_chain: &QList<QSslCertificate>,
         host_name: Option<&QString>,

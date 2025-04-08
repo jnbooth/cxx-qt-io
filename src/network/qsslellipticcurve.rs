@@ -27,12 +27,12 @@ mod ffi {
         #[rust_name = "is_valid"]
         fn isValid(&self) -> bool;
 
-        /// Returns the conventional long name for this curve. If this curve is invalid, returns an empty string.
-        #[rust_name = "long_name"]
+        #[doc(hidden)]
+        #[rust_name = "long_name_or_empty"]
         fn longName(&self) -> QString;
 
-        /// Returns the conventional short name for this curve. If this curve is invalid, returns an empty string.
-        #[rust_name = "short_name"]
+        #[doc(hidden)]
+        #[rust_name = "short_name_or_empty"]
         fn shortName(&self) -> QString;
     }
 
@@ -102,6 +102,16 @@ impl QSslEllipticCurve {
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_short_name(name: &QString) -> Option<Self> {
         ffi::qsslellipticcurve_from_short_name(name).nonnull()
+    }
+
+    /// Returns the conventional long name for this curve. If this curve is invalid, returns `None`.
+    pub fn long_name(&self) -> Option<QString> {
+        self.long_name_or_empty().nonnull()
+    }
+
+    /// Returns the conventional short name for this curve. If this curve is invalid, returns `None`.
+    pub fn short_name(&self) -> Option<QString> {
+        self.short_name_or_empty().nonnull()
     }
 }
 

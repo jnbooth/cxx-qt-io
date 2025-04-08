@@ -1,9 +1,9 @@
 use crate::qio::{QIOExt, QIO};
-use crate::util::MSecs;
+use crate::util::{IsNonNull, MSecs};
 use crate::{QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice};
 use cxx::{type_id, UniquePtr};
 use cxx_qt::Upcast;
-use cxx_qt_lib::{QFlag, QFlags};
+use cxx_qt_lib::{QFlag, QFlags, QString};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -85,22 +85,22 @@ mod ffi {
         #[base = QIODevice]
         type QLocalSocket;
 
-        /// Aborts the current connection and resets the socket. Unlike `disconnect_from_server()`, this function immediately closes the socket, clearing any pending data in the write buffer.
+        /// Aborts the current connection and resets the socket. Unlike [`disconnect_from_server`](QLocalSocket::disconnect_from_server), this function immediately closes the socket, clearing any pending data in the write buffer.
         fn abort(self: Pin<&mut QLocalSocket>);
 
-        /// Attempts to make a connection to `server_name()`. `set_server_name()` must be called before you open the connection. Alternatively you can use `connect_to_server()`;
+        /// Attempts to make a connection to [`self.server_name()`](QLocalSocket::server_name). [`set_server_name`](QLocalSocket::set_server_name) must be called before you open the connection. Alternatively you can use [`connect_to_server`](QLocalSocket::connect_to_server);
         ///
-        /// The socket is opened in the given `open_mode` and first enters `ConnectingState`. If a connection is established, `QLocalSocket` enters `ConnectedState` and emits `connected()`.
+        /// The socket is opened in the given `open_mode` and first enters [`QLocalSocketLocalSocketState::ConnectingState`]. If a connection is established, `QLocalSocket` enters [`QLocalSocketLocalSocketState::ConnectedState`] and emits [`connected`](QLocalSocket::connected).
         ///
-        /// After calling this function, the socket can emit `error_occurred()` to signal that an error occurred.
+        /// After calling this function, the socket can emit [`error_occurred`](QLocalSocket::error_occurred) to signal that an error occurred.
         #[rust_name = "connect_to_current_server"]
         fn connectToServer(self: Pin<&mut QLocalSocket>, open_mode: QIODeviceOpenMode);
 
         /// Set the server name and attempts to make a connection to it.
         ///
-        /// The socket is opened in the given `open_mode` and first enters `ConnectingState`. If a connection is established, `QLocalSocket` enters `ConnectedState` and emits `connected()`.
+        /// The socket is opened in the given `open_mode` and first enters [`QLocalSocketLocalSocketState::ConnectingState`]. If a connection is established, `QLocalSocket` enters [`QLocalSocketLocalSocketState::ConnectedState`] and emits [`connected`](QLocalSocket::connected).
         ///
-        /// After calling this function, the socket can emit `error_occurred()` to signal that an error occurred.
+        /// After calling this function, the socket can emit [`error_occurred`](QLocalSocket::error_occurred) to signal that an error occurred.
         #[rust_name = "connect_to_server"]
         fn connectToServer(
             self: Pin<&mut QLocalSocket>,
@@ -108,7 +108,7 @@ mod ffi {
             open_mode: QIODeviceOpenMode,
         );
 
-        /// Attempts to close the socket. If there is pending data waiting to be written, `QLocalSocket` will enter `ClosingState` and wait until all data has been written. Eventually, it will enter `UnconnectedState` and emit the `disconnected()` signal.
+        /// Attempts to close the socket. If there is pending data waiting to be written, `QLocalSocket` will enter [`QLocalSocketLocalSocketState::ClosingState`] and wait until all data has been written. Eventually, it will enter [`QLocalSocketLocalSocketState::UnconnectedState`] and emit the [`disconnected`](QLocalSocket::disconnected) signal.
         #[rust_name = "disconnect_from_server"]
         fn disconnectFromServer(self: Pin<&mut QLocalSocket>);
 
@@ -117,7 +117,7 @@ mod ffi {
 
         /// This function writes as much as possible from the internal write buffer to the socket, without blocking. If any data was written, this function returns `true`; otherwise `false` is returned.
         ///
-        /// Call this function if you need `QLocalSocket` to start sending buffered data immediately. The number of bytes successfully written depends on the operating system. In most cases, you do not need to call this function, because `QLocalSocket` will start sending data automatically once control goes back to the event loop. In the absence of an event loop, call `wait_for_bytes_written()` instead.
+        /// Call this function if you need `QLocalSocket` to start sending buffered data immediately. The number of bytes successfully written depends on the operating system. In most cases, you do not need to call this function, because `QLocalSocket` will start sending data automatically once control goes back to the event loop. In the absence of an event loop, call [`wait_for_bytes_written`](QLocalSocket::wait_for_bytes_written) instead.
         fn flush(self: Pin<&mut QLocalSocket>) -> bool;
 
         /// Returns the server path that the socket is connected to.
@@ -128,16 +128,16 @@ mod ffi {
 
         /// Returns `true` if the socket is valid and ready for use; otherwise returns `false`.
         ///
-        /// **Note:** The socket's state must be `ConnectedState` before reading and writing can occur.
+        /// **Note:** The socket's state must be [`QLocalSocketLocalSocketState::ConnectedState`] before reading and writing can occur.
         #[rust_name = "is_valid"]
         fn isValid(self: &QLocalSocket) -> bool;
 
-        /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call `read()` or `read_all()`. A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
+        /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all). A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
         #[rust_name = "read_buffer_size"]
         fn readBufferSize(self: &QLocalSocket) -> i64;
 
-        /// Returns the name of the peer as specified by `set_server_name()`, or an empty `QString` if `set_server_name()` has not been called or `connect_to_server()` failed.
-        #[rust_name = "server_name"]
+        #[doc(hidden)]
+        #[rust_name = "server_name_or_empty"]
         fn serverName(self: &QLocalSocket) -> QString;
 
         /// Sets the size of `QLocalSocket`'s internal read buffer to be `size` bytes.
@@ -148,7 +148,7 @@ mod ffi {
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QLocalSocket>, size: i64);
 
-        /// Set the `name` of the peer to connect to. On Windows name is the name of a named pipe; on Unix name is the name of a local domain socket.
+        /// Set the `name` of the peer to connect to. On Windows `name` is the name of a named pipe; on Unix `name` is the name of a local domain socket.
         ///
         /// This function must be called when the socket is not connected.
         #[rust_name = "set_server_name"]
@@ -163,7 +163,7 @@ mod ffi {
         #[rust_name = "wait_for_disconnected_msecs"]
         fn waitForDisconnected(self: Pin<&mut QLocalSocket>, msecs: i32) -> bool;
 
-        /// This signal is emitted after `connect_to_server()` has been called and a connection has been successfully established.
+        /// This signal is emitted after [`connect_to_server`](QLocalSocket::connect_to_server) has been called and a connection has been successfully established.
         #[qsignal]
         fn connected(self: Pin<&mut QLocalSocket>);
 
@@ -196,6 +196,7 @@ pub use ffi::{
     QLocalSocketSocketOption,
 };
 
+/// [`QFlags`] of [`QLocalSocketSocketOption`].
 pub type QLocalSocketSocketOptions = QFlags<QLocalSocketSocketOption>;
 
 unsafe impl QFlag for QLocalSocketSocketOption {
@@ -209,19 +210,24 @@ unsafe impl QFlag for QLocalSocketSocketOption {
 }
 
 impl QLocalSocket {
-    /// Constructs an empty buffer with the given parent. You can call `set_data()` to fill the buffer with data, or you can open it in write mode and use `write()`.
+    /// Constructs a new local socket.
     pub fn new() -> UniquePtr<Self> {
         ffi::qlocalsocket_new()
     }
 
-    /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call `error()` to determine the cause of the error.
+    /// Returns the name of the peer as specified by [`set_server_name`](QLocalSocket::set_server_name), or `None` if [`set_server_name`](QLocalSocket::set_server_name) has not been called or [`connect_to_server`](QLocalSocket::connect_to_server) failed.
+    pub fn server_name(self: &QLocalSocket) -> Option<QString> {
+        self.server_name_or_empty().nonnull()
+    }
+
+    /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call [`error`](QLocalSocket::error) to determine the cause of the error.
     ///
     /// If `duration` is `None`, this function will not time out.
     pub fn wait_for_connected(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         self.wait_for_connected_msecs(duration.msecs())
     }
 
-    /// Waits until the socket has disconnected, up to `duration`. If the connection was successfully disconnected, this function returns `true`; otherwise it returns `false` (if the operation timed out, if an error occurred, or if this `QLocalSocket` is already disconnected). In the case where it returns `false`, you can `call error()` to determine the cause of the error.
+    /// Waits until the socket has disconnected, up to `duration`. If the connection was successfully disconnected, this function returns `true`; otherwise it returns `false` (if the operation timed out, if an error occurred, or if this `QLocalSocket` is already disconnected). In the case where it returns `false`, you can call [`error`](QLocalSocket::error) to determine the cause of the error.
     ///
     /// If `duration` is `None`, this function will not time out.
     pub fn wait_for_disconnected(self: Pin<&mut QLocalSocket>, duration: Option<Duration>) -> bool {

@@ -21,7 +21,7 @@ mod ffi {
     unsafe extern "C++Qt" {
         type QIODevice = crate::QIODevice;
 
-        /// The `QBuffer` class provides a `QIODevice` interface for a `QByteArray`.
+        /// The `QBuffer` class provides a [`QIODevice`](QIODevice) interface for a [`QByteArray`](cxx_qt_lib::QByteArray).
         ///
         /// Qt Documentation: [QBuffer](https://doc.qt.io/qt-6/qbuffer.html#details)
         #[qobject]
@@ -37,12 +37,12 @@ mod ffi {
 
         /// Returns the data contained in the buffer.
         ///
-        /// This is the same as `buffer()`.
+        /// This is the same as [`buffer`](QBuffer::buffer).
         fn data(self: &QBuffer) -> &QByteArray;
 
-        /// Makes `QBuffer` use the `QByteArray` pointed to by `byte_array` as its internal buffer. QBuffer` doesn't take ownership of the QByteArray.
+        /// Makes `QBuffer` use the `QByteArray` pointed to by `byte_array` as its internal buffer. `QBuffer` doesn't take ownership of the `QByteArray`.
         ///
-        /// Does nothing if `is_open()` is `true`.
+        /// Does nothing if [`self.is_open()`](QIODevice::is_open) is `true`.
         ///
         /// If you open the buffer in write-only mode or read-write mode and write something into the `QBuffer`, `byte_array` will be modified.
         ///
@@ -50,7 +50,7 @@ mod ffi {
         ///
         /// # Safety
         ///
-        /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until `set_buffer()` is called to change the buffer.
+        /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until this function is called again to change the buffer.
         #[rust_name = "set_buffer"]
         unsafe fn setBuffer(self: Pin<&mut QBuffer>, byte_array: *mut QByteArray);
     }
@@ -75,17 +75,17 @@ mod ffi {
 pub use ffi::QBuffer;
 
 impl QBuffer {
-    /// Constructs an empty buffer with the given parent. You can call `set_data()` to fill the buffer with data, or you can open it in write mode and use `write()`.
+    /// Constructs an empty buffer. You can call [`set_data`](QBuffer::set_data) to fill the buffer with data, or you can open it in write mode and use [`write`](QIODevice::write).
     pub fn new() -> UniquePtr<Self> {
         ffi::qbuffer_default()
     }
-    /// Constructs a `QBuffer` that uses the `QByteArray` pointed to by `byte_array` as its internal buffer, and with the given parent. `QBuffer` doesn't take ownership of the `QByteArray`.
+    /// Constructs a `QBuffer` that uses the `QByteArray` pointed to by `byte_array` as its internal buffer. `QBuffer` doesn't take ownership of the `QByteArray`.
     ///
     /// If you open the buffer in write-only mode or read-write mode and write something into the `QBuffer`, `byte_array` will be modified.
     ///
     /// # Safety
     ///
-    /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until `set_buffer()` is called to change the buffer.
+    /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until [`set_buffer`](QBuffer::set_buffer) is called to change the buffer.
     pub unsafe fn for_array(byte_array: *mut QByteArray) -> UniquePtr<Self> {
         unsafe { ffi::qbuffer_new(byte_array) }
     }
@@ -100,7 +100,7 @@ impl QBuffer {
         self.buffer_mut().as_mut_slice()
     }
 
-    /// Sets the contents of the internal buffer to be `data`. This is the same as assigning data to `buffer()`.
+    /// Sets the contents of the internal buffer to be `data`. This is the same as assigning data to [`self.buffer()`](QBuffer::buffer).
     pub fn set_data<T: AsRef<[u8]>>(self: Pin<&mut Self>, data: T) {
         ffi::qbuffer_set_data(self, data.as_ref());
     }

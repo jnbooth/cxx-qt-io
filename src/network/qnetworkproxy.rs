@@ -11,7 +11,7 @@ use crate::QNetworkRequestKnownHeaders;
 mod ffi {
     /// A capability that a given proxy server supports.
     ///
-    /// `QNetworkProxy` sets different capabilities by default when the object is created (see `ProxyType` for a list of the defaults). However, it is possible to change the capabilities after the object has been created with `set_capabilities()`.
+    /// [`QNetworkProxy`] sets different capabilities by default when the object is created (see [`QNetworkProxyProxyType`] for a list of the defaults). However, it is possible to change the capabilities after the object has been created with [`QNetworkProxy::set_capabilities`].
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkProxyCapability {
@@ -37,7 +37,7 @@ mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkProxyProxyType {
-        /// Proxy is determined based on the application proxy set using `set_application_proxy()`.
+        /// Proxy is determined based on the application proxy set using [`QNetworkProxy::set_application_proxy`].
         DefaultProxy,
         /// Socks5 proxying is used.
         Socks5Proxy,
@@ -83,7 +83,7 @@ mod ffi {
         /// Returns the capabilities of this proxy server.
         fn capabilities(&self) -> QNetworkProxyCapabilities;
 
-        /// Returns `true` if the raw header `header_name` is in use for this proxy. Returns `false` if the proxy is not of type `HttpProxy` or `HttpCachingProxy`.
+        /// Returns `true` if the raw header `header_name` is in use for this proxy. Returns `false` if the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`].
         #[rust_name = "has_raw_header"]
         fn hasRawHeader(&self, header_name: &QByteArray) -> bool;
 
@@ -93,7 +93,7 @@ mod ffi {
 
         /// Returns headers that are set in this network request.
         ///
-        /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy`, default constructed `QHttpHeaders` is returned.
+        /// If the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`], default constructed `QHttpHeaders` is returned.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         fn headers(&self) -> QHttpHeaders;
 
@@ -101,15 +101,15 @@ mod ffi {
         #[rust_name = "host_name"]
         fn hostName(&self) -> QString;
 
-        /// Returns `true` if this proxy supports the `CachingCapability` capability.
+        /// Returns `true` if this proxy supports the [`QNetworkProxyCapability::CachingCapability`] capability.
         ///
-        /// It is possible to remove the capability of caching from a proxy by calling `set_capabilities()`.
+        /// It is possible to remove the capability of caching from a proxy by calling [`set_capabilities`](QNetworkProxy::set_capabilities).
         #[rust_name = "is_caching_proxy"]
         fn isCachingProxy(&self) -> bool;
 
-        /// Returns `true` if this proxy supports transparent tunneling of TCP connections. This matches the `TunnelingCapability` capability.
+        /// Returns `true` if this proxy supports transparent tunneling of TCP connections. This matches the [`QNetworkProxyCapability::TunnelingCapability`] capability.
         ///
-        /// It is possible to remove the capability of caching from a proxy by calling `set_capabilities()`.
+        /// It is possible to remove the capability of caching from a proxy by calling [`set_capabilities`](QNetworkProxy::set_capabilities).
         #[rust_name = "is_transparent_proxy"]
         fn isTransparentProxy(&self) -> bool;
 
@@ -119,15 +119,15 @@ mod ffi {
         /// Returns the port of the proxy host.
         fn port(&self) -> u16;
 
-        /// Returns the raw form of header `header_name`. If no such header is present or the proxy is not of type `HttpProxy` or `HttpCachingProxy`, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use `has_raw_header()` to find out if the header exists or not).
+        /// Returns the raw form of header `header_name`. If no such header is present or the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`], an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use [`has_raw_header`](QNetworkProxy::has_raw_header) to find out if the header exists or not).
         ///
-        /// Raw headers can be set with `set_raw_header()` or with `set_header()`.
+        /// Raw headers can be set with [`set_raw_header`](QNetworkProxy::set_raw_header) or with [`set_header`](QNetworkProxy::set_header).
         #[rust_name = "raw_header"]
         fn rawHeader(&self, header_name: &QByteArray) -> QByteArray;
 
         /// Returns a list of all raw headers that are set in this network proxy. The list is in the order that the headers were set.
         ///
-        /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` an empty `QList` is returned.
+        /// If the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`] an empty `QList` is returned.
         #[rust_name = "raw_header_list"]
         fn rawHeaderList(&self) -> QList_QByteArray;
 
@@ -143,7 +143,7 @@ mod ffi {
         ///
         /// If some headers correspond to the known headers, the values will be parsed and the corresponding parsed form will also be set.
         ///
-        /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
+        /// If the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`] this has no effect.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         #[rust_name = "set_headers"]
         fn setHeaders(&mut self, new_headers: &QHttpHeaders);
@@ -160,15 +160,15 @@ mod ffi {
         #[rust_name = "set_port"]
         fn setPort(&mut self, port: u16);
 
-        /// Sets the header `header_name` to be of value `header_value`. If `header_name` corresponds to a known header (see `KnownHeaders`), the raw format will be parsed and the corresponding "cooked" header will be set as well.
+        /// Sets the header `header_name` to be of value `header_value`. If `header_name` corresponds to a known header (see [`QNetworkRequestKnownHeaders`](crate::QNetworkRequestKnownHeaders)), the raw format will be parsed and the corresponding "cooked" header will be set as well.
         ///
-        /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
+        /// If the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`] this has no effect.
         #[rust_name = "set_raw_header"]
         fn setRawHeader(&mut self, header_name: &QByteArray, header_value: &QByteArray);
 
         /// Sets the proxy type for this instance to be `proxy_type`.
         ///
-        /// Note that changing the type of a proxy does not change the set of capabilities this `QNetworkProxy` object holds if any capabilities have been set with `set_capabilities()`.
+        /// Note that changing the type of a proxy does not change the set of capabilities this `QNetworkProxy` object holds if any capabilities have been set with [`set_capabilities`](QNetworkProxy::set_capabilities).
         #[rust_name = "set_type"]
         fn setType(&mut self, proxy_type: QNetworkProxyProxyType);
 
@@ -216,6 +216,7 @@ mod ffi {
 
 pub use ffi::{QNetworkProxyCapability, QNetworkProxyProxyType};
 
+/// [`QFlags`] of [`QNetworkProxyCapability`].
 pub type QNetworkProxyCapabilities = QFlags<QNetworkProxyCapability>;
 
 unsafe_impl_qflag!(QNetworkProxyCapability, "QNetworkProxyCapabilities");
@@ -235,6 +236,9 @@ impl Clone for QNetworkProxy {
 }
 
 impl Default for QNetworkProxy {
+    /// Constructs a `QNetworkProxy` with [`QNetworkProxyProxyType::DefaultProxy`] type.
+    ///
+    /// The proxy type is determined by [`QNetworkProxy::application_proxy()`], which defaults to [`QNetworkProxyProxyType::NoProxy`] or a system-wide proxy if one is configured.
     fn default() -> Self {
         ffi::qnetworkproxy_init_default()
     }
@@ -263,7 +267,7 @@ impl Debug for QNetworkProxy {
 impl QNetworkProxy {
     /// Returns the application level network proxying.
     ///
-    /// If a `QAbstractSocket` or `QTcpSocket` has the `DefaultProxy` type, then the `QNetworkProxy` returned by this function is used.
+    /// If a [`QAbstractSocket`](crate::QAbstractSocket) or [`QTcpSocket`](crate::QTcpSocket) has the [`QNetworkProxyProxyType::DefaultProxy`] type, then the `QNetworkProxy` returned by this function is used.
     pub fn application_proxy() -> Self {
         ffi::qnetworkproxy_application_proxy()
     }
@@ -275,7 +279,7 @@ impl QNetworkProxy {
 
     /// Sets the application level network proxying to be `network_proxy`.
     ///
-    /// If a `QAbstractSocket` or `QTcpSocket` has the `DefaultProxy` type, then the `QNetworkProxy` set with this function is used.
+    /// If a [`QAbstractSocket`](crate::QAbstractSocket) or [`QTcpSocket`](crate::QTcpSocket) has the [`QNetworkProxyProxyType::DefaultProxy`] type, then the `QNetworkProxy` set with this function is used.
     ///
     /// Setting a default proxy value with this function will disable the use of a system proxy.
     pub fn set_application_proxy(network_proxy: &Self) {
@@ -284,7 +288,7 @@ impl QNetworkProxy {
 
     /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.
     ///
-    /// If the proxy is not of type `HttpProxy` or `HttpCachingProxy` this has no effect.
+    /// If the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`] this has no effect.
     pub fn set_header<T>(&mut self, header: QNetworkRequestKnownHeaders, value: T)
     where
         T: Into<QVariant>,

@@ -158,7 +158,7 @@ impl QSslError {
         }
     }
 
-    /// Returns the certificate associated with this error, or a null certificate if the error does not relate to any certificate.
+    /// Returns the certificate associated with this error, or `None` if the error does not relate to any certificate.
     pub fn certificate(&self) -> Option<QSslCertificate> {
         self.certificate_or_null().nonnull()
     }

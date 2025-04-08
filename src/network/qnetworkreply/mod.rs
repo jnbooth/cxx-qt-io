@@ -74,34 +74,42 @@ mod ffi {
         #[base = QIODevice]
         type QNetworkReply;
 
-        #[rust_name = "attribute_or_invalid"]
-        pub(self) fn attribute(self: &QNetworkReply, code: QNetworkRequestAttribute) -> QVariant;
+        /// Aborts the operation immediately and close down any network connections still open. Uploads still in progress are also aborted.
+        ///
+        /// The [finished](QNetworkReply::finished) signal will also be emitted.
+        fn abort(self: Pin<&mut QNetworkReply>);
 
-        /// Returns the error that was found during the processing of this request. If no error was found, returns `NoError`.
+        #[doc(hidden)]
+        #[rust_name = "attribute_or_invalid"]
+        fn attribute(self: &QNetworkReply, code: QNetworkRequestAttribute) -> QVariant;
+
+        /// Returns the error that was found during the processing of this request. If no error was found, returns [`QNetworkReplyNetworkError::NoError`].
         fn error(self: &QNetworkReply) -> QNetworkReplyNetworkError;
 
+        #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_7)]
         #[rust_name = "has_raw_header_view"]
-        pub(self) fn hasRawHeader(self: &QNetworkReply, header_name: QAnyStringView) -> bool;
+        fn hasRawHeader(self: &QNetworkReply, header_name: QAnyStringView) -> bool;
 
         /// Returns `true` if the raw header of name `header_name` was sent by the remote server.
         #[cfg(not(cxxqt_qt_version_at_least_6_7))]
         #[rust_name = "has_raw_header"]
         fn hasRawHeader(self: &QNetworkReply, header_name: &QByteArray) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "header_or_invalid"]
-        pub(self) fn header(self: &QNetworkReply, header: QNetworkRequestKnownHeaders) -> QVariant;
+        fn header(self: &QNetworkReply, header: QNetworkRequestKnownHeaders) -> QVariant;
 
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         fn headers(self: &QNetworkReply) -> QHttpHeaders;
 
         /// If this function is called, SSL errors related to network connection will be ignored, including certificate validation errors.
         ///
-        /// **Warning:** Be sure to always let the user inspect the errors reported by the sslErrors() signal, and only call this method upon confirmation from the user that proceeding is ok. If there are unexpected errors, the reply should be aborted. Calling this method without inspecting the actual errors will most likely pose a security risk for your application. Use it with great care!
+        /// **Warning:** Be sure to always let the user inspect the errors reported by the [`ssl_errors`](QNetworkReply::ssl_errors) signal, and only call this method upon confirmation from the user that proceeding is ok. If there are unexpected errors, the reply should be aborted. Calling this method without inspecting the actual errors will most likely pose a security risk for your application. Use it with great care!
         ///
-        /// This function can be called from the slot connected to the sslErrors() signal, which indicates which errors were found.
+        /// This function can be called from the slot connected to the [`ssl_errors`](QNetworkReply::ssl_errors) signal, which indicates which errors were found.
         ///
-        /// **Note:** If HTTP Strict Transport Security is enabled for QNetworkAccessManager, this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for `QNetworkAccessManager`, this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_all_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>);
@@ -110,7 +118,7 @@ mod ffi {
         ///
         /// Multiple calls to this function will replace the list of errors that were passed in previous calls. You can clear the list of errors you want to ignore by calling this function with an empty list.
         ///
-        /// **Note:** If HTTP Strict Transport Security is enabled for QNetworkAccessManager, this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for `QNetworkAccessManager`, this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>, errors: &QList_QSslError);
@@ -126,11 +134,12 @@ mod ffi {
         /// Returns the operation that was posted for this reply.
         fn operation(self: &QNetworkReply) -> QNetworkAccessManagerOperation;
 
+        #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_7)]
         #[rust_name = "raw_header_view"]
-        pub(self) fn rawHeader(self: &QNetworkReply, header_name: QAnyStringView) -> QByteArray;
+        fn rawHeader(self: &QNetworkReply, header_name: QAnyStringView) -> QByteArray;
 
-        /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use `has_raw_header()` to verify if the server sent such header field.
+        /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use [`has_raw_header`](QNetworkReply::has_raw_header) to verify if the server sent such header field.
         #[cfg(not(cxxqt_qt_version_at_least_6_7))]
         #[rust_name = "raw_header"]
         fn rawHeader(self: &QNetworkReply, header_name: &QByteArray) -> bool;
@@ -150,11 +159,11 @@ mod ffi {
         /// Returns the request that was posted for this reply. In special, note that the URL for the request may be different than that of the reply.
         fn request(self: &QNetworkReply) -> QNetworkRequest;
 
-        /// Sets the size of the read buffer to be `size` bytes. The read buffer is the buffer that holds data that is being downloaded off the network, before it is read with `QIODevice::read()`. Setting the buffer size to 0 will make the buffer unlimited in size.
+        /// Sets the size of the read buffer to be `size` bytes. The read buffer is the buffer that holds data that is being downloaded off the network, before it is read with [`read`](QIODevice::read). Setting the buffer size to 0 will make the buffer unlimited in size.
         ///
-        /// `QNetworkReply` will try to stop reading from the network once this buffer is full (i.e., `bytes_available()` returns `size` or more), thus causing the download to throttle down as well. If the buffer is not limited in size, `QNetworkReply` will try to download as fast as possible from the network.
+        /// `QNetworkReply` will try to stop reading from the network once this buffer is full (i.e., [`self.bytes_available()`](QIODevice::bytes_available) returns `size` or more), thus causing the download to throttle down as well. If the buffer is not limited in size, `QNetworkReply` will try to download as fast as possible from the network.
         ///
-        /// Unlike `QAbstractSocket::set_read_buffer_size()`, `QNetworkReply` cannot guarantee precision in the read buffer size. That is, `bytes_available()` can return more than size.
+        /// Unlike [`QAbstractSocket::set_read_buffer_size`](crate::QAbstractSocket::set_read_buffer_size), `QNetworkReply` cannot guarantee precision in the read buffer size. That is, [`self.bytes_available()`](QIODevice::bytes_available) can return more than `size`.
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QNetworkReply>, size: i64);
 
@@ -163,14 +172,13 @@ mod ffi {
         #[rust_name = "set_ssl_configuration"]
         fn setSslConfiguration(self: Pin<&mut QNetworkReply>, config: &QSslConfiguration);
 
+        #[doc(hidden)]
         #[cfg(feature = "ssl")]
         #[rust_name = "ssl_configuration_or_invalid"]
-        pub(self) fn sslConfiguration(self: &QNetworkReply) -> QSslConfiguration;
+        fn sslConfiguration(self: &QNetworkReply) -> QSslConfiguration;
 
         /// Returns the URL of the content downloaded or uploaded. Note that the URL may be different from that of the original request. If redirections were enabled in the request, then this function returns the current url that the network API is accessing, i.e the url of the resource the request got redirected to.
         fn url(self: &QNetworkReply) -> QUrl;
-
-        /// Sets the SSL configuration for the network connection associated with this request, if possible, to be that of `config`.
 
         /// This signal is emitted to indicate the progress of the download part of this network request, if there's any. If there's no download associated with this request, this signal will be emitted once with 0 as the value of both `bytes_received` and `bytes_total`.
         ///
@@ -178,39 +186,40 @@ mod ffi {
         ///
         /// The download is finished when `bytes_received` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
         ///
-        /// Note that the values of both `bytes_received` and `bytes_total` may be different from `size()`, the total number of bytes obtained through `read()` or `read_all()`, or the value of the header(ContentLengthHeader). The reason for that is that there may be protocol overhead or the data may be compressed during the download.
+        /// Note that the values of both `bytes_received` and `bytes_total` may be different from [`self.size()`](QIODevice::size), the total number of bytes obtained through [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all), or the value of the ContentLengthHeader header. The reason for that is that there may be protocol overhead or the data may be compressed during the download.
         #[qsignal]
         #[rust_name = "download_progress"]
         fn downloadProgress(self: Pin<&mut QNetworkReply>, bytes_received: i64, bytes_total: i64);
 
-        /// This signal is emitted when an SSL/TLS session has successfully completed the initial handshake. At this point, no user data has been transmitted. The signal can be used to perform additional checks on the certificate chain, for example to notify users when the certificate for a website has changed. If the reply does not match the expected criteria then it should be aborted by calling `abort()` by a slot connected to this signal. The SSL configuration in use can be inspected using the `ssl_configuration()` method.
+        /// This signal is emitted when an SSL/TLS session has successfully completed the initial handshake. At this point, no user data has been transmitted. The signal can be used to perform additional checks on the certificate chain, for example to notify users when the certificate for a website has changed. If the reply does not match the expected criteria then it should be aborted by calling [`abort`](QNetworkReply::abort) by a slot connected to this signal. The SSL configuration in use can be inspected using [`ssl_configuration`](QNetworkReply::ssl_configuration).
         ///
-        /// Internally, `QNetworkAccessManager` may open multiple connections to a server, in order to allow it process requests in parallel. These connections may be reused, which means that the `encrypted()` signal would not be emitted. This means that you are only guaranteed to receive this signal for the first connection to a site in the lifespan of the `QNetworkAccessManager`.
+        /// Internally, `QNetworkAccessManager` may open multiple connections to a server, in order to allow it process requests in parallel. These connections may be reused, which means that this signal would not be emitted. This means that you are only guaranteed to receive this signal for the first connection to a site in the lifespan of the `QNetworkAccessManager`.
+        #[cfg(feature = "ssl")]
         #[qsignal]
         fn encrypted(self: Pin<&mut QNetworkReply>);
 
-        /// This signal is emitted when the reply detects an error in processing. The `finished()` signal will probably follow, indicating that the connection is over.
+        /// This signal is emitted when the reply detects an error in processing. The [`finished`](QNetworkReply::finished) signal will probably follow, indicating that the connection is over.
         ///
-        /// The code parameter contains the code of the error that was detected. Call `error_string()` to obtain a textual representation of the error condition.
+        /// The code parameter contains the code of the error that was detected. Call [`error_string`](QIODevice::error_string) to obtain a textual representation of the error condition.
         ///
-        /// **Note:** Do not delete the object in the slot connected to this signal. Use `delete_later()`.
+        /// **Note:** Do not delete the object in the slot connected to this signal.
         #[qsignal]
         #[rust_name = "error_occurred"]
         fn errorOccurred(self: Pin<&mut QNetworkReply>, code: QNetworkReplyNetworkError);
 
         /// This signal is emitted when the reply has finished processing. After this signal is emitted, there will be no more updates to the reply's data or metadata.
         ///
-        /// Unless `close()` or `abort()` have been called, the reply will still be opened for reading, so the data can be retrieved by calls to `read()` or `read_all()`. In particular, if no calls to `read()` were made as a result of `ready_read()`, a call to `read_all()` will retrieve the full contents in a `QByteArray`.
+        /// Unless [`close`](QIODevice::close) or [`abort`](QNetworkReply::abort) have been called, the reply will still be opened for reading, so the data can be retrieved by calls to [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all). In particular, if no calls to [`read`](QIODevice::read) were made as a result of [`ready_read`](QIODevice::ready_read), a call to [`read_all`](QIODevice::read_all) will retrieve the full contents in a `QByteArray`.
         ///
-        /// This signal is emitted in tandem with `QNetworkAccessManager::finished()` where that signal's reply parameter is this object.
+        /// This signal is emitted in tandem with `QNetworkAccessManager::finished` where that signal's reply parameter is this object.
         ///
-        /// **Note:** Do not delete the object in the slot connected to this signal. Use `delete_later()`.
+        /// **Note:** Do not delete the object in the slot connected to this signal.
         ///
-        /// You can also use `is_finished()` to check if a `QNetworkReply` has finished even before you receive the `finished()` signal.
+        /// You can also use [`is_finished`](QNetworkReply::is_finished) to check if a `QNetworkReply` has finished even before you receive this signal.
         #[qsignal]
         fn finished(self: Pin<&mut QNetworkReply>);
 
-        /// This signal is emitted whenever the metadata in this reply changes. metadata is any information that is not the content (data) itself, including the network headers. In the majority of cases, the metadata will be known fully by the time the first byte of data is received. However, it is possible to receive updates of headers or other metadata during the processing of the data.
+        /// This signal is emitted whenever the metadata in this reply changes. Metadata is any information that is not the content (data) itself, including the network headers. In the majority of cases, the metadata will be known fully by the time the first byte of data is received. However, it is possible to receive updates of headers or other metadata during the processing of the data.
         #[qsignal]
         #[rust_name = "meta_data_changed"]
         fn metaDataChanged(self: Pin<&mut QNetworkReply>);
@@ -230,11 +239,11 @@ mod ffi {
             authenticator: *mut QSslPreSharedKeyAuthenticator,
         );
 
-        /// When client code handling the `redirected()` signal has verified the new URL, it emits this signal to allow the redirect to go ahead. This protocol applies to network requests whose redirects policy is set to `UserVerifiedRedirectPolicy`.
+        /// When client code handling the [`redirected`](QNetworkReply::redirected) signal has verified the new URL, it emits this signal to allow the redirect to go ahead. This protocol applies to network requests whose redirects policy is set to [`QNetworkRequestRedirectPolicy::UserVerifiedRedirectPolicy`](crate::QNetworkRequestRedirectPolicy::UserVerifiedRedirectPolicy).
         #[rust_name = "redirect_allowed"]
         fn redirectAllowed(self: Pin<&mut QNetworkReply>);
 
-        /// This signal is emitted if the `ManualRedirectPolicy` was not set in the request and the server responded with a 3xx status (specifically 301, 302, 303, 305, 307 or 308 status code) with a valid url in the location header, indicating a HTTP redirect. The url parameter contains the new redirect url as returned by the server in the location header.
+        /// This signal is emitted if the [`QNetworkRequestRedirectPolicy::ManualRedirectPolicy`](crate::QNetworkRequestRedirectPolicy::ManualRedirectPolicy) was not set in the request and the server responded with a 3xx status (specifically 301, 302, 303, 305, 307 or 308 status code) with a valid url in the location header, indicating a HTTP redirect. The `url` parameter contains the new redirect url as returned by the server in the location header.
         fn redirected(self: Pin<&mut QNetworkReply>, url: &QUrl);
 
         /// This signal is emitted 1 or more times when the request was sent. Useful for custom progress or timeout handling.
@@ -251,9 +260,9 @@ mod ffi {
 
         /// This signal is emitted if the SSL/TLS session encountered errors during the set up, including certificate verification errors. The errors parameter contains the list of errors.
         ///
-        /// To indicate that the errors are not fatal and that the connection should proceed, the `ignore_ssl_errors()` function should be called from the slot connected to this signal. If it is not called, the SSL session will be torn down before any data is exchanged (including the URL).
+        /// To indicate that the errors are not fatal and that the connection should proceed, [`ignore_ssl_errors`](QNetworkReply::ignore_ssl_errors) should be called from the slot connected to this signal. If it is not called, the SSL session will be torn down before any data is exchanged (including the URL).
         ///
-        /// This signal can be used to display an error message to the user indicating that security may be compromised and display the SSL settings (see `ssl_configuration()` to obtain it). If the user decides to proceed after analyzing the remote certificate, the slot should call `ignore_ssl_errors(`.
+        /// This signal can be used to display an error message to the user indicating that security may be compromised and display the SSL settings (see [`ssl_configuration`](QNetworkReply::ssl_configuration) to obtain it). If the user decides to proceed after analyzing the remote certificate, the slot should call [`ignore_ssl_errors`](QNetworkReply::ignore_ssl_errors).
         #[cfg(feature = "ssl")]
         #[qsignal]
         #[rust_name = "ssl_errors"]
@@ -275,7 +284,7 @@ pub use ffi::QNetworkReply;
 impl QNetworkReply {
     /// Returns the attribute associated with the code code. If the attribute has not been set, it returns `None`.
     ///
-    /// You can expect the default values listed in [`NetworkRequestAttribute`] to be applied to the values returned by this function.
+    /// You can expect the default values listed in [`QNetworkRequestAttribute`] to be applied to the values returned by this function.
     pub fn attribute(&self, code: QNetworkRequestAttribute) -> Option<QVariant> {
         self.attribute_or_invalid(code).nonnull()
     }
@@ -294,7 +303,7 @@ impl QNetworkReply {
         self.header_or_invalid(header).nonnull()
     }
 
-    /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use `has_raw_header()` to verify if the server sent such header field.
+    /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use [`has_raw_header`](QNetworkReply::has_raw_header) to verify if the server sent such header field.
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn raw_header<'a, T>(&self, header_name: T) -> QByteArray
     where
@@ -305,7 +314,7 @@ impl QNetworkReply {
 
     /// Returns the SSL configuration and state associated with this reply, if SSL was used. It will contain the remote server's certificate, its certificate chain leading to the Certificate Authority as well as the encryption ciphers in use.
     ///
-    /// The peer's certificate and its certificate chain will be known by the time `ssl_errors()` is emitted, if it's emitted.
+    /// The peer's certificate and its certificate chain will be known by the time [`ssl_errors`](QNetworkReply::ssl_errors) is emitted, if it's emitted.
     #[cfg(feature = "ssl")]
     pub fn ssl_configuration(&self) -> Option<QSslConfiguration> {
         self.ssl_configuration_or_invalid().nonnull()

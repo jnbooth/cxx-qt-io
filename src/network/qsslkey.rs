@@ -205,7 +205,7 @@ impl QSslKey {
         ffi::qsslkey_to_der(self)
     }
 
-    /// Returns the key in PEM encoding. The result is encrypted with `pass_phrase` if the key is a private key and `pass_phrase` is non-empty.
+    /// Returns the key in PEM encoding. The result is encrypted with `pass_phrase` if the key is a private key and `pass_phrase` is provided.
     pub fn to_pem(&self, pass_phrase: Option<&QByteArray>) -> QByteArray {
         match pass_phrase {
             Some(pass_phrase) => ffi::qsslkey_to_pem(self, pass_phrase),

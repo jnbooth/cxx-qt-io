@@ -46,7 +46,7 @@ mod ffi {
         #[rust_name = "interface_index_or_zero"]
         fn interfaceIndex(&self) -> u32;
 
-        /// Returns true if this `QNetworkDatagram` object is null. This function is the opposite of `is_valid()`.
+        /// Returns true if this `QNetworkDatagram` object is null. This function is the opposite of [`is_valid`](QNetworkDatagram::is_valid).
         #[rust_name = "is_null"]
         fn isNull(&self) -> bool;
 
@@ -62,13 +62,13 @@ mod ffi {
         #[rust_name = "sender_port_or_negative"]
         fn senderPort(&self) -> i32;
 
-        /// Sets the data payload of this datagram to data. It is usually not necessary to call this function on received datagrams. For outgoing datagrams, this function sets the data to be sent on the network.
+        /// Sets the data payload of this datagram to `data`. It is usually not necessary to call this function on received datagrams. For outgoing datagrams, this function sets the data to be sent on the network.
         ///
-        /// Since datagrams can empty, an empty `QByteArray` is a valid value for data.
+        /// Since datagrams can empty, an empty `QByteArray` is a valid value for `data`.
         #[rust_name = "set_data"]
         fn setData(&mut self, data: &QByteArray);
 
-        /// Sets the destination address associated with this datagram to be the address address and port number port. The destination address and port numbers are usually set by `QUdpSocket` upon reception, so there's no need to call this function on a received datagram.
+        /// Sets the destination address associated with this datagram to be the address `address` and port number `port`. The destination address and port numbers are usually set by [`QUdpSocket`](crate::QUdpSocket) upon reception, so there's no need to call this function on a received datagram.
         ///
         /// For outgoing datagrams, this function can be used to set the address the datagram should be sent to. It can be the unicast address used to communicate with the peer or a broadcast or multicast address to send to a group of devices.
         #[rust_name = "set_destination"]
@@ -82,11 +82,11 @@ mod ffi {
         #[rust_name = "set_interface_index_or_zero"]
         fn setInterfaceIndex(&mut self, index: u32);
 
-        /// Sets the sender address associated with this datagram to be the address `address` and port number `port`. The sender address and port numbers are usually set by `QUdpSocket` upon reception, so there's no need to call this function on a received datagram.
+        /// Sets the sender address associated with this datagram to be the address `address` and port number `port`. The sender address and port numbers are usually set by [`QUdpSocket`](crate::QUdpSocket) upon reception, so there's no need to call this function on a received datagram.
         ///
-        /// For outgoing datagrams, this function can be used to set the address the datagram should carry. The address `address` must usually be one of the local addresses assigned to this machine, which can be obtained using `QNetworkInterface`. If left unset, the operating system will choose the most appropriate address to use given the destination in question.
+        /// For outgoing datagrams, this function can be used to set the address the datagram should carry. The address `address` must usually be one of the local addresses assigned to this machine, which can be obtained using [`QNetworkInterface`](crate::QNetworkInterface). If left unset, the operating system will choose the most appropriate address to use given the destination in question.
         ///
-        /// The port number port must be the port number associated with the socket, if there is one. The value of 0 can be used to indicate that the operating system should choose the port number.
+        /// The port number `port` must be the port number associated with the socket, if there is one. The value of 0 can be used to indicate that the operating system should choose the port number.
         #[rust_name = "set_sender"]
         fn setSender(&mut self, address: &QHostAddress, port: u16);
     }
@@ -139,9 +139,9 @@ impl Clone for QNetworkDatagram {
 impl Default for QNetworkDatagram {
     /// Creates a `QNetworkDatagram` object with no payload data and undefined destination address.
     ///
-    /// The payload can be modified by using `set_data()` and the destination address can be set with `set_destination()`.
+    /// The payload can be modified by using [`set_data`](QNetworkDatagram::set_data) and the destination address can be set with [`set_destination`](QNetworkDatagram::set_destination).
     ///
-    /// If the destination address is left undefined, `QUdpSocket::write_datagram()` will attempt to send the datagram to the address last associated with, by using `QUdpSocket::connect_to_host()`.
+    /// If the destination address is left undefined, [`QUdpSocket::write_datagram`](crate::QUdpSocket::write_datagram) will attempt to send the datagram to the address last associated with, by using [`QUdpSocket::connect_to_host`](crate::QAbstractSocket::connect_to_host).
     fn default() -> Self {
         ffi::qnetworkdatagram_init_default()
     }
@@ -193,7 +193,7 @@ impl QNetworkDatagram {
         }
     }
 
-    /// Returns the interface index this datagram is associated with. The interface index is a positive number that uniquely identifies the network interface in the operating system. This number matches the value returned by `QNetworkInterface::index()` for the interface.
+    /// Returns the interface index this datagram is associated with. The interface index is a positive number that uniquely identifies the network interface in the operating system. This number matches the value returned by [`QNetworkInterface::index`](crate::QNetworkInterface::index) for the interface.
     ///
     /// If this datagram was received from the network, this is the index of the interface that the packet was received from. If this is an outgoing datagram, this is the index of the interface that the datagram should be sent on.
     ///
@@ -245,13 +245,13 @@ impl QNetworkDatagram {
         self.set_hop_limit_or_negative(count.unwrap_or(-1));
     }
 
-    /// Sets the interface index this datagram is associated with to index. The interface index is a positive number that uniquely identifies the network interface in the operating system. This number matches the value returned by `QNetworkInterface::index()` for the interface.
+    /// Sets the interface index this datagram is associated with to index. The interface index is a positive number that uniquely identifies the network interface in the operating system. This number matches the value returned by [`QNetworkInterface::index`](crate::QNetworkInterface::index) for the interface.
     ///
     /// It is usually not necessary to call this function on datagrams received from the network.
     ///
     /// If this is an outgoing packet, this is the index of the interface the datagram should be sent on. A value of `None` indicates that the operating system should choose the interface based on other factors.
     ///
-    /// Note that the interface index can also be set with `QHostAddress::set_scope_id()` for IPv6 destination addresses and then with `set_destination()`. If the scope ID set in the destination address and index are different and neither is zero, it is undefined which interface the operating system will send the datagram on.
+    /// Note that the interface index can also be set with [`QHostAddress::set_scope_id`](crate::QHostAddress::set_scope_id) for IPv6 destination addresses and then with [`set_destination`](QNetworkDatagram::set_destination). If the scope ID set in the destination address and `index` are different and neither is zero, it is undefined which interface the operating system will send the datagram on.
     pub fn set_interface_index(&mut self, index: Option<u32>) {
         self.set_interface_index_or_zero(index.unwrap_or(0));
     }
@@ -260,9 +260,9 @@ impl QNetworkDatagram {
 impl From<&QByteArray> for QNetworkDatagram {
     /// Creates a `QNetworkDatagram` object with undefined destination address.
     ///
-    /// The destination address can be set with `set_destination()`.
+    /// The destination address can be set with [`set_destination`](QNetworkDatagram::set_destination).
     ///
-    /// If the destination address is left undefined, `QUdpSocket::write_datagram()` will attempt to send the datagram to the address last associated with, by using `QUdpSocket::connect_to_host()`.
+    /// If the destination address is left undefined, [`QUdpSocket::write_datagram`](crate::QUdpSocket::write_datagram) will attempt to send the datagram to the address last associated with, by using [`QUdpSocket::connect_to_host`](crate::QAbstractSocket::connect_to_host).
     fn from(data: &QByteArray) -> Self {
         ffi::qnetworkdatagram_init_data(data)
     }

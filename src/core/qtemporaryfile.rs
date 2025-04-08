@@ -35,41 +35,41 @@ mod ffi {
 
         /// Returns the file name template.
         ///
-        /// The file name template returned by this method, will be relative or absolute depending on the file name template used to construct this object (or passed to `set_file_template()`) being relative or absolute, respectively.
+        /// The file name template returned by this method, will be relative or absolute depending on the file name template used to construct this object (or passed to [`set_file_template`](QTemporaryFile::set_file_template)) being relative or absolute, respectively.
         #[rust_name = "file_template"]
         fn fileTemplate(self: &QTemporaryFile) -> QString;
 
-        /// Opens a unique temporary file in the file system in `OpenModeFlag::ReadWrite` mode. Returns `true` if the file was successfully opened, or was already open. Otherwise returns `false`.
+        /// Opens a unique temporary file in the file system in [`QIODeviceOpenModeFlag::ReadWrite`](crate::QIODeviceOpenModeFlag::ReadWrite) mode. Returns `true` if the file was successfully opened, or was already open. Otherwise returns `false`.
         ///
-        /// If called for the first time, `open()` will create a unique file name based on `file_template()`. The file is guaranteed to have been created by this function (that is, it has never existed before).
+        /// If called for the first time, this function will create a unique file name based on [`self.file_template()`](QTemporaryFile::file_template). The file is guaranteed to have been created by this function (that is, it has never existed before).
         ///
-        /// If a file is reopened after calling `close()`, the same file will be opened again.
+        /// If a file is reopened after calling [`close`](QIODevice::close), the same file will be opened again.
         fn open(self: Pin<&mut QTemporaryFile>) -> bool;
 
         /// Renames the current temporary file to `new_name` and returns `true` if it succeeded.
         ///
-        /// This function has an important difference compared to `QFile::rename()`: it will not perform a copy+delete if the low-level system call to rename the file fails, something that could happen if `ne_name` specifies a file in a different volume or filesystem than the temporary file was created on. In other words, `QTemporaryFile` only supports atomic file renaming.
+        /// This function has an important difference compared to [`QFile::rename`](QFile::rename): it will not perform a copy+delete if the low-level system call to rename the file fails, something that could happen if `new_name` specifies a file in a different volume or filesystem than the temporary file was created on. In other words, `QTemporaryFile` only supports atomic file renaming.
         ///
-        /// This functionality is intended to support materializing the destination file with all contents already present, so another process cannot see an incomplete file in the process of being written. The `QSaveFile` class can be used for a similar purpose too, particularly if the destination file is not temporary.
+        /// This functionality is intended to support materializing the destination file with all contents already present, so another process cannot see an incomplete file in the process of being written. The [`QSaveFile`](crate::QSaveFile) class can be used for a similar purpose too, particularly if the destination file is not temporary.
         fn rename(self: Pin<&mut QTemporaryFile>, new_name: &QString) -> bool;
 
         /// Sets the `QTemporaryFile` into auto-remove mode if `b` is `true`.
         ///
         /// Auto-remove is on by default.
         ///
-        /// If you set this property to `false`, ensure the application provides a way to remove the file once it is no longer needed, including passing the responsibility on to another process. Always use the `file_name()` function to obtain the name and never try to guess the name that `QTemporaryFile` has generated.
+        /// If you set this property to `false`, ensure the application provides a way to remove the file once it is no longer needed, including passing the responsibility on to another process. Always use [`self.file_name()`](QFileDevice::file_name) to obtain the name and never try to guess the name that `QTemporaryFile` has generated.
         ///
-        /// On some systems, if `file_name()` is not called before closing the file, the temporary file may be removed regardless of the state of this property. This behavior should not be relied upon, so application code should either call `file_name()` or leave the auto removal functionality enabled.
+        /// On some systems, if [`file_name`](QFileDevice::file_name) is not called before closing the file, the temporary file may be removed regardless of the state of this property. This behavior should not be relied upon, so application code should either call [`file_name`](QFileDevice::file_name) or leave the auto removal functionality enabled.
         #[rust_name = "set_auto_remove"]
         fn setAutoRemove(self: Pin<&mut QTemporaryFile>, b: bool);
 
         /// Sets the file name template to `template_name`.
         ///
-        /// If the file name (the part after the last directory path separator in `template_name`) doesn't contain `"XXXXXX"`, it will be added automatically.
+        /// If the file name (the part after the last directory path separator in [`self.file_template()`](QTemporaryFile::file_template)) doesn't contain `"XXXXXX"`, it will be added automatically.
         ///
         /// `"XXXXXX"` will be replaced with the dynamic part of the file name, which is calculated to be unique.
         //
-        /// If `template_name` is a relative path, the path will be relative to the current working directory. You can use `QDir::temp_path()` to construct `template_name` if you want use the system's temporary directory. It is important to specify the correct directory if the `rename()` function will be called, as `QTemporaryFile` can only rename files within the same volume / filesystem as the temporary file itself was created on.
+        /// If `template_name` is a relative path, the path will be relative to the current working directory. You can use `QDir::temp_path()` to construct `template_name` if you want use the system's temporary directory. It is important to specify the correct directory if the [`rename`](QTemporaryFile::rename) function will be called, as `QTemporaryFile` can only rename files within the same volume / filesystem as the temporary file itself was created on.
         #[rust_name = "set_file_template"]
         fn setFileTemplate(self: Pin<&mut QTemporaryFile>, template_name: &QString);
     }

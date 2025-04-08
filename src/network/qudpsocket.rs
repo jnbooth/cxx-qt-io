@@ -69,7 +69,7 @@ mod ffi {
         ///
         /// Returns the size of the datagram on success; otherwise returns -1.
         ///
-        /// If `max_size` is too small, the rest of the datagram will be lost. To avoid loss of data, call `pending_datagram_size()` to determine the size of the pending datagram before attempting to read it. If `max_size` is 0, the datagram will be discarded.
+        /// If `max_size` is too small, the rest of the datagram will be lost. To avoid loss of data, call [`pending_datagram_size`](QUdpSocket::pending_datagram_size) to determine the size of the pending datagram before attempting to read it. If `max_size` is 0, the datagram will be discarded.
         ///
         /// # Safety
         ///
@@ -88,17 +88,17 @@ mod ffi {
         pub(self) fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: i64)
             -> QNetworkDatagram;
 
-        /// Sets the outgoing interface for multicast datagrams to the interface `iface`. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. The socket must be in `BoundState`, otherwise this function does nothing.
+        /// Sets the outgoing interface for multicast datagrams to the interface `iface`. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise this function does nothing.
         #[rust_name = "set_multicast_interface"]
         pub fn setMulticastInterface(self: Pin<&mut QUdpSocket>, iface: &QNetworkInterface);
 
         /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
         ///
-        /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return -1 and `error()` will return `DatagramTooLargeError`.
+        /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return -1 and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLarge).
         ///
         /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
         ///
-        /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use `write()` to send datagrams.
+        /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use [`write`](QIODevice::write) to send datagrams.
         ///
         /// # Safety
         ///
@@ -112,9 +112,9 @@ mod ffi {
             port: u16,
         ) -> i64;
 
-        /// Sends the datagram `datagram` to the host address and port numbers contained in `datagram`, using the network interface and hop count limits also set there. If the destination address and port numbers are unset, this function will send to the address that was passed to `connect_to_host()`.
+        /// Sends the datagram `datagram` to the host address and port numbers contained in `datagram`, using the network interface and hop count limits also set there. If the destination address and port numbers are unset, this function will send to the address that was passed to [`connect_to_host`](QAbstractSocket::connect_to_host).
         ///
-        ///If the destination address is IPv6 with a non-empty scope id but differs from the interface index in datagram, it is undefined which interface the operating system will choose to send on.
+        /// If the destination address is IPv6 with a non-empty scope id but differs from the interface index in datagram, it is undefined which interface the operating system will choose to send on.
         ///
         /// The function returns the number of bytes sent if it succeeded or -1 if it encountered an error.
         #[rust_name = "send_datagram"]
@@ -137,9 +137,9 @@ pub use ffi::QUdpSocket;
 
 #[allow(clippy::cast_possible_wrap)]
 impl QUdpSocket {
-    /// Joins the multicast group specified by `group_address` on a specified network `interface`, or the default interface chosen by the operating system if `interface` is `None`. The socket must be in `BoundState`, otherwise an error occurs.
+    /// Joins the multicast group specified by `group_address` on a specified network `interface`, or the default interface chosen by the operating system if `interface` is `None`. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise an error occurs.
     ///
-    /// Note that if you are attempting to join an IPv4 group, your socket must not be bound using IPv6 (or in dual mode, using `SpecialHostAddress::Any`). You must use `SpecialHostAddress::Any` instead.
+    /// Note that if you are attempting to join an IPv4 group, your socket must not be bound using IPv6 (or in dual mode, using [`QHostAddressSpecialAddress::Any`](crate::QHostAddressSpecialAddress::Any)). You must use [`QHostAddressSpecialAddress::Any`](crate::QHostAddressSpecialAddress::Any) instead.
     ///
     /// This function returns `true` if successful; otherwise it returns `false` and sets the socket error accordingly.
     ///
@@ -155,11 +155,11 @@ impl QUdpSocket {
         }
     }
 
-    /// Leaves the multicast group specified by `group_address` on a specified network `interface`, or the default interface chosen by the operating system if `interface` is `None`, The socket must be in `BoundState`, otherwise an error occurs.
+    /// Leaves the multicast group specified by `group_address` on a specified network `interface`, or the default interface chosen by the operating system if `interface` is `None`, The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise an error occurs.
     ///
     /// This function returns `true` if successful; otherwise it returns `false` and sets the socket error accordingly.
     ///
-    /// **Note:** This function should be called with the same arguments as were passed to `join_multicast_group()`.
+    /// **Note:** This function should be called with the same arguments as were passed to [`join_multicast_group`](QUdpSocket::join_multicast_group).
     pub fn leave_multicast_group(
         self: Pin<&mut Self>,
         group_address: &QHostAddress,
@@ -171,7 +171,7 @@ impl QUdpSocket {
         }
     }
 
-    /// Returns the interface for the outgoing interface for multicast datagrams. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. If no interface has been previously set, this function returns an invalid `QNetworkInterface`. The socket must be in `BoundState`, otherwise an invalid `QNetworkInterface` is returned.
+    /// Returns the interface for the outgoing interface for multicast datagrams. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. If no interface has been previously set, this function returns an invalid `QNetworkInterface`. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise `None` is returned.
     pub fn multicast_interface(&self) -> Option<QNetworkInterface> {
         self.multicast_interface_or_invalid().nonnull()
     }
@@ -188,9 +188,7 @@ impl QUdpSocket {
 
     ///Receives a datagram stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
     ///
-    /// On success, returns `Some((n, address, port))`, where `n` is the size of the datagram
-    /// received, `address` is the sender's host address, and `port` is the sender's port. On
-    /// failure, returns `None`.
+    /// On success, returns `Some((n, address, port))`, where `n` is the size of the datagram received, `address` is the sender's host address, and `port` is the sender's port. On failure, returns `None`.
     ///
     /// If `data.len()` is too small, the rest of the datagram will be lost. To avoid loss of data, call `pending_datagram_size()` to determine the size of the pending datagram before attempting to read it. If `data.len()` is 0, the datagram will be discarded.
     pub fn read_datagram(
@@ -230,11 +228,11 @@ impl QUdpSocket {
 
     /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
     ///
-    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return `None` and `error()` will return `DatagramTooLargeError`.
+    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return `None` and [`error`](QAbstractSocket::error) will return `DatagramTooLargeError`.
     ///
     /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
     ///
-    /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use `write()` to send datagrams.
+    /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use [`write`](QIODevice::write) to send datagrams.
     pub fn write_datagram(
         self: Pin<&mut Self>,
         data: &[c_char],
