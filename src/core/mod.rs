@@ -4,6 +4,11 @@ pub use qbuffer::QBuffer;
 mod qcryptographichash;
 pub use qcryptographichash::QCryptographicHashAlgorithm;
 
+#[cfg(any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_8))]
+mod qdeadlinetimer;
+#[cfg(any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_8))]
+pub use qdeadlinetimer::{QDeadlineTimer, QDeadlineTimerError};
+
 mod qfiledevice;
 pub use qfiledevice::{
     QFileDevice, QFileDeviceFileError, QFileDeviceFileHandleFlag, QFileDeviceFileHandleFlags,
@@ -32,6 +37,9 @@ mod qsavefile;
 pub use qsavefile::QSaveFile;
 
 mod qset;
+
+mod qt;
+pub use qt::TimerType;
 
 mod qtemporaryfile;
 pub use qtemporaryfile::QTemporaryFile;

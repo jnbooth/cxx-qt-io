@@ -141,6 +141,7 @@ fn main() {
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
         include_header!("include/core/qbuffer.h"),
+        include_header!("include/core/qdeadlinetimer.h"),
         include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qcryptographichash.h"),
         include_header!("include/core/qiodevice.h"),
@@ -189,8 +190,20 @@ fn main() {
             "core/qlist/qlist_qpair_qbytearray_qbytearray",
             "core/qmap/qmap_qbytearray_qvariant",
             "core/qsavefile",
+            "core/qt",
             "core/qtemporaryfile",
         ]);
+
+    if version.at_least(5, 8) {
+        header_dir.write_headers(&[
+            include_header!("include/core/qlist/qlist_qdeadlinetimer.h"),
+            include_header!("include/core/qdeadlinetimer.h"),
+        ]);
+
+        builder = builder
+            .build_cpp(&["core/qdeadlinetimer"])
+            .build_rust(&["core/qdeadlinetimer"]);
+    }
 
     if features.network {
         header_dir.write_headers(&[

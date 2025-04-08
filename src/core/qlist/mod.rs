@@ -75,6 +75,13 @@ impl_qlist_element!(
     "QList_QPair_QByteArray_QByteArray",
 );
 
+#[cfg(any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_8))]
+impl_qlist_element!(
+    crate::QDeadlineTimer,
+    qlist_qdeadlinetimer,
+    "QList_QDeadlineTimer"
+);
+
 #[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_5))]
 impl_qlist_element!(
     crate::QHttp1Configuration,

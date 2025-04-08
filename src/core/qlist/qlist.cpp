@@ -28,6 +28,10 @@
 
 CXX_QT_IO_QLIST_ASSERTS(QPair_QByteArray_QByteArray);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
+CXX_QT_IO_QLIST_ASSERTS(QDeadlineTimer);
+#endif
+
 #ifdef CXX_QT_IO_NETWORK_FEATURE
 CXX_QT_IO_QLIST_ASSERTS(QHostAddress);
 CXX_QT_IO_QLIST_ASSERTS(QHttp2Configuration);

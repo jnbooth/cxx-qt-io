@@ -19,6 +19,8 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-io/qdeadlinetimer.h");
+        type QDeadlineTimer = crate::QDeadlineTimer;
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
     }
@@ -72,6 +74,12 @@ mod ffi {
         /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a `QHostAddress` holding the address `FFFF:FFFF:FFFF:FFFF::`.
         fn netmask(&self) -> QHostAddress;
 
+        /// Returns the deadline when this address becomes deprecated (no longer preferred), if known. If the address lifetime is not known (see [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known)), this function always returns [`QDeadlineTimer::forever()`].
+        ///
+        /// While an address is preferred, it may be used by the operating system as the source address for new, outgoing packets. After it becomes deprecated, it will remain valid for incoming packets for a while longer until finally removed (see [`validity_lifetime`](QNetworkAddressEntry::validity_lifetime)).
+        #[rust_name = "preferred_lifetime"]
+        fn preferredLifetime(&self) -> QDeadlineTimer;
+
         #[doc(hidden)]
         #[rust_name = "prefix_length_or_negative"]
         fn prefixLength(&self) -> i32;
@@ -95,6 +103,12 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "set_prefix_length_or_negative"]
         fn setPrefixLength(&mut self, length: i32);
+
+        /// Returns the deadline when this address becomes invalid and will be removed from the networking stack, if known. If the address lifetime is not known (see [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known)), this function always returns [`QDeadlineTimer::forever()`].
+        ///
+        /// While an address is valid, it will be accepted by the operating system as a valid destination address for this machine. Whether it is used as a source address for new, outgoing packets is controlled by, among other rules, the preferred lifetime (see [`preferred_lifetime`](QNetworkAddressEntry::preferred_lifetime)).
+        #[rust_name = "validity_lifetime"]
+        fn validityLifetime(&self) -> QDeadlineTimer;
     }
 
     #[namespace = "rust::cxxqtlib1"]

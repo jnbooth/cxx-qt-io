@@ -7,6 +7,10 @@
 
 #include "qlist_qpair_qbytearray_qbytearray.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
+#include "qlist_qdeadlinetimer.h"
+#endif
+
 #ifdef CXX_QT_IO_NETWORK_FEATURE
 #include "qlist_qhostaddress.h"
 #include "qlist_qhttp2configuration.h"

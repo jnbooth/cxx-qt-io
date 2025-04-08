@@ -259,6 +259,8 @@ EOF
     rustfmt "$SCRIPTPATH/qlist_$LOWER.rs"
 }
 
+generate_bridge "QDeadlineTimer"
+
 generate_bridge "QPair_QByteArray_QByteArray" "QPair<crate::QPairPair_QByteArray_QByteArray>"
 
 generate_bridge "QHostAddress"
