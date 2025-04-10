@@ -2,7 +2,7 @@ use crate::qio::{QIOExt, QIO};
 use crate::{QFileDevice, QIODevice};
 use cxx::UniquePtr;
 use cxx_qt::Upcast;
-use cxx_qt_lib::QString;
+use cxx_qt_lib::{QByteArray, QString};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -10,12 +10,14 @@ use std::pin::Pin;
 #[cxx_qt::bridge]
 mod ffi {
     extern "C++" {
+        include!("cxx-qt-lib/qbytearray.h");
+        type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
     }
 
     unsafe extern "C++Qt" {
-        include!(<QtCore/QFile>);
+        include!("cxx-qt-io/qfile.h");
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
 
@@ -92,6 +94,19 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
+        #[rust_name = "qfile_decode_name"]
+        fn qfileDecodeName(name: &QByteArray) -> QString;
+
+        #[rust_name = "qfile_encode_name"]
+        fn qfileEncodeName(name: &QString) -> QByteArray;
+
+        #[cfg(cxxqt_qt_version_at_least_6_9)]
+        #[rust_name = "qfile_supports_move_to_trash"]
+        fn qfileSupportsMoveToTrash() -> bool;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
         #[rust_name = "upcast_qfile_qiodevice"]
@@ -115,6 +130,22 @@ impl QFile {
     /// Constructs a new file object to represent the file with the given `name`.
     pub fn new(name: &QString) -> UniquePtr<Self> {
         ffi::qfile_new(name)
+    }
+
+    /// This does the reverse of [`encode_name`](QFile::encode_name) using `local_file_name`.
+    pub fn decode_name(local_file_name: &QByteArray) -> QString {
+        ffi::qfile_decode_name(local_file_name)
+    }
+
+    /// Converts `file_name` to an 8-bit encoding that you can use in native APIs. On Windows, the encoding is the one from active Windows (ANSI) codepage. On other platforms, this is UTF-8, for macOS in decomposed form (NFD).
+    pub fn encode_name(file_name: &QString) -> QByteArray {
+        ffi::qfile_encode_name(file_name)
+    }
+
+    /// Returns `true` if Qt supports moving files to a trash (recycle bin) in the current operating system using the [`move_to_trash`](QFile::move_to_trash) function, `false` otherwise. Note that this function returning `true` does not imply [`move_to_trash`](QFile::move_to_trash) will succeed. In particular, this function does not check if the user has disabled the functionality in their settings.
+    #[cfg(cxxqt_qt_version_at_least_6_9)]
+    pub fn supports_move_to_trash() -> bool {
+        ffi::qfile_supports_move_to_trash()
     }
 
     /// Casts this object to `QIODevice`.
