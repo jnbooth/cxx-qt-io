@@ -69,7 +69,7 @@ mod ffi {
         ///
         /// `"XXXXXX"` will be replaced with the dynamic part of the file name, which is calculated to be unique.
         //
-        /// If `template_name` is a relative path, the path will be relative to the current working directory. You can use `QDir::temp_path()` to construct `template_name` if you want use the system's temporary directory. It is important to specify the correct directory if the [`rename`](QTemporaryFile::rename) function will be called, as `QTemporaryFile` can only rename files within the same volume / filesystem as the temporary file itself was created on.
+        /// If `template_name` is a relative path, the path will be relative to the current working directory. You can use [`QDir::temp_path()`](crate::QDir::temp_path) to construct `template_name` if you want use the system's temporary directory. It is important to specify the correct directory if the [`rename`](QTemporaryFile::rename) function will be called, as `QTemporaryFile` can only rename files within the same volume / filesystem as the temporary file itself was created on.
         #[rust_name = "set_file_template"]
         fn setFileTemplate(self: Pin<&mut QTemporaryFile>, template_name: &QString);
     }
@@ -111,7 +111,7 @@ impl QTemporaryFile {
         ffi::qtemporaryfile_new(path)
     }
 
-    /// If `file` is not already a native file, then a `QTemporaryFile` is created in `QDir::temp_path()`, the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.
+    /// If `file` is not already a native file, then a `QTemporaryFile` is created in [`QDir::temp_path()`](crate::QDir::temp_path), the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.
     pub fn create_native_file(file: Pin<&mut QFile>) -> UniquePtr<Self> {
         ffi::qtemporaryfile_create_native_file(file)
     }

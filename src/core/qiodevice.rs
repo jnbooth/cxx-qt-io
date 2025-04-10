@@ -107,7 +107,7 @@ mod ffi {
 
         /// # Safety
         ///
-        /// `QIODeviceModeFlag::NewOnly` may cause undefined behavior if `self` is not a `QFile`.
+        /// [`QIODeviceModeFlag::NewOnly`] may cause undefined behavior if `self` is not a `QFile`.
         #[rust_name = "open_unsafe"]
         pub(self) unsafe fn open(self: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
 
