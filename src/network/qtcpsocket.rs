@@ -40,8 +40,8 @@ impl QTcpSocket {
     }
 
     /// Mutably casts this object to `QIODevice`.
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
     }
 
     /// Casts this object to `QAbstractSocket`.
@@ -50,8 +50,10 @@ impl QTcpSocket {
     }
 
     /// Mutably casts this object to `QAbstractSocket`.
-    pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
-        self.upcast_pin()
+    pub fn as_abstract_socket_mut<'a>(
+        self: &'a mut Pin<&mut Self>,
+    ) -> Pin<&'a mut QAbstractSocket> {
+        self.as_mut().upcast_pin()
     }
 }
 
@@ -86,7 +88,7 @@ impl AsRef<QAbstractSocket> for QTcpSocket {
 }
 
 impl QIO for QTcpSocket {
-    fn flush(self: Pin<&mut Self>) -> bool {
+    fn flush(mut self: Pin<&mut Self>) -> bool {
         self.as_abstract_socket_mut().flush()
     }
 

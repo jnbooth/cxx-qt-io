@@ -96,8 +96,8 @@ impl QSaveFile {
         self.upcast()
     }
     /// Mutably casts this object to `QIODevice`.
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
     }
 
     /// Casts this object to `QFileDevice`.
@@ -106,8 +106,8 @@ impl QSaveFile {
     }
 
     /// Mutably casts this object to `QFileDevice`.
-    pub fn as_file_device_mut(self: Pin<&mut Self>) -> Pin<&mut QFileDevice> {
-        self.upcast_pin()
+    pub fn as_file_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QFileDevice> {
+        self.as_mut().upcast_pin()
     }
 }
 
@@ -142,7 +142,7 @@ impl AsRef<QFileDevice> for QSaveFile {
 }
 
 impl QIO for QSaveFile {
-    fn flush(self: Pin<&mut Self>) -> bool {
+    fn flush(mut self: Pin<&mut Self>) -> bool {
         self.as_file_device_mut().flush()
     }
 

@@ -526,8 +526,8 @@ impl QSslSocket {
     }
 
     /// Mutably casts this object to `QIODevice`.
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
     }
 
     /// Casts this object to `QAbstractSocket`.
@@ -536,8 +536,10 @@ impl QSslSocket {
     }
 
     /// Mutably casts this object to `QAbstractSocket`.
-    pub fn as_abstract_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QAbstractSocket> {
-        self.upcast_pin()
+    pub fn as_abstract_socket_mut<'a>(
+        self: &'a mut Pin<&mut Self>,
+    ) -> Pin<&'a mut QAbstractSocket> {
+        self.as_mut().upcast_pin()
     }
 
     /// Casts this object to `QTcpSocket`.
@@ -546,8 +548,8 @@ impl QSslSocket {
     }
 
     /// Mutably casts this object to `QSslSocket`.
-    pub fn as_tcp_socket_mut(self: Pin<&mut Self>) -> Pin<&mut QTcpSocket> {
-        self.upcast_pin()
+    pub fn as_tcp_socket_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QTcpSocket> {
+        self.as_mut().upcast_pin()
     }
 }
 
@@ -674,7 +676,7 @@ impl AsRef<QTcpSocket> for QSslSocket {
 }
 
 impl QIO for QSslSocket {
-    fn flush(self: Pin<&mut Self>) -> bool {
+    fn flush(mut self: Pin<&mut Self>) -> bool {
         self.as_abstract_socket_mut().flush()
     }
 

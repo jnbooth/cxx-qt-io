@@ -240,8 +240,8 @@ impl QLocalSocket {
     }
 
     /// Mutably casts this object to `QIODevice`.
-    pub fn as_io_device_mut(self: Pin<&mut Self>) -> Pin<&mut QIODevice> {
-        self.upcast_pin()
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
     }
 }
 
