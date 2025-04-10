@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 use std::ops::{Add, AddAssign, Sub, SubAssign};
-use std::time::{Duration, SystemTime};
+use std::time::Duration;
 
 use cxx::{type_id, ExternType};
 
@@ -154,7 +154,7 @@ mod ffi {
 
 use ffi::QDeadlineTimerForeverConstant;
 
-#[derive(Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum QDeadlineTimerError {
     IsForever,
     IsPast(Duration),
@@ -278,16 +278,6 @@ impl QDeadlineTimer {
     pub fn set_forever(&mut self) {
         self.set_remaining_time(-1, self.timer_type());
     }
-
-    /// Sets the timer to expire at `time`, using the specified `timer_type`.
-    pub fn set_time(&mut self, time: SystemTime, timer_type: TimerType) {
-        let since_epoch = time.duration_since(SystemTime::UNIX_EPOCH).unwrap();
-        self.set_precise_deadline(
-            since_epoch.as_secs().try_into().unwrap_or(i64::MAX),
-            since_epoch.subsec_nanos().into(),
-            timer_type,
-        );
-    }
 }
 
 impl Add<Duration> for QDeadlineTimer {
@@ -351,4 +341,84 @@ impl From<Duration> for QDeadlineTimer {
 unsafe impl ExternType for QDeadlineTimer {
     type Id = type_id!("QDeadlineTimer");
     type Kind = cxx::kind::Trivial;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[derive(Debug, PartialEq, Eq)]
+    struct TimerProps {
+        expired: bool,
+        forever: bool,
+        remaining: Option<bool>,
+    }
+
+    impl From<QDeadlineTimer> for TimerProps {
+        fn from(value: QDeadlineTimer) -> Self {
+            Self {
+                expired: value.has_expired(),
+                forever: value.is_forever(),
+                remaining: match value.remaining_time_as_duration() {
+                    None => None,
+                    Some(Duration::ZERO) => Some(false),
+                    _ => Some(true),
+                },
+            }
+        }
+    }
+
+    #[test]
+    fn new() {
+        let timer = QDeadlineTimer::new(Duration::from_secs(120), TimerType::CoarseTimer);
+        assert_eq!(
+            TimerProps::from(timer),
+            TimerProps {
+                expired: false,
+                forever: false,
+                remaining: Some(true)
+            }
+        );
+    }
+
+    #[test]
+    fn current() {
+        let timer = QDeadlineTimer::current(TimerType::CoarseTimer);
+        assert_eq!(
+            TimerProps::from(timer),
+            TimerProps {
+                expired: true,
+                forever: false,
+                remaining: Some(false)
+            }
+        );
+        assert!(timer.has_expired());
+    }
+
+    #[test]
+    fn forever() {
+        let timer = QDeadlineTimer::forever();
+        assert_eq!(
+            TimerProps::from(timer),
+            TimerProps {
+                expired: false,
+                forever: true,
+                remaining: None,
+            }
+        );
+    }
+
+    #[test]
+    fn duration_since() {
+        let timer1 = QDeadlineTimer::new(Duration::from_secs(120), TimerType::CoarseTimer);
+        let timer2 = timer1 + Duration::from_nanos(30);
+        assert_eq!(timer2.duration_since(timer1), Ok(Duration::from_nanos(30)));
+    }
+
+    #[test]
+    fn set_forever() {
+        let mut timer = QDeadlineTimer::new(Duration::from_secs(120), TimerType::CoarseTimer);
+        timer.set_forever();
+        assert!(timer.is_forever());
+    }
 }

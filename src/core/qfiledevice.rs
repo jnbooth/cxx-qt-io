@@ -1,4 +1,5 @@
 use crate::qio::{QIOExt, QIO};
+use crate::util::IsNonNull;
 use crate::QIODevice;
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
@@ -229,12 +230,7 @@ unsafe_impl_qflag!(QFileDeviceMemoryMapFlag, "QFileDeviceMemoryMapFlags");
 impl QFileDevice {
     /// Returns the file time specified by `time`. If the time cannot be determined return `None`.
     pub fn file_time(&self, time: QFileDeviceFileTime) -> Option<QDateTime> {
-        let file_time = self.file_time_or_invalid(time);
-        if file_time.is_valid() {
-            Some(file_time)
-        } else {
-            None
-        }
+        self.file_time_or_invalid(time).nonnull()
     }
 
     /// Returns the file handle of the file.

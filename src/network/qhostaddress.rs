@@ -358,3 +358,50 @@ impl From<QIpv6Addr> for Ipv6Addr {
         Self::from(value.c)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn create_address(address: &str) -> QHostAddress {
+        QHostAddress::from(&QString::from(address))
+    }
+
+    #[test]
+    fn from_qstring() {
+        let address = create_address("192.168.0.1");
+        assert_eq!(address.to_string().as_str(), "192.168.0.1");
+    }
+
+    #[test]
+    fn from_ipv4() {
+        let address = QHostAddress::from(Ipv4Addr::new(192, 168, 1, 1));
+        assert_eq!(address.to_string().as_str(), "192.168.1.1");
+    }
+
+    #[test]
+    fn to_ipv4() {
+        let address = create_address("127.0.5.1");
+        assert_eq!(
+            Ipv4Addr::try_from(address).unwrap(),
+            Ipv4Addr::new(127, 0, 5, 1)
+        );
+    }
+
+    #[test]
+    fn from_ipv6() {
+        let address = QHostAddress::from(Ipv6Addr::new(
+            0x2001, 0x0db8, 0x85a3, 0x0, 0x0, 0x8a2e, 0x0370, 0x7334,
+        ));
+        assert_eq!(address.to_string().as_str(), "2001:db8:85a3::8a2e:370:7334");
+    }
+
+    #[test]
+    fn to_ipv6() {
+        let address = create_address("2001:0db8:85a3:0000:0000:8a2e:0370:7334");
+        assert_eq!(
+            Ipv6Addr::from(address),
+            Ipv6Addr::new(0x2001, 0x0db8, 0x85a3, 0x0, 0x0, 0x8a2e, 0x0370, 0x7334)
+        );
+    }
+}

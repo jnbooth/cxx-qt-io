@@ -442,3 +442,23 @@ unsafe impl ExternType for QNetworkRequest {
     type Id = type_id!("QNetworkRequest");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn transfer_timeout_some() {
+        let mut request = QNetworkRequest::default();
+        let duration = Duration::from_secs(10);
+        request.set_transfer_timeout(Some(duration));
+        assert_eq!(request.transfer_timeout(), Some(duration));
+    }
+
+    #[test]
+    fn transfer_timeout_none() {
+        let mut request = QNetworkRequest::default();
+        request.set_transfer_timeout(None);
+        assert_eq!(request.transfer_timeout(), None);
+    }
+}

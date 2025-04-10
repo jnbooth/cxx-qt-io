@@ -79,6 +79,7 @@ impl QBuffer {
     pub fn new() -> UniquePtr<Self> {
         ffi::qbuffer_default()
     }
+
     /// Constructs a `QBuffer` that uses the `QByteArray` pointed to by `byte_array` as its internal buffer. `QBuffer` doesn't take ownership of the `QByteArray`.
     ///
     /// If you open the buffer in write-only mode or read-write mode and write something into the `QBuffer`, `byte_array` will be modified.
@@ -123,12 +124,6 @@ impl Deref for QBuffer {
     }
 }
 
-impl AsRef<[u8]> for QBuffer {
-    fn as_ref(&self) -> &[u8] {
-        self.as_slice()
-    }
-}
-
 impl QIO for QBuffer {}
 
 impl Read for Pin<&mut QBuffer> {
@@ -144,5 +139,66 @@ impl Write for Pin<&mut QBuffer> {
 
     fn flush(&mut self) -> io::Result<()> {
         QIOExt::flush(self.as_mut())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::borrow::Cow;
+
+    use crate::QIODeviceOpenModeFlag;
+
+    use super::*;
+
+    fn create_buffer(data: &[u8]) -> UniquePtr<QBuffer> {
+        let mut buffer = QBuffer::new();
+        let mut buffer_pin = buffer.pin_mut();
+        buffer_pin.as_mut().set_data(data);
+        buffer_pin
+            .as_io_device_mut()
+            .open(QIODeviceOpenModeFlag::ReadWrite.into());
+        buffer_pin
+            .as_io_device_mut()
+            .seek(i64::try_from(data.len()).unwrap());
+        buffer
+    }
+
+    fn as_str(buffer: &QBuffer) -> Cow<str> {
+        String::from_utf8_lossy(buffer.as_slice())
+    }
+
+    #[test]
+    fn as_slice() {
+        let buffer = create_buffer(b"test");
+        assert_eq!(buffer.as_slice(), b"test");
+    }
+
+    #[test]
+    fn write_all() {
+        let mut buffer = create_buffer(b"test");
+        buffer
+            .pin_mut()
+            .as_io_device_mut()
+            .write_array(&QByteArray::from(b" 2".as_slice()));
+        assert_eq!(as_str(&buffer), "test 2");
+    }
+
+    #[test]
+    fn write() {
+        let mut buffer = create_buffer(b"test");
+        buffer.write_all(b" 2").unwrap();
+        assert_eq!(as_str(&buffer), "test 2");
+    }
+
+    #[test]
+    fn for_array() {
+        let mut array = QByteArray::from(b"test".as_slice());
+        let mut buffer = unsafe { QBuffer::for_array(&mut array) };
+        buffer
+            .pin_mut()
+            .as_io_device_mut()
+            .open(QIODeviceOpenModeFlag::ReadWrite.into());
+        buffer.write_all(b" 2").unwrap();
+        assert_eq!(String::from_utf8_lossy(array.as_slice()), " 2st");
     }
 }
