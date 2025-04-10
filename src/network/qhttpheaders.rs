@@ -9,7 +9,6 @@ use cxx_qt_lib::{QAnyStringView, QByteArray, QList};
 mod ffi {
     /// List of well known headers as per [IANA registry](https://www.iana.org/assignments/http-fields).
     #[repr(i32)]
-    #[derive(Debug)]
     enum QHttpHeadersWellKnownHeader {
         // IANA Permanent status:
         AIM,
@@ -353,7 +352,7 @@ pub use ffi::QHttpHeadersWellKnownHeader;
 /// Parameter for [`QHttpHeaders`] functions that reference a header.
 ///
 /// Functions that accept `HttpHeader` are overloaded to accept either [`QAnyStringView`] or [`QHttpHeadersWellKnownHeader`]. You do not need to use this type directly.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum HttpHeader<'a> {
     /// Specify by name.
     Named(QAnyStringView<'a>),

@@ -14,7 +14,6 @@ mod ffi {
     ///
     /// Note that one network interface cannot be both broadcast-based and point-to-point.
     #[repr(i32)]
-    #[derive(Debug)]
     enum QNetworkInterfaceInterfaceFlag {
         /// The network interface is "up" - enabled by administrative action
         IsUp = 0x1,

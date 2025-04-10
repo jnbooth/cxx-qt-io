@@ -52,7 +52,6 @@ mod ffi {
     }
 
     #[repr(i32)]
-    #[derive(Debug)]
     enum QLocalSocketSocketOption {
         /// No options have been set.
         NoOptions = 0x0,

@@ -14,7 +14,6 @@ use crate::{QIODevice, QSslEncodingFormat, QSslError, QSslKey};
 mod ffi {
     /// The syntax used to interpret the meaning of the pattern.
     #[repr(i32)]
-    #[derive(Debug)]
     enum QSslCertificatePatternSyntax {
         /// A rich Perl-like pattern matching syntax.
         RegularExpression,
@@ -26,7 +25,6 @@ mod ffi {
 
     /// Describes keys that you can pass to [`QSslCertificate::issuer_info`] or [`QSslCertificate::subject_info`] to get information about the certificate issuer or subject.
     #[repr(i32)]
-    #[derive(Debug)]
     enum QSslCertificateSubjectInfo {
         /// "O" The name of the organization.
         Organization,
@@ -232,7 +230,7 @@ pub use ffi::{QSslCertificatePatternSyntax, QSslCertificateSubjectInfo};
 /// Parameter for [`QSslCertificate`] functions that reference certificate information.
 ///
 /// Functions that accept `SslCertificateSubjectInfoOrAttribute` are overloaded to accept either [`QSslCertificateSubjectInfo`] or [`&QByteArray`](QByteArray). You do not need to use this type directly.
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub enum SslCertificateSubjectInfoOrAttribute<'a> {
     /// Specify by subject info type.
     Subject(QSslCertificateSubjectInfo),

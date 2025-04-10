@@ -41,4 +41,4 @@ mod ffi {
     }
 }
 
-pub use ffi::QsslSslProtocol;
+pub use ffi::QSslSslProtocol;

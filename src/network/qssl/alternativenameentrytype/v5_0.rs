@@ -2,7 +2,6 @@
 mod ffi {
     /// Describes the key types for alternative name entries in [`QSslCertificate`](crate::QSslCertificate).
     #[repr(i32)]
-    #[derive(Debug)]
     enum QSslAlternativeNameEntryType {
         /// An email entry; the entry contains an email address that the certificate is valid for.
         EmailEntry,

@@ -20,7 +20,6 @@ mod ffi {
 
     /// Describes supported encoding formats for certificates and keys.
     #[repr(i32)]
-    #[derive(Debug)]
     enum QSslEncodingFormat {
         /// The PEM format.
         Pem,
@@ -48,7 +47,6 @@ mod ffi {
     ///
     /// By default, [`SslOptionDisableEmptyFragments`](QSslSslOption::SslOptionDisableEmptyFragments) is turned on since this causes problems with a large number of servers. [`SslOptionDisableLegacyRenegotiation`](QSslSslOption::SslOptionDisableLegacyRenegotiation) is also turned on, since it introduces a security risk. [`SslOptionDisableCompression`](QSslSslOption::SslOptionDisableCompression) is turned on to prevent the attack publicised by CRIME. [`SslOptionDisableSessionPersistence`](QSslSslOption::SslOptionDisableSessionPersistence) is turned on to optimize memory usage. The other options are turned off.
     #[repr(i32)]
-    #[derive(Debug)]
     enum QSslSslOption {
         /// Disables the insertion of empty fragments into the data when using block ciphers. When enabled, this prevents some attacks (such as the BEAST attack), however it is incompatible with some servers.
         SslOptionDisableEmptyFragments = 0x01,

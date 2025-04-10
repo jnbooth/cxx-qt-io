@@ -13,7 +13,6 @@ mod ffi {
     ///
     /// [`QNetworkProxy`] sets different capabilities by default when the object is created (see [`QNetworkProxyProxyType`] for a list of the defaults). However, it is possible to change the capabilities after the object has been created with [`QNetworkProxy::set_capabilities`].
     #[repr(i32)]
-    #[derive(Debug)]
     enum QNetworkProxyCapability {
         /// Ability to open transparent, tunneled TCP connections to a remote host. The proxy server relays the transmission verbatim from one side to the other and does no caching.
         TunnelingCapability = 0x0001,
