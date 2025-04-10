@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QCryptographicHash>
 #include <QtCore/QFileDevice>
 
 #include <cxx-qt-io/definitions.h>
