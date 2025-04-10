@@ -141,9 +141,11 @@ fn main() {
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
         include_header!("include/core/qbuffer.h"),
-        include_header!("include/core/qdeadlinetimer.h"),
-        include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qcryptographichash.h"),
+        include_header!("include/core/qdeadlinetimer.h"),
+        include_header!("include/core/qdir.h"),
+        include_header!("include/core/qfile.h"),
+        include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
         include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
@@ -156,8 +158,8 @@ fn main() {
         include_header!("include/core/qpair/qpair.h"),
         include_header!("include/core/qset/qset_private.h"),
         include_header!("include/core/qset/qset.h"),
-        include_header!("include/core/qvariant/qvariant.h"),
         include_header!("include/core/qtemporaryfile.h"),
+        include_header!("include/core/qvariant/qvariant.h"),
         include_header!("include/views.h"),
     ]);
 
@@ -179,11 +181,12 @@ fn main() {
             "core/qtemporaryfile",
         ])
         .build_rust(&[
+            "core/qbuffer",
             &version.find(
                 "core/qcryptographichash/algorithm",
                 &[(6, 0), (5, 9), (5, 1)],
             ),
-            "core/qbuffer",
+            "core/qdir",
             "core/qfile",
             "core/qfiledevice",
             "core/qiodevice",
