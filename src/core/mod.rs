@@ -1,3 +1,6 @@
+mod file_descriptor;
+pub use file_descriptor::FileDescriptor;
+
 mod qbuffer;
 pub use qbuffer::QBuffer;
 

@@ -1,6 +1,6 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::IsNonNull;
-use crate::QIODevice;
+use crate::{FileDescriptor, QIODevice};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
@@ -236,13 +236,8 @@ impl QFileDevice {
     /// This is a small positive integer, suitable for use with C library functions such as `fdopen()` and `fcntl()`. On systems that use file descriptors for sockets (i.e. Unix systems, but not Windows) the handle can be used with `QSocketNotifier` as well.
     ///
     /// If the file is not open, or there is an error, `handle()` returns `None`.
-    pub fn handle(&self) -> Option<i32> {
-        let handle = self.handle_or_negative();
-        if handle == -1 {
-            None
-        } else {
-            Some(handle)
-        }
+    pub fn handle(&self) -> Option<FileDescriptor> {
+        FileDescriptor::from(self.handle_or_negative()).nonnull()
     }
 }
 

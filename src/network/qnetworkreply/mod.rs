@@ -130,6 +130,8 @@ mod ffi {
         #[rust_name = "is_running"]
         fn isRunning(self: &QNetworkReply) -> bool;
 
+        // fn manager(self: &QNetworkReply) -> *mut QNetworkAccessManager;
+
         /// Returns the operation that was posted for this reply.
         fn operation(self: &QNetworkReply) -> QNetworkAccessManagerOperation;
 

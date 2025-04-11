@@ -1,5 +1,7 @@
 use crate::qio::{QIOExt, QIO};
-use crate::{QFileDevice, QIODevice};
+use crate::{
+    FileDescriptor, QFileDevice, QFileDeviceFileHandleFlags, QIODevice, QIODeviceOpenMode,
+};
 use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QString};
@@ -14,12 +16,17 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+
+        include!("cxx-qt-io/qfiledevice.h");
+        type QFileDevice = crate::QFileDevice;
+        type QFileDeviceFileHandleFlags = crate::QFileDeviceFileHandleFlags;
+        include!("cxx-qt-io/qiodevice.h");
+        type QIODevice = crate::QIODevice;
+        type QIODeviceOpenMode = crate::QIODeviceOpenMode;
     }
 
     extern "C++" {
         include!("cxx-qt-io/qfile.h");
-        type QIODevice = crate::QIODevice;
-        type QFileDevice = crate::QFileDevice;
     }
 
     unsafe extern "C++Qt" {
@@ -62,6 +69,14 @@ mod ffi {
         /// **Note:** On systems where the system API doesn't report the location of the file in the trash, [`self.file_name()`](QFileDevice::file_name) will be set to the null string once the file has been moved. On systems that don't have a trash can, this function always returns `false`.
         #[rust_name = "move_to_trash"]
         fn moveToTrash(self: Pin<&mut QFile>) -> bool;
+
+        #[rust_name = "open_int"]
+        fn open(
+            self: Pin<&mut QFile>,
+            fd: i32,
+            mode: QIODeviceOpenMode,
+            handle_flags: QFileDeviceFileHandleFlags,
+        ) -> bool;
 
         /// Removes the file specified by [`self.file_name()`](QFileDevice::file_name). Returns `true` if successful; otherwise returns `false`.
         ///
@@ -142,6 +157,22 @@ impl QFile {
     /// Converts `file_name` to an 8-bit encoding that you can use in native APIs. On Windows, the encoding is the one from active Windows (ANSI) codepage. On other platforms, this is UTF-8, for macOS in decomposed form (NFD).
     pub fn encode_name(file_name: &QString) -> QByteArray {
         ffi::qfile_encode_name(file_name)
+    }
+
+    /// Opens the existing file descriptor `fd` in the given `mode`. `handle_flags` may be used to specify additional options. Returns `true` if successful; otherwise returns `false`.
+    ///
+    /// When a `QFile` is opened using this function, behaviour of [`close`](QIODevice::close) is controlled by the [`QFileDeviceFileHandleFlag::AutoCloseHandle`](crate::QFileDeviceFileHandleFlag::AutoCloseHandle) flag. If [`QFileDeviceFileHandleFlag::AutoCloseHandle`](crate::QFileDeviceFileHandleFlag::AutoCloseHandle) is specified, and this function succeeds, then calling [`close`](QIODevice::close) closes the adopted handle. Otherwise, [`close`](QIODevice::close) does not actually close the file, but only flushes it.
+    ///
+    /// Warning: If `fd` is not a regular file, e.g, it is 0 ([`FileDescriptor::STDIN`]), 1 ([`FileDescriptor::STDOUT`]), or 2 ([`FileDescriptor::STDERR`]), you may not be able to use [`seek`](QIODevice::seek). In those cases, [`size`](QIODevice::size) returns 0. See [`is_sequential`](QIODevice::is_sequential) for more information.
+    ///
+    /// Warning: Since this function opens the file without specifying the file name, you cannot use this `QFile` with a `QFileInfo`.
+    pub fn open(
+        self: Pin<&mut Self>,
+        fd: FileDescriptor,
+        mode: QIODeviceOpenMode,
+        handle_flags: QFileDeviceFileHandleFlags,
+    ) -> bool {
+        self.open_int(fd.into(), mode, handle_flags)
     }
 
     /// Returns `true` if Qt supports moving files to a trash (recycle bin) in the current operating system using the [`move_to_trash`](QFile::move_to_trash) function, `false` otherwise. Note that this function returning `true` does not imply [`move_to_trash`](QFile::move_to_trash) will succeed. In particular, this function does not check if the user has disabled the functionality in their settings.
