@@ -1,6 +1,6 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice};
+use crate::{QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode};
 use cxx::{type_id, UniquePtr};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlag, QFlags, QString};
@@ -62,6 +62,8 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qintptr = cxx_qt_lib::qintptr;
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
@@ -153,6 +155,17 @@ mod ffi {
         #[rust_name = "set_server_name"]
         fn setServerName(self: Pin<&mut QLocalSocket>, name: &QString);
 
+        #[rust_name = "set_socket_descriptor_qintptr"]
+        pub(self) fn setSocketDescriptor(
+            self: Pin<&mut QLocalSocket>,
+            socket_descriptor: qintptr,
+            socket_state: QLocalSocketLocalSocketState,
+            open_mode: QIODeviceOpenMode,
+        ) -> bool;
+
+        #[rust_name = "socket_descriptor_or_negative"]
+        pub(self) fn socketDescriptor(self: &QLocalSocket) -> qintptr;
+
         /// Returns the state of the socket.
         fn state(self: &QLocalSocket) -> QLocalSocketLocalSocketState;
 
@@ -217,6 +230,30 @@ impl QLocalSocket {
     /// Returns the name of the peer as specified by [`set_server_name`](QLocalSocket::set_server_name), or `None` if [`set_server_name`](QLocalSocket::set_server_name) has not been called or [`connect_to_server`](QLocalSocket::connect_to_server) failed.
     pub fn server_name(self: &QLocalSocket) -> Option<QString> {
         self.server_name_or_empty().nonnull()
+    }
+
+    /// Initializes `QLocalSocket` with the native socket descriptor `socket_descriptor`. Returns `true` if `socket_descriptor` is accepted as a valid socket descriptor; otherwise returns `false`. The socket is opened in the mode specified by `open_mode`, and enters the socket state specified by `socket_state`. Read and write buffers are cleared, discarding any pending data.
+    ///
+    /// **Note:** It is not possible to initialize two local sockets with the same native socket descriptor.
+    pub fn set_socket_descriptor(
+        self: Pin<&mut Self>,
+        socket_descriptor: isize,
+        socket_state: QLocalSocketLocalSocketState,
+        open_mode: QIODeviceOpenMode,
+    ) -> bool {
+        self.set_socket_descriptor_qintptr(socket_descriptor.into(), socket_state, open_mode)
+    }
+
+    /// Returns the native socket descriptor of the `QLocalSocket` object if this is available; otherwise returns `None`.
+    ///
+    /// The socket descriptor is not available when `QLocalSocket` is in [`QLocalSocketLocalSocketState::UnconnectedState`].
+    pub fn socket_descriptor(&self) -> Option<isize> {
+        let descriptor = self.socket_descriptor_or_negative().into();
+        if descriptor == -1 {
+            None
+        } else {
+            Some(descriptor)
+        }
     }
 
     /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call [`error`](QLocalSocket::error) to determine the cause of the error.

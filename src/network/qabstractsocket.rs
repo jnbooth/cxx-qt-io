@@ -1,6 +1,6 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QHostAddress, QIODevice};
+use crate::{QHostAddress, QIODevice, QIODeviceOpenMode};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
@@ -173,6 +173,8 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
+        include!("cxx-qt-lib/qtypes.h");
+        type qintptr = cxx_qt_lib::qintptr;
         include!("cxx-qt-io/qiodevice.h");
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
         include!("cxx-qt-io/qhostaddress.h");
@@ -320,12 +322,23 @@ mod ffi {
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: i64);
 
+        #[rust_name = "set_socket_descriptor_qintptr"]
+        pub(self) fn setSocketDescriptor(
+            self: Pin<&mut QAbstractSocket>,
+            socket_descriptor: qintptr,
+            socket_state: QAbstractSocketSocketState,
+            open_mode: QIODeviceOpenMode,
+        ) -> bool;
+
         #[rust_name = "set_socket_option_variant"]
         pub(self) fn setSocketOption(
             self: Pin<&mut QAbstractSocket>,
             option: QAbstractSocketSocketOption,
             variant: &QVariant,
         );
+
+        #[rust_name = "socket_descriptor_or_negative"]
+        pub(self) fn socketDescriptor(self: &QAbstractSocket) -> qintptr;
 
         /// Returns the value of the `option` option.
         #[rust_name = "socket_option"]
@@ -425,6 +438,18 @@ impl QAbstractSocket {
         self.peer_name_or_empty().nonnull()
     }
 
+    /// Initializes `QAbstractSocket` with the native socket descriptor `socket_descriptor`. Returns `true` if `socket_descriptor` is accepted as a valid socket descriptor; otherwise returns `false`. The socket is opened in the mode specified by `open_mode`, and enters the socket state specified by `socket_state`. Read and write buffers are cleared, discarding any pending data.
+    ///
+    /// **Note:** It is not possible to initialize two abstract sockets with the same native socket descriptor.
+    pub fn set_socket_descriptor(
+        self: Pin<&mut Self>,
+        socket_descriptor: isize,
+        socket_state: QAbstractSocketSocketState,
+        open_mode: QIODeviceOpenMode,
+    ) -> bool {
+        self.set_socket_descriptor_qintptr(socket_descriptor.into(), socket_state, open_mode)
+    }
+
     /// Sets the given `option` to the value described by `value`.
     pub fn set_socket_option<T>(
         self: Pin<&mut QAbstractSocket>,
@@ -434,6 +459,20 @@ impl QAbstractSocket {
         T: Into<QVariant>,
     {
         self.set_socket_option_variant(option, &variant.into());
+    }
+
+    /// Returns the native socket descriptor of the `QAbstractSocket` object if this is available; otherwise returns `None`.
+    ///
+    /// If the socket is using [`QNetworkProxy`](crate::QNetworkProxy), the returned descriptor may not be usable with native socket functions.
+    ///
+    /// The socket descriptor is not available when `QAbstractSocket` is in [`QAbstractSocketSocketState::UnconnectedState`].
+    pub fn socket_descriptor(&self) -> Option<isize> {
+        let descriptor = self.socket_descriptor_or_negative().into();
+        if descriptor == -1 {
+            None
+        } else {
+            Some(descriptor)
+        }
     }
 
     /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call [`error`](QAbstractSocket::error) to determine the cause of the error.
