@@ -14,12 +14,13 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
-    #[auto_rust_name]
-    unsafe extern "C++Qt" {
-        include!(<QtCore/QSaveFile>);
+    extern "C++" {
+        include!("cxx-qt-io/qsavefile.h");
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
+    }
 
+    unsafe extern "C++Qt" {
         /// The `QSaveFile` class provides an interface for safely writing to files.
         ///
         /// Qt Documentation: [QSaveFile](https://doc.qt.io/qt-6/qsavefile.html#details)

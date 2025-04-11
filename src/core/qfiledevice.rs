@@ -115,7 +115,9 @@ mod ffi {
 
         include!("cxx-qt-lib/qdatetime.h");
         type QDateTime = cxx_qt_lib::QDateTime;
+    }
 
+    extern "C++" {
         include!("cxx-qt-io/qfiledevice.h");
         type QFileDeviceFileError;
         type QFileDeviceFileHandleFlag;
@@ -124,11 +126,11 @@ mod ffi {
         type QFileDeviceMemoryMapFlags = super::QFileDeviceMemoryMapFlags;
         type QFileDevicePermission;
         type QFileDevicePermissions = super::QFileDevicePermissions;
+
+        type QIODevice = crate::QIODevice;
     }
 
     unsafe extern "C++Qt" {
-        type QIODevice = crate::QIODevice;
-
         /// The `QFileDevice` class provides an interface for reading from and writing to open files.
         ///
         /// Qt Documentation: [QFileDevice](https://doc.qt.io/qt-6/qfiledevice.html#details)

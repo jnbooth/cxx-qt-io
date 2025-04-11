@@ -7,11 +7,13 @@ use std::pin::Pin;
 
 #[cxx_qt::bridge]
 mod ffi {
-    unsafe extern "C++Qt" {
-        include!(<QtNetwork/QTcpSocket>);
+    extern "C++" {
+        include!("cxx-qt-io/qtcpsocket.h");
         type QIODevice = crate::QIODevice;
         type QAbstractSocket = crate::QAbstractSocket;
+    }
 
+    unsafe extern "C++Qt" {
         /// The `QTcpSocket` class provides a TCP socket.
         ///
         /// Qt Documentation: [QTcpSocket](https://doc.qt.io/qt-6/qtcpsocket.html#details)

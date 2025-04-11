@@ -167,15 +167,16 @@ mod ffi {
     }
 
     extern "C++" {
-        include!(<QtNetwork/QAuthenticator>);
-        type QAuthenticator = crate::QAuthenticator;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-lib/qtypes.h");
         type qintptr = cxx_qt_lib::qintptr;
+        include!("cxx-qt-io/qauthenticator.h");
+        type QAuthenticator = crate::QAuthenticator;
         include!("cxx-qt-io/qiodevice.h");
+        type QIODevice = crate::QIODevice;
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
@@ -197,8 +198,6 @@ mod ffi {
     }
 
     unsafe extern "C++Qt" {
-        type QIODevice = crate::QIODevice;
-
         /// The `QAbstractSocket` class provides the base functionality common to all socket types.
         ///
         /// Qt Documentation: [QAbstractSocket](https://doc.qt.io/qt-6/qabstractsocket.html#details)

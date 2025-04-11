@@ -14,9 +14,11 @@ mod ffi {
         type QHash_QString_QVariant = cxx_qt_lib::QHash<cxx_qt_lib::QHashPair_QString_QVariant>;
     }
 
-    unsafe extern "C++" {
-        include!(<QtNetwork/QAuthenticator>);
+    extern "C++" {
+        include!("cxx-qt-io/qauthenticator.h");
+    }
 
+    unsafe extern "C++" {
         /// The `QAuthenticator` class provides an authentication object.
         ///
         /// Qt Documentation: [QAuthenticator](https://doc.qt.io/qt-6/qauthenticator.html#details)

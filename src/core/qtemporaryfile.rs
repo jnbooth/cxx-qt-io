@@ -14,12 +14,14 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
-    unsafe extern "C++Qt" {
+    extern "C++" {
         include!("cxx-qt-io/qtemporaryfile.h");
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
         type QFile = crate::QFile;
+    }
 
+    unsafe extern "C++Qt" {
         /// The `QTemporaryFile` class is an I/O device that operates on temporary files.
         ///
         /// Qt Documentation: [QTemporaryFile](https://doc.qt.io/qt-6/qtemporaryfile.html#details)

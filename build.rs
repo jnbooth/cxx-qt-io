@@ -156,6 +156,7 @@ fn main() {
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
+        include_header!("include/core/qsavefile.h"),
         include_header!("include/core/qset/qset_private.h"),
         include_header!("include/core/qset/qset.h"),
         include_header!("include/core/qtemporaryfile.h"),
@@ -220,6 +221,7 @@ fn main() {
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
             include_header!("include/network/qabstractsocket.h"),
+            include_header!("include/network/qauthenticator.h"),
             include_header!("include/network/qhostaddress.h"),
             include_header!("include/network/qhttp2configuration.h"),
             include_header!("include/network/qlocalsocket.h"),
@@ -231,6 +233,9 @@ fn main() {
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
             include_header!("include/network/qnetworkreply.h"),
+            include_header!("include/network/qtcpserver.h"),
+            include_header!("include/network/qtcpsocket.h"),
+            include_header!("include/network/qudpsocket.h"),
         ]);
 
         builder = builder

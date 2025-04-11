@@ -18,12 +18,14 @@ mod ffi {
         include!("cxx-qt-io/qnetworkproxy.h");
         type QNetworkProxy = crate::QNetworkProxy;
 
+    }
+
+    extern "C++" {
+        include!("cxx-qt-io/qtcpserver.h");
         type QTcpSocket = crate::QTcpSocket;
     }
 
     unsafe extern "C++Qt" {
-        include!(<QtNetwork/QTcpServer>);
-
         /// The `QTcpServer` class provides a TCP-based server.
         ///
         /// Qt Documentation: [QTcpServer](https://doc.qt.io/qt-6/qtcpserver.html#details)

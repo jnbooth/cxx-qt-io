@@ -41,10 +41,11 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
-
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+    }
 
+    extern "C++" {
         include!("cxx-qt-io/qiodevice.h");
         type QIODeviceOpenModeFlag;
         type QIODeviceOpenMode = super::QIODeviceOpenMode;

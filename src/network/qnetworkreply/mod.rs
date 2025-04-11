@@ -62,11 +62,10 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qnetworkreply.h");
         type QNetworkReplyNetworkError = super::QNetworkReplyNetworkError;
+        type QIODevice = crate::QIODevice;
     }
 
     unsafe extern "C++Qt" {
-        type QIODevice = crate::QIODevice;
-
         /// The `QNetworkReply` class contains the data and headers for a request sent with `QNetworkAccessManager`.
         ///
         /// Qt Documentation: [QNetworkReply](https://doc.qt.io/qt-6/qnetworkreply.html#details)

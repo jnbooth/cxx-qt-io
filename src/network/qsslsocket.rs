@@ -84,11 +84,10 @@ mod ffi {
         include!("cxx-qt-io/qsslsocket.h");
         type QSslSocketPeerVerifyMode;
         type QSslSocketSslMode;
+        type QTcpSocket = crate::QTcpSocket;
     }
 
     unsafe extern "C++Qt" {
-        type QTcpSocket = crate::QTcpSocket;
-
         /// The `QSslSocket` class provides an SSL encrypted socket for both clients and servers.
         ///
         /// Qt Documentation: [QSslSocket](https://doc.qt.io/qt-6/qsslsocket.html#details)

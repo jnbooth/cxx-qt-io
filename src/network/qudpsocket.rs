@@ -19,11 +19,13 @@ mod ffi {
         type QNetworkInterface = crate::QNetworkInterface;
     }
 
-    unsafe extern "C++Qt" {
-        include!(<QtNetwork/QUdpSocket>);
+    extern "C++" {
+        include!("cxx-qt-io/qudpsocket.h");
         type QIODevice = crate::QIODevice;
         type QAbstractSocket = crate::QAbstractSocket;
+    }
 
+    unsafe extern "C++Qt" {
         /// The `QUdpSocket` class provides a UDP socket.
         ///
         /// Qt Documentation: [QUdpSocket](https://doc.qt.io/qt-6/qudpsocket.html#details)

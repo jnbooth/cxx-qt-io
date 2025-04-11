@@ -16,11 +16,13 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
-    unsafe extern "C++Qt" {
+    extern "C++" {
         include!("cxx-qt-io/qfile.h");
         type QIODevice = crate::QIODevice;
         type QFileDevice = crate::QFileDevice;
+    }
 
+    unsafe extern "C++Qt" {
         /// The `QFile` class provides an interface for reading from and writing to files.
         ///
         /// Qt Documentation: [QFile](https://doc.qt.io/qt-6/qfile.html#details)
