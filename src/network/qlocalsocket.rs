@@ -1,6 +1,9 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode};
+use crate::{
+    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
+    SocketDescriptor,
+};
 use cxx::{type_id, UniquePtr};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlag, QFlags, QString};
@@ -237,7 +240,7 @@ impl QLocalSocket {
     /// **Note:** It is not possible to initialize two local sockets with the same native socket descriptor.
     pub fn set_socket_descriptor(
         self: Pin<&mut Self>,
-        socket_descriptor: isize,
+        socket_descriptor: SocketDescriptor,
         socket_state: QLocalSocketLocalSocketState,
         open_mode: QIODeviceOpenMode,
     ) -> bool {
@@ -247,13 +250,8 @@ impl QLocalSocket {
     /// Returns the native socket descriptor of the `QLocalSocket` object if this is available; otherwise returns `None`.
     ///
     /// The socket descriptor is not available when `QLocalSocket` is in [`QLocalSocketLocalSocketState::UnconnectedState`].
-    pub fn socket_descriptor(&self) -> Option<isize> {
-        let descriptor = self.socket_descriptor_or_negative().into();
-        if descriptor == -1 {
-            None
-        } else {
-            Some(descriptor)
-        }
+    pub fn socket_descriptor(&self) -> Option<SocketDescriptor> {
+        SocketDescriptor::from(self.socket_descriptor_or_negative()).nonnull()
     }
 
     /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call [`error`](QLocalSocket::error) to determine the cause of the error.

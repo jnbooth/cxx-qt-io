@@ -1,6 +1,6 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QHostAddress, QIODevice, QIODeviceOpenMode};
+use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, SocketDescriptor};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
@@ -443,7 +443,7 @@ impl QAbstractSocket {
     /// **Note:** It is not possible to initialize two abstract sockets with the same native socket descriptor.
     pub fn set_socket_descriptor(
         self: Pin<&mut Self>,
-        socket_descriptor: isize,
+        socket_descriptor: SocketDescriptor,
         socket_state: QAbstractSocketSocketState,
         open_mode: QIODeviceOpenMode,
     ) -> bool {
@@ -466,13 +466,8 @@ impl QAbstractSocket {
     /// If the socket is using [`QNetworkProxy`](crate::QNetworkProxy), the returned descriptor may not be usable with native socket functions.
     ///
     /// The socket descriptor is not available when `QAbstractSocket` is in [`QAbstractSocketSocketState::UnconnectedState`].
-    pub fn socket_descriptor(&self) -> Option<isize> {
-        let descriptor = self.socket_descriptor_or_negative().into();
-        if descriptor == -1 {
-            None
-        } else {
-            Some(descriptor)
-        }
+    pub fn socket_descriptor(&self) -> Option<SocketDescriptor> {
+        SocketDescriptor::from(self.socket_descriptor_or_negative()).nonnull()
     }
 
     /// Waits until the socket is connected, up to `duration`. If the connection has been established, this function returns `true`; otherwise it returns `false`. In the case where it returns `false`, you can call [`error`](QAbstractSocket::error) to determine the cause of the error.

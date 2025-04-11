@@ -147,3 +147,6 @@ pub use qtcpsocket::QTcpSocket;
 
 mod qudpsocket;
 pub use qudpsocket::QUdpSocket;
+
+mod socket_descriptor;
+pub use socket_descriptor::SocketDescriptor;
