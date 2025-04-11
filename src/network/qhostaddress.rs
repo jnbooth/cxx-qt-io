@@ -152,6 +152,9 @@ mod ffi {
         #[rust_name = "set_scope_id"]
         fn setScopeId(&mut self, id: &QString);
 
+        /// # Safety
+        ///
+        /// `ok` must be valid or null.
         #[doc(hidden)]
         #[rust_name = "to_ipv4_address"]
         unsafe fn toIPv4Address(&self, ok: *mut bool) -> u32;

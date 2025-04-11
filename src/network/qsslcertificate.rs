@@ -174,6 +174,9 @@ mod ffi {
             format: QSslEncodingFormat,
         ) -> QList_QSslCertificate;
 
+        /// # Safety
+        ///
+        /// `device` must be valid.
         #[rust_name = "qsslcertificate_from_device"]
         unsafe fn qsslcertificateFromDevice(
             device: *mut QIODevice,
@@ -187,6 +190,9 @@ mod ffi {
             syntax: QSslCertificatePatternSyntax,
         ) -> QList_QSslCertificate;
 
+        /// # Safety
+        ///
+        /// All pointers must be valid.
         #[rust_name = "qsslcertificate_import_pkcs_12"]
         unsafe fn qsslcertificateImportPkcs12(
             device: *mut QIODevice,

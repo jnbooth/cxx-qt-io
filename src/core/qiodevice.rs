@@ -98,7 +98,7 @@ mod ffi {
         #[rust_name = "error_string"]
         fn errorString(self: &QIODevice) -> QString;
 
-        /// Reads one character from the device and stores it in `c`. If c is nullptr, the character is discarded. Returns `true` on success; otherwise returns `false`.
+        /// Reads one character from the device and stores it in `c`. If c is a null pointer, the character is discarded. Returns `true` on success; otherwise returns `false`.
         ///
         /// # Safety
         /// `c` must be valid or null.

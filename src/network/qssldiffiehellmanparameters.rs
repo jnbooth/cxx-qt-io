@@ -69,6 +69,9 @@ mod ffi {
         #[rust_name = "qssldiffiehellmanparameters_default_parameters"]
         fn qssldiffiehellmanparametersDefaultParameters() -> QSslDiffieHellmanParameters;
 
+        /// # Safety
+        ///
+        /// `device` must be valid.
         #[rust_name = "qssldiffiehellmanparameters_from_encoded_device"]
         unsafe fn qssldiffiehellmanparametersFromEncoded(
             device: *mut QIODevice,
