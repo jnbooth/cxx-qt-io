@@ -132,6 +132,11 @@ mod qsslkey;
 #[cfg(feature = "ssl")]
 pub use qsslkey::QSslKey;
 
+#[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_4))]
+mod qsslserver;
+#[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_4))]
+pub use qsslserver::QSslServer;
+
 #[cfg(feature = "ssl")]
 mod qsslsocket;
 #[cfg(feature = "ssl")]

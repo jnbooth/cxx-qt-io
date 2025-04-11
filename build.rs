@@ -345,7 +345,7 @@ fn main() {
             include_header!("include/network/qsslerror.h"),
             include_header!("include/network/qsslkey.h"),
             include_header!("include/network/qsslpresharedkeyauthenticator.h"),
-            include_header!("include/network/qsslsocket.h"),
+            include_header!("include/network/qsslserver.h"),
         ]);
 
         builder = builder
@@ -387,6 +387,11 @@ fn main() {
                 "network/qsslpresharedkeyauthenticator",
                 "network/qsslsocket",
             ]);
+
+        if version.at_least(6, 4) {
+            header_dir.write_headers(&[include_header!("include/network/qsslsocket.h")]);
+            builder = builder.build_rust(&["network/qsslserver"]);
+        }
     }
 
     builder.build();
