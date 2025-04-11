@@ -142,6 +142,9 @@ mod qsslpresharedkeyauthenticator;
 #[cfg(feature = "ssl")]
 pub use qsslpresharedkeyauthenticator::QSslPreSharedKeyAuthenticator;
 
+mod qtcpserver;
+pub use qtcpserver::QTcpServer;
+
 mod qtcpsocket;
 pub use qtcpsocket::QTcpSocket;
 

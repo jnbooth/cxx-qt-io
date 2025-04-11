@@ -285,6 +285,7 @@ fn main() {
                 ),
                 "network/qnetworkreply/mod",
                 &version.find("network/qnetworkreply/networkerror", &[(5, 6)]),
+                "network/qtcpserver",
                 "network/qtcpsocket",
                 "network/qudpsocket",
             ]);

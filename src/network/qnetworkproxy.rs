@@ -202,6 +202,8 @@ mod ffi {
 
         #[rust_name = "qnetworkproxy_init_default"]
         fn construct() -> QNetworkProxy;
+        #[rust_name = "qnetworkproxy_init_from_proxytype"]
+        fn construct(proxy_type: QNetworkProxyProxyType) -> QNetworkProxy;
         #[rust_name = "qnetworkproxy_clone"]
         fn construct(other: &QNetworkProxy) -> QNetworkProxy;
 
@@ -293,6 +295,12 @@ impl QNetworkProxy {
         T: Into<QVariant>,
     {
         self.set_header_variant(header, &value.into());
+    }
+}
+
+impl From<QNetworkProxyProxyType> for QNetworkProxy {
+    fn from(value: QNetworkProxyProxyType) -> Self {
+        ffi::qnetworkproxy_init_from_proxytype(value)
     }
 }
 

@@ -7,18 +7,18 @@ pub(crate) trait MSecs: Sized {
     fn msecs(self) -> i32;
 }
 
-impl MSecs for Option<Duration> {
-    fn msecs(self) -> i32 {
-        match self {
-            Some(duration) => duration.as_millis().try_into().unwrap_or(i32::MAX),
-            None => -1,
-        }
-    }
-}
-
 impl MSecs for Duration {
     fn msecs(self) -> i32 {
         self.as_millis().try_into().unwrap_or(i32::MAX)
+    }
+}
+
+impl MSecs for Option<Duration> {
+    fn msecs(self) -> i32 {
+        match self {
+            Some(duration) => duration.msecs(),
+            None => -1,
+        }
     }
 }
 
