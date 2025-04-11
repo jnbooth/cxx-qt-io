@@ -1,5 +1,6 @@
 use crate::qio::{QIOExt, QIO};
 use crate::{QAbstractSocket, QIODevice};
+use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -31,11 +32,24 @@ mod ffi {
         #[rust_name = "downcast_qiodevice_qtcpsocket"]
         unsafe fn downcast(socket: *const QIODevice) -> *const QTcpSocket;
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[rust_name = "qtcpsocket_init_default"]
+        fn make_unique() -> UniquePtr<QTcpSocket>;
+    }
 }
 
 pub use ffi::QTcpSocket;
 
 impl QTcpSocket {
+    /// Creates a `QTcpSocket` object in state [`QAbstractSocketSocketState::UnconnectedState`](crate::QAbstractSocketSocketState::UnconnectedState).
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qtcpsocket_init_default()
+    }
+
     /// Casts this object to `QIODevice`.
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()

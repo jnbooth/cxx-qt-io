@@ -1,3 +1,4 @@
+use cxx::UniquePtr;
 use std::pin::Pin;
 use std::time::Duration;
 
@@ -141,11 +142,24 @@ mod ffi {
         #[rust_name = "new_connection"]
         fn newConnection(self: Pin<&mut QTcpServer>);
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[rust_name = "qtcpserver_init_default"]
+        fn make_unique() -> UniquePtr<QTcpServer>;
+    }
 }
 
 pub use ffi::QTcpServer;
 
 impl QTcpServer {
+    /// Constructs a `QTcpServer` object.
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qtcpserver_init_default()
+    }
+
     /// Returns the server's address if the server is listening for connections; otherwise returns `None`.
     pub fn server_address(&self) -> Option<QHostAddress> {
         self.server_address_or_null().nonnull()

@@ -1,6 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::IsNonNull;
 use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
+use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use std::ffi::c_char;
 use std::io::{self, Read, Write};
@@ -133,12 +134,25 @@ mod ffi {
         #[rust_name = "downcast_qiodevice_qudpsocket"]
         unsafe fn downcast(socket: *const QIODevice) -> *const QUdpSocket;
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[rust_name = "qudpsocket_init_default"]
+        fn make_unique() -> UniquePtr<QUdpSocket>;
+    }
 }
 
 pub use ffi::QUdpSocket;
 
 #[allow(clippy::cast_possible_wrap)]
 impl QUdpSocket {
+    /// Creates a `QUdpSocket` object.
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qudpsocket_init_default()
+    }
+
     /// Joins the multicast group specified by `group_address` on a specified network `interface`, or the default interface chosen by the operating system if `interface` is `None`. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise an error occurs.
     ///
     /// Note that if you are attempting to join an IPv4 group, your socket must not be bound using IPv6 (or in dual mode, using [`QHostAddressSpecialAddress::Any`](crate::QHostAddressSpecialAddress::Any)). You must use [`QHostAddressSpecialAddress::Any`](crate::QHostAddressSpecialAddress::Any) instead.

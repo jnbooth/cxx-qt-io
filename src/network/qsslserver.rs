@@ -1,5 +1,6 @@
 use crate::util::MSecs;
 use crate::QTcpServer;
+use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use std::pin::Pin;
 use std::time::Duration;
@@ -97,11 +98,24 @@ mod ffi {
         #[rust_name = "started_encryption_handshake"]
         unsafe fn startedEncryptionHandshake(self: Pin<&mut QSslServer>, socket: *mut QSslSocket);
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[rust_name = "qsslserver_init_default"]
+        fn make_unique() -> UniquePtr<QSslServer>;
+    }
 }
 
 pub use ffi::QSslServer;
 
 impl QSslServer {
+    /// Constructs a new `QSslServer`.
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qsslserver_init_default()
+    }
+
     /// Sets the `timeout` to use for all incoming handshakes.
     ///
     /// This is relevant in the scenario where a client, whether malicious or accidental, connects to the server but makes no attempt at communicating or initiating a handshake. `QSslServer` will then automatically end the connection after `timeout` has elapsed.

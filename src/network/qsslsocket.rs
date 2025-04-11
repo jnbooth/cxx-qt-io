@@ -4,6 +4,7 @@ use crate::{
     QAbstractSocket, QIODevice, QSslCertificate, QSslImplementedClass, QSslSslProtocol,
     QSslSupportedFeature, QTcpSocket,
 };
+use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QList, QString};
 use std::io::{self, Read, Write};
@@ -449,11 +450,24 @@ mod ffi {
         #[rust_name = "downcast_qabstractsocket_qsslsocket"]
         unsafe fn downcast(socket: *const QAbstractSocket) -> *const QSslSocket;
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+
+        #[rust_name = "qsslsocket_init_default"]
+        fn make_unique() -> UniquePtr<QSslSocket>;
+    }
 }
 
 pub use ffi::{QSslSocket, QSslSocketPeerVerifyMode, QSslSocketSslMode};
 
 impl QSslSocket {
+    /// Constructs a `QSslSocket` object. The new socket's cipher suite is set to be the one returned by [`QSslConfiguration::default_configuration()`](crate::QSslConfiguration::default_configuration)`.`[`ciphers()`](crate::QSslConfiguration::ciphers).
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qsslsocket_init_default()
+    }
+
     /// Returns the socket's local certificate, or `None` if no local certificate has been assigned.
     pub fn local_certificate(&self) -> Option<QSslCertificate> {
         self.local_certificate_or_empty().nonnull()
