@@ -178,7 +178,6 @@ fn main() {
             "core/qmap/qmap",
             "core/qset/qset",
             "core/qvariant/qvariant",
-            "core/qtemporaryfile",
         ])
         .build_rust(&[
             "core/qbuffer",

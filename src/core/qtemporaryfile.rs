@@ -77,7 +77,7 @@ mod ffi {
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         #[rust_name = "qtemporaryfile_create_native_file"]
-        fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> UniquePtr<QTemporaryFile>;
+        fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -113,7 +113,8 @@ impl QTemporaryFile {
 
     /// If `file` is not already a native file, then a `QTemporaryFile` is created in [`QDir::temp_path()`](crate::QDir::temp_path), the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.
     pub fn create_native_file(file: Pin<&mut QFile>) -> UniquePtr<Self> {
-        ffi::qtemporaryfile_create_native_file(file)
+        // SAFETY: Qt returns a pointer that is either valid or null and is not owned.
+        unsafe { UniquePtr::from_raw(ffi::qtemporaryfile_create_native_file(file)) }
     }
 
     /// Casts this object to `QIODevice`.
