@@ -1,6 +1,9 @@
 mod qdtls;
 pub use qdtls::{QDtls, QDtlsError, QDtlsHandshakeState};
 
+mod qdtlsclientverifier;
+pub use qdtlsclientverifier::QDtlsClientVerifier;
+
 mod qdtlsgeneratorparameters;
 pub use qdtlsgeneratorparameters::QDtlsGeneratorParameters;
 
