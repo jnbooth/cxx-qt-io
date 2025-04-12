@@ -1,3 +1,6 @@
+mod qdtls;
+pub use qdtls::{QDtls, QDtlsError, QDtlsHandshakeState};
+
 mod qdtlsgeneratorparameters;
 pub use qdtlsgeneratorparameters::QDtlsGeneratorParameters;
 
