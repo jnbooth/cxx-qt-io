@@ -76,6 +76,12 @@ mod ffi {
         #[rust_name = "is_broadcast"]
         fn isBroadcast(&self) -> bool;
 
+        /// Returns `true` if this host address is the same as the other address given; otherwise returns `false`.
+        ///
+        /// The parameter `mode` controls which conversions are preformed between addresses of differing protocols.
+        #[rust_name = "is_equal"]
+        fn isEqual(&self, other: &QHostAddress, mode: QHostAddressConversionMode) -> bool;
+
         /// Returns `true` if the address is an IPv4 or IPv6 global address, `false` otherwise. A global address is an address that is not reserved for special purposes (like loopback or multicast) or future purposes.
         ///
         /// Note that IPv6 unique local unicast addresses are considered global addresses (see [`is_unique_local_unicast`](QHostAddress::is_unique_local_unicast)), as are IPv4 addresses reserved for local networks by [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918).
@@ -147,6 +153,15 @@ mod ffi {
         /// When using a link-local or site-local address for IPv6 connections, you must specify the scope ID. The scope ID for a link-local address is usually the same as the interface name (e.g., `"eth0"`, `"en1"`) or number (e.g., `"1"`, `"2"`).
         #[rust_name = "scope_id"]
         fn scopeId(&self) -> QString;
+
+        #[doc(hidden)]
+        #[rust_name = "set_address_ipv4"]
+        fn setAddress(&mut self, ip4_addr: u32);
+
+        #[doc(hidden)]
+        #[allow(private_interfaces)]
+        #[rust_name = "set_address_ipv6"]
+        fn setAddress(&mut self, ip6_addr: &QIpv6Addr);
 
         /// Sets the IPv6 scope ID of the address to `id`. If the address protocol is not IPv6, this function does nothing. The scope ID may be set as an interface name (such as `"eth0"` or `"en1"`) or as an integer representing the interface index. If `id` is an interface name, QtNetwork will convert to an interface index using [`QNetworkInterface::interface_index_from_name`](crate::QNetworkInterface::interface_index_from_name) before calling the operating system networking functions.
         #[rust_name = "set_scope_id"]
@@ -264,6 +279,16 @@ impl IsNonNull for QHostAddress {
 impl QHostAddress {
     pub fn parse_subnet(subnet: &QString) -> QPair<QPairPair_QHostAddress_i32> {
         ffi::qhostaddress_parse_subnet(subnet)
+    }
+
+    pub fn set_address<T>(&mut self, address: T)
+    where
+        T: Into<IpAddr>,
+    {
+        match address.into() {
+            IpAddr::V4(addr) => self.set_address_ipv4(addr.into()),
+            IpAddr::V6(addr) => self.set_address_ipv6(&addr.into()),
+        }
     }
 }
 
