@@ -107,28 +107,32 @@ mod ffi {
         include!("cxx-qt-lib/qlist.h");
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
 
-        #[cfg(cxxqt_qt_version_at_least_6_7)]
-        include!("cxx-qt-lib/qanystringview.h");
-        #[cfg(cxxqt_qt_version_at_least_6_7)]
-        type QAnyStringView<'a> = cxx_qt_lib::QAnyStringView<'a>;
-
         include!("cxx-qt-io/qhttp2configuration.h");
         type QHttp2Configuration = crate::QHttp2Configuration;
+    }
 
-        #[cfg(feature = "ssl")]
-        include!("cxx-qt-io/qsslconfiguration.h");
-        #[cfg(feature = "ssl")]
-        type QSslConfiguration = crate::QSslConfiguration;
-
-        #[cfg(cxxqt_qt_version_at_least_6_5)]
+    #[cfg(cxxqt_qt_version_at_least_6_5)]
+    extern "C++" {
         include!("cxx-qt-io/qhttp1configuration.h");
-        #[cfg(cxxqt_qt_version_at_least_6_5)]
         type QHttp1Configuration = crate::QHttp1Configuration;
+    }
 
-        #[cfg(cxxqt_qt_version_at_least_6_8)]
+    #[cfg(cxxqt_qt_version_at_least_6_8)]
+    extern "C++" {
         include!("cxx-qt-io/qhttpheaders.h");
-        #[cfg(cxxqt_qt_version_at_least_6_8)]
         type QHttpHeaders = crate::QHttpHeaders;
+    }
+
+    #[cfg(cxxqt_qt_version_at_least_6_7)]
+    extern "C++" {
+        include!("cxx-qt-lib/qanystringview.h");
+        type QAnyStringView<'a> = cxx_qt_lib::QAnyStringView<'a>;
+    }
+
+    #[cfg(feature = "ssl")]
+    extern "C++" {
+        include!("cxx-qt-io/qsslconfiguration.h");
+        type QSslConfiguration = crate::QSslConfiguration;
     }
 
     extern "C++" {

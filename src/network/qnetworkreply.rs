@@ -101,42 +101,42 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qurl.h");
         type QUrl = cxx_qt_lib::QUrl;
+        include!("cxx-qt-lib/qvariant.h");
+        type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-lib/qlist.h");
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
 
-        #[cfg(cxxqt_qt_version_at_least_6_7)]
-        include!("cxx-qt-lib/qanystringview.h");
-        #[cfg(cxxqt_qt_version_at_least_6_7)]
-        type QAnyStringView<'a> = cxx_qt_lib::QAnyStringView<'a>;
-
-        include!("cxx-qt-lib/qvariant.h");
-        type QVariant = cxx_qt_lib::QVariant;
-
-        #[cfg(cxxqt_qt_version_at_least_6_8)]
-        include!("cxx-qt-io/qhttpheaders.h");
-        #[cfg(cxxqt_qt_version_at_least_6_8)]
-        type QHttpHeaders = crate::QHttpHeaders;
-
-        #[cfg(feature = "ssl")]
-        include!("cxx-qt-io/qsslconfiguration.h");
-        #[cfg(feature = "ssl")]
-        type QSslConfiguration = crate::QSslConfiguration;
         include!("cxx-qt-io/qnetworkaccessmanager.h");
         type QNetworkAccessManagerOperation = crate::QNetworkAccessManagerOperation;
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequest = crate::QNetworkRequest;
         type QNetworkRequestAttribute = crate::QNetworkRequestAttribute;
         type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
-        #[cfg(feature = "ssl")]
-        include!("cxx-qt-io/qsslpresharedkeyauthenticator.h");
-        #[cfg(feature = "ssl")]
-        type QSslPreSharedKeyAuthenticator = crate::QSslPreSharedKeyAuthenticator;
         include!("cxx-qt-io/qpair.h");
         type QPair_QByteArray_QByteArray = crate::QPair<crate::QPairPair_QByteArray_QByteArray>;
         include!("cxx-qt-io/qlist.h");
-        #[cfg(feature = "ssl")]
-        type QList_QSslError = cxx_qt_lib::QList<crate::QSslError>;
         type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;
+    }
+
+    #[cfg(cxxqt_qt_version_at_least_6_7)]
+    extern "C++" {
+        include!("cxx-qt-lib/qanystringview.h");
+        type QAnyStringView<'a> = cxx_qt_lib::QAnyStringView<'a>;
+    }
+
+    #[cfg(cxxqt_qt_version_at_least_6_8)]
+    extern "C++" {
+        include!("cxx-qt-io/qhttpheaders.h");
+        type QHttpHeaders = crate::QHttpHeaders;
+    }
+
+    #[cfg(feature = "ssl")]
+    extern "C++" {
+        include!("cxx-qt-io/qsslconfiguration.h");
+        type QSslConfiguration = crate::QSslConfiguration;
+        include!("cxx-qt-io/qsslpresharedkeyauthenticator.h");
+        type QSslPreSharedKeyAuthenticator = crate::QSslPreSharedKeyAuthenticator;
+        type QList_QSslError = cxx_qt_lib::QList<crate::QSslError>;
     }
 
     extern "C++" {

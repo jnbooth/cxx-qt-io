@@ -54,11 +54,7 @@ mod ffi {
         type QSslAlertLevel = crate::QSslAlertLevel;
         type QSslAlertType = crate::QSslAlertType;
         type QSslEncodingFormat = crate::QSslEncodingFormat;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QSslImplementedClass = crate::QSslImplementedClass;
         type QSslKeyAlgorithm = crate::QSslKeyAlgorithm;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QSslSupportedFeature = crate::QSslSupportedFeature;
         type QSslSslProtocol = crate::QSslSslProtocol;
         include!("cxx-qt-io/qsslcertificate.h");
         type QSslCertificate = crate::QSslCertificate;
@@ -76,12 +72,16 @@ mod ffi {
         type QList_QString = cxx_qt_lib::QList<QString>;
         type QList_QSslCertificate = cxx_qt_lib::QList<QSslCertificate>;
         type QList_QSslError = cxx_qt_lib::QList<QSslError>;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QList_QSslImplementedClass = cxx_qt_lib::QList<QSslImplementedClass>;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QList_QSslSupportedFeature = cxx_qt_lib::QList<QSslSupportedFeature>;
         type QList_QSslSslProtocol = cxx_qt_lib::QList<QSslSslProtocol>;
         type QList_QOcspResponse = cxx_qt_lib::QList<crate::QOcspResponse>;
+    }
+
+    #[cfg(cxxqt_qt_version_at_least_6_1)]
+    extern "C++" {
+        type QSslImplementedClass = crate::QSslImplementedClass;
+        type QSslSupportedFeature = crate::QSslSupportedFeature;
+        type QList_QSslImplementedClass = cxx_qt_lib::QList<QSslImplementedClass>;
+        type QList_QSslSupportedFeature = cxx_qt_lib::QList<QSslSupportedFeature>;
     }
 
     extern "C++" {

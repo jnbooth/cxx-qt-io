@@ -61,10 +61,11 @@ mod ffi {
         type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
+    }
 
-        #[cfg(cxxqt_qt_version_at_least_6_8)]
+    #[cfg(cxxqt_qt_version_at_least_6_8)]
+    extern "C++" {
         include!("cxx-qt-io/qhttpheaders.h");
-        #[cfg(cxxqt_qt_version_at_least_6_8)]
         type QHttpHeaders = crate::QHttpHeaders;
     }
 
