@@ -19,7 +19,7 @@ pub mod ffi {
         #[rust_name = "cxx_qset_contains_QSslError"]
         fn qsetContains(set: &QSet_QSslError, _: &QSslError) -> bool;
         #[rust_name = "cxx_qset_remove_QSslError"]
-        fn qsetRemove(set: &QSet_QSslError, _: &QSslError) -> bool;
+        fn qsetRemove(set: &mut QSet_QSslError, _: &QSslError) -> bool;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -55,7 +55,7 @@ pub(crate) fn contains(v: &ffi::QSet_QSslError, item: &ffi::QSslError) -> bool {
     ffi::cxx_qset_contains_QSslError(v, item)
 }
 
-pub(crate) fn remove(v: &ffi::QSet_QSslError, item: &ffi::QSslError) -> bool {
+pub(crate) fn remove(v: &mut ffi::QSet_QSslError, item: &ffi::QSslError) -> bool {
     ffi::cxx_qset_remove_QSslError(v, item)
 }
 

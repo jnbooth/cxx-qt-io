@@ -19,7 +19,7 @@ pub mod ffi {
         #[rust_name = "cxx_qset_contains_QSslCertificate"]
         fn qsetContains(set: &QSet_QSslCertificate, _: &QSslCertificate) -> bool;
         #[rust_name = "cxx_qset_remove_QSslCertificate"]
-        fn qsetRemove(set: &QSet_QSslCertificate, _: &QSslCertificate) -> bool;
+        fn qsetRemove(set: &mut QSet_QSslCertificate, _: &QSslCertificate) -> bool;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -55,7 +55,7 @@ pub(crate) fn contains(v: &ffi::QSet_QSslCertificate, item: &ffi::QSslCertificat
     ffi::cxx_qset_contains_QSslCertificate(v, item)
 }
 
-pub(crate) fn remove(v: &ffi::QSet_QSslCertificate, item: &ffi::QSslCertificate) -> bool {
+pub(crate) fn remove(v: &mut ffi::QSet_QSslCertificate, item: &ffi::QSslCertificate) -> bool {
     ffi::cxx_qset_remove_QSslCertificate(v, item)
 }
 

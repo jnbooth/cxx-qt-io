@@ -14,9 +14,16 @@
   static_assert(::std::is_copy_assignable<name>::value);                       \
   static_assert(::std::is_copy_constructible<name>::value);
 
+#ifdef CXX_QT_IO_NETWORK_FEATURE
+CXX_QT_IO_QSET_ASSERTS(QHostAddress);
+CXX_QT_IO_QSET_ASSERTS(QHttp1Configuration);
+
 #ifdef CXX_QT_IO_SSL_FEATURE
 CXX_QT_IO_QSET_ASSERTS(QOcspResponse);
 CXX_QT_IO_QSET_ASSERTS(QSslCertificate);
+CXX_QT_IO_QSET_ASSERTS(QSslDiffieHellmanParameters);
 CXX_QT_IO_QSET_ASSERTS(QSslEllipticCurve);
 CXX_QT_IO_QSET_ASSERTS(QSslError);
+#endif
+
 #endif

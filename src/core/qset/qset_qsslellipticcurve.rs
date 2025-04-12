@@ -19,7 +19,7 @@ pub mod ffi {
         #[rust_name = "cxx_qset_contains_QSslEllipticCurve"]
         fn qsetContains(set: &QSet_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
         #[rust_name = "cxx_qset_remove_QSslEllipticCurve"]
-        fn qsetRemove(set: &QSet_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
+        fn qsetRemove(set: &mut QSet_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -55,7 +55,7 @@ pub(crate) fn contains(v: &ffi::QSet_QSslEllipticCurve, item: &ffi::QSslElliptic
     ffi::cxx_qset_contains_QSslEllipticCurve(v, item)
 }
 
-pub(crate) fn remove(v: &ffi::QSet_QSslEllipticCurve, item: &ffi::QSslEllipticCurve) -> bool {
+pub(crate) fn remove(v: &mut ffi::QSet_QSslEllipticCurve, item: &ffi::QSslEllipticCurve) -> bool {
     ffi::cxx_qset_remove_QSslEllipticCurve(v, item)
 }
 

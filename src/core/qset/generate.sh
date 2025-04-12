@@ -45,7 +45,7 @@ pub mod ffi {
         ) -> bool;
         #[rust_name = "cxx_qset_remove_$1"]
         fn qsetRemove(
-            set: &QSet_$1,
+            set: &mut QSet_$1,
             _: &$1,
         ) -> bool;
     }
@@ -87,7 +87,7 @@ pub(crate) fn contains(
 }
 
 pub(crate) fn remove(
-    v: &ffi::QSet_$1,
+    v: &mut ffi::QSet_$1,
     item: &ffi::$1,
 ) -> bool {
     ffi::cxx_qset_remove_$1(v, item)
@@ -124,7 +124,10 @@ EOF
     rustfmt "$SCRIPTPATH/qset_$LOWER.rs"
 }
 
+generate_bridge "QHostAddress"
+generate_bridge "QHttp1Configuration"
 generate_bridge "QOcspResponse"
 generate_bridge "QSslCertificate"
+generate_bridge "QSslDiffieHellmanParameters"
 generate_bridge "QSslEllipticCurve"
 generate_bridge "QSslError"

@@ -21,7 +21,7 @@ qsetContains(const QSet<T>& set, const T& item)
 
 template<typename T>
 bool
-qsetRemove(const QSet<T>& set, const T& item)
+qsetRemove(QSet<T>& set, const T& item)
 {
   return set.remove(item);
 }
