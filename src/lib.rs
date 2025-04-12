@@ -1,3 +1,6 @@
+#[cfg(not(cxxqt_qt_version_major = "6"))]
+compile_error!("cxxqt_qt_version_major must be \"6\"");
+
 macro_rules! unsafe_impl_qflag {
     ( $typeName:ty, $typeId:literal ) => {
         unsafe_impl_qflag!($typeName, $typeId, i32);
