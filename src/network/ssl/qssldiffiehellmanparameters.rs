@@ -1,13 +1,12 @@
 use std::fmt::{self, Debug, Formatter};
 use std::mem::MaybeUninit;
 use std::pin::Pin;
-use std::ptr;
 
 use cxx::{type_id, ExternType};
 use cxx_qt::Upcast;
 use cxx_qt_lib::QByteArray;
 
-use crate::util::IsNonNull;
+use crate::util::{unpin_for_qt, IsNonNull};
 use crate::{QIODevice, QSslEncodingFormat};
 
 #[cxx::bridge]
@@ -181,10 +180,10 @@ impl QSslDiffieHellmanParameters {
     where
         T: Upcast<QIODevice>,
     {
-        let device = device.upcast_pin();
+        // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
         unsafe {
             ffi::qssldiffiehellmanparameters_from_encoded_device(
-                ptr::from_ref(&*device).cast_mut(),
+                unpin_for_qt(device.upcast_pin()),
                 encoding,
             )
         }

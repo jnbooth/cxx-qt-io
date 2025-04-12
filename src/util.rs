@@ -1,6 +1,30 @@
+#[allow(dead_code)]
+use std::pin::Pin;
+use std::ptr;
 use std::time::Duration;
 
 use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime, QVariant};
+
+/// Unwraps a`Pin<&mut T>` into a mutable pointer. This function should only be used
+/// to directly pass the resulting pointer to an extern Qt function.
+///
+/// # Safety
+///
+/// This function is unsafe. You must guarantee that you will continue to
+/// treat the `&mut T` as pinned after you call this function, so that
+/// the invariants on the `Pin` type can be upheld. If the code using the
+/// resulting `&mut T` does not continue to maintain the pinning invariants that
+/// is a violation of the API contract and may lead to undefined behavior in
+/// later (safe) operations.
+///
+/// Note that you must be able to guarantee that the data pointed to by `&mut T`
+/// will be treated as pinned all the way until its `drop` handler is complete!
+///
+/// *For more information, see the [`pin` module docs][std::pin]*
+#[allow(dead_code)]
+pub unsafe fn unpin_for_qt<T>(pin: Pin<&mut T>) -> *mut T {
+    unsafe { ptr::from_mut(Pin::into_inner_unchecked(pin)) }
+}
 
 #[allow(dead_code)]
 pub(crate) trait MSecs: Sized {
