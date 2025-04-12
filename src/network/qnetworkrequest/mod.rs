@@ -265,7 +265,6 @@ mod ffi {
         fn setSslConfiguration(&mut self, configuration: &QSslConfiguration);
 
         #[doc(hidden)]
-        #[cfg(any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_15))]
         #[rust_name = "set_transfer_timeout_msecs"]
         fn setTransferTimeout(&mut self, timeout: i32);
 
@@ -404,7 +403,6 @@ impl QNetworkRequest {
     /// Sets `timeout` as the transfer timeout.
     ///
     /// Transfers are aborted if no bytes are transferred before the timeout expires. `None` means no timer is set. If this function is not called, the timeout is disabled.
-    #[cfg(any(cxxqt_qt_version_at_least_6_0, cxxqt_qt_version_at_least_5_15))]
     pub fn set_transfer_timeout(&mut self, duration: Option<Duration>) {
         let msecs = match duration {
             Some(duration) => duration.msecs(),

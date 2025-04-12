@@ -9,11 +9,8 @@ using QSslAlternativeNameEntryType = QSsl::AlternativeNameEntryType;
 using QSslSslProtocol = QSsl::SslProtocol;
 using QSslSslOption = QSsl::SslOption;
 using QSslSslOptions = QSsl::SslOptions;
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 using QSslAlertLevel = QSsl::AlertLevel;
 using QSslAlertType = QSsl::AlertType;
-#endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QSslImplementedClass = QSsl::ImplementedClass;

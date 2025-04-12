@@ -262,9 +262,7 @@ mod ssl {
     );
     impl_qlist_element!(crate::QSslSocketSslMode, "QList_QSslSocketSslMode");
 
-    #[cfg(cxxqt_qt_version_at_least_6_0)]
     impl_qlist_element!(crate::QSslAlertLevel, "QList_QSslAlertLevel");
-    #[cfg(cxxqt_qt_version_at_least_6_0)]
     impl_qlist_element!(crate::QSslAlertType, "QList_QSslAlertType");
     #[cfg(cxxqt_qt_version_at_least_6_1)]
     impl_qlist_element!(crate::QSslImplementedClass, "QList_QSslImplementedClass");

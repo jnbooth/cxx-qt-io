@@ -1,9 +1,8 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{
-    QAbstractSocket, QIODevice, QSslCertificate, QSslImplementedClass, QSslSslProtocol,
-    QSslSupportedFeature, QTcpSocket,
-};
+use crate::{QAbstractSocket, QIODevice, QSslCertificate, QSslSslProtocol, QTcpSocket};
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+use crate::{QSslImplementedClass, QSslSupportedFeature};
 use cxx::UniquePtr;
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QList, QString};
@@ -55,8 +54,10 @@ mod ffi {
         type QSslAlertLevel = crate::QSslAlertLevel;
         type QSslAlertType = crate::QSslAlertType;
         type QSslEncodingFormat = crate::QSslEncodingFormat;
+        #[cfg(cxxqt_qt_version_at_least_6_1)]
         type QSslImplementedClass = crate::QSslImplementedClass;
         type QSslKeyAlgorithm = crate::QSslKeyAlgorithm;
+        #[cfg(cxxqt_qt_version_at_least_6_1)]
         type QSslSupportedFeature = crate::QSslSupportedFeature;
         type QSslSslProtocol = crate::QSslSslProtocol;
         include!("cxx-qt-io/qsslcertificate.h");
@@ -75,7 +76,9 @@ mod ffi {
         type QList_QString = cxx_qt_lib::QList<QString>;
         type QList_QSslCertificate = cxx_qt_lib::QList<QSslCertificate>;
         type QList_QSslError = cxx_qt_lib::QList<QSslError>;
+        #[cfg(cxxqt_qt_version_at_least_6_1)]
         type QList_QSslImplementedClass = cxx_qt_lib::QList<QSslImplementedClass>;
+        #[cfg(cxxqt_qt_version_at_least_6_1)]
         type QList_QSslSupportedFeature = cxx_qt_lib::QList<QSslSupportedFeature>;
         type QList_QSslSslProtocol = cxx_qt_lib::QList<QSslSslProtocol>;
         type QList_QOcspResponse = cxx_qt_lib::QList<crate::QOcspResponse>;
@@ -114,7 +117,6 @@ mod ffi {
         );
 
         /// If an application wants to conclude a handshake even after receiving [`handshake_interrupted_on_error`](QSslSocket::handshake_interrupted_on_error) signal, it must call this function. This call must be done from a slot function attached to the signal. The signal-slot connection must be direct.
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "continue_interrupted_handshake"]
         fn continueInterruptedHandshake(self: Pin<&mut QSslSocket>);
 

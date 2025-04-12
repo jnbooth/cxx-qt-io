@@ -6,11 +6,8 @@
 #include <cxx-qt-io/definitions.h>
 #include <cxx-qt-lib/qlist.h>
 
-#include "qlist_qpair_qbytearray_qbytearray.h"
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 #include "qlist_qdeadlinetimer.h"
-#endif
+#include "qlist_qpair_qbytearray_qbytearray.h"
 
 #ifdef CXX_QT_IO_NETWORK_FEATURE
 #include "qlist_qhostaddress.h"
@@ -115,11 +112,8 @@ using QList_QSslErrorSslError = QList<QSslError::SslError>;
 
 using QList_QSslSocketPeerVerifyMode = QList<QSslSocket::PeerVerifyMode>;
 using QList_QSslSocketSslMode = QList<QSslSocket::SslMode>;
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 using QList_QSslAlertLevel = QList<QSsl::AlertLevel>;
 using QList_QSslAlertType = QList<QSsl::AlertType>;
-#endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QList_QSslImplementedClass = QList<QSsl::ImplementedClass>;

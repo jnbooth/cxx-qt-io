@@ -70,7 +70,6 @@ pub use qnetworkrequest::{
 mod qnetworkreply;
 pub use qnetworkreply::{QNetworkReply, QNetworkReplyNetworkError};
 
-#[cfg(feature = "ssl")]
 mod qocspresponse;
 #[cfg(feature = "ssl")]
 pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationReason};
@@ -83,7 +82,7 @@ pub use qssl::{
     QSslSslOptions, QSslSslProtocol,
 };
 
-#[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_0))]
+#[cfg(feature = "ssl")]
 pub use qssl::{QSslAlertLevel, QSslAlertType};
 
 #[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_1))]

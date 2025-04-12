@@ -1,9 +1,5 @@
 #pragma once
 
-#include <QtCore/qtversionchecks.h>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-
 #include <QtCore/QByteArrayView>
 #include <QtCore/QLatin1StringView>
 
@@ -33,5 +29,3 @@ qlatin1stringviewAsStr(QLatin1StringView view)
 
 }
 }
-
-#endif

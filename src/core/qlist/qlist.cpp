@@ -2,17 +2,12 @@
 
 #include <cxx-qt-io/assertion_utils.h>
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 #define CXX_QT_IO_QLIST_ALIGN_AND_SIZE(name)                                   \
   assert_alignment_and_size(QList_##name, {                                    \
     ::std::size_t a0;                                                          \
     ::std::size_t a1;                                                          \
     ::std::size_t a2;                                                          \
   });
-#else
-#define CXX_QT_IO_QLIST_ALIGN_AND_SIZE(name)                                   \
-  assert_alignment_and_size(QList_##name, { ::std::size_t a0; });
-#endif
 
 #define CXX_QT_IO_QLIST_ASSERTS(name)                                          \
   CXX_QT_IO_QLIST_ALIGN_AND_SIZE(name);                                        \
@@ -26,11 +21,8 @@
   static_assert(::std::is_copy_assignable<name>::value);                       \
   static_assert(::std::is_copy_constructible<name>::value);
 
-CXX_QT_IO_QLIST_ASSERTS(QPair_QByteArray_QByteArray);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 CXX_QT_IO_QLIST_ASSERTS(QDeadlineTimer);
-#endif
+CXX_QT_IO_QLIST_ASSERTS(QPair_QByteArray_QByteArray);
 
 #ifdef CXX_QT_IO_NETWORK_FEATURE
 CXX_QT_IO_QLIST_ASSERTS(QHostAddress);

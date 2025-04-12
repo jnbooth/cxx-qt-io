@@ -110,7 +110,7 @@ trait AtLeast {
                 return format!("{name}/v{major}_{minor}");
             }
         }
-        format!("{name}/v5_0")
+        format!("{name}/v6_0")
     }
 }
 
@@ -148,6 +148,7 @@ fn main() {
         include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
+        include_header!("include/core/qlist/qlist_qdeadlinetimer.h"),
         include_header!("include/core/qlist/qlist_qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qlist/qlist.h"),
         include_header!("include/core/qmap/qmap_private.h"),
@@ -173,6 +174,7 @@ fn main() {
     let mut builder = CxxQtBuilder::library(interface)
         .build_cpp(&[
             "core/qbuffer",
+            "core/qdeadlinetimer",
             "core/qiodevice",
             "core/qlist/qlist",
             "core/qpair/qpair",
@@ -182,10 +184,8 @@ fn main() {
         ])
         .build_rust(&[
             "core/qbuffer",
-            &version.find(
-                "core/qcryptographichash/algorithm",
-                &[(6, 0), (5, 9), (5, 1)],
-            ),
+            "core/qcryptographichash",
+            "core/qdeadlinetimer",
             "core/qdir",
             "core/qfile",
             "core/qfiledevice",
@@ -196,17 +196,6 @@ fn main() {
             "core/qt",
             "core/qtemporaryfile",
         ]);
-
-    if version.at_least(5, 8) {
-        header_dir.write_headers(&[
-            include_header!("include/core/qlist/qlist_qdeadlinetimer.h"),
-            include_header!("include/core/qdeadlinetimer.h"),
-        ]);
-
-        builder = builder
-            .build_cpp(&["core/qdeadlinetimer"])
-            .build_rust(&["core/qdeadlinetimer"]);
-    }
 
     if features.network {
         header_dir.write_headers(&[
@@ -246,7 +235,7 @@ fn main() {
                 "network/qhostaddress",
                 "network/qhttp2configuration",
                 "network/qnetworkaddressentry",
-                "network/qnetworkcookie",
+                "network/qnetworkcookie/qnetworkcookie",
                 "network/qnetworkdatagram",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest/qnetworkrequest",
@@ -269,29 +258,16 @@ fn main() {
                 "network/qlocalsocket",
                 "network/qnetworkaccessmanager",
                 "network/qnetworkaddressentry",
-                "network/qnetworkcookie",
+                "network/qnetworkcookie/mod",
                 "network/qnetworkdatagram",
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest/mod",
                 &version.find(
                     "network/qnetworkrequest/attribute",
-                    &[
-                        (6, 8),
-                        (6, 5),
-                        (6, 3),
-                        (6, 0),
-                        (5, 15),
-                        (5, 14),
-                        (5, 11),
-                        (5, 9),
-                        (5, 6),
-                        (5, 5),
-                        (5, 3),
-                    ],
+                    &[(6, 8), (6, 5), (6, 3)],
                 ),
-                "network/qnetworkreply/mod",
-                &version.find("network/qnetworkreply/networkerror", &[(5, 6)]),
+                "network/qnetworkreply",
                 "network/qtcpserver",
                 "network/qtcpsocket",
                 "network/qudpsocket",
@@ -377,8 +353,6 @@ fn main() {
                 "core/qlist/qlist_qsslpresharedkeyauthenticator",
                 "network/qocspresponse",
                 "network/qssl/mod",
-                &version.find("network/qssl/alternativenameentrytype", &[(5, 13)]),
-                &version.find("network/qssl/protocol", &[(6, 3), (5, 12)]),
                 "network/qsslcertificate",
                 "network/qsslcertificateextension",
                 "network/qsslcipher",
@@ -390,6 +364,10 @@ fn main() {
                 "network/qsslpresharedkeyauthenticator",
                 "network/qsslsocket",
             ]);
+
+        if version.at_least(6, 1) {
+            builder = builder.build_rust(&["network/qnetworkcookie/v6_1", "network/qssl/v6_1"]);
+        }
 
         if version.at_least(6, 4) {
             header_dir.write_headers(&[include_header!("include/network/qsslsocket.h")]);

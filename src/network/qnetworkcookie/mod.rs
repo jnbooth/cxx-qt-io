@@ -1,3 +1,8 @@
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+mod v6_1;
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+pub use v6_1::QNetworkCookieSameSite;
+
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QByteArray, QDateTime, QList};
 use std::fmt::{self, Debug, Formatter};
@@ -16,20 +21,6 @@ mod ffi {
         Full,
     }
 
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
-    #[repr(i32)]
-    #[derive(Debug)]
-    enum QNetworkCookieSameSite {
-        /// The `SameSite` attribute is not set. Can be interpreted as [`None`](QNetworkCookieSameSite::None) or [`Lax`](QNetworkCookieSameSite::Lax) by the browser.
-        Default,
-        /// Cookies can be sent in all contexts. This used to be default, but recent browsers made [`Lax`](QNetworkCookieSameSite::Lax) default, and will now require the cookie to be both secure and to set `SameSite=None`.
-        None,
-        /// Cookies are sent on first party requests and GET requests initiated by third party website. This is the default in modern browsers (since mid 2020).
-        Lax,
-        /// Cookies will only be sent in a first-party context.
-        Strict,
-    }
-
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
@@ -45,7 +36,7 @@ mod ffi {
         include!("cxx-qt-io/qnetworkcookie.h");
         type QNetworkCookieRawForm;
         #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QNetworkCookieSameSite;
+        type QNetworkCookieSameSite = super::QNetworkCookieSameSite;
     }
 
     unsafe extern "C++" {
@@ -134,9 +125,6 @@ mod ffi {
 }
 
 pub use ffi::QNetworkCookieRawForm;
-
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use ffi::QNetworkCookieSameSite;
 
 /// The `QNetworkCookie` class holds one network cookie.
 ///

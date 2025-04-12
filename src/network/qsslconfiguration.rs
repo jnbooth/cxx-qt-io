@@ -122,7 +122,6 @@ mod ffi {
         /// Returns the ephemeral server key used for cipher algorithms with forward secrecy, e.g. DHE-RSA-AES128-SHA.
         ///
         /// The ephemeral key is only available when running in client mode, i.e. [`QSslSocketSslMode::SslClientMode`](crate::QSslSocketSslMode::SslClientMode). When running in server mode or using a cipher algorithm without forward secrecy a null key is returned. The ephemeral server key will be set before emitting the [`QSslSocket::encrypted`](crate::QSslSocket::encrypted) signal.
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "ephemeral_server_key"]
         fn ephemeralServerKey(&self) -> QSslKey;
 
@@ -149,7 +148,6 @@ mod ffi {
         /// Returns `true` if errors with code [`QSslErrorSslError::NoPeerCertificate`](crate::QSslErrorSslError::NoPeerCertificate) cannot be ignored.
         ///
         /// **Note:** Always returns `false` for all TLS backends but OpenSSL.
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "missing_certificate_is_fatal"]
         fn missingCertificateIsFatal(&self) -> bool;
 
@@ -263,7 +261,6 @@ mod ffi {
         /// **Note:** When interrupting handshake is enabled, errors that would otherwise be reported by [`QSslSocket::peer_verify_error`](crate::QSslSocket::peer_verify_error) are instead only reported by [`QSslSocket::handshake_interrupted_on_error`](crate::QSslSocket::handshake_interrupted_on_error).
         ///
         /// **Note:** Even if the handshake was continued, these errors will be reported when emitting [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors) signal (and thus must be ignored in the corresponding function slot).
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "set_handshake_must_interrupt_on_error"]
         fn setHandshakeMustInterruptOnError(&mut self, interrupt: bool);
 
@@ -288,7 +285,6 @@ mod ffi {
         /// If `cannot_recover` is true, and verification mode in use is [`QSslSocketPeerVerifyMode::VerifyPeer`](crate::QSslSocketPeerVerifyMode::VerifyPeer) or [`QSslSocketPeerVerifyMode::AutoVerifyPeer`](crate::QSslSocketPeerVerifyMode::AutoVerifyPeer) (for a client-side socket), the missing peer's certificate would be treated as an unrecoverable error that cannot be ignored. A proper alert message will be sent to the peer before closing the connection.
         ///
         /// **Note:** Only available if Qt was configured and built with OpenSSL backend.
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
         #[rust_name = "set_missing_certificate_is_fatal"]
         fn setMissingCertificateIsFatal(&mut self, cannot_recover: bool);
 

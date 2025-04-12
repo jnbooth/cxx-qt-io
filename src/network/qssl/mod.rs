@@ -1,13 +1,23 @@
-mod alternativenameentrytype;
-pub use alternativenameentrytype::QSslAlternativeNameEntryType;
-
-mod protocol;
-pub use protocol::QSslSslProtocol;
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+mod v6_1;
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+pub use v6_1::{QSslImplementedClass, QSslSupportedFeature};
 
 use cxx_qt_lib::QFlags;
 
 #[cxx::bridge]
 mod ffi {
+    /// Describes the key types for alternative name entries in [`QSslCertificate`](crate::QSslCertificate).
+    #[repr(i32)]
+    enum QSslAlternativeNameEntryType {
+        /// An email entry; the entry contains an email address that the certificate is valid for.
+        EmailEntry,
+        /// A DNS host name entry; the entry contains a host name entry that the certificate is valid for. The entry may contain wildcards.
+        DnsEntry,
+        /// An IP address entry; the entry contains an IP address entry that the certificate is valid for.
+        IpAddressEntry,
+    }
+
     /// Describes the two types of keys [`QSslKey`](crate::QSslKey) supports.
     #[repr(i32)]
     #[derive(Debug)]
@@ -66,8 +76,35 @@ mod ffi {
         SslOptionDisableServerCipherPreference = 0x80,
     }
 
+    /// Describes the protocol of the cipher.
+    #[repr(i32)]
+    #[derive(Debug)]
+    enum QSslSslProtocol {
+        /// TLSv1.2.
+        TlsV1_2 = 2,
+        /// Any supported protocol. This value is used by [`QSslSocket`](crate::QSslSocket) only.
+        AnyProtocol,
+        /// The default option, using protocols known to be secure.
+        SecureProtocols,
+
+        /// TLSv1.2 and later versions.
+        TlsV1_2OrLater = 7,
+
+        /// DTLSv1.2.
+        DtlsV1_2 = 10,
+        /// DTLSv1.2 and later versions.
+        DtlsV1_2OrLater,
+
+        /// TLSv1.3.
+        TlsV1_3,
+        /// TLSv1.3 and later versions.
+        TlsV1_3OrLater,
+
+        /// The cipher's protocol cannot be determined.
+        UnknownProtocol = -1,
+    }
+
     /// Describes the level of an alert message.
-    #[cfg(cxxqt_qt_version_at_least_6_0)]
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslAlertLevel {
@@ -80,7 +117,6 @@ mod ffi {
     }
 
     /// See [RFC 8446, section 6](https://datatracker.ietf.org/doc/html/rfc8446#section-6) for the possible values and their meaning.
-    #[cfg(cxxqt_qt_version_at_least_6_0)]
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslAlertType {
@@ -120,76 +156,23 @@ mod ffi {
         UnknownAlertMessage = 255,
     }
 
-    /// Enumerates classes that a TLS backend implements.
-    ///
-    /// In QtNetwork, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
-    #[repr(i32)]
-    #[derive(Debug)]
-    enum QSslImplementedClass {
-        /// Class [`QSslKey`](crate::QSslKey).
-        Key,
-        /// Class [`QSslCertificate`](crate::QSslCertificate).
-        Certificate,
-        /// Class [`QSslSocket`](crate::QSslSocket).
-        Socket,
-        /// Class [`QSslDiffieHellmanParameters`](crate::QSslDiffieHellmanParameters).
-        DiffieHellman,
-        /// Class [`QSslEllipticCurve`](crate::QSslEllipticCurve).
-        EllipticCurve,
-        /// Class `QDtls`.
-        Dtls,
-        /// Class `QDtlsClientVerifier`.
-        DtlsCookie,
-    }
-
-    /// Enumerates possible features that a TLS backend supports.
-    ///
-    /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from `QSslSupportedFeature` enum indicate that a particular feature is supported.
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
-    #[repr(i32)]
-    #[derive(Debug)]
-    enum QSslSupportedFeature {
-        /// Indicates that [`QSslCertificate::verify`](crate::QSslCertificate::verify) is implemented by the backend.
-        CertificateVerification,
-        /// Client-side ALPN (Application Layer Protocol Negotiation).
-        ClientSideAlpn,
-        /// Server-side ALPN.
-        ServerSideAlpn,
-        /// OCSP stapling (Online Certificate Status Protocol).
-        Ocsp,
-        /// Pre-shared keys.
-        Psk,
-        /// Session tickets.
-        SessionTicket,
-        /// Information about alert messages sent and received.
-        Alerts,
-    }
-
     extern "C++" {
         include!("cxx-qt-io/qssl.h");
+        type QSslAlternativeNameEntryType;
         type QSslKeyType;
         type QSslEncodingFormat;
         type QSslKeyAlgorithm;
         type QSslSslOption;
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
+        type QSslSslProtocol;
         type QSslAlertLevel;
-        #[cfg(cxxqt_qt_version_at_least_6_0)]
         type QSslAlertType;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QSslImplementedClass;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QSslSupportedFeature;
     }
 }
 
-pub use ffi::{QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType, QSslSslOption};
-
-#[cfg(cxxqt_qt_version_at_least_6_0)]
-pub use ffi::{QSslAlertLevel, QSslAlertType};
-
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use ffi::{QSslImplementedClass, QSslSupportedFeature};
+pub use ffi::{
+    QSslAlertLevel, QSslAlertType, QSslAlternativeNameEntryType, QSslEncodingFormat,
+    QSslKeyAlgorithm, QSslKeyType, QSslSslOption, QSslSslProtocol,
+};
 
 /// [`QFlags`] of [`QSslSslOption`].
 pub type QSslSslOptions = QFlags<QSslSslOption>;
