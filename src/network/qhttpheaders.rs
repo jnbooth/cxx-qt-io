@@ -352,6 +352,8 @@ pub use ffi::QHttpHeadersWellKnownHeader;
 /// Parameter for [`QHttpHeaders`] functions that reference a header.
 ///
 /// Functions that accept `HttpHeader` are overloaded to accept either [`QAnyStringView`] or [`QHttpHeadersWellKnownHeader`]. You do not need to use this type directly.
+///
+/// Introduced in Qt 6.7.
 #[derive(Clone, PartialEq, Eq)]
 pub enum HttpHeader<'a> {
     /// Specify by name.
@@ -504,6 +506,8 @@ impl QHttpHeaders {
     /// If `QHttpHeaders` already contains `name`, replaces its value with `new_value` and removes possible additional `name` entries. If `name` didn't exist, appends a new entry. Returns `true` if successful.
     ///
     /// This function is a convenience method for setting a unique `name` : `new_value` header. For most headers the relative order does not matter, which allows reusing an existing entry if one exists.
+    ///
+    /// Introduced in Qt 6.8.
     #[cfg(cxxqt_qt_version_at_least_6_8)]
     pub fn replace_or_append<'a, N, V>(&mut self, name: N, value: V) -> bool
     where

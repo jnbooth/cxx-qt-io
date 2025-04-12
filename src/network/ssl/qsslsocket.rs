@@ -573,16 +573,22 @@ impl QSslSocket {
     /// Returns the name of the backend that `QSslSocket` and related classes use. If the active backend was not set explicitly, this function returns the name of a default backend that `QSslSocket` selects implicitly from the list of available backends.
     ///
     /// **Note:** When selecting a default backend implicitly, `QSslSocket` prefers the OpenSSL backend if available. If it's not available, the Schannel backend is implicitly selected on Windows, and Secure Transport on Darwin platforms. Failing these, if a custom TLS backend is found, it is used. If no other backend is found, the "certificate only" backend is selected.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn active_backend() -> QString {
         ffi::qsslsocket_active_backend()
     }
 
     /// Returns the names of the currently available backends. These names are in lower case, e.g. `"openssl"`, `"securetransport"`, `"schannel"` (similar to the already existing feature names for TLS backends in Qt).
+    ///
+    /// Introduced in Qt 6.1.
     pub fn available_backends() -> QList<QString> {
         ffi::qsslsocket_available_backends()
     }
 
     /// This function returns backend-specific classes implemented by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn implemented_classes(backend_name: Option<&QString>) -> QList<QSslImplementedClass> {
         match backend_name {
             Some(backend_name) => ffi::qsslsocket_implemented_classes(backend_name),
@@ -591,6 +597,8 @@ impl QSslSocket {
     }
 
     /// Returns `true` if a class `cl` is implemented by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn is_class_implemented(cl: QSslImplementedClass, backend_name: Option<&QString>) -> bool {
         match backend_name {
             Some(backend_name) => ffi::qsslsocket_is_class_implemented(cl, backend_name),
@@ -599,6 +607,8 @@ impl QSslSocket {
     }
 
     /// Returns `true` if a feature `ft` is supported by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn is_feature_supported(ft: QSslSupportedFeature, backend_name: Option<&QString>) -> bool {
         match backend_name {
             Some(backend_name) => ffi::qsslsocket_is_feature_supported(ft, backend_name),
@@ -607,6 +617,8 @@ impl QSslSocket {
     }
 
     /// Returns `true` if `protocol` is supported by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn is_protocol_supported(
         protocol: QSslSslProtocol,
         backend_name: Option<&QString>,
@@ -618,11 +630,15 @@ impl QSslSocket {
     }
 
     /// Returns `true` if a backend with name `backend_name` was set as active backend. `backend_name` must be one of names returned by [`QSslSocket::available_backends()`].
+    ///
+    /// Introduced in Qt 6.1.
     pub fn set_active_backend(backend_name: &QString) -> bool {
         ffi::qsslsocket_set_active_backend(backend_name)
     }
 
     /// This function returns features supported by a backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn supported_features(backend_name: Option<&QString>) -> QList<QSslSupportedFeature> {
         match backend_name {
             Some(backend_name) => ffi::qsslsocket_supported_features(backend_name),
@@ -631,6 +647,8 @@ impl QSslSocket {
     }
 
     /// If a backend with name `backend_name` is available, this function returns the list of TLS protocol versions supported by this backend. Otherwise, this function returns an empty list. If `backend_name` is `None`, it is understood as a query about the currently active backend.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn supported_protocols(backend_name: Option<&QString>) -> QList<QSslSslProtocol> {
         match backend_name {
             Some(backend_name) => ffi::qsslsocket_supported_protocols(backend_name),
@@ -639,6 +657,8 @@ impl QSslSocket {
     }
 
     /// Returns `true` if this platform supports SSL; otherwise, returns `false`. If the platform doesn't support SSL, the socket will fail in the connection phase.
+    ///
+    /// Introduced in Qt 6.1.
     pub fn supports_ssl() -> bool {
         ffi::qsslsocket_supports_ssl()
     }

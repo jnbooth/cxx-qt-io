@@ -46,6 +46,8 @@ mod ffi {
         fn path(&self) -> QString;
 
         /// Returns the `SameSite` option if specified in the cookie string, [`QNetworkCookieSameSite::Default`] if not present.
+        ///
+        /// Introduced in Qt 6.1.
         #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "same_site_policy"]
         fn sameSitePolicy(&self) -> QNetworkCookieSameSite;
@@ -71,6 +73,8 @@ mod ffi {
         fn setPath(&mut self, path: &QString);
 
         /// Sets the `SameSite` option of this cookie to `same_site`.
+        ///
+        /// Introduced in Qt 6.1.
         #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "set_same_site_policy"]
         fn setSameSitePolicy(&mut self, policy: QNetworkCookieSameSite);

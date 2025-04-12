@@ -16,6 +16,8 @@ mod ffi {
         fn huffmanCompressionEnabled(&self) -> bool;
 
         /// Returns the maximum number of concurrent streams.
+        ///
+        /// Introduced in Qt 6.9.
         #[cfg(cxxqt_qt_version_at_least_6_9)]
         #[rust_name = "max_concurrent_streams"]
         fn maxConcurrentStreams(&self) -> u32;
@@ -41,6 +43,8 @@ mod ffi {
         fn setHuffmanCompressionEnabled(&mut self, enable: bool);
 
         /// Sets `value` as the maximum number of concurrent streams that will be advertised to the peer when sending SETTINGS frame.
+        ///
+        /// Introduced in Qt 6.9.
         #[cfg(cxxqt_qt_version_at_least_6_9)]
         #[rust_name = "set_max_concurrent_streams"]
         fn setMaxFrameSize(&mut self, size: u32);

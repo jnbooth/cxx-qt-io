@@ -151,6 +151,8 @@ mod ffi {
         /// Returns the threshold for archive bomb checks.
         ///
         /// If the decompressed size of a reply is smaller than this, Qt will simply decompress it, without further checking.
+        ///
+        /// Introduced in Qt 6.2.
         #[cfg(cxxqt_qt_version_at_least_6_2)]
         #[rust_name = "decompressed_safety_check_threshold"]
         fn decompressedSafetyCheckThreshold(&self) -> i64;
@@ -169,10 +171,15 @@ mod ffi {
         #[rust_name = "header_or_invalid"]
         fn header(&self, header: QNetworkRequestKnownHeaders) -> QVariant;
 
+        /// Returns headers that are set in this network request.
+        ///
+        /// Introduced in Qt 6.8.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         fn headers(&self) -> QHttpHeaders;
 
         /// Returns the current parameters that `QNetworkAccessManager` is using for the underlying HTTP/1 connection of this request.
+        ///
+        /// Introduced in Qt 6.5.
         #[cfg(cxxqt_qt_version_at_least_6_5)]
         #[rust_name = "http1_configuration"]
         fn http1Configuration(&self) -> QHttp1Configuration;
@@ -224,11 +231,15 @@ mod ffi {
         /// Sets `new_headers` as headers in this network request, overriding any previously set headers.
         ///
         /// If some headers correspond to the known headers, the values will be parsed and the corresponding parsed form will also be set.
+        ///
+        /// Introduced in Qt 6.8.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         #[rust_name = "set_headers"]
         fn setHeaders(&mut self, new_headers: &QHttpHeaders);
 
         /// Sets request's HTTP/1 parameters from `configuration`.
+        ///
+        /// Introduced in Qt 6.5.
         #[cfg(cxxqt_qt_version_at_least_6_5)]
         #[rust_name = "set_http1_configuration"]
         fn setHttp1Configuration(&mut self, configuration: &QHttp1Configuration);
@@ -361,6 +372,8 @@ impl QNetworkRequest {
     }
 
     /// Returns `true` if the raw header `header_name` is present in this network request.
+    ///
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn has_raw_header<'a, T>(&self, header_name: T) -> bool
     where
@@ -377,6 +390,8 @@ impl QNetworkRequest {
     /// Returns the raw form of header `header_name`. If no such header is present, an empty `QByteArray` is returned, which may be indistinguishable from a header that is present but has no content (use [`has_raw_header`](QNetworkRequest::has_raw_header) to find out if the header exists or not).
     //
     /// Raw headers can be set with [`set_raw_header`](QNetworkRequest::set_raw_header) or with [`set_header`](QNetworkRequest::set_header).
+    ///
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn raw_header<'a, T>(&self, header_name: T) -> QByteArray
     where
@@ -399,6 +414,8 @@ impl QNetworkRequest {
     /// Some supported compression algorithms can, in a tiny compressed file, encode a spectacularly huge decompressed file. This is only possible if the decompressed content is extremely monotonous, which is seldom the case for real files being transmitted in good faith: files exercising such insanely high compression ratios are typically payloads of buffer-overrun attacks, or denial-of-service (by using up too much memory) attacks. Consequently, files that decompress to huge sizes, particularly from tiny compressed forms, are best rejected as suspected malware.
     ///
     /// If a reply's decompressed size is bigger than this threshold (by default, 10 MiB, i.e. 10 * 1024 * 1024), Qt will check the compression ratio: if that is unreasonably large (40:1 for GZip and Deflate, or 100:1 for Brotli and ZStandard), the reply will be treated as an error. Setting the threshold to `None` disables this check.
+    ///
+    /// Introduced in Qt 6.2.
     #[cfg(cxxqt_qt_version_at_least_6_2)]
     pub fn set_decompressed_safety_check_threshold(&mut self, threshold: Option<i64>) {
         self.set_decompressed_safety_check_threshold_or_negative(threshold.unwrap_or(-1));

@@ -44,6 +44,8 @@ mod ffi {
 
 /// The `QHttp1Configuration` class controls HTTP/1 parameters and settings.
 ///
+/// Introduced in Qt 6.5.
+///
 /// Qt Documentation: [QHttp1Configuration](https://doc.qt.io/qt-6/qhttp1configuration.html#details)
 #[repr(C)]
 pub struct QHttp1Configuration {

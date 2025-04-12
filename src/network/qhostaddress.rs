@@ -117,6 +117,8 @@ mod ffi {
         fn isNull(&self) -> bool;
 
         /// Returns `true` if the address is an IPv6 unique local unicast address or IPv4 address reserved for local networks by [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918), `false` otherwise.
+        ///
+        /// Introduced in Qt 6.6.
         #[cfg(cxxqt_qt_version_at_least_6_6)]
         #[rust_name = "is_private_use"]
         fn isPrivateUse(&self) -> bool;

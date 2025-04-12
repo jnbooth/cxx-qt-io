@@ -54,6 +54,8 @@ mod ffi {
         fn listen(self: Pin<&mut QTcpServer>, address: &QHostAddress, port: u16) -> bool;
 
         /// Returns the backlog queue size of to be accepted connections.
+        ///
+        /// Introduced in Qt 6.3.
         #[cfg(cxxqt_qt_version_at_least_6_3)]
         #[rust_name = "listen_backlog_size"]
         fn listenBacklogSize(self: &QTcpServer) -> i32;
@@ -97,6 +99,8 @@ mod ffi {
         /// Sets the backlog queue size of to be accepted connections to `size`. The operating system might reduce or ignore this value. By default, the queue size is 50.
         ///
         /// **Note:** This property must be set prior to calling [`listen`](QTcpServer::listen).
+        ///
+        /// Introduced in Qt 6.3.
         #[cfg(cxxqt_qt_version_at_least_6_3)]
         #[rust_name = "set_listen_backlog_size"]
         fn setListenBacklogSize(self: Pin<&mut QTcpServer>, size: i32);

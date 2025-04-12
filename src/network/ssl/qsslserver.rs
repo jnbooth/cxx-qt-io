@@ -27,6 +27,8 @@ mod ffi {
     unsafe extern "C++Qt" {
         /// Implements an encrypted, secure TCP server over TLS.
         ///
+        /// Introduced in Qt 6.4.
+        ///
         /// Qt Documentation: [QSslServer](https://doc.qt.io/qt-6/qsslserver.html#details)
         #[qobject]
         #[base = QTcpServer]

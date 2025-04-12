@@ -328,12 +328,16 @@ mod ffi {
         fn redirected(self: Pin<&mut QNetworkReply>, url: &QUrl);
 
         /// This signal is emitted 1 or more times when the request was sent. Useful for custom progress or timeout handling.
+        ///
+        /// Introduced in Qt 6.3.
         #[cfg(cxxqt_qt_version_at_least_6_3)]
         #[qsignal]
         #[rust_name = "request_sent"]
         fn requestSent(self: Pin<&mut QNetworkReply>);
 
         /// This signal is emitted 0 or more times, when the socket is connecting, before sending the request. Useful for custom progress or timeout handling.
+        ///
+        /// Introduced in Qt 6.3.
         #[cfg(cxxqt_qt_version_at_least_6_3)]
         #[qsignal]
         #[rust_name = "socket_started_connecting"]
@@ -371,6 +375,8 @@ impl QNetworkReply {
     }
 
     /// Returns `true` if the raw header of name `header_name` was sent by the remote server.
+    ///
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn has_raw_header<'a, T>(&self, header_name: T) -> bool
     where
@@ -385,6 +391,8 @@ impl QNetworkReply {
     }
 
     /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use [`has_raw_header`](QNetworkReply::has_raw_header) to verify if the server sent such header field.
+    ///
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn raw_header<'a, T>(&self, header_name: T) -> QByteArray
     where

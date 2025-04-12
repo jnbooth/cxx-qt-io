@@ -94,6 +94,8 @@ mod ffi {
         /// Returns headers that are set in this network request.
         ///
         /// If the proxy is not of type [`QNetworkProxyProxyType::HttpProxy`] or [`QNetworkProxyProxyType::HttpCachingProxy`], default constructed `QHttpHeaders` is returned.
+        ///
+        /// Introduced in Qt 6.8.
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         fn headers(&self) -> QHttpHeaders;
 

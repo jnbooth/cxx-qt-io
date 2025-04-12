@@ -176,6 +176,8 @@ impl QFile {
     }
 
     /// Returns `true` if Qt supports moving files to a trash (recycle bin) in the current operating system using the [`move_to_trash`](QFile::move_to_trash) function, `false` otherwise. Note that this function returning `true` does not imply [`move_to_trash`](QFile::move_to_trash) will succeed. In particular, this function does not check if the user has disabled the functionality in their settings.
+    ///
+    /// Introduced in Qt 6.9.
     #[cfg(cxxqt_qt_version_at_least_6_9)]
     pub fn supports_move_to_trash() -> bool {
         ffi::qfile_supports_move_to_trash()
