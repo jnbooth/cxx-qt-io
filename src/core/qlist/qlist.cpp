@@ -43,6 +43,7 @@ CXX_QT_IO_QLIST_ASSERTS(QHttpHeaders);
 #endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
+CXX_QT_IO_QLIST_ASSERTS(QDtlsGeneratorParameters)
 CXX_QT_IO_QLIST_ASSERTS(QOcspResponse);
 CXX_QT_IO_QLIST_ASSERTS(QSslCertificate);
 CXX_QT_IO_QLIST_ASSERTS(QSslCertificateExtension);

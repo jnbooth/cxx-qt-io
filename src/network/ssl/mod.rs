@@ -1,3 +1,6 @@
+mod qdtlsgeneratorparameters;
+pub use qdtlsgeneratorparameters::QDtlsGeneratorParameters;
+
 mod qocspresponse;
 pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationReason};
 

@@ -279,6 +279,7 @@ generate_bridge "QSslPreSharedKeyAuthenticator"
 generate_bridge "QHttp1Configuration"
 generate_bridge "QHttp2Configuration"
 
+generate_bridge_neq "QDtlsGeneratorParameters"
 generate_bridge_neq "QHttpHeaders"
 generate_bridge_neq "QNetworkDatagram"
 generate_bridge_neq "QNetworkInterface"

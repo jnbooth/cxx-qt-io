@@ -1,6 +1,7 @@
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[derive(Debug)]
     enum QCryptographicHashAlgorithm {
         Md4,
         Md5,
@@ -34,4 +35,3 @@ mod ffi {
 }
 
 pub use ffi::QCryptographicHashAlgorithm;
-

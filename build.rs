@@ -302,6 +302,7 @@ fn main() {
     }
     if features.ssl {
         header_dir.write_headers(&[
+            include_header!("include/core/qlist/qlist_qdtlsgeneratorparameters.h"),
             include_header!("include/core/qlist/qlist_qocspresponse.h"),
             include_header!("include/core/qlist/qlist_qsslcertificate.h"),
             include_header!("include/core/qlist/qlist_qsslcertificateextension.h"),
@@ -317,6 +318,7 @@ fn main() {
             include_header!("include/core/qset/qset_qssldiffiehellmanparameters.h"),
             include_header!("include/core/qset/qset_qsslellipticcurve.h"),
             include_header!("include/core/qset/qset_qsslerror.h"),
+            include_header!("include/network/ssl/qdtlsgeneratorparameters.h"),
             include_header!("include/network/ssl/qocspresponse.h"),
             include_header!("include/network/ssl/qssl.h"),
             include_header!("include/network/ssl/qsslcertificate.h"),
@@ -334,6 +336,7 @@ fn main() {
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
+                "network/ssl/qdtlsgeneratorparameters",
                 "network/ssl/qocspresponse",
                 "network/ssl/qsslcertificate",
                 "network/ssl/qsslcertificateextension",
@@ -346,6 +349,7 @@ fn main() {
                 "network/ssl/qsslsocket",
             ])
             .build_rust(&[
+                "core/qlist/qlist_qdtlsgeneratorparameters",
                 "core/qlist/qlist_qocspresponse",
                 "core/qlist/qlist_qsslcertificate",
                 "core/qlist/qlist_qsslcertificateextension",
@@ -355,6 +359,7 @@ fn main() {
                 "core/qlist/qlist_qsslerror",
                 "core/qlist/qlist_qsslkey",
                 "core/qlist/qlist_qsslpresharedkeyauthenticator",
+                "network/ssl/qdtlsgeneratorparameters",
                 "network/ssl/qocspresponse",
                 "network/ssl/qssl/mod",
                 "network/ssl/qsslcertificate",

@@ -160,6 +160,13 @@ impl_qlist_element!(
 
 #[cfg(feature = "ssl")]
 impl_qlist_element!(
+    crate::QDtlsGeneratorParameters,
+    qlist_qdtlsgeneratorparameters,
+    "QList_QDtlsGeneratorParameters",
+);
+
+#[cfg(feature = "ssl")]
+impl_qlist_element!(
     crate::QSslCertificate,
     qlist_qsslcertificate,
     "QList_QSslCertificate",
