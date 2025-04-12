@@ -273,6 +273,10 @@ fn main() {
                 "network/qudpsocket",
             ]);
 
+        if version.at_least(6, 1) {
+            builder = builder.build_rust(&["network/qnetworkcookie/v6_1"]);
+        }
+
         if version.at_least(6, 5) {
             header_dir.write_headers(&[
                 include_header!("include/core/qlist/qlist_qhttp1configuration.h"),
@@ -313,33 +317,33 @@ fn main() {
             include_header!("include/core/qset/qset_qssldiffiehellmanparameters.h"),
             include_header!("include/core/qset/qset_qsslellipticcurve.h"),
             include_header!("include/core/qset/qset_qsslerror.h"),
-            include_header!("include/network/qocspresponse.h"),
-            include_header!("include/network/qssl.h"),
-            include_header!("include/network/qsslcertificate.h"),
-            include_header!("include/network/qsslcertificateextension.h"),
-            include_header!("include/network/qsslcipher.h"),
-            include_header!("include/network/qsslconfiguration.h"),
-            include_header!("include/network/qssldiffiehellmanparameters.h"),
-            include_header!("include/network/qsslellipticcurve.h"),
-            include_header!("include/network/qsslerror.h"),
-            include_header!("include/network/qsslkey.h"),
-            include_header!("include/network/qsslpresharedkeyauthenticator.h"),
-            include_header!("include/network/qsslserver.h"),
+            include_header!("include/network/ssl/qocspresponse.h"),
+            include_header!("include/network/ssl/qssl.h"),
+            include_header!("include/network/ssl/qsslcertificate.h"),
+            include_header!("include/network/ssl/qsslcertificateextension.h"),
+            include_header!("include/network/ssl/qsslcipher.h"),
+            include_header!("include/network/ssl/qsslconfiguration.h"),
+            include_header!("include/network/ssl/qssldiffiehellmanparameters.h"),
+            include_header!("include/network/ssl/qsslellipticcurve.h"),
+            include_header!("include/network/ssl/qsslerror.h"),
+            include_header!("include/network/ssl/qsslkey.h"),
+            include_header!("include/network/ssl/qsslpresharedkeyauthenticator.h"),
+            include_header!("include/network/ssl/qsslserver.h"),
         ]);
 
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
-                "network/qocspresponse",
-                "network/qsslcertificate",
-                "network/qsslcertificateextension",
-                "network/qsslconfiguration",
-                "network/qssldiffiehellmanparameters",
-                "network/qsslellipticcurve",
-                "network/qsslerror",
-                "network/qsslkey",
-                "network/qsslpresharedkeyauthenticator",
-                "network/qsslsocket",
+                "network/ssl/qocspresponse",
+                "network/ssl/qsslcertificate",
+                "network/ssl/qsslcertificateextension",
+                "network/ssl/qsslconfiguration",
+                "network/ssl/qssldiffiehellmanparameters",
+                "network/ssl/qsslellipticcurve",
+                "network/ssl/qsslerror",
+                "network/ssl/qsslkey",
+                "network/ssl/qsslpresharedkeyauthenticator",
+                "network/ssl/qsslsocket",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qocspresponse",
@@ -351,27 +355,27 @@ fn main() {
                 "core/qlist/qlist_qsslerror",
                 "core/qlist/qlist_qsslkey",
                 "core/qlist/qlist_qsslpresharedkeyauthenticator",
-                "network/qocspresponse",
-                "network/qssl/mod",
-                "network/qsslcertificate",
-                "network/qsslcertificateextension",
-                "network/qsslcipher",
-                "network/qsslconfiguration",
-                "network/qssldiffiehellmanparameters",
-                "network/qsslellipticcurve",
-                "network/qsslerror",
-                "network/qsslkey",
-                "network/qsslpresharedkeyauthenticator",
-                "network/qsslsocket",
+                "network/ssl/qocspresponse",
+                "network/ssl/qssl/mod",
+                "network/ssl/qsslcertificate",
+                "network/ssl/qsslcertificateextension",
+                "network/ssl/qsslcipher",
+                "network/ssl/qsslconfiguration",
+                "network/ssl/qssldiffiehellmanparameters",
+                "network/ssl/qsslellipticcurve",
+                "network/ssl/qsslerror",
+                "network/ssl/qsslkey",
+                "network/ssl/qsslpresharedkeyauthenticator",
+                "network/ssl/qsslsocket",
             ]);
 
         if version.at_least(6, 1) {
-            builder = builder.build_rust(&["network/qnetworkcookie/v6_1", "network/qssl/v6_1"]);
+            builder = builder.build_rust(&["network/ssl/qssl/v6_1"]);
         }
 
         if version.at_least(6, 4) {
-            header_dir.write_headers(&[include_header!("include/network/qsslsocket.h")]);
-            builder = builder.build_rust(&["network/qsslserver"]);
+            header_dir.write_headers(&[include_header!("include/network/ssl/qsslsocket.h")]);
+            builder = builder.build_rust(&["network/ssl/qsslserver"]);
         }
     }
 
