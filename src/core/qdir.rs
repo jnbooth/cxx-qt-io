@@ -69,8 +69,6 @@ impl QDir {
 
     /// Returns the absolute path of the user's home directory.
     ///
-    ///     Use the toNativeSeparators() function to convert the separators to the ones that are appropriate for the underlying operating system.
-    ///
     /// If the directory of the current user's profile does not exist or cannot be retrieved, the following alternatives will be checked (in the given order) until an existing and available path is found:
     ///
     /// * The path specified by the `USERPROFILE` environment variable.

@@ -357,6 +357,21 @@ pub use ffi::{QIODevice, QIODeviceOpenModeFlag};
 pub type QIODeviceOpenMode = QFlags<QIODeviceOpenModeFlag>;
 unsafe_impl_qflag!(QIODeviceOpenModeFlag, "QIODeviceOpenMode");
 
+#[allow(non_upper_case_globals)]
+impl QIODevice {
+    /// Shorthand for [`QIODeviceOpenModeFlag::ReadOnly`]`.into()`.
+    pub const ReadOnly: QIODeviceOpenMode =
+        QIODeviceOpenMode::from_int(QIODeviceOpenModeFlag::ReadOnly.repr);
+
+    /// Shorthand for [`QIODeviceOpenModeFlag::ReadWrite`]`.into()`.
+    pub const ReadWrite: QIODeviceOpenMode =
+        QIODeviceOpenMode::from_int(QIODeviceOpenModeFlag::ReadWrite.repr);
+
+    /// Shorthand for [`QIODeviceOpenModeFlag::WriteOnly`]`.into()`.
+    pub const WriteOnly: QIODeviceOpenMode =
+        QIODeviceOpenMode::from_int(QIODeviceOpenModeFlag::WriteOnly.repr);
+}
+
 #[allow(clippy::cast_possible_wrap)]
 impl QIODevice {
     /// Reads one character from the device and discards it. Returns `true` on success; otherwise returns `false`.

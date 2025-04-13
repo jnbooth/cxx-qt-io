@@ -146,17 +146,13 @@ impl Write for Pin<&mut QBuffer> {
 mod tests {
     use std::borrow::Cow;
 
-    use crate::QIODeviceOpenModeFlag;
-
     use super::*;
 
     fn create_buffer(data: &[u8]) -> UniquePtr<QBuffer> {
         let mut buffer = QBuffer::new();
         let mut buffer_pin = buffer.pin_mut();
         buffer_pin.as_mut().set_data(data);
-        buffer_pin
-            .as_io_device_mut()
-            .open(QIODeviceOpenModeFlag::ReadWrite.into());
+        buffer_pin.as_io_device_mut().open(QIODevice::ReadWrite);
         buffer_pin
             .as_io_device_mut()
             .seek(i64::try_from(data.len()).unwrap());
@@ -197,7 +193,7 @@ mod tests {
         buffer
             .pin_mut()
             .as_io_device_mut()
-            .open(QIODeviceOpenModeFlag::ReadWrite.into());
+            .open(QIODevice::ReadWrite);
         buffer.write_all(b" 2").unwrap();
         assert_eq!(String::from_utf8_lossy(array.as_slice()), " 2st");
     }
