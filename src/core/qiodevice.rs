@@ -109,8 +109,9 @@ mod ffi {
         /// # Safety
         ///
         /// [`QIODeviceModeFlag::NewOnly`] may cause undefined behavior if `self` is not a `QFile`.
+        #[doc(hidden)]
         #[rust_name = "open_unsafe"]
-        pub(self) unsafe fn open(self: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
+        unsafe fn open(self: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
 
         /// Returns the mode in which the device has been opened; i.e. [`QIODeviceOpenModeFlag::ReadOnly`] or [`QIODeviceOpenModeFlag::WriteOnly`].
         #[rust_name = "open_mode"]
@@ -257,11 +258,13 @@ mod ffi {
         #[rust_name = "unget_char"]
         unsafe fn ungetChar(self: Pin<&mut QIODevice>, c: c_char);
 
+        #[doc(hidden)]
         #[rust_name = "wait_for_bytes_written_msecs"]
-        pub(self) fn waitForBytesWritten(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
+        fn waitForBytesWritten(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "wait_for_ready_read_msecs"]
-        pub(self) fn waitForReadyRead(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
+        fn waitForReadyRead(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
 
         /// Writes at most `max_size` bytes of data from data to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
         ///

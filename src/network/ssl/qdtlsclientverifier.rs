@@ -54,14 +54,16 @@ mod ffi {
             params: &QDtlsGeneratorParameters,
         ) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "verified_hello_or_empty"]
-        pub(self) fn verifiedHello(self: &QDtlsClientVerifier) -> QByteArray;
+        fn verifiedHello(self: &QDtlsClientVerifier) -> QByteArray;
 
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "verify_client_raw"]
-        pub(self) unsafe fn verifyClient(
+        unsafe fn verifyClient(
             self: Pin<&mut QDtlsClientVerifier>,
             socket: *mut QUdpSocket,
             dgram: &QByteArray,

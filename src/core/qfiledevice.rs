@@ -147,14 +147,16 @@ mod ffi {
         #[rust_name = "file_name"]
         fn fileName(self: &QFileDevice) -> QString;
 
+        #[doc(hidden)]
         #[rust_name = "file_time_or_invalid"]
-        pub(self) fn fileTime(self: &QFileDevice, time: QFileDeviceFileTime) -> QDateTime;
+        fn fileTime(self: &QFileDevice, time: QFileDeviceFileTime) -> QDateTime;
 
         /// Flushes any buffered data to the file. Returns `true` if successful; otherwise returns `false`.
         fn flush(self: Pin<&mut QFileDevice>) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "handle_or_negative"]
-        pub(self) fn handle(self: &QFileDevice) -> i32;
+        fn handle(self: &QFileDevice) -> i32;
 
         /// Maps size bytes of the file into memory starting at `offset`. A file should be open for a map to succeed but the file does not need to stay open after the memory has been mapped. When the `QFile` is destroyed or a new file is opened with this object, any maps that have not been unmapped will automatically be unmapped.
         ///

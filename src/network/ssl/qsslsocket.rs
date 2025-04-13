@@ -154,8 +154,9 @@ mod ffi {
         #[rust_name = "is_encrypted"]
         fn isEncrypted(self: &QSslSocket) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "local_certificate_or_empty"]
-        pub(self) fn localCertificate(self: &QSslSocket) -> QSslCertificate;
+        fn localCertificate(self: &QSslSocket) -> QSslCertificate;
 
         /// Returns the socket's local certificate chain, or an empty list if no local certificates have been assigned.
         #[rust_name = "local_certificate_chain"]
@@ -170,8 +171,9 @@ mod ffi {
         #[rust_name = "ocsp_responses"]
         fn ocspResponses(self: &QSslSocket) -> QList_QOcspResponse;
 
+        #[doc(hidden)]
         #[rust_name = "peer_certificate_or_null"]
-        pub(self) fn peerCertificate(self: &QSslSocket) -> QSslCertificate;
+        fn peerCertificate(self: &QSslSocket) -> QSslCertificate;
 
         /// Returns the peer's chain of digital certificates, or an empty list of certificates.
         ///
@@ -214,8 +216,9 @@ mod ffi {
         #[rust_name = "session_cipher"]
         fn sessionCipher(self: &QSslSocket) -> QSslCipher;
 
+        #[doc(hidden)]
         #[rust_name = "session_protocol_or_default"]
-        pub(self) fn sessionProtocol(self: &QSslSocket) -> QSslSslProtocol;
+        fn sessionProtocol(self: &QSslSocket) -> QSslSslProtocol;
 
         /// Sets the socket's local certificate to `certificate`. The local certificate is necessary if you need to confirm your identity to the peer. It is used together with the private key; if you set the local certificate, you must also set the private key.
         ///
@@ -308,8 +311,9 @@ mod ffi {
         #[rust_name = "start_server_encryption"]
         fn startServerEncryption(self: Pin<&mut QSslSocket>);
 
+        #[doc(hidden)]
         #[rust_name = "wait_for_encrypted_msecs"]
-        pub(self) fn waitForEncrypted(self: Pin<&mut QSslSocket>, msecs: i32) -> bool;
+        fn waitForEncrypted(self: Pin<&mut QSslSocket>, msecs: i32) -> bool;
 
         /// `QSslSocket` emits this signal if an alert message was received from a peer. `level` tells if the alert was fatal or it was a warning. `type` is the code explaining why the alert was sent. When a textual description of the alert message is available, it is supplied in `description`.
         ///

@@ -38,35 +38,35 @@ mod ffi {
         #[rust_name = "has_pending_datagrams"]
         fn hasPendingDatagrams(self: &QUdpSocket) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "join_multicast_group_on_default"]
-        pub(self) fn joinMulticastGroup(
-            self: Pin<&mut QUdpSocket>,
-            group_address: &QHostAddress,
-        ) -> bool;
+        fn joinMulticastGroup(self: Pin<&mut QUdpSocket>, group_address: &QHostAddress) -> bool;
+        #[doc(hidden)]
         #[rust_name = "join_multicast_group_on_interface"]
-        pub(self) fn joinMulticastGroup(
+        fn joinMulticastGroup(
             self: Pin<&mut QUdpSocket>,
             group_address: &QHostAddress,
             iface: &QNetworkInterface,
         ) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "leave_multicast_group_on_default"]
-        pub(self) fn leaveMulticastGroup(
-            self: Pin<&mut QUdpSocket>,
-            group_address: &QHostAddress,
-        ) -> bool;
+        fn leaveMulticastGroup(self: Pin<&mut QUdpSocket>, group_address: &QHostAddress) -> bool;
+        #[doc(hidden)]
         #[rust_name = "leave_multicast_group_on_interface"]
-        pub(self) fn leaveMulticastGroup(
+        fn leaveMulticastGroup(
             self: Pin<&mut QUdpSocket>,
             group_address: &QHostAddress,
             iface: &QNetworkInterface,
         ) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "multicast_interface_or_invalid"]
-        pub(self) fn multicastInterface(self: &QUdpSocket) -> QNetworkInterface;
+        fn multicastInterface(self: &QUdpSocket) -> QNetworkInterface;
 
+        #[doc(hidden)]
         #[rust_name = "pending_datagram_size_or_negative"]
-        pub(self) fn pendingDatagramSize(self: &QUdpSocket) -> i64;
+        fn pendingDatagramSize(self: &QUdpSocket) -> i64;
 
         ///Receives a datagram no larger than `max_size` bytes and stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
         ///
@@ -87,9 +87,9 @@ mod ffi {
             port: *mut u16,
         ) -> i64;
 
+        #[doc(hidden)]
         #[rust_name = "receive_datagram_or_invalid"]
-        pub(self) fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: i64)
-            -> QNetworkDatagram;
+        fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: i64) -> QNetworkDatagram;
 
         /// Sets the outgoing interface for multicast datagrams to the interface `iface`. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise this function does nothing.
         #[rust_name = "set_multicast_interface"]

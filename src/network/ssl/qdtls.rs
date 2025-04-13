@@ -88,8 +88,9 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "abort_handshake_raw"]
-        pub(self) unsafe fn abortHandshake(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
+        unsafe fn abortHandshake(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
 
         /// Returns the current hash algorithm and secret, either default ones or previously set by a call to [`set_cookie_generator_parameters`](QDtls::set_cookie_generator_parameters).
         #[rust_name = "cookie_generator_parameters"]
@@ -98,8 +99,9 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "decrypt_datagram_raw"]
-        pub(self) unsafe fn decryptDatagram(
+        unsafe fn decryptDatagram(
             self: Pin<&mut QDtls>,
             socket: *mut QUdpSocket,
             dgram: &QByteArray,
@@ -108,8 +110,9 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "do_handshake_raw"]
-        pub(self) unsafe fn doHandshake(
+        unsafe fn doHandshake(
             self: Pin<&mut QDtls>,
             socket: *mut QUdpSocket,
             dgram: &QByteArray,
@@ -130,8 +133,9 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "handle_timeout_raw"]
-        pub(self) unsafe fn handleTimeout(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
+        unsafe fn handleTimeout(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
 
         /// Returns the current handshake state for this `QDtls`.
         #[rust_name = "handshake_state"]
@@ -153,8 +157,9 @@ mod ffi {
         #[rust_name = "mtu_hint"]
         fn mtuHint(self: &QDtls) -> u16;
 
+        #[doc(hidden)]
         #[rust_name = "peer_address_or_null"]
-        pub(self) fn peerAddress(self: &QDtls) -> QHostAddress;
+        fn peerAddress(self: &QDtls) -> QHostAddress;
 
         /// Returns the peer's port number, set by [`set_peer`](QDtls::set_peer), or 0.
         #[rust_name = "peer_port"]
@@ -173,12 +178,13 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "resume_handshake_raw"]
-        pub(self) unsafe fn resumeHandshake(self: Pin<&mut QDtls>, socket: *mut QUdpSocket)
-            -> bool;
+        unsafe fn resumeHandshake(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "session_cipher_or_null"]
-        pub(self) fn sessionCipher(self: &QDtls) -> QSslCipher;
+        fn sessionCipher(self: &QDtls) -> QSslCipher;
 
         /// Returns the DTLS protocol version used by this connection, or [`QSslSslProtocol::UnknownProtocol`](crate::QSslSslProtocol::UnknownProtocol) if the connection isn't encrypted yet. The protocol for the connection is selected during the handshake phase.
         ///
@@ -223,8 +229,9 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "shutdown_raw"]
-        pub(self) unsafe fn shutdown(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
+        unsafe fn shutdown(self: Pin<&mut QDtls>, socket: *mut QUdpSocket) -> bool;
 
         /// Returns [`QSslSocketSslMode::SslServerMode`](crate::QSslSocketSslMode::SslServerMode) for a server-side connection and [`QSslSocketSslMode::SslClientMode`](crate::QSslSocketSslMode::SslClientMode) for a client.
         #[rust_name = "ssl_mode"]
@@ -233,8 +240,9 @@ mod ffi {
         /// # Safety
         ///
         /// `socket` must be valid.
+        #[doc(hidden)]
         #[rust_name = "write_datagram_encrypted_raw"]
-        pub(self) unsafe fn writeDatagramEncrypted(
+        unsafe fn writeDatagramEncrypted(
             self: Pin<&mut QDtls>,
             socket: *mut QUdpSocket,
             dgram: &QByteArray,

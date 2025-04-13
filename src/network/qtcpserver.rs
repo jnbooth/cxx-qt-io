@@ -85,8 +85,9 @@ mod ffi {
         #[rust_name = "resume_accepting"]
         fn resumeAccepting(self: Pin<&mut QTcpServer>);
 
+        #[doc(hidden)]
         #[rust_name = "server_address_or_null"]
-        pub(self) fn serverAddress(self: &QTcpServer) -> QHostAddress;
+        fn serverAddress(self: &QTcpServer) -> QHostAddress;
 
         /// Returns an error code for the last error that occurred.
         #[rust_name = "server_error"]
@@ -117,20 +118,20 @@ mod ffi {
         #[rust_name = "set_proxy"]
         fn setProxy(self: Pin<&mut QTcpServer>, network_proxy: &QNetworkProxy);
 
+        #[doc(hidden)]
         #[rust_name = "set_socket_descriptor_qintptr"]
-        pub(self) fn setSocketDescriptor(
-            self: Pin<&mut QTcpServer>,
-            socket_descriptor: qintptr,
-        ) -> bool;
+        fn setSocketDescriptor(self: Pin<&mut QTcpServer>, socket_descriptor: qintptr) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "socket_descriptor_or_negative"]
-        pub(self) fn socketDescriptor(self: &QTcpServer) -> qintptr;
+        fn socketDescriptor(self: &QTcpServer) -> qintptr;
 
         /// # Safety
         ///
         /// `timed_out` must be valid or null.
+        #[doc(hidden)]
         #[rust_name = "wait_for_new_connection_msec"]
-        pub(self) unsafe fn waitForNewConnection(
+        unsafe fn waitForNewConnection(
             self: Pin<&mut QTcpServer>,
             msec: i32,
             timed_out: *mut bool,

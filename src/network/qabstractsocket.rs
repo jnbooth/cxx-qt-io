@@ -222,16 +222,18 @@ mod ffi {
             mode: QAbstractSocketBindMode,
         ) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "connect_to_host_address"]
-        pub(self) fn connectToHost(
+        fn connectToHost(
             self: Pin<&mut QAbstractSocket>,
             address: &QHostAddress,
             port: u16,
             open_mode: QIODeviceOpenMode,
         );
 
+        #[doc(hidden)]
         #[rust_name = "connect_to_host_name"]
-        pub(self) fn connectToHost(
+        fn connectToHost(
             self: Pin<&mut QAbstractSocket>,
             host_name: &QString,
             port: u16,
@@ -257,8 +259,9 @@ mod ffi {
         #[rust_name = "is_valid"]
         fn isValid(self: &QAbstractSocket) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "local_address_or_null"]
-        pub(self) fn localAddress(self: &QAbstractSocket) -> QHostAddress;
+        fn localAddress(self: &QAbstractSocket) -> QHostAddress;
 
         /// Returns the host port number (in native byte order) of the local socket if available; otherwise returns 0.
         #[rust_name = "local_port"]
@@ -268,11 +271,13 @@ mod ffi {
         #[rust_name = "pause_mode"]
         fn pauseMode(self: &QAbstractSocket) -> QAbstractSocketPauseModes;
 
+        #[doc(hidden)]
         #[rust_name = "peer_address_or_null"]
-        pub(self) fn peerAddress(self: &QAbstractSocket) -> QHostAddress;
+        fn peerAddress(self: &QAbstractSocket) -> QHostAddress;
 
+        #[doc(hidden)]
         #[rust_name = "peer_name_or_empty"]
-        pub(self) fn peerName(self: &QAbstractSocket) -> QString;
+        fn peerName(self: &QAbstractSocket) -> QString;
 
         /// Returns the port of the econnected peer if the socket is in [`QAbstractSocketSocketState::ConnectedState`]; otherwise returns 0.
         #[rust_name = "peer_port"]
@@ -329,23 +334,26 @@ mod ffi {
         #[rust_name = "set_read_buffer_size"]
         fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: i64);
 
+        #[doc(hidden)]
         #[rust_name = "set_socket_descriptor_qintptr"]
-        pub(self) fn setSocketDescriptor(
+        fn setSocketDescriptor(
             self: Pin<&mut QAbstractSocket>,
             socket_descriptor: qintptr,
             socket_state: QAbstractSocketSocketState,
             open_mode: QIODeviceOpenMode,
         ) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "set_socket_option_variant"]
-        pub(self) fn setSocketOption(
+        fn setSocketOption(
             self: Pin<&mut QAbstractSocket>,
             option: QAbstractSocketSocketOption,
             variant: &QVariant,
         );
 
+        #[doc(hidden)]
         #[rust_name = "socket_descriptor_or_negative"]
-        pub(self) fn socketDescriptor(self: &QAbstractSocket) -> qintptr;
+        fn socketDescriptor(self: &QAbstractSocket) -> qintptr;
 
         /// Returns the value of the `option` option.
         #[rust_name = "socket_option"]
@@ -361,8 +369,9 @@ mod ffi {
         /// Returns the state of the socket.
         fn state(self: &QAbstractSocket) -> QAbstractSocketSocketState;
 
+        #[doc(hidden)]
         #[rust_name = "wait_for_connected_msecs"]
-        pub(self) fn waitForConnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;
+        fn waitForConnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;
 
         #[rust_name = "wait_for_disconnected_msecs"]
         fn waitForDisconnected(self: Pin<&mut QAbstractSocket>, msecs: i32) -> bool;

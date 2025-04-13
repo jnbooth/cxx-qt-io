@@ -158,22 +158,25 @@ mod ffi {
         #[rust_name = "set_server_name"]
         fn setServerName(self: Pin<&mut QLocalSocket>, name: &QString);
 
+        #[doc(hidden)]
         #[rust_name = "set_socket_descriptor_qintptr"]
-        pub(self) fn setSocketDescriptor(
+        fn setSocketDescriptor(
             self: Pin<&mut QLocalSocket>,
             socket_descriptor: qintptr,
             socket_state: QLocalSocketLocalSocketState,
             open_mode: QIODeviceOpenMode,
         ) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "socket_descriptor_or_negative"]
-        pub(self) fn socketDescriptor(self: &QLocalSocket) -> qintptr;
+        fn socketDescriptor(self: &QLocalSocket) -> qintptr;
 
         /// Returns the state of the socket.
         fn state(self: &QLocalSocket) -> QLocalSocketLocalSocketState;
 
+        #[doc(hidden)]
         #[rust_name = "wait_for_connected_msecs"]
-        pub(self) fn waitForConnected(self: Pin<&mut QLocalSocket>, msecs: i32) -> bool;
+        fn waitForConnected(self: Pin<&mut QLocalSocket>, msecs: i32) -> bool;
 
         #[rust_name = "wait_for_disconnected_msecs"]
         fn waitForDisconnected(self: Pin<&mut QLocalSocket>, msecs: i32) -> bool;

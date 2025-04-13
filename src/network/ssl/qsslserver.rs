@@ -38,8 +38,9 @@ mod ffi {
         #[rust_name = "handshake_timeout"]
         fn handshakeTimeout(self: &QSslServer) -> i32;
 
+        #[doc(hidden)]
         #[rust_name = "set_handshake_timeout_msecs"]
-        pub(self) fn setHandshakeTimeout(self: Pin<&mut QSslServer>, timeout: i32);
+        fn setHandshakeTimeout(self: Pin<&mut QSslServer>, timeout: i32);
 
         /// Sets the `ssl_configuration` to use for all following incoming connections.
         ///
