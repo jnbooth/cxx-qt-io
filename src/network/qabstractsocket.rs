@@ -1,6 +1,6 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, SocketDescriptor};
+use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescriptor};
 use cxx_qt::Upcast;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
@@ -222,8 +222,16 @@ mod ffi {
             mode: QAbstractSocketBindMode,
         ) -> bool;
 
-        #[rust_name = "connect_to_host"]
-        fn connectToHost(
+        #[rust_name = "connect_to_host_address"]
+        pub(self) fn connectToHost(
+            self: Pin<&mut QAbstractSocket>,
+            address: &QHostAddress,
+            port: u16,
+            open_mode: QIODeviceOpenMode,
+        );
+
+        #[rust_name = "connect_to_host_name"]
+        pub(self) fn connectToHost(
             self: Pin<&mut QAbstractSocket>,
             host_name: &QString,
             port: u16,
@@ -420,6 +428,20 @@ pub type QAbstractSocketPauseModes = QFlags<QAbstractSocketPauseMode>;
 unsafe_impl_qflag!(QAbstractSocketPauseMode, "QAbstractSocketPauseModes");
 
 impl QAbstractSocket {
+    pub fn connect_to_host<A>(self: Pin<&mut Self>, addr: A, mode: QIODeviceOpenMode)
+    where
+        A: Into<QSocketAddr>,
+    {
+        match addr.into() {
+            QSocketAddr::Address(address, port) => {
+                self.connect_to_host_address(&address, port, mode);
+            }
+            QSocketAddr::Name(name, port, protocol) => {
+                self.connect_to_host_name(&name, port, mode, protocol);
+            }
+        }
+    }
+
     /// Returns the host address of the local socket if available; otherwise returns `None`.
     ///
     /// This is normally the main IP address of the host, but can be [`QHostAddressSpecialAddress::LocalHost`](crate::QHostAddressSpecialAddress::LocalHost) (127.0.0.1) for connections to the local host.

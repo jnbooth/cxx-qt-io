@@ -70,9 +70,8 @@ pub use qnetworkrequest::{
 mod qnetworkreply;
 pub use qnetworkreply::{QNetworkReply, QNetworkReplyNetworkError};
 
-#[cfg(feature = "ssl")]
-mod ssl;
-pub use ssl::*;
+mod qsocketaddr;
+pub use qsocketaddr::QSocketAddr;
 
 mod qtcpserver;
 pub use qtcpserver::QTcpServer;
@@ -82,6 +81,10 @@ pub use qtcpsocket::QTcpSocket;
 
 mod qudpsocket;
 pub use qudpsocket::QUdpSocket;
+
+#[cfg(feature = "ssl")]
+mod ssl;
+pub use ssl::*;
 
 mod socket_descriptor;
 pub use socket_descriptor::SocketDescriptor;
