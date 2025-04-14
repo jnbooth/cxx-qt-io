@@ -4,6 +4,7 @@ use std::time::Duration;
 
 use cxx::{type_id, ExternType};
 
+use crate::util::MSecs;
 use crate::TimerType;
 
 #[cxx::bridge]
@@ -334,6 +335,12 @@ impl From<Duration> for QDeadlineTimer {
     /// Constructs a `QDeadlineTimer` from a duration, using [`TimerType::CoarseTimer`] as its timer type. To specify the timer type, use [`QDeadlineTimer::new`].
     fn from(value: Duration) -> Self {
         Self::new(value, TimerType::CoarseTimer)
+    }
+}
+
+impl MSecs for QDeadlineTimer {
+    fn msecs(self) -> i32 {
+        i32::try_from(self.remaining_time()).unwrap_or(i32::MAX)
     }
 }
 

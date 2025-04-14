@@ -388,7 +388,7 @@ mod ffi {
 
         /// This signal is emitted after an error occurred. The `socket_error` parameter describes the type of error that occurred.
         ///
-        /// When this signal is emitted, the socket may not be ready for a reconnect attempt. In that case, attempts to reconnect should be done from the event loop. For example, use [`QTimer::single_shot(0ns)`](https://doc.qt.io/qt-6/qtimer.html#singleShot).
+        /// When this signal is emitted, the socket may not be ready for a reconnect attempt. In that case, attempts to reconnect should be done from the event loop. For example, use a single-shot [`QChronoTimer`](https://doc.qt.io/qt-6/qchronotimer.html) with 0ns timeout.
         #[qsignal]
         #[rust_name = "error_occurred"]
         fn errorOccurred(self: Pin<&mut QAbstractSocket>, socket_error: QAbstractSocketSocketError);
