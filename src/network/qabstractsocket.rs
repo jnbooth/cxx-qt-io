@@ -91,7 +91,7 @@ mod ffi {
         UnknownSocketError = -1,
     }
 
-    /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the [`QAbstractSocket::connected`] signal from the socket or after having received a new socket from a `QTcpServer`.
+    /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the [`QAbstractSocket::connected`] signal from the socket or after having received a new socket from a [`QTcpServer`](crate::QTcpServer).
     #[repr(i32)]
     enum QAbstractSocketSocketOption {
         /// Try to optimize the socket for low latency. For a [`QTcpSocket`](crate::QTcpSocket) this would set the `TCP_NODELAY` option and disable Nagle's algorithm. Set this to 1 to enable.
@@ -283,7 +283,7 @@ mod ffi {
         #[rust_name = "peer_port"]
         fn peerPort(self: &QAbstractSocket) -> u16;
 
-        /// Returns the protocol tag for this socket. If the protocol tag is set then this is passed to `QNetworkProxyQuery` when this is created internally to indicate the protocol tag to be used.
+        /// Returns the protocol tag for this socket. If the protocol tag is set then this is passed to [`QNetworkProxyQuery`](https://doc.qt.io/qt-6/qnetworkproxyquery.html) when this is created internally to indicate the protocol tag to be used.
         #[rust_name = "protocol_tag"]
         fn protocolTag(self: &QAbstractSocket) -> QString;
 
@@ -388,7 +388,7 @@ mod ffi {
 
         /// This signal is emitted after an error occurred. The `socket_error` parameter describes the type of error that occurred.
         ///
-        /// When this signal is emitted, the socket may not be ready for a reconnect attempt. In that case, attempts to reconnect should be done from the event loop. For example, use `QChronoTimer::single_shot()` with 0ns as the timeout.
+        /// When this signal is emitted, the socket may not be ready for a reconnect attempt. In that case, attempts to reconnect should be done from the event loop. For example, use [`QTimer::single_shot(0ns)`](https://doc.qt.io/qt-6/qtimer.html#singleShot).
         #[qsignal]
         #[rust_name = "error_occurred"]
         fn errorOccurred(self: Pin<&mut QAbstractSocket>, socket_error: QAbstractSocketSocketError);
@@ -402,7 +402,7 @@ mod ffi {
 
         /// This signal can be emitted when a `proxy` that requires authentication is used. The `authenticator` object can then be filled in with the required details to allow authentication and continue the connection.
         ///
-        /// **Note:** It is not possible to use a `QueuedConnection` to connect to this signal, as the connection will fail if the authenticator has not been filled in with new information when the signal returns.
+        /// **Note:** It is not possible to use a [`ConnectionType::QueuedConnection`](cxx_qt_lib::ConnectionType::QueuedConnection) to connect to this signal, as the connection will fail if the authenticator has not been filled in with new information when the signal returns.
         ///
         /// # Safety
         ///

@@ -28,9 +28,9 @@ mod ffi {
         HostNotFoundError,
         /// The connection to the remote server timed out.
         TimeoutError,
-        /// The operation was canceled via calls to `abort()` or `close()` before it was finished.
+        /// The operation was canceled via calls to [`QNetworkReply::abort`] or [`QNetworkReply::close`](QIODevice::close) before it was finished.
         OperationCanceledError,
-        /// The SSL/TLS handshake failed and the encrypted channel could not be established. The `ssl_errors()` signal should have been emitted.
+        /// The SSL/TLS handshake failed and the encrypted channel could not be established. The [`QNetworkReply::ssl_errors`] signal should have been emitted.
         SslHandshakeFailedError,
         /// The connection was broken due to disconnection from the network, however the system has initiated roaming to another access point. The request should be resubmitted and will be processed as soon as the connection is re-established.
         TemporaryNetworkFailureError,
@@ -38,7 +38,7 @@ mod ffi {
         NetworkSessionFailedError,
         /// The background request is not currently allowed due to platform policy.
         BackgroundRequestNotAllowedError,
-        /// while following redirects, the maximum limit was reached. The limit is by default set to 50 or as set by QNetworkRequest::setMaxRedirectsAllowed()
+        /// while following redirects, the maximum limit was reached. The limit is by default set to 50 or as set by [`QNetworkRequest::set_max_redirects_allowed`].
         TooManyRedirectsError,
         /// While following redirects, the network access API detected a redirect from a encrypted protocol (https) to an unencrypted one (http).
         InsecureRedirectError,
@@ -146,7 +146,7 @@ mod ffi {
     }
 
     unsafe extern "C++Qt" {
-        /// The `QNetworkReply` class contains the data and headers for a request sent with `QNetworkAccessManager`.
+        /// The `QNetworkReply` class contains the data and headers for a request sent with [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html).
         ///
         /// Qt Documentation: [QNetworkReply](https://doc.qt.io/qt-6/qnetworkreply.html#details)
         #[qobject]
@@ -188,7 +188,7 @@ mod ffi {
         ///
         /// This function can be called from the slot connected to the [`ssl_errors`](QNetworkReply::ssl_errors) signal, which indicates which errors were found.
         ///
-        /// **Note:** If HTTP Strict Transport Security is enabled for `QNetworkAccessManager`, this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html), this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_all_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>);
@@ -197,7 +197,7 @@ mod ffi {
         ///
         /// Multiple calls to this function will replace the list of errors that were passed in previous calls. You can clear the list of errors you want to ignore by calling this function with an empty list.
         ///
-        /// **Note:** If HTTP Strict Transport Security is enabled for `QNetworkAccessManager`, this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html), this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>, errors: &QList_QSslError);
@@ -274,7 +274,7 @@ mod ffi {
 
         /// This signal is emitted when an SSL/TLS session has successfully completed the initial handshake. At this point, no user data has been transmitted. The signal can be used to perform additional checks on the certificate chain, for example to notify users when the certificate for a website has changed. If the reply does not match the expected criteria then it should be aborted by calling [`abort`](QNetworkReply::abort) by a slot connected to this signal. The SSL configuration in use can be inspected using [`ssl_configuration`](QNetworkReply::ssl_configuration).
         ///
-        /// Internally, `QNetworkAccessManager` may open multiple connections to a server, in order to allow it process requests in parallel. These connections may be reused, which means that this signal would not be emitted. This means that you are only guaranteed to receive this signal for the first connection to a site in the lifespan of the `QNetworkAccessManager`.
+        /// Internally, [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) may open multiple connections to a server, in order to allow it process requests in parallel. These connections may be reused, which means that this signal would not be emitted. This means that you are only guaranteed to receive this signal for the first connection to a site in the lifespan of the [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html).
         #[cfg(feature = "ssl")]
         #[qsignal]
         fn encrypted(self: Pin<&mut QNetworkReply>);
@@ -292,7 +292,7 @@ mod ffi {
         ///
         /// Unless [`close`](QIODevice::close) or [`abort`](QNetworkReply::abort) have been called, the reply will still be opened for reading, so the data can be retrieved by calls to [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all). In particular, if no calls to [`read`](QIODevice::read) were made as a result of [`ready_read`](QIODevice::ready_read), a call to [`read_all`](QIODevice::read_all) will retrieve the full contents in a `QByteArray`.
         ///
-        /// This signal is emitted in tandem with `QNetworkAccessManager::finished` where that signal's reply parameter is this object.
+        /// This signal is emitted in tandem with [`QNetworkAccessManager::finished`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html#finished) where that signal's reply parameter is this object.
         ///
         /// **Note:** Do not delete the object in the slot connected to this signal.
         ///
@@ -376,7 +376,7 @@ impl QNetworkReply {
 
     /// Returns `true` if the raw header of name `header_name` was sent by the remote server.
     ///
-    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](cxx_qt_lib::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn has_raw_header<'a, T>(&self, header_name: T) -> bool
     where
@@ -392,7 +392,7 @@ impl QNetworkReply {
 
     /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use [`has_raw_header`](QNetworkReply::has_raw_header) to verify if the server sent such header field.
     ///
-    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](cxx_qt_lib::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn raw_header<'a, T>(&self, header_name: T) -> QByteArray
     where

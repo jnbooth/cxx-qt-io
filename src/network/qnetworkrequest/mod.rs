@@ -12,7 +12,7 @@ use crate::util::{IsNonNull, MSecs};
 
 #[cxx::bridge]
 mod ffi {
-    /// Controls the caching mechanism of `QNetworkAccessManager`.
+    /// Controls the caching mechanism of [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html).
     #[repr(i32)]
     #[derive(Debug)]
     enum QNetworkRequestCacheLoadControl {
@@ -177,14 +177,14 @@ mod ffi {
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         fn headers(&self) -> QHttpHeaders;
 
-        /// Returns the current parameters that `QNetworkAccessManager` is using for the underlying HTTP/1 connection of this request.
+        /// Returns the current parameters that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) is using for the underlying HTTP/1 connection of this request.
         ///
         /// Introduced in Qt 6.5.
         #[cfg(cxxqt_qt_version_at_least_6_5)]
         #[rust_name = "http1_configuration"]
         fn http1Configuration(&self) -> QHttp1Configuration;
 
-        /// Returns the current parameters that `QNetworkAccessManager` is using for this request and its underlying HTTP/2 connection. This is either a configuration previously set by an application or a default configuration.
+        /// Returns the current parameters that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) is using for this request and its underlying HTTP/2 connection. This is either a configuration previously set by an application or a default configuration.
         #[rust_name = "http2_configuration"]
         fn http2Configuration(&self) -> QHttp2Configuration;
 
@@ -248,7 +248,7 @@ mod ffi {
         ///
         /// **Note:** The configuration must be set prior to making a request.
         ///
-        /// **Note:** HTTP/2 multiplexes several streams in a single HTTP/2 connection. This implies that `QNetworkAccessManager` will use the configuration found in the first request from a series of requests sent to the same host.
+        /// **Note:** HTTP/2 multiplexes several streams in a single HTTP/2 connection. This implies that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) will use the configuration found in the first request from a series of requests sent to the same host.
         #[rust_name = "set_http2_configuration"]
         fn setHttp2Configuration(&mut self, configuration: &QHttp2Configuration);
 
@@ -373,7 +373,7 @@ impl QNetworkRequest {
 
     /// Returns `true` if the raw header `header_name` is present in this network request.
     ///
-    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](cxx_qt_lib::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn has_raw_header<'a, T>(&self, header_name: T) -> bool
     where
@@ -391,7 +391,7 @@ impl QNetworkRequest {
     //
     /// Raw headers can be set with [`set_raw_header`](QNetworkRequest::set_raw_header) or with [`set_header`](QNetworkRequest::set_header).
     ///
-    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](crate::QByteArray).
+    /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](cxx_qt_lib::QByteArray).
     #[cfg(cxxqt_qt_version_at_least_6_7)]
     pub fn raw_header<'a, T>(&self, header_name: T) -> QByteArray
     where

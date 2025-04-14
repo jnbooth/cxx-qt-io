@@ -28,17 +28,17 @@ mod ffi {
 
         /// Returns `true` if server push was enabled.
         ///
-        /// **Note:** By default, [`QNetworkAccessManager`](crate::QNetworkAccessManager) disables server push via the 'SETTINGS' frame.
+        /// **Note:** By default, [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) disables server push via the 'SETTINGS' frame.
         #[rust_name = "server_push_enabled"]
         fn serverPushEnabled(&self) -> bool;
 
-        /// Returns the window size for connection-level flow control. The default value [`QNetworkAccessManager`](crate::QNetworkAccessManager) will be using is 2147483647 octets.
+        /// Returns the window size for connection-level flow control. The default value [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) will be using is 2147483647 octets.
         #[rust_name = "session_receive_window_size"]
         fn sessionReceiveWindowSize(&self) -> u32;
 
         /// If `enable` is true, HPACK compression will additionally compress string using the Huffman coding. Enabled by default.
         ///
-        /// **Note:** This parameter only affects 'HEADERS' frames that [`QNetworkAccessManager`](crate::QNetworkAccessManager) is sending.
+        /// **Note:** This parameter only affects 'HEADERS' frames that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) is sending.
         #[rust_name = "set_huffman_compression_enabled"]
         fn setHuffmanCompressionEnabled(&mut self, enable: bool);
 
@@ -65,7 +65,7 @@ mod ffi {
         #[rust_name = "set_stream_receive_window_size"]
         fn setStreamReceiveWindowSize(&mut self, size: u32) -> bool;
 
-        /// Returns the window size for stream-level flow control. The default value [`QNetworkAccessManager`](crate::QNetworkAccessManager) will be using is 214748364 octets (see [RFC 7540](https://httpwg.org/specs/rfc7540.html#SettingValues)).
+        /// Returns the window size for stream-level flow control. The default value [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) will be using is 214748364 octets (see [RFC 7540](https://httpwg.org/specs/rfc7540.html#SettingValues)).
         #[rust_name = "stream_receive_window_size"]
         fn streamReceiveWindowSize(&self) -> u32;
 

@@ -127,7 +127,7 @@ mod ffi {
         ///
         /// An IPv6 site-local address is one in the network fec0::/10. See the [IANA IPv6 Address Space](https://www.iana.org/assignments/ipv6-address-space/ipv6-address-space.xhtml) registry for more information.
         ///
-        /// IPv6 site-local addresses are deprecated and should not be depended upon in new applications. New applications should not depend on this function and should consider site-local addresses the same as global (which is why `is_global()` also returns `true`). Site-local addresses were replaced by Unique Local Addresses (ULA).
+        /// IPv6 site-local addresses are deprecated and should not be depended upon in new applications. New applications should not depend on this function and should consider site-local addresses the same as global (which is why [`is_global`](QHostAddress::is_global) also returns `true`). Site-local addresses were replaced by Unique Local Addresses (ULA).
         #[rust_name = "is_site_local"]
         fn isSiteLocal(&self) -> bool;
 

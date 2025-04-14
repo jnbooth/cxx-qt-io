@@ -27,14 +27,14 @@ mod ffi {
     unsafe extern "C++" {
         type QDeadlineTimer = super::QDeadlineTimer;
 
-        /// Returns the absolute time point for the deadline stored in `QDeadlineTimer` object, calculated in milliseconds relative to the reference clock, the same as `QElapsedTimer::msecs_since_reference()`. The value will be in the past if this `QDeadlineTimer` has expired.
+        /// Returns the absolute time point for the deadline stored in `QDeadlineTimer` object, calculated in milliseconds relative to the reference clock, the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference). The value will be in the past if this `QDeadlineTimer` has expired.
         ///
         /// If this `QDeadlineTimer` never expires, this function returns [`i64::MAX`],
         ///
         /// **Note:** For a more Rust-friendly option, see [`QDeadlineTimer::duration_since`].
         fn deadline(&self) -> i64;
 
-        /// Returns the absolute time point for the deadline stored in `QDeadlineTimer` object, calculated in nanoseconds relative to the reference clock, the same as `QElapsedTimer::msecs_since_reference()`. The value will be in the past if this `QDeadlineTimer` has expired.
+        /// Returns the absolute time point for the deadline stored in `QDeadlineTimer` object, calculated in nanoseconds relative to the reference clock, the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference). The value will be in the past if this `QDeadlineTimer` has expired.
         ///
         /// If this `QDeadlineTimer` never expires or the number of nanoseconds until the deadline can't be accommodated in the return type, this function returns [`i64::MAX`].
         ///
@@ -64,7 +64,7 @@ mod ffi {
         #[rust_name = "remaining_time_n_secs"]
         fn remainingTimeNSecs(&self) -> i64;
 
-        /// Sets the deadline for this `QDeadlineTimer` object to be the `msecs` absolute time point, counted in milliseconds since the reference clock (the same as `QElapsedTimer::msecs_since_reference()`), and the timer type to `timer_type`. If the value is in the past, this `QDeadlineTimer` will be marked as expired.
+        /// Sets the deadline for this `QDeadlineTimer` object to be the `msecs` absolute time point, counted in milliseconds since the reference clock (the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference)), and the timer type to `timer_type`. If the value is in the past, this `QDeadlineTimer` will be marked as expired.
         ///
         /// If msecs is [`i64::MAX`] or the deadline is beyond a representable point in the future, this `QDeadlineTimer` will be set to never expire.
         ///
@@ -72,7 +72,7 @@ mod ffi {
         #[rust_name = "set_deadline"]
         fn setDeadline(&mut self, msecs: i64, timer_type: TimerType);
 
-        /// Sets the deadline for this `QDeadlineTimer` object to be `secs` seconds and `nsecs` nanoseconds since the reference clock epoch (the same as `QElapsedTimer::msecs_since_reference()`), and the timer type to `timer_type`. If the value is in the past, this `QDeadlineTimer` will be marked as expired.
+        /// Sets the deadline for this `QDeadlineTimer` object to be `secs` seconds and `nsecs` nanoseconds since the reference clock epoch (the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference)), and the timer type to `timer_type`. If the value is in the past, this `QDeadlineTimer` will be marked as expired.
         ///
         /// If `secs` or `nsecs` is [`i64::MAX`], this `QDeadlineTimer` will be set to never expire. If `nsecs` is more than 1 billion nanoseconds (1 second), then `secs` will be adjusted accordingly.
         ///

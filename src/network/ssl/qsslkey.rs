@@ -45,7 +45,7 @@ mod ffi {
         #[rust_name = "len_or_negative"]
         fn length(&self) -> i32;
 
-        /// Returns the type of the key (i.e., `PublicKey` or `PrivateKey`).
+        /// Returns the type of the key (i.e., [`QSslKeyType::PublicKey`] or [`QSslKeyType::PrivateKey`]).
         #[cxx_name = "type"]
         fn key_type(&self) -> QSslKeyType;
     }

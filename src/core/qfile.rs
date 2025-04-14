@@ -165,7 +165,7 @@ impl QFile {
     ///
     /// Warning: If `fd` is not a regular file, e.g, it is 0 ([`FileDescriptor::STDIN`]), 1 ([`FileDescriptor::STDOUT`]), or 2 ([`FileDescriptor::STDERR`]), you may not be able to use [`seek`](QIODevice::seek). In those cases, [`size`](QIODevice::size) returns 0. See [`is_sequential`](QIODevice::is_sequential) for more information.
     ///
-    /// Warning: Since this function opens the file without specifying the file name, you cannot use this `QFile` with a `QFileInfo`.
+    /// Warning: Since this function opens the file without specifying the file name, you cannot use this `QFile` with a [`QFileInfo`](https://doc.qt.io/qt-6/qfileinfo.html).
     pub fn open(
         self: Pin<&mut Self>,
         fd: FileDescriptor,

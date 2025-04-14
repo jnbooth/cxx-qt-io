@@ -16,15 +16,15 @@ mod ffi {
         DiffieHellman,
         /// Class [`QSslEllipticCurve`](crate::QSslEllipticCurve).
         EllipticCurve,
-        /// Class `QDtls`.
+        /// Class [`QDtls`](crate::QDtls).
         Dtls,
-        /// Class `QDtlsClientVerifier`.
+        /// Class [`QDtlsClientVerifier`](crate::QDtlsClientVerifier).
         DtlsCookie,
     }
 
     /// Enumerates possible features that a TLS backend supports.
     ///
-    /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from `QSslSupportedFeature` enum indicate that a particular feature is supported.
+    /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from this enum indicate that a particular feature is supported.
     #[repr(i32)]
     #[derive(Debug)]
     enum QSslSupportedFeature {

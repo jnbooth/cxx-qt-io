@@ -146,7 +146,7 @@ mod ffi {
         /// You can also call this function after [`do_handshake`](QDtls::do_handshake) encountered the [`QDtlsError::PeerVerificationError`] error, and then resume the handshake by calling [`resume_handshake`](QDtls::resume_handshake).
         ///
         /// Later calls to this function will replace the list of errors that were passed in previous calls. You can clear the list of errors you want to ignore by calling this function with an empty list.
-        #[rust_name = "ignore_verification_error"]
+        #[rust_name = "ignore_verification_errors"]
         fn ignoreVerificationErrors(self: Pin<&mut QDtls>, errors_to_ignore: &QList_QSslError);
 
         /// Returns `true` if DTLS handshake completed successfully.

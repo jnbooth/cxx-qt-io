@@ -17,9 +17,9 @@ mod ffi {
     enum QSslCertificatePatternSyntax {
         /// A rich Perl-like pattern matching syntax.
         RegularExpression,
-        /// This provides a simple pattern matching syntax similar to that used by shells (command interpreters) for "file globbing". See `QRegularExpression::from_wildcard()`.
+        /// This provides a simple pattern matching syntax similar to that used by shells (command interpreters) for "file globbing". See [`QRegularExpression::from_wildcard`](https://doc.qt.io/qt-6/qregularexpression.html#fromWildcard).
         Wildcard,
-        /// The pattern is a fixed string. This is equivalent to using the RegularExpression pattern on a string in which all metacharacters are escaped using `escape()`. This is the default.
+        /// The pattern is a fixed string. This is equivalent to using the RegularExpression pattern on a string in which all metacharacters are escaped using [`QRegularExpression::escape`](https://doc.qt.io/qt-6/qregularexpression.html#escape). This is the default.
         FixedString,
     }
 
@@ -235,7 +235,7 @@ pub use ffi::{QSslCertificatePatternSyntax, QSslCertificateSubjectInfo};
 
 /// Parameter for [`QSslCertificate`] functions that reference certificate information.
 ///
-/// Functions that accept `SslCertificateSubjectInfoOrAttribute` are overloaded to accept either [`QSslCertificateSubjectInfo`] or [`&QByteArray`](QByteArray). You do not need to use this type directly.
+/// Functions that accept `SslCertificateSubjectInfoOrAttribute` are overloaded to accept either [`QSslCertificateSubjectInfo`] or [`&QByteArray`](cxx_qt_lib::QByteArray). You do not need to use this type directly.
 #[derive(Copy, Clone, PartialEq, Eq)]
 pub enum SslCertificateSubjectInfoOrAttribute<'a> {
     /// Specify by subject info type.

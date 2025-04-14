@@ -14,7 +14,7 @@ mod ffi {
     enum QSslConfigurationNextProtocolNegotiationStatus {
         /// No application protocol has been negotiated (yet).
         NextProtocolNegotiationNone,
-        /// A next protocol has been negotiated (see `next_ngotiated_protocol()`).
+        /// A next protocol has been negotiated (see [`QSslconfiguration::next_negotiated_protocol`]).
         NextProtocolNegotiationNegotiated,
         /// The client and server could not agree on a common next application protocol.
         NextProtocolNegotiationUnsupported,
@@ -298,7 +298,7 @@ mod ffi {
         #[rust_name = "set_peer_verify_depth"]
         fn setPeerVerifyDepth(&mut self, depth: i32);
 
-        /// Sets the verify mode to `mode`. This mode decides whether `QSslSocket` should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
+        /// Sets the verify mode to `mode`. This mode decides whether [`QSslSocket`](crate::QSslSocket) should request a certificate from the peer (i.e., the client requests a certificate from the server, or a server requesting a certificate from the client), and whether it should require that this certificate is valid.
         ///
         /// The default mode is [`QSslSocketPeerVerifyMode::AutoVerifyPeer`](crate::QSslSocketPeerVerifyMode::AutoVerifyPeer), which tells [`QSslSocket`](crate::QSslSocket) to use [`QSslSocketPeerVerifyMode::VerifyPeer`](crate::QSslSocketPeerVerifyMode::VerifyPeer) for clients, [`QSslSocketPeerVerifyMode::QueryPeer`](crate::QSslSocketPeerVerifyMode::QueryPeer) for servers.
         #[rust_name = "set_peer_verify_mode"]
@@ -306,7 +306,7 @@ mod ffi {
 
         /// Sets the identity hint for a preshared key authentication to `hint`. This will affect the next initiated handshake; calling this function on an already-encrypted socket will not affect the socket's identity hint.
         ///
-        /// The identity hint is used in `SslServerMode` only!
+        /// The identity hint is used in [`QSslSocketSslMode::SslServerMode`](crate::QSslSocketSslMode) only!
         #[rust_name = "set_pre_shared_key_identity_hint"]
         fn setPreSharedKeyIdentityHint(&mut self, hint: &QByteArray);
 

@@ -99,7 +99,7 @@ mod ffi {
         #[base = QTcpSocket]
         type QSslSocket;
 
-        /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the `OpenMode`. This is equivalent to calling [`connect_to_host`](QAbstractSocket::connect_to_host) to establish the connection, followed by a call to [`start_client_encryption`](QSslSocket::start_client_encryption). The `protocol` parameter can be used to specify which network protocol to use (eg. IPv4 or IPv6). The `ssl_peer_name` enables the usage of a different host name for the certificate validation instead of the one used for the TCP connection (`host_name`).
+        /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the open mode. This is equivalent to calling [`connect_to_host`](QAbstractSocket::connect_to_host) to establish the connection, followed by a call to [`start_client_encryption`](QSslSocket::start_client_encryption). The `protocol` parameter can be used to specify which network protocol to use (eg. IPv4 or IPv6). The `ssl_peer_name` enables the usage of a different host name for the certificate validation instead of the one used for the TCP connection (`host_name`).
         ///
         /// `QSslSocket` first enters the [`QAbstractSocketSocketState::HostLookupState`](crate::QAbstractSocketSocketState::HostLookupState). Then, after entering either the event loop or one of the `wait_for...()` functions, it enters the [`QAbstractSocketSocketState::ConnectingState`](crate::QAbstractSocketSocketState::ConnectingState), emits [`connected`](QAbstractSocket::connected), and then initiates the SSL client handshake. At each state change, `QSslSocket` emits signal [`state_changed`](QAbstractSocket::state_changed).
         ///
@@ -164,7 +164,7 @@ mod ffi {
 
         /// Returns the current mode for the socket; either [`QSslSocketSslMode::UnencryptedMode`], where `QSslSocket` behaves identially to [`QTcpSocket`], or one of [`QSslSocketSslMode::SslClientMode`] or [`QSslSocketSslMode::SslServerMode`], where the client is either negotiating or in encrypted mode.
         ///
-        /// When the mode changes, QSslSocket emits `mode_canged()`.
+        /// When the mode changes, QSslSocket emits [`mode_changed`](QSslSocket::mode_changed).
         fn mode(self: &QSslSocket) -> QSslSocketSslMode;
 
         /// This function returns Online Certificate Status Protocol responses that a server may send during a TLS handshake using OCSP stapling. The list is empty if no definitive response or no response at all was received.
@@ -396,7 +396,7 @@ mod ffi {
         ///
         /// `errors` contains one or more errors that prevent `QSslSocket` from verifying the identity of the peer.
         ///
-        /// **Note:** You cannot use `QueuedConnection` when connecting to this signal, or calling [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) will have no effect.
+        /// **Note:** You cannot use [`ConnectionType::QueuedConnection`](cxx_qt_lib::ConnectionType::QueuedConnection) when connecting to this signal, or calling [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) will have no effect.
         #[qsignal]
         #[rust_name = "ssl_errors"]
         fn sslErrors(self: Pin<&mut QSslSocket>, errors: &QList_QSslError);

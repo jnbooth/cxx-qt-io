@@ -108,7 +108,7 @@ mod ffi {
 
         /// Sets the maximum number of pending accepted connections to `num_connections`. `QTcpServer` will accept no more than `num_connections` incoming connections before [`next_pending_connection`](QTcpServer::next_pending_connection) is called. By default, the limit is 30 pending connections.
         ///
-        /// Clients may still able to connect after the server has reached its maximum number of pending connections (i.e., `QTcpSocket` can still emit the [`connected`](crate::QAbstractSocket::connected) signal). `QTcpServer` will stop accepting the new connections, but the operating system may still keep them in queue.
+        /// Clients may still able to connect after the server has reached its maximum number of pending connections (i.e., [`QTcpSocket`](crate::QTcpSocket) can still emit the [`connected`](crate::QAbstractSocket::connected) signal). `QTcpServer` will stop accepting the new connections, but the operating system may still keep them in queue.
         #[rust_name = "set_max_pending_connections"]
         fn setMaxPendingConnections(self: Pin<&mut QTcpServer>, num_connections: i32);
 

@@ -235,9 +235,9 @@ impl QFileDevice {
 
     /// Returns the file handle of the file.
     ///
-    /// This is a small positive integer, suitable for use with C library functions such as `fdopen()` and `fcntl()`. On systems that use file descriptors for sockets (i.e. Unix systems, but not Windows) the handle can be used with `QSocketNotifier` as well.
+    /// This is a small positive integer, suitable for use with C library functions such as [`fdopen()`](https://pubs.opengroup.org/onlinepubs/009695399/functions/fdopen.html) and [`fcntl()`](https://pubs.opengroup.org/onlinepubs/007904975/functions/fcntl.html). On systems that use file descriptors for sockets (i.e. Unix systems, but not Windows) the handle can be used with [`QSocketNotifier`](https://doc.qt.io/qt-6/qsocketnotifier.html) as well.
     ///
-    /// If the file is not open, or there is an error, `handle()` returns `None`.
+    /// If the file is not open, or there is an error, this function returns `None`.
     pub fn handle(&self) -> Option<FileDescriptor> {
         FileDescriptor::from(self.handle_or_negative()).nonnull()
     }

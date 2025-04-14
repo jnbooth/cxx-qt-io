@@ -23,7 +23,7 @@ mod ffi {
         #[rust_name = "is_critical"]
         fn isCritical(&self) -> bool;
 
-        /// Returns `true` if this extension is supported. In this case, supported simply means that the structure of the [`QVariant`](crate::QVariant) returned by the [`value`](QSslCertificateExtension::value) accessor will remain unchanged between versions. Unsupported extensions can be freely used, however there is no guarantee that the returned data will have the same structure between versions.
+        /// Returns `true` if this extension is supported. In this case, supported simply means that the structure of the [`QVariant`](cxx_qt_lib::QVariant) returned by the [`value`](QSslCertificateExtension::value) accessor will remain unchanged between versions. Unsupported extensions can be freely used, however there is no guarantee that the returned data will have the same structure between versions.
         #[rust_name = "is_supported"]
         fn isSupported(&self) -> bool;
 

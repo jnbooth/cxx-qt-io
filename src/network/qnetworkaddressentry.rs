@@ -53,7 +53,7 @@ mod ffi {
         /// This function returns one IPv4 or IPv6 address found, that was found in a network interface.
         fn ip(&self) -> QHostAddress;
 
-        /// Returns `true` if the address lifetime is known, `false` if not. If the lifetime is not known, both `preferred_lifetime()` and `validity_lifetime()` will return `Forever`.
+        /// Returns `true` if the address lifetime is known, `false` if not. If the lifetime is not known, both [`preferred_lifetime`](QNetworkAddressEntry::preferred_lifetime) and [`validity_lifetime`](QNetworkAddressEntry::validity_lifetime) will return [`QDeadlineTimer::forever()`](crate::QDeadlineTimer::forever).
         #[rust_name = "is_lifetime_known"]
         fn isLifetimeKnown(&self) -> bool;
 
@@ -74,7 +74,7 @@ mod ffi {
         /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a `QHostAddress` holding the address `FFFF:FFFF:FFFF:FFFF::`.
         fn netmask(&self) -> QHostAddress;
 
-        /// Returns the deadline when this address becomes deprecated (no longer preferred), if known. If the address lifetime is not known (see [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known)), this function always returns [`QDeadlineTimer::forever()`].
+        /// Returns the deadline when this address becomes deprecated (no longer preferred), if known. If the address lifetime is not known (see [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known)), this function always returns [`QDeadlineTimer::forever()`](crate::QDeadlineTimer::forever).
         ///
         /// While an address is preferred, it may be used by the operating system as the source address for new, outgoing packets. After it becomes deprecated, it will remain valid for incoming packets for a while longer until finally removed (see [`validity_lifetime`](QNetworkAddressEntry::validity_lifetime)).
         #[rust_name = "preferred_lifetime"]

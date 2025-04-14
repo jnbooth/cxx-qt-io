@@ -87,7 +87,7 @@ mod ffi {
         ///
         /// `errors` contains one or more errors that prevent `QSslSocket` from verifying the identity of the peer.
         ///
-        /// **Note:** You cannot use `QueuedConnection` when connecting to this signal, or calling [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) will have no effect.
+        /// **Note:** You cannot use [`ConnectionType::QueuedConnection`](cxx_qt_lib::ConnectionType::QueuedConnection) when connecting to this signal, or calling [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) will have no effect.
         #[qsignal]
         #[rust_name = "ssl_errors"]
         unsafe fn sslErrors(
@@ -138,7 +138,7 @@ impl QSslServer {
     }
 
     /// Mutably casts this object to `QTcpServer`.
-    pub fn as_file_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QTcpServer> {
+    pub fn as_tcp_server_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QTcpServer> {
         self.as_mut().upcast_pin()
     }
 }

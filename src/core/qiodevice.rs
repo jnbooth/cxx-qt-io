@@ -34,7 +34,7 @@ mod ffi {
         Unbuffered = 0x0020,
         /// Fail if the file to be opened already exists. Create and open the file only if it does not exist. There is a guarantee from the operating system that you are the only one creating and opening the file. Note that this mode implies [`WriteOnly`](QIODeviceOpenModeFlag::WriteOnly), and combining it with [`ReadWrite`](QIODeviceOpenModeFlag::ReadWrite) is allowed. This flag currently only affects [`QFile`](crate::QFile). Other classes might use this flag in the future, but until then using this flag with any classes other than [`QFile`](crate::QFile) may result in undefined behavior.
         NewOnly = 0x0040,
-        /// Fail if the file to be opened does not exist. This flag must be specified alongside `ReadOnly`, `WriteOnly`, or `ReadWrite`. Note that using this flag with `ReadOnly` alone is redundant, as `ReadOnly` already fails when the file does not exist. This flag currently only affects `QFile`. Other classes might use this flag in the future, but until then using this flag with any classes other than `QFile` may result in undefined behavior.
+        /// Fail if the file to be opened does not exist. This flag must be specified alongside [`ReadOnly`](QIODeviceOpenModeFlag::ReadOnly), [`WriteOnly`](QIODeviceOpenModeFlag::WriteOnly), or [`ReadWrite`](QIODeviceOpenModeFlag::ReadWrite). Note that using this flag with [`ReadOnly`](QIODeviceOpenModeFlag::ReadOnly) alone is redundant, as [`ReadOnly`](QIODeviceOpenModeFlag::ReadOnly) already fails when the file does not exist. This flag currently only affects [`QFile`](crate::QFile). Other classes might use this flag in the future, but until then using this flag with any classes other than [`QFile`](crate::QFile) may result in undefined behavior.
         ExistingOnly = 0x0080,
     }
 
@@ -60,7 +60,7 @@ mod ffi {
 
         /// Returns `true` if the current read and write position is at the end of the device (i.e. there is no more data available for reading on the device); otherwise returns `false`.
         ///
-        /// For some devices, `at_end()` can return `true` even though there is more data to read. This special case only applies to devices that generate data in direct response to you calling `read()` (e.g., `/dev` or `/proc` files on Unix and macOS, or console input / `stdin` on all platforms).
+        /// For some devices, this function can return `true` even though there is more data to read. This special case only applies to devices that generate data in direct response to you calling this function (e.g., `/dev` or `/proc` files on Unix and macOS, or console input / `stdin` on all platforms).
         #[rust_name = "at_end"]
         fn atEnd(self: &QIODevice) -> bool;
 
@@ -78,7 +78,7 @@ mod ffi {
         #[rust_name = "can_read_line"]
         fn canReadLine(self: &QIODevice) -> bool;
 
-        /// First emits `about_to_close()`, then closes the device and sets its OpenMode to `NotOpen`. The error string is also reset.
+        /// First emits [`about_to_close`](QIODevice::about_to_close), then closes the device and sets its OpenMode to `NotOpen`. The error string is also reset.
         fn close(self: Pin<&mut QIODevice>);
 
         /// Completes a read transaction.
@@ -249,7 +249,7 @@ mod ffi {
         #[rust_name = "start_transaction"]
         fn startTransaction(self: Pin<&mut QIODevice>);
 
-        /// Puts the character `c` back into the device, and decrements the current position unless the position is 0. This function is usually called to "undo" a `get_char()` operation, such as when writing a backtracking parser.
+        /// Puts the character `c` back into the device, and decrements the current position unless the position is 0. This function is usually called to "undo" a [`get_char`](QIODevice::get_char) operation, such as when writing a backtracking parser.
         ///
         /// # Safety
         ///

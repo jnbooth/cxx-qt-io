@@ -187,7 +187,7 @@ impl QUdpSocket {
         }
     }
 
-    /// Returns the interface for the outgoing interface for multicast datagrams. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. If no interface has been previously set, this function returns an invalid `QNetworkInterface`. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise `None` is returned.
+    /// Returns the interface for the outgoing interface for multicast datagrams. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. If no interface has been previously set, this function returns `None`. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise `None` is returned.
     pub fn multicast_interface(&self) -> Option<QNetworkInterface> {
         self.multicast_interface_or_invalid().nonnull()
     }
