@@ -9,6 +9,14 @@ use std::time::Duration;
 #[cxx_qt::bridge]
 mod ffi {
     extern "C++" {
+        include!("cxx-qt-lib/qstring.h");
+        type QString = cxx_qt_lib::QString;
+
+        include!("cxx-qt-io/qabstractsocket.h");
+        type QAbstractSocketSocketError = crate::QAbstractSocketSocketError;
+        include!("cxx-qt-io/qssl.h");
+        type QSslAlertLevel = crate::QSslAlertLevel;
+        type QSslAlertType = crate::QSslAlertType;
         include!("cxx-qt-io/qsslconfiguration.h");
         type QSslConfiguration = crate::QSslConfiguration;
         include!("cxx-qt-io/qsslerror.h");
@@ -55,6 +63,58 @@ mod ffi {
         /// Returns the current ssl configuration.
         #[rust_name = "ssl_configuration"]
         pub fn sslConfiguration(self: &QSslServer) -> QSslConfiguration;
+
+        /// `QSslServer` emits this signal if an alert message was sent from `socket` from a peer. `level` tells if the alert was fatal or it was a warning. `type` is the code explaining why the alert was sent. When a textual description of the alert message is available, it is supplied in `description`.
+        ///
+        /// **Note:** The signal is mostly for informational and debugging purposes and does not require any handling in the application. If the alert was fatal, underlying backend will handle it and close the connection.
+        ///
+        /// **Note:** Not all backends support this functionality.
+        #[qsignal]
+        #[rust_name = "alert_received"]
+        unsafe fn alertReceived(
+            self: Pin<&mut QSslServer>,
+            socket: *mut QSslSocket,
+            level: QSslAlertLevel,
+            alert_type: QSslAlertType,
+            description: &QString,
+        );
+
+        /// `QSslServer` emits this signal if an alert message was sent from `socket` to a peer. `level` tells if the alert was fatal or it was a warning. `type` is the code explaining why the alert was sent. When a textual description of the alert message is available, it is supplied in `description`.
+        ///
+        /// **Note:** The signal is mostly for informational and debugging purposes and does not require any handling in the application. If the alert was fatal, underlying backend will handle it and close the connection.
+        ///
+        /// **Note:** Not all backends support this functionality.
+        #[qsignal]
+        #[rust_name = "alert_sent"]
+        unsafe fn alertSent(
+            self: Pin<&mut QSslServer>,
+            socket: *mut QSslSocket,
+            level: QSslAlertLevel,
+            alert_type: QSslAlertType,
+            description: &QString,
+        );
+
+        /// This signal is emitted after an error occurred during handshake. The `socket_error` parameter describes the type of error that occurred.
+        ///
+        /// The socket is automatically deleted after this signal is emitted if the socket handshake has not reached encrypted state. But if the socket is successfully encrypted, it is inserted into the `QSslServer`'s pending connections queue. When the user has called [`next_pending_connection`](QTcpServer::nextPendingConnection) it is the user's responsibility to destroy the socket or the socket will not be destroyed until the `QSslServer` object is destroyed. If an error occurs on a socket after it has been inserted into the pending connections queue, this signal will not be emitted, and the socket will not be removed or destroyed.
+        ///
+        /// Note: You cannot use [`ConnectionType::QueuedConnection`](cxx_qt_lib::ConnectionType::QueuedConnection) when connecting to this signal, or the socket will have been already destroyed when the signal is handled.
+        #[qsignal]
+        #[rust_name = "error_occurred"]
+        unsafe fn errorOccurred(
+            self: Pin<&mut QSslServer>,
+            socket: *mut QSslSocket,
+            error: QAbstractSocketSocketError,
+        );
+
+        /// `QSslServer` emits this signal if a certificate verification error was found and if early error reporting was enabled in [`QSslConfiguration`](crate::QSslConfiguration). An application is expected to inspect the error and decide if it wants to continue the handshake, or abort it and send an alert message to the peer. The signal-slot connection must be direct.
+        #[qsignal]
+        #[rust_name = "handshake_interrupted_on_error"]
+        unsafe fn handshakeInterruptedOnError(
+            self: Pin<&mut QSslServer>,
+            socket: *mut QSslSocket,
+            error: &QSslError,
+        );
 
         /// `QSslServer` can emit this signal several times during the SSL handshake, before encryption has been established, to indicate that an error has occurred while establishing the identity of the peer. The error is usually an indication that socket is unable to securely identify the peer.
         ///

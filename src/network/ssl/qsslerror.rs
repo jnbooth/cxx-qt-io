@@ -98,9 +98,6 @@ mod ffi {
 
         #[rust_name = "qsslerror_eq"]
         fn operatorEq(a: &QSslError, b: &QSslError) -> bool;
-
-        #[rust_name = "qsslerror_to_debug_qstring"]
-        fn toDebugQString(value: &QSslError) -> QString;
     }
 }
 
@@ -143,7 +140,7 @@ impl Eq for QSslError {}
 
 impl Debug for QSslError {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qsslerror_to_debug_qstring(self))
+        Debug::fmt(&self.error(), f)
     }
 }
 
