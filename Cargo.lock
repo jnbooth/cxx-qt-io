@@ -161,8 +161,19 @@ dependencies = [
  "cxx",
  "cxx-qt",
  "cxx-qt-build",
+ "cxx-qt-io-test-utils",
  "cxx-qt-lib",
  "qt-build-utils",
+]
+
+[[package]]
+name = "cxx-qt-io-test-utils"
+version = "0.1.0"
+dependencies = [
+ "cxx",
+ "cxx-qt",
+ "cxx-qt-build",
+ "cxx-qt-lib",
 ]
 
 [[package]]
