@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::MSecs;
 use crate::QFile;
-use cxx_qt::{Downcast, Upcast};
+use cxx_qt::{Downcast, QObject, Upcast};
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};
@@ -56,6 +56,7 @@ mod ffi {
         ///
         /// Qt Documentation: [QIODevice](https://doc.qt.io/qt-6/qiodevice.html#details)
         #[qobject]
+        #[base = QObject]
         type QIODevice;
 
         /// Returns `true` if the current read and write position is at the end of the device (i.e. there is no more data available for reading on the device); otherwise returns `false`.
@@ -283,7 +284,7 @@ mod ffi {
         /// # Safety
         ///
         /// `data` must be a zero-terminated string of 8-bit characters.
-        #[rust_name = "write_all_unsafe"]
+        #[rust_name = "write_cstr_unsafe"]
         unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char) -> i64;
 
         /// Returns the number of available write channels if the device is open; otherwise returns 0.
@@ -504,9 +505,9 @@ impl QIODevice {
     }
 
     /// Writes data from a zero-terminated string of 8-bit characters to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
-    pub fn write_all(self: Pin<&mut Self>, data: &CStr) -> i64 {
+    pub fn write_cstr(self: Pin<&mut Self>, data: &CStr) -> i64 {
         // SAFETY: `data` is a zero-terminated string of 8-bit characters.
-        unsafe { self.write_all_unsafe(data.as_ptr()) }
+        unsafe { self.write_cstr_unsafe(data.as_ptr()) }
     }
 }
 
@@ -528,6 +529,12 @@ impl Upcast<QIODevice> for QIODevice {
 
     fn upcast_pin(self: Pin<&mut Self>) -> Pin<&mut Self> {
         self
+    }
+}
+
+impl AsRef<QObject> for QIODevice {
+    fn as_ref(&self) -> &QObject {
+        self.upcast()
     }
 }
 

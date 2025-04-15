@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::{QAbstractSocket, QIODevice};
 use cxx::UniquePtr;
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -26,6 +26,11 @@ mod ffi {
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qtcpsocket_qobject"]
+        unsafe fn upcast(socket: *const QTcpSocket) -> *const QObject;
+        #[rust_name = "downcast_qobject_qtcpsocket"]
+        unsafe fn downcast(socket: *const QObject) -> *const QTcpSocket;
 
         #[rust_name = "upcast_qtcpsocket_qiodevice"]
         unsafe fn upcast(socket: *const QTcpSocket) -> *const QIODevice;
@@ -81,6 +86,12 @@ impl Deref for QTcpSocket {
     }
 }
 
+impl AsRef<QAbstractSocket> for QTcpSocket {
+    fn as_ref(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+}
+
 impl Upcast<QIODevice> for QTcpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qtcpsocket_qiodevice(this)
@@ -97,8 +108,18 @@ impl AsRef<QIODevice> for QTcpSocket {
     }
 }
 
-impl AsRef<QAbstractSocket> for QTcpSocket {
-    fn as_ref(&self) -> &QAbstractSocket {
+impl Upcast<QObject> for QTcpSocket {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qtcpsocket_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qtcpsocket(base)
+    }
+}
+
+impl AsRef<QObject> for QTcpSocket {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

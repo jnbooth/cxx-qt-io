@@ -1,4 +1,6 @@
 use cxx::UniquePtr;
+use cxx_qt::{QObject, Upcast};
+use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
 
@@ -31,6 +33,7 @@ mod ffi {
         ///
         /// Qt Documentation: [QTcpServer](https://doc.qt.io/qt-6/qtcpserver.html#details)
         #[qobject]
+        #[base = QObject]
         type QTcpServer;
 
         /// Closes the server. The server will no longer listen for incoming connections.
@@ -197,5 +200,19 @@ impl QTcpServer {
     pub fn wait_for_new_connection(self: Pin<&mut QTcpServer>, duration: Option<Duration>) -> bool {
         // SAFETY: Qt ignores the null pointer.
         unsafe { self.wait_for_new_connection_msec(duration.msecs(), std::ptr::null_mut()) }
+    }
+}
+
+impl Deref for QTcpServer {
+    type Target = QObject;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QObject> for QTcpServer {
+    fn as_ref(&self) -> &QObject {
+        self.upcast()
     }
 }

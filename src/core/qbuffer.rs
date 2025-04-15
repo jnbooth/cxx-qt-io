@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::QIODevice;
 use cxx::UniquePtr;
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QByteArray;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -59,6 +59,16 @@ mod ffi {
     unsafe extern "C++" {
         #[rust_name = "qbuffer_set_data"]
         fn qbufferSetData(buffer: Pin<&mut QBuffer>, data: &[u8]);
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qbuffer_qobject"]
+        unsafe fn upcast(buffer: *const QBuffer) -> *const QObject;
+        #[rust_name = "downcast_qobject_qbuffer"]
+        unsafe fn downcast(buffer: *const QObject) -> *const QBuffer;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -120,6 +130,28 @@ impl Deref for QBuffer {
     type Target = QIODevice;
 
     fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QIODevice> for QBuffer {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl Upcast<QObject> for QBuffer {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qbuffer_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qbuffer(base)
+    }
+}
+
+impl AsRef<QObject> for QBuffer {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

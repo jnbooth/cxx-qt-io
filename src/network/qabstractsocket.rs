@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
 use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescriptor};
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -420,6 +420,16 @@ mod ffi {
         #[rust_name = "state_changed"]
         fn stateChanged(self: Pin<&mut QAbstractSocket>, socket_state: QAbstractSocketSocketState);
     }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qabstractsocket_qobject"]
+        unsafe fn upcast(socket: *const QAbstractSocket) -> *const QObject;
+        #[rust_name = "downcast_qobject_qabstractsocket"]
+        unsafe fn downcast(socket: *const QObject) -> *const QAbstractSocket;
+    }
 }
 
 pub use ffi::{
@@ -540,6 +550,21 @@ impl AsRef<QIODevice> for QAbstractSocket {
     }
 }
 
+impl Upcast<QObject> for QAbstractSocket {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qabstractsocket_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qabstractsocket(base)
+    }
+}
+
+impl AsRef<QObject> for QAbstractSocket {
+    fn as_ref(&self) -> &QObject {
+        self.upcast()
+    }
+}
 impl QIO for QAbstractSocket {
     fn flush(self: Pin<&mut Self>) -> bool {
         self.flush()

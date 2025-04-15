@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::{QFile, QFileDevice, QIODevice};
 use cxx::UniquePtr;
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QString;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -86,6 +86,11 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
+        #[rust_name = "upcast_qtemporaryfile_qobject"]
+        unsafe fn upcast(file: *const QTemporaryFile) -> *const QObject;
+        #[rust_name = "downcast_qobject_qtemporaryfile"]
+        unsafe fn downcast(file: *const QObject) -> *const QTemporaryFile;
+
         #[rust_name = "upcast_qtemporaryfile_qiodevice"]
         unsafe fn upcast(file: *const QTemporaryFile) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qtemporaryfile"]
@@ -158,13 +163,9 @@ impl Deref for QTemporaryFile {
     }
 }
 
-impl Upcast<QIODevice> for QTemporaryFile {
-    unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
-        ffi::upcast_qtemporaryfile_qiodevice(this)
-    }
-
-    unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
-        ffi::downcast_qiodevice_qtemporaryfile(base)
+impl AsRef<QFile> for QTemporaryFile {
+    fn as_ref(&self) -> &QFile {
+        self.upcast()
     }
 }
 
@@ -178,14 +179,40 @@ impl Upcast<QFileDevice> for QTemporaryFile {
     }
 }
 
+impl AsRef<QFileDevice> for QTemporaryFile {
+    fn as_ref(&self) -> &QFileDevice {
+        self.upcast()
+    }
+}
+
+impl Upcast<QIODevice> for QTemporaryFile {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
+        ffi::upcast_qtemporaryfile_qiodevice(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
+        ffi::downcast_qiodevice_qtemporaryfile(base)
+    }
+}
+
 impl AsRef<QIODevice> for QTemporaryFile {
     fn as_ref(&self) -> &QIODevice {
         self.upcast()
     }
 }
 
-impl AsRef<QFileDevice> for QTemporaryFile {
-    fn as_ref(&self) -> &QFileDevice {
+impl Upcast<QObject> for QTemporaryFile {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qtemporaryfile_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qtemporaryfile(base)
+    }
+}
+
+impl AsRef<QObject> for QTemporaryFile {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

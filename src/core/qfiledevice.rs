@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::IsNonNull;
 use crate::{FileDescriptor, QIODevice};
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -208,6 +208,16 @@ mod ffi {
         #[rust_name = "unset_error"]
         fn unsetError(self: Pin<&mut QFileDevice>);
     }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qfiledevice_qobject"]
+        unsafe fn upcast(device: *const QFileDevice) -> *const QObject;
+        #[rust_name = "downcast_qobject_qfiledevice"]
+        unsafe fn downcast(device: *const QObject) -> *const QFileDevice;
+    }
 }
 
 pub use ffi::{
@@ -253,6 +263,22 @@ impl Deref for QFileDevice {
 
 impl AsRef<QIODevice> for QFileDevice {
     fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl Upcast<QObject> for QFileDevice {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qfiledevice_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qfiledevice(base)
+    }
+}
+
+impl AsRef<QObject> for QFileDevice {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

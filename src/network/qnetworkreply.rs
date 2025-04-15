@@ -3,7 +3,7 @@ use crate::util::IsNonNull;
 #[cfg(feature = "ssl")]
 use crate::QSslConfiguration;
 use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QVariant};
@@ -362,6 +362,16 @@ mod ffi {
         #[rust_name = "upload_progress"]
         fn uploadProgress(self: Pin<&mut QNetworkReply>, bytes_sent: i64, bytes_total: i64);
     }
+
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qnetworkreply_qobject"]
+        unsafe fn upcast(reply: *const QNetworkReply) -> *const QObject;
+        #[rust_name = "downcast_qobject_qnetworkreply"]
+        unsafe fn downcast(reply: *const QObject) -> *const QNetworkReply;
+    }
 }
 
 pub use ffi::{QNetworkReply, QNetworkReplyNetworkError};
@@ -414,6 +424,28 @@ impl Deref for QNetworkReply {
     type Target = QIODevice;
 
     fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QIODevice> for QNetworkReply {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl Upcast<QObject> for QNetworkReply {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qnetworkreply_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qnetworkreply(base)
+    }
+}
+
+impl AsRef<QObject> for QNetworkReply {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

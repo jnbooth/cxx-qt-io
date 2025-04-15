@@ -1,6 +1,8 @@
+use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QByteArray;
 
 use crate::util::{unpin_for_qt, IsNonNull};
@@ -83,6 +85,7 @@ mod ffi {
         ///
         /// Qt Documentation: [QDtls](https://doc.qt.io/qt-6/qdtls.html#details)
         #[qobject]
+        #[base = QObject]
         type QDtls;
 
         /// # Safety
@@ -355,5 +358,19 @@ impl QDtls {
     ) -> i64 {
         // SAFETY: `unpin_for_qt(socket)` is passed directly to Qt.
         unsafe { self.write_datagram_encrypted_raw(unpin_for_qt(socket), dgram) }
+    }
+}
+
+impl Deref for QDtls {
+    type Target = QObject;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QObject> for QDtls {
+    fn as_ref(&self) -> &QObject {
+        self.upcast()
     }
 }

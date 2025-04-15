@@ -2,7 +2,7 @@ use crate::qio::{QIOExt, QIO};
 use crate::util::IsNonNull;
 use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
 use cxx::UniquePtr;
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use std::ffi::c_char;
 use std::io::{self, Read, Write};
 use std::mem::MaybeUninit;
@@ -128,6 +128,11 @@ mod ffi {
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qudpsocket_qobject"]
+        unsafe fn upcast(socket: *const QUdpSocket) -> *const QObject;
+        #[rust_name = "downcast_qobject_qudpsocket"]
+        unsafe fn downcast(socket: *const QObject) -> *const QUdpSocket;
 
         #[rust_name = "upcast_qudpsocket_qiodevice"]
         unsafe fn upcast(socket: *const QUdpSocket) -> *const QIODevice;
@@ -290,6 +295,12 @@ impl Deref for QUdpSocket {
     }
 }
 
+impl AsRef<QAbstractSocket> for QUdpSocket {
+    fn as_ref(&self) -> &QAbstractSocket {
+        self.upcast()
+    }
+}
+
 impl Upcast<QIODevice> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qudpsocket_qiodevice(this)
@@ -306,8 +317,18 @@ impl AsRef<QIODevice> for QUdpSocket {
     }
 }
 
-impl AsRef<QAbstractSocket> for QUdpSocket {
-    fn as_ref(&self) -> &QAbstractSocket {
+impl Upcast<QObject> for QUdpSocket {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qudpsocket_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qudpsocket(base)
+    }
+}
+
+impl AsRef<QObject> for QUdpSocket {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

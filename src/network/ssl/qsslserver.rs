@@ -1,7 +1,8 @@
 use crate::util::MSecs;
 use crate::QTcpServer;
 use cxx::UniquePtr;
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
+use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
 
@@ -102,6 +103,16 @@ mod ffi {
         unsafe fn startedEncryptionHandshake(self: Pin<&mut QSslServer>, socket: *mut QSslSocket);
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qsslserver_qobject"]
+        unsafe fn upcast(server: *const QSslServer) -> *const QObject;
+        #[rust_name = "downcast_qobject_qsslserver"]
+        unsafe fn downcast(server: *const QObject) -> *const QSslServer;
+    }
+
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -140,5 +151,35 @@ impl QSslServer {
     /// Mutably casts this object to `QTcpServer`.
     pub fn as_tcp_server_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QTcpServer> {
         self.as_mut().upcast_pin()
+    }
+}
+
+impl Deref for QSslServer {
+    type Target = QTcpServer;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QTcpServer> for QSslServer {
+    fn as_ref(&self) -> &QTcpServer {
+        self.upcast()
+    }
+}
+
+impl Upcast<QObject> for QSslServer {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qsslserver_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qsslserver(base)
+    }
+}
+
+impl AsRef<QObject> for QSslServer {
+    fn as_ref(&self) -> &QObject {
+        self.upcast()
     }
 }

@@ -5,7 +5,7 @@ use crate::{
     SocketDescriptor,
 };
 use cxx::{type_id, UniquePtr};
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QFlag, QFlags, QString};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -200,6 +200,16 @@ mod ffi {
         fn stateChanged(self: Pin<&mut QLocalSocket>, socket_state: QLocalSocketLocalSocketState);
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/common.h");
+
+        #[rust_name = "upcast_qlocalsocket_qobject"]
+        unsafe fn upcast(socket: *const QLocalSocket) -> *const QObject;
+        #[rust_name = "downcast_qobject_qlocalsocket"]
+        unsafe fn downcast(socket: *const QObject) -> *const QLocalSocket;
+    }
+
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -286,6 +296,28 @@ impl Deref for QLocalSocket {
     type Target = QIODevice;
 
     fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QIODevice> for QLocalSocket {
+    fn as_ref(&self) -> &QIODevice {
+        self.upcast()
+    }
+}
+
+impl Upcast<QObject> for QLocalSocket {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qlocalsocket_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qlocalsocket(base)
+    }
+}
+
+impl AsRef<QObject> for QLocalSocket {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

@@ -1,7 +1,7 @@
 use crate::qio::{QIOExt, QIO};
 use crate::{QFileDevice, QIODevice};
 use cxx::UniquePtr;
-use cxx_qt::Upcast;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QString;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -70,6 +70,11 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-io/common.h");
 
+        #[rust_name = "upcast_qsavefile_qobject"]
+        unsafe fn upcast(file: *const QSaveFile) -> *const QObject;
+        #[rust_name = "downcast_qobject_qsavefile"]
+        unsafe fn downcast(file: *const QObject) -> *const QSaveFile;
+
         #[rust_name = "upcast_qsavefile_qiodevice"]
         unsafe fn upcast(file: *const QSaveFile) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qsavefile"]
@@ -120,6 +125,12 @@ impl Deref for QSaveFile {
     }
 }
 
+impl AsRef<QFileDevice> for QSaveFile {
+    fn as_ref(&self) -> &QFileDevice {
+        self.upcast()
+    }
+}
+
 impl Upcast<QIODevice> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qsavefile_qiodevice(this)
@@ -136,8 +147,18 @@ impl AsRef<QIODevice> for QSaveFile {
     }
 }
 
-impl AsRef<QFileDevice> for QSaveFile {
-    fn as_ref(&self) -> &QFileDevice {
+impl Upcast<QObject> for QSaveFile {
+    unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
+        ffi::upcast_qsavefile_qobject(this)
+    }
+
+    unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
+        ffi::downcast_qobject_qsavefile(base)
+    }
+}
+
+impl AsRef<QObject> for QSaveFile {
+    fn as_ref(&self) -> &QObject {
         self.upcast()
     }
 }

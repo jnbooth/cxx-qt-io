@@ -1,6 +1,8 @@
+use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
+use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QByteArray;
 
 use crate::util::{unpin_for_qt, IsNonNull};
@@ -31,6 +33,7 @@ mod ffi {
         ///
         /// Qt Documentation: [QDtlsClientVerifier](https://doc.qt.io/qt-6/qdtlsclientverifier.html#details)
         #[qobject]
+        #[base = QObject]
         type QDtlsClientVerifier;
 
         /// Returns the current secret and hash algorithm used to generate cookies.
@@ -104,5 +107,19 @@ impl QDtlsClientVerifier {
     ) -> bool {
         // SAFETY: `unpin_for_qt(socket)` is passed directly to Qt.
         unsafe { self.verify_client_raw(unpin_for_qt(socket), dgram, address, port) }
+    }
+}
+
+impl Deref for QDtlsClientVerifier {
+    type Target = QObject;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
+    }
+}
+
+impl AsRef<QObject> for QDtlsClientVerifier {
+    fn as_ref(&self) -> &QObject {
+        self.upcast()
     }
 }
