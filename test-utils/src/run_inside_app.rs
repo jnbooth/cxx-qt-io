@@ -34,7 +34,7 @@ struct RunInsideAppContext {
 
 impl RunInsideAppContext {
     fn run(&mut self, context: Pin<&mut ffi::TestContext>) -> bool {
-        let context = unsafe { TestContext::new(context) };
+        let mut context = unsafe { TestContext::new(context) };
         let closure = self.closure.take().unwrap();
         context.timeout_after(Duration::from_millis(10000));
 

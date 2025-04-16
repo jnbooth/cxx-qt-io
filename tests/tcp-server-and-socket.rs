@@ -12,7 +12,7 @@ use cxx_qt_io::{QHostAddressSpecialAddress, QIODevice, QTcpServer, QTcpSocket};
 
 #[test]
 fn round_trip() {
-    cxx_qt_io_test_utils::run_inside_app(|context| {
+    cxx_qt_io_test_utils::run_inside_app(|mut context| {
         let mut server_ptr = QTcpServer::new();
         let mut socket_ptr = QTcpSocket::new();
         let mut server = server_ptr.pin_mut();

@@ -50,11 +50,11 @@ impl TestContext {
         }
     }
 
-    pub fn exit(&self) {
+    pub fn exit(&mut self) {
         self.with_pin(ffi::TestContext::exit);
     }
 
-    pub fn hold<T>(&self, object: UniquePtr<T>)
+    pub fn hold<T>(&mut self, object: UniquePtr<T>)
     where
         T: UniquePtrTarget + Upcast<QObject>,
     {
@@ -67,13 +67,13 @@ impl TestContext {
         });
     }
 
-    pub fn timeout_after(&self, duration: Duration) {
+    pub fn timeout_after(&mut self, duration: Duration) {
         self.with_pin(|pin| {
             pin.timeout_after(i32::try_from(duration.as_millis()).unwrap_or(i32::MAX));
         });
     }
 
-    fn with_pin<F>(&self, f: F)
+    fn with_pin<F>(&mut self, f: F)
     where
         F: FnOnce(Pin<&mut ffi::TestContext>),
     {
