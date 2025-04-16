@@ -49,7 +49,7 @@ impl ConnectErrors for QSslServer {
 impl ConnectErrors for QAbstractSocket {
     fn connect_errors(self: Pin<&mut Self>) {
         self.on_error_occurred(|_, error| {
-            eprintln!("QAbstractSocket::connect_errors: {error:?}");
+            eprintln!("QAbstractSocket::error_occurred: {error:?}");
         })
         .release();
     }
