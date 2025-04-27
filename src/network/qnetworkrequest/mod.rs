@@ -8,7 +8,7 @@ use cxx_qt_lib::{QByteArray, QUrl, QVariant};
 use std::mem::MaybeUninit;
 use std::time::Duration;
 
-use crate::util::{IsNonNull, MSecs};
+use crate::util::IsNonNull;
 
 #[cxx::bridge]
 mod ffi {
@@ -279,10 +279,6 @@ mod ffi {
         #[rust_name = "set_ssl_configuration"]
         fn setSslConfiguration(&mut self, configuration: &QSslConfiguration);
 
-        #[doc(hidden)]
-        #[rust_name = "set_transfer_timeout_msecs"]
-        fn setTransferTimeout(&mut self, timeout: i32);
-
         /// Sets the URL this network request is referring to be `url`.
         #[rust_name = "set_url"]
         fn setUrl(&mut self, url: &QUrl);
@@ -291,10 +287,6 @@ mod ffi {
         #[cfg(feature = "ssl")]
         #[rust_name = "ssl_configuration"]
         fn sslConfiguration(&self) -> QSslConfiguration;
-
-        #[doc(hidden)]
-        #[rust_name = "transfer_timeout_msecs"]
-        fn transferTimeout(&self) -> i32;
 
         /// Returns the URL this network request is referring to.
         fn url(&self) -> QUrl;
@@ -307,6 +299,12 @@ mod ffi {
             request: &QNetworkRequest,
             code: QNetworkRequestAttribute,
         ) -> QVariant;
+
+        #[rust_name = "qnetworkrequest_set_transfer_timeout_msecs"]
+        fn qnetworkrequestSetTransferTimeoutMsecs(request: &mut QNetworkRequest, timeout: i64);
+
+        #[rust_name = "qnetworkrequest_transfer_timeout_msecs"]
+        fn qnetworkrequestTransferTimeoutMsecs(request: &QNetworkRequest) -> i64;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -426,15 +424,16 @@ impl QNetworkRequest {
     /// Transfers are aborted if no bytes are transferred before the timeout expires. `None` means no timer is set. If this function is not called, the timeout is disabled.
     pub fn set_transfer_timeout(&mut self, duration: Option<Duration>) {
         let msecs = match duration {
-            Some(duration) => duration.msecs(),
+            Some(duration) => duration.as_millis().try_into().unwrap_or(i64::MAX),
             None => 0,
         };
-        self.set_transfer_timeout_msecs(msecs);
+        ffi::qnetworkrequest_set_transfer_timeout_msecs(self, msecs);
     }
 
     /// Returns the timeout used for transfers.
     pub fn transfer_timeout(&self) -> Option<Duration> {
-        let msecs = u64::try_from(self.transfer_timeout_msecs()).ok()?;
+        let transfer_timeout = ffi::qnetworkrequest_transfer_timeout_msecs(self);
+        let msecs = u64::try_from(transfer_timeout).ok()?;
         if msecs == 0 {
             None
         } else {

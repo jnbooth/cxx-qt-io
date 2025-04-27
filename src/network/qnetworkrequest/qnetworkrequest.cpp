@@ -13,5 +13,26 @@ qnetworkrequestAttribute(const QNetworkRequest& request,
   return request.attribute(code);
 }
 
+void
+qnetworkrequestSetTransferTimeoutMsecs(QNetworkRequest& request,
+                                       ::std::int64_t timeout)
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+  request.setTransferTimeout(::std::chrono::milliseconds{ timeout });
+#else
+  request.setTransferTimeout(int(timeout));
+#endif
+}
+
+::std::int64_t
+qnetworkrequestTransferTimeoutMsecs(const QNetworkRequest& request)
+{
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+  return request.transferTimeoutAsDuration().count();
+#else
+  return request.transferTimeout();
+#endif
+}
+
 }
 }

@@ -21,5 +21,11 @@ QVariant
 qnetworkrequestAttribute(const QNetworkRequest& request,
                          QNetworkRequest::Attribute code);
 
+void
+qnetworkrequestSetTransferTimeoutMsecs(QNetworkRequest& request, ::std::int64_t timeout);
+
+::std::int64_t
+qnetworkrequestTransferTimeoutMsecs(const QNetworkRequest& request);
+
 }
 }
