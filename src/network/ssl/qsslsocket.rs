@@ -730,7 +730,6 @@ impl Upcast<QObject> for QSslSocket {
     }
 }
 
-
 impl AsRef<QObject> for QSslSocket {
     fn as_ref(&self) -> &QObject {
         self.upcast()

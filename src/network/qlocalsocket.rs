@@ -4,9 +4,9 @@ use crate::{
     QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
     SocketDescriptor,
 };
-use cxx::{type_id, UniquePtr};
+use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
-use cxx_qt_lib::{QFlag, QFlags, QString};
+use cxx_qt_lib::{QFlags, QString};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -227,15 +227,7 @@ pub use ffi::{
 /// [`QFlags`] of [`QLocalSocketSocketOption`].
 pub type QLocalSocketSocketOptions = QFlags<QLocalSocketSocketOption>;
 
-unsafe impl QFlag for QLocalSocketSocketOption {
-    type TypeId = type_id!("QLocalSocketSocketOptions");
-
-    type Repr = i32;
-
-    fn to_repr(self) -> Self::Repr {
-        self.repr
-    }
-}
+unsafe_impl_qflag!(QLocalSocketSocketOption, "QLocalSocketSocketOptions");
 
 impl QLocalSocket {
     /// Constructs a new local socket.
