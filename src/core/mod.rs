@@ -13,6 +13,9 @@ pub use qdeadlinetimer::{QDeadlineTimer, QDeadlineTimerError};
 mod qdir;
 pub use qdir::QDir;
 
+mod qeventloop;
+pub use qeventloop::{QEventLoop, QEventLoopProcessEventsFlag, QEventLoopProcessEventsFlags};
+
 mod qfiledevice;
 pub use qfiledevice::{
     QFileDevice, QFileDeviceFileError, QFileDeviceFileHandleFlag, QFileDeviceFileHandleFlags,
