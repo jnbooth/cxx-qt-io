@@ -31,7 +31,7 @@ mod qsslcertificateextension;
 pub use qsslcertificateextension::QSslCertificateExtension;
 
 mod qsslcipher;
-pub use qsslcipher::QSslCipher;
+pub use qsslcipher::{QSslCipher, QSslCipherError};
 
 mod qsslconfiguration;
 pub use qsslconfiguration::{QSslConfiguration, QSslConfigurationNextProtocolNegotiationStatus};
@@ -40,13 +40,13 @@ mod qssldiffiehellmanparameters;
 pub use qssldiffiehellmanparameters::QSslDiffieHellmanParameters;
 
 mod qsslellipticcurve;
-pub use qsslellipticcurve::QSslEllipticCurve;
+pub use qsslellipticcurve::{QSslEllipticCurve, QSslEllipticCurveError};
 
 mod qsslerror;
 pub use qsslerror::{QSslError, QSslErrorSslError};
 
 mod qsslkey;
-pub use qsslkey::QSslKey;
+pub use qsslkey::{DecodeSslKeyError, QSslKey};
 
 #[cfg(cxxqt_qt_version_at_least_6_4)]
 mod qsslserver;

@@ -147,17 +147,20 @@ impl Debug for QSslError {
 impl QSslError {
     /// Constructs a `QSslError` object. The two arguments specify the `error` that occurred, and which `certificate` the error relates to.
     ///
-    /// If `certificate` is `None`, no certificate is provided.
-    pub fn new(error: QSslErrorSslError, certificate: Option<&QSslCertificate>) -> Self {
-        match certificate {
-            Some(certificate) => ffi::qsslerror_init_certificate(error, certificate),
-            None => ffi::qsslerror_init_error(error),
-        }
+    /// To create a `QSslError` that applies to any certificate. use `QSslError::From<QSslErrorSslError>`.
+    pub fn new(error: QSslErrorSslError, certificate: &QSslCertificate) -> Self {
+        ffi::qsslerror_init_certificate(error, certificate)
     }
 
     /// Returns the certificate associated with this error, or `None` if the error does not relate to any certificate.
     pub fn certificate(&self) -> Option<QSslCertificate> {
         self.certificate_or_null().nonnull()
+    }
+}
+
+impl From<QSslErrorSslError> for QSslError {
+    fn from(value: QSslErrorSslError) -> Self {
+        ffi::qsslerror_init_error(value)
     }
 }
 

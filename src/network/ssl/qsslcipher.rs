@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -126,15 +126,35 @@ impl Debug for QSslCipher {
 }
 
 impl QSslCipher {
-    /// Constructs a `QSslCipher` object for the cipher determined by `name` and optional `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
+    /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
     ///
-    /// Returns `None` if `name` and `protocol` do not correctly identify a supported cipher.
-    pub fn new(name: &QString, protocol: Option<QSslSslProtocol>) -> Option<Self> {
-        match protocol {
-            Some(protocol) => ffi::qsslcipher_init_protocol(name, protocol),
-            None => ffi::qsslcipher_init_name(name),
-        }
-        .nonnull()
+    /// To construct a cipher without specifying a protocol, use `QSslCipher::from(name)`.
+    ///
+    /// Returns an error if `name` and `protocol` do not correctly identify a supported cipher.
+    pub fn new(name: &QString, protocol: QSslSslProtocol) -> Result<Self, QSslCipherError> {
+        ffi::qsslcipher_init_protocol(name, protocol).nonnull_or(QSslCipherError(()))
+    }
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct QSslCipherError(pub(crate) ());
+
+impl Display for QSslCipherError {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.write_str("SSL name does not correctly identify a supported cipher")
+    }
+}
+
+impl TryFrom<&QString> for QSslCipher {
+    type Error = QSslCipherError;
+
+    /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
+    ///
+    /// To specify a protocol as well as a name, use [`QSslCipher::new`].
+    ///
+    /// Returns an error if `name` and `protocol` do not correctly identify a supported cipher.
+    fn try_from(value: &QString) -> Result<Self, Self::Error> {
+        ffi::qsslcipher_init_name(value).nonnull_or(QSslCipherError(()))
     }
 }
 

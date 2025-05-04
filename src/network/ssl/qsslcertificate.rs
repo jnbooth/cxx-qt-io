@@ -8,7 +8,7 @@ use cxx_qt::Upcast;
 use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
 use crate::util::{unpin_for_qt, IsNonNull};
-use crate::{QIODevice, QSslEncodingFormat, QSslError, QSslKey};
+use crate::{DecodeSslKeyError, QIODevice, QSslEncodingFormat, QSslError, QSslKey};
 
 #[cxx::bridge]
 mod ffi {
@@ -356,21 +356,27 @@ impl QSslCertificate {
 
     /// Constructs a `QSslCertificate` by parsing the `format` encoded `data` and using the first available certificate found.
     ///
-    /// Returns `None` if `data` did not contain a certificate or the certificate was not loaded successfully.
-    pub fn first_from_data(data: &QByteArray, format: QSslEncodingFormat) -> Option<Self> {
-        ffi::qsslcertificate_init_data(data, format).nonnull()
+    /// Returns an error if `data` did not contain a certificate or the certificate was not loaded successfully.
+    pub fn first_from_data(
+        data: &QByteArray,
+        format: QSslEncodingFormat,
+    ) -> Result<Self, DecodeSslKeyError> {
+        ffi::qsslcertificate_init_data(data, format).nonnull_or(DecodeSslKeyError(()))
     }
 
     /// Constructs a `QSslCertificate` by reading `format` encoded data from `device` and using the first certificate found.
     ///
-    /// Returns `None` if `device` did not contain a certificate or the certificate was not loaded successfully.
-    pub fn first_from_device<T>(device: Pin<&mut T>, format: QSslEncodingFormat) -> Option<Self>
+    /// Returns an error if `device` did not contain a certificate or the certificate was not loaded successfully.
+    pub fn first_from_device<T>(
+        device: Pin<&mut T>,
+        format: QSslEncodingFormat,
+    ) -> Result<Self, DecodeSslKeyError>
     where
         T: Upcast<QIODevice>,
     {
         // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
         unsafe { ffi::qsslcertificate_init_device(unpin_for_qt(device.upcast_pin()), format) }
-            .nonnull()
+            .nonnull_or(DecodeSslKeyError(()))
     }
 
     /// Searches for and parses all certificates in `data` that are encoded in the specified `format` and returns them in a list of certificates.
@@ -437,6 +443,17 @@ impl QSslCertificate {
                 self.subject_info_by_subject(subject)
             }
         }
+    }
+}
+
+impl TryFrom<&QByteArray> for QSslCertificate {
+    type Error = DecodeSslKeyError;
+
+    /// Constructs a `QSslCertificate` by parsing the PEM-encoded `data` and using the first available certificate found.
+    ///
+    /// Returns an error if `data` did not contain a certificate or the certificate was not loaded successfully.
+    fn try_from(data: &QByteArray) -> Result<Self, Self::Error> {
+        Self::first_from_data(data, QSslEncodingFormat::Pem)
     }
 }
 

@@ -192,10 +192,10 @@ impl QSslDiffieHellmanParameters {
 
     /// Attempts to construct a `QSslDiffieHellmanParameters` object using the byte array `encoded` in either PEM or DER form as specified by `encoding`.
     pub fn from_encoded_data(
-        data: &QByteArray,
+        encoded: &QByteArray,
         encoding: QSslEncodingFormat,
     ) -> Result<Self, QSslDiffieHellmanParametersError> {
-        ffi::qssldiffiehellmanparameters_from_encoded_qbytearray(data, encoding).into_result()
+        ffi::qssldiffiehellmanparameters_from_encoded_qbytearray(encoded, encoding).into_result()
     }
 }
 

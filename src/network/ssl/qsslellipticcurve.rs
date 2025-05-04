@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 
 use cxx::{type_id, ExternType};
 
@@ -88,20 +88,20 @@ impl Debug for QSslEllipticCurve {
 impl QSslEllipticCurve {
     /// Returns a `QSslEllipticCurve` instance representing the named curve `name`. The `name` is a long name for the curve, whose exact spelling depends on the SSL implementation.
     ///
-    /// If the given `name` is not supported, returns `None`.
+    /// Returns an error if the given `name` is not supported.
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
-    pub fn from_long_name(name: &QString) -> Option<Self> {
-        ffi::qsslellipticcurve_from_long_name(name).nonnull()
+    pub fn from_long_name(name: &QString) -> Result<Self, QSslEllipticCurveError> {
+        ffi::qsslellipticcurve_from_long_name(name).nonnull_or(QSslEllipticCurveError(()))
     }
 
     /// Returns a `QSslEllipticCurve` instance representing the named curve `name`. The `name` is the conventional short name for the curve, as represented by RFC 4492 (for instance secp521r1), or as NIST short names (for instance P-256). The actual set of recognized names depends on the SSL implementation.
     ///
-    /// If the given `name` is not supported, returns `None`.
+    /// Returns an error if the given `name` is not supported.
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
-    pub fn from_short_name(name: &QString) -> Option<Self> {
-        ffi::qsslellipticcurve_from_short_name(name).nonnull()
+    pub fn from_short_name(name: &QString) -> Result<Self, QSslEllipticCurveError> {
+        ffi::qsslellipticcurve_from_short_name(name).nonnull_or(QSslEllipticCurveError(()))
     }
 
     /// Returns the conventional long name for this curve. If this curve is invalid, returns `None`.
@@ -118,4 +118,13 @@ impl QSslEllipticCurve {
 unsafe impl ExternType for QSslEllipticCurve {
     type Id = type_id!("QSslEllipticCurve");
     type Kind = cxx::kind::Trivial;
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct QSslEllipticCurveError(pub(crate) ());
+
+impl Display for QSslEllipticCurveError {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.write_str("the supplied name is not a supported elliptic curve")
+    }
 }

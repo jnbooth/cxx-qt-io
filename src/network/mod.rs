@@ -12,7 +12,7 @@ pub use qauthenticator::QAuthenticator;
 mod qhostaddress;
 pub use qhostaddress::{
     QHostAddress, QHostAddressConversionMode, QHostAddressConversionModeFlag,
-    QHostAddressSpecialAddress,
+    QHostAddressSpecialAddress, QHostAddressTryFromError,
 };
 
 #[cfg(cxxqt_qt_version_at_least_6_5)]

@@ -318,15 +318,24 @@ impl From<Ipv4Addr> for QHostAddress {
     }
 }
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct QHostAddressTryFromError(pub(crate) ());
+
+impl Display for QHostAddressTryFromError {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.write_str("address is neither an IPv4 address nor an IPv4-mapped IPv6 address")
+    }
+}
+
 impl TryFrom<QHostAddress> for Ipv4Addr {
-    type Error = &'static str;
+    type Error = QHostAddressTryFromError;
 
     fn try_from(value: QHostAddress) -> Result<Self, Self::Error> {
         let mut ok = false;
         // SAFETY: ptr::from_mut(&mut ok) is valid.
         let address = unsafe { value.to_ipv4_address(ptr::from_mut(&mut ok)) };
         if !ok {
-            return Err("address is neither an IPv4 address nor an IPv4-mapped IPv6 address");
+            return Err(QHostAddressTryFromError(()));
         }
         Ok(Self::from_bits(address))
     }

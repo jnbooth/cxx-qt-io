@@ -1,7 +1,7 @@
 use cxx::{type_id, ExternType};
 use cxx_qt::Upcast;
 use cxx_qt_lib::QByteArray;
-use std::fmt::{self, Debug, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 
@@ -149,14 +149,14 @@ impl QSslKey {
     ///
     /// If the key is encrypted then `pass_phrase` is used to decrypt it.
     ///
-    /// Returns `None` if the device did not provide a valid key.
+    /// Returns an error if the device did not provide a valid key.
     pub fn from_device<T>(
         device: Pin<&mut T>,
         algorithm: QSslKeyAlgorithm,
         encoding: QSslEncodingFormat,
         key_type: QSslKeyType,
         pass_phrase: &QByteArray,
-    ) -> Option<Self>
+    ) -> Result<Self, DecodeSslKeyError>
     where
         T: Upcast<QIODevice>,
     {
@@ -170,22 +170,23 @@ impl QSslKey {
                 pass_phrase,
             )
         }
-        .nonnull()
+        .nonnull_or(DecodeSslKeyError(()))
     }
 
     /// Constructs a `QSslKey` by decoding the string in the byte array `encoded` using a specified `algorithm` and `encoding` format. `key_type` specifies whether the key is public or private.
     ///
     /// If the key is encrypted then `pass_phrase` is used to decrypt it.
     ///
-    /// Returns `None` if `encoded` did not contain a valid key.
+    /// Returns an error if `encoded` did not contain a valid key.
     pub fn from_data(
         encoded: &QByteArray,
         algorithm: QSslKeyAlgorithm,
         encoding: QSslEncodingFormat,
         key_type: QSslKeyType,
         pass_phrase: &QByteArray,
-    ) -> Option<Self> {
-        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase).nonnull()
+    ) -> Result<Self, DecodeSslKeyError> {
+        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase)
+            .nonnull_or(DecodeSslKeyError(()))
     }
 
     /// Returns the length of the key in bits, or `None` if the key is null.
@@ -213,8 +214,34 @@ impl QSslKey {
     }
 }
 
+impl TryFrom<&QByteArray> for QSslKey {
+    type Error = DecodeSslKeyError;
+
+    /// Constructs a `QSslKey` by decoding the string in the byte array `encoded` using the RSA algorithm and PEM encoding format as a private key.
+    ///
+    /// Returns an error if `encoded` did not contain a valid key.
+    fn try_from(encoded: &QByteArray) -> Result<Self, Self::Error> {
+        Self::from_data(
+            encoded,
+            QSslKeyAlgorithm::Rsa,
+            QSslEncodingFormat::Pem,
+            QSslKeyType::PrivateKey,
+            &QByteArray::default(),
+        )
+    }
+}
+
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslKey {
     type Id = type_id!("QSslKey");
     type Kind = cxx::kind::Trivial;
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct DecodeSslKeyError(pub(crate) ());
+
+impl Display for DecodeSslKeyError {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.write_str("unable to decode file data to SSL key or certificate")
+    }
 }
