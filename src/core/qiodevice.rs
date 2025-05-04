@@ -511,27 +511,6 @@ impl QIODevice {
     }
 }
 
-impl Upcast<QIODevice> for QIODevice {
-    unsafe fn upcast_ptr(this: *const Self) -> *const Self {
-        this
-    }
-    unsafe fn from_base_ptr(base: *const Self) -> *const Self {
-        base
-    }
-
-    fn upcast(&self) -> &Self {
-        self
-    }
-
-    fn upcast_mut(&mut self) -> &mut Self {
-        self
-    }
-
-    fn upcast_pin(self: Pin<&mut Self>) -> Pin<&mut Self> {
-        self
-    }
-}
-
 impl AsRef<QObject> for QIODevice {
     fn as_ref(&self) -> &QObject {
         self.upcast()
