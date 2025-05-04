@@ -1,6 +1,9 @@
 use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QAbstractSocket, QIODevice, QSslCertificate, QSslSslProtocol, QTcpSocket};
+use crate::{
+    QAbstractSocket, QAbstractSocketNetworkLayerProtocol, QIODevice, QIODeviceOpenMode,
+    QSslCertificate, QSslSslProtocol, QTcpSocket,
+};
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 use crate::{QSslImplementedClass, QSslSupportedFeature};
 use cxx::UniquePtr;
@@ -106,7 +109,7 @@ mod ffi {
         /// After initiating the SSL client handshake, if the identity of the peer can't be established, signal [`ssl_errors`](QSslSocket::ssl_errors) is emitted. If you want to ignore the errors and continue connecting, you must call [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors), either from inside a slot function connected to the [`ssl_errors`](QSslSocket::ssl_errors) signal, or prior to entering encrypted mode. If [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) is not called, the connection is dropped, signal [`disconnected`](QAbstractSocket::disconnected) is emitted, and `QSslSocket` returns to the [`QAbstractSocketSocketState::UnconnectedState`](crate::QAbstractSocketSocketState::UnconnectedState).
         ///
         /// If the SSL handshake is successful, `QSslSocket` emits [`encrypted`](QSslSocket::encrypted).
-        #[rust_name = "connect_to_host_encrypted"]
+        #[rust_name = "connect_to_host_encrypted_with"]
         fn connectToHostEncrypted(
             self: Pin<&mut QSslSocket>,
             host_name: &QString,
@@ -475,6 +478,28 @@ mod ffi {
 pub use ffi::{QSslSocket, QSslSocketPeerVerifyMode, QSslSocketSslMode};
 
 impl QSslSocket {
+    /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the open mode. This is equivalent to calling [`connect_to_host`](QAbstractSocket::connect_to_host) to establish the connection, followed by a call to [`start_client_encryption`](QSslSocket::start_client_encryption).
+    ///
+    /// `QSslSocket` first enters the [`QAbstractSocketSocketState::HostLookupState`](crate::QAbstractSocketSocketState::HostLookupState). Then, after entering either the event loop or one of the `wait_for...()` functions, it enters the [`QAbstractSocketSocketState::ConnectingState`](crate::QAbstractSocketSocketState::ConnectingState), emits [`connected`](QAbstractSocket::connected), and then initiates the SSL client handshake. At each state change, `QSslSocket` emits signal [`state_changed`](QAbstractSocket::state_changed).
+    ///
+    /// After initiating the SSL client handshake, if the identity of the peer can't be established, signal [`ssl_errors`](QSslSocket::ssl_errors) is emitted. If you want to ignore the errors and continue connecting, you must call [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors), either from inside a slot function connected to the [`ssl_errors`](QSslSocket::ssl_errors) signal, or prior to entering encrypted mode. If [`ignore_ssl_errors`](QSslSocket::ignore_ssl_errors) is not called, the connection is dropped, signal [`disconnected`](QAbstractSocket::disconnected) is emitted, and `QSslSocket` returns to the [`QAbstractSocketSocketState::UnconnectedState`](crate::QAbstractSocketSocketState::UnconnectedState).
+    ///
+    /// If the SSL handshake is successful, `QSslSocket` emits [`encrypted`](QSslSocket::encrypted).
+    pub fn connect_to_host_encrypted(
+        self: Pin<&mut QSslSocket>,
+        host_name: &QString,
+        port: u16,
+        mode: QIODeviceOpenMode,
+    ) {
+        self.connect_to_host_encrypted_with(
+            host_name,
+            port,
+            &QString::default(),
+            mode,
+            QAbstractSocketNetworkLayerProtocol::AnyIPProtocol,
+        );
+    }
+
     /// Constructs a `QSslSocket` object. The new socket's cipher suite is set to be the one returned by [`QSslConfiguration::default_configuration()`](crate::QSslConfiguration::default_configuration)`.`[`ciphers()`](crate::QSslConfiguration::ciphers).
     pub fn new() -> UniquePtr<Self> {
         ffi::qsslsocket_init_default()
