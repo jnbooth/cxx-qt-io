@@ -1,7 +1,11 @@
+use std::any::Any;
+use std::panic::{self, UnwindSafe};
 use std::pin::Pin;
 
 use cxx::{type_id, UniquePtr};
 use cxx_qt_lib::{QFlag, QFlags};
+
+use crate::QDeadlineTimer;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -28,6 +32,11 @@ mod ffi {
         include!("cxx-qt-io/qeventloop.h");
         type QEventLoopProcessEventsFlag;
         type QEventLoopProcessEventsFlags = super::QEventLoopProcessEventsFlags;
+    }
+
+    extern "Rust" {
+        type EventLoopClosure<'a>;
+        type UnwindEventLoopClosure<'a>;
     }
 
     unsafe extern "C++Qt" {
@@ -91,7 +100,25 @@ mod ffi {
         /// Wakes up the event loop.
         #[rust_name = "wake_up"]
         fn wakeUp(self: Pin<&mut QEventLoop>);
+    }
 
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        #[allow(clippy::needless_lifetimes)]
+        #[rust_name = "qeventloop_exec_with"]
+        fn qeventloopExecWith<'a>(
+            event_loop: Pin<&mut QEventLoop>,
+            context: &mut EventLoopClosure<'a>,
+            functor: fn(&mut EventLoopClosure<'a>),
+        ) -> i32;
+
+        #[allow(clippy::needless_lifetimes)]
+        #[rust_name = "qeventloop_try_exec_with"]
+        fn qeventloopExecWith<'a>(
+            event_loop: Pin<&mut QEventLoop>,
+            context: &mut UnwindEventLoopClosure<'a>,
+            functor: fn(&mut UnwindEventLoopClosure<'a>),
+        ) -> i32;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -104,8 +131,6 @@ mod ffi {
 }
 
 pub use ffi::{QEventLoop, QEventLoopProcessEventsFlag};
-
-use crate::QDeadlineTimer;
 
 /// [`QFlags`] of [`QEventLoopProcessEventsFlag`].
 pub type QEventLoopProcessEventsFlags = QFlags<QEventLoopProcessEventsFlag>;
@@ -135,6 +160,21 @@ impl QEventLoop {
     /// To make your application perform idle processing (i.e. executing a special function whenever there are no pending events), use a [`QChronoTimer`](https://doc.qt.io/qt-6/qchronotimer.html) with 0ns timeout. More sophisticated idle processing schemes can be achieved using [`process_all_events`](QEventLoop::process_all_events).
     pub fn exec_all(self: Pin<&mut Self>) -> i32 {
         self.exec(QEventLoopProcessEventsFlag::AllEvents.into())
+    }
+
+    /// Enters an event loop, runs a `closure`, and exits the event loop when the closure completes.
+    ///
+    /// For an alternative that catches panics, see [`QEventLoop::try_exec_with`].
+    ///
+    /// As with `QEventLoop`'s other methods, a `QApplication` (or any instance of [`QCoreApplication`](cxx_qt_lib::QCoreApplication)) must be running.
+    pub fn exec_with<F>(self: Pin<&mut QEventLoop>, closure: F)
+    where
+        F: FnOnce() + UnwindSafe,
+    {
+        let mut closure = EventLoopClosure {
+            closure: Some(Box::new(closure)),
+        };
+        ffi::qeventloop_exec_with(self, &mut closure, EventLoopClosure::run);
     }
 
     /// Processes some pending events. Returns `true` if pending events were handled; otherwise returns `false`.
@@ -181,5 +221,46 @@ impl QEventLoop {
             QEventLoopProcessEventsFlag::AllEvents.into(),
             deadline.into(),
         );
+    }
+
+    /// Enters an event loop, runs a `closure`, and exits the event loop when the closure completes.
+    ///
+    /// Returns an error if the closure panics, which can be handled with [`std::panic::resume_unwind`].
+    ///
+    /// As with `QEventLoop`'s other methods, a `QApplication` (or any instance of [`QCoreApplication`](cxx_qt_lib::QCoreApplication)) must be running.
+    pub fn try_exec_with<F>(
+        self: Pin<&mut QEventLoop>,
+        closure: F,
+    ) -> Result<(), Box<dyn Any + Send>>
+    where
+        F: FnOnce() + UnwindSafe,
+    {
+        let mut closure = UnwindEventLoopClosure {
+            closure: Some(Box::new(closure)),
+            result: Ok(()),
+        };
+        ffi::qeventloop_try_exec_with(self, &mut closure, UnwindEventLoopClosure::run);
+        closure.result
+    }
+}
+
+struct EventLoopClosure<'a> {
+    closure: Option<Box<dyn FnOnce() + 'a>>,
+}
+
+impl<'a> EventLoopClosure<'a> {
+    pub fn run(&mut self) {
+        self.closure.take().unwrap()();
+    }
+}
+
+struct UnwindEventLoopClosure<'a> {
+    closure: Option<Box<dyn FnOnce() + 'a + UnwindSafe>>,
+    result: Result<(), Box<dyn Any + Send>>,
+}
+
+impl<'a> UnwindEventLoopClosure<'a> {
+    pub fn run(&mut self) {
+        self.result = panic::catch_unwind(self.closure.take().unwrap());
     }
 }

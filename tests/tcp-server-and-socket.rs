@@ -1,6 +1,6 @@
 #![cfg(feature = "qt_network")]
 mod common;
-use common::ConnectErrors;
+use common::{run_inside_app, ConnectErrors};
 
 use std::io::{Read, Write};
 use std::time::Duration;
@@ -14,7 +14,7 @@ const TIMEOUT: Option<Duration> = Some(Duration::from_secs(500));
 
 #[test]
 fn tcp_round_trip() {
-    cxx_qt_io_test_utils::run_inside_app(|| {
+    run_inside_app(|| {
         let mut server_ptr = QTcpServer::new();
         let mut socket_ptr = QTcpSocket::new();
         let mut server = server_ptr.pin_mut();
