@@ -10,6 +10,9 @@ use cxx::UniquePtr;
 
 use cxx_qt_io::{QHostAddressSpecialAddress, QIODevice, QTcpServer, QTcpSocket};
 
+const PORT: u16 = 8012;
+const TIMEOUT: Option<Duration> = Some(Duration::from_secs(500));
+
 #[test]
 fn round_trip() {
     cxx_qt_io_test_utils::run_inside_app(|| {
@@ -21,16 +24,14 @@ fn round_trip() {
         client_socket.as_mut().connect_errors();
 
         let addr = QHostAddressSpecialAddress::LocalHost.into();
-        let port = 8010;
-        let timeout = Some(Duration::from_millis(500));
 
-        server.as_mut().listen(&addr, port);
+        server.as_mut().listen(&addr, PORT);
 
         client_socket
             .as_abstract_socket_mut()
-            .connect_to_host((addr, port), QIODevice::ReadWrite);
+            .connect_to_host((addr, PORT), QIODevice::ReadWrite);
 
-        if !server.as_mut().wait_for_new_connection(timeout) {
+        if !server.as_mut().wait_for_new_connection(TIMEOUT) {
             panic!("failed to acquire connection");
         }
 
@@ -45,14 +46,14 @@ fn round_trip() {
 
         client_socket
             .as_abstract_socket_mut()
-            .wait_for_connected(timeout);
+            .wait_for_connected(TIMEOUT);
         client_socket.write_all(b"test message").unwrap();
         client_socket.flush().unwrap();
 
         let mut buf = Vec::new();
         server_socket
             .as_io_device_mut()
-            .wait_for_ready_read(timeout);
+            .wait_for_ready_read(TIMEOUT);
         server_socket.read_to_end(&mut buf).unwrap();
 
         server_socket.write_all(&buf).unwrap();
@@ -62,7 +63,7 @@ fn round_trip() {
 
         client_socket
             .as_io_device_mut()
-            .wait_for_ready_read(timeout);
+            .wait_for_ready_read(TIMEOUT);
         client_socket.read_to_end(&mut buf).unwrap();
 
         assert_eq!(String::from_utf8_lossy(&buf), "test message response");
