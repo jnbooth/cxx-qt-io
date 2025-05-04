@@ -1,5 +1,4 @@
 #![cfg(feature = "qt_network")]
-
 mod common;
 use common::ConnectErrors;
 
@@ -14,14 +13,14 @@ const PORT: u16 = 8012;
 const TIMEOUT: Option<Duration> = Some(Duration::from_secs(500));
 
 #[test]
-fn round_trip() {
+fn tcp_round_trip() {
     cxx_qt_io_test_utils::run_inside_app(|| {
         let mut server_ptr = QTcpServer::new();
         let mut socket_ptr = QTcpSocket::new();
         let mut server = server_ptr.pin_mut();
         let mut client_socket = socket_ptr.pin_mut();
-        server.as_mut().connect_errors();
-        client_socket.as_mut().connect_errors();
+        server.as_mut().connect_errors("server");
+        client_socket.as_mut().connect_errors("client_socket");
 
         let addr = QHostAddressSpecialAddress::LocalHost.into();
 
@@ -38,11 +37,9 @@ fn round_trip() {
         let mut server_socket_ptr =
             unsafe { UniquePtr::from_raw(server.as_mut().next_pending_connection()) };
 
-        let Some(mut server_socket) = server_socket_ptr.as_mut() else {
-            panic!("received null socket");
-        };
+        let mut server_socket = server_socket_ptr.as_mut().expect("received null socket");
 
-        server_socket.as_mut().connect_errors();
+        server_socket.as_mut().connect_errors("server_socket");
 
         client_socket
             .as_abstract_socket_mut()
