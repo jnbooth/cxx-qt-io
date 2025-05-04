@@ -2,8 +2,6 @@
 
 #include <QtCore/QTimer>
 
-const int TIMEOUT_SIGNAL = 123;
-
 namespace rust {
 namespace cxxqtio1 {
 namespace test {
@@ -18,44 +16,19 @@ public:
   }
 };
 
-TestContext::~TestContext()
-{
-  for (QObject* object : held)
-    delete object;
-}
-
 void
-TestContext::exit()
+TestContext::exit(int returnCode)
 {
-  if (QCoreApplication::instance()) {
-    QCoreApplication::quit();
-  }
+  eventLoop.exit(returnCode);
 }
 
-void
-TestContext::hold(QObject* object)
-{
-  held.emplace_back(object);
-}
-
-bool
+int
 TestContext::run(QEvent* event)
 {
   static ClosureHandler* receiver = new ClosureHandler();
   QCoreApplication::postEvent(receiver, event);
 
-  int result = QCoreApplication::exec();
-  return result != TIMEOUT_SIGNAL;
-}
-
-void
-TestContext::timeoutAfter(int msecs)
-{
-  QCoreApplication* app = QCoreApplication::instance();
-  QTimer::singleShot(msecs, [app]() {
-    if (QCoreApplication::instance() == app)
-      QCoreApplication::exit(TIMEOUT_SIGNAL);
-  });
+  return eventLoop.exec();
 }
 
 }

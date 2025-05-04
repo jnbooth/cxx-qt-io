@@ -25,6 +25,5 @@ fn main() {
             println!("cargo::rerun-if-changed=src/test_utils.cpp");
         })
         .file("src/run_inside_app.rs")
-        .file("src/test_context.rs")
         .build();
 }
