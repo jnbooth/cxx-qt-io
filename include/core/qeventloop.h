@@ -1,9 +1,11 @@
 #pragma once
 
-#include "rust/cxx.h"
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
 #include <QtCore/QEventLoop>
+#include <climits>
+
+#include "rust/cxx.h"
 
 using QEventLoopProcessEventsFlag = QEventLoop::ProcessEventsFlag;
 using QEventLoopProcessEventsFlags = QEventLoop::ProcessEventsFlags;
@@ -26,13 +28,13 @@ public:
   ~QEventLoopClosureEvent() override
   {
     (*closure)(context);
-    eventLoop.quit();
+    QCoreApplication::postEvent(&eventLoop, new QEvent(QEvent::Quit), INT_MIN);
   }
 
 private:
   QEventLoop& eventLoop;
   T& context;
-  rust::Fn<bool(T&)> closure;
+  rust::Fn<void(T&)> closure;
 };
 
 template<typename T>
@@ -41,8 +43,10 @@ qeventloopExecWith(QEventLoop& eventLoop,
                    T& context,
                    rust::Fn<void(T&)> closure)
 {
-  QEvent* event = new QEventLoopClosureEvent(eventLoop, context, closure);
-  QCoreApplication::postEvent(&eventLoop, event, INT_MAX);
+  QCoreApplication::postEvent(
+    &eventLoop,
+    new QEventLoopClosureEvent(eventLoop, context, closure),
+    INT_MAX);
   return eventLoop.exec();
 }
 
