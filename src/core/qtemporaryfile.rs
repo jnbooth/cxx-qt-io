@@ -1,5 +1,4 @@
-use crate::qio::{QIOExt, QIO};
-use crate::{QFile, QFileDevice, QIODevice};
+use crate::{QFile, QFileDevice, QIODevice, QIODeviceExt};
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QString;
@@ -217,11 +216,7 @@ impl AsRef<QObject> for QTemporaryFile {
     }
 }
 
-impl QIO for QTemporaryFile {
-    fn flush(mut self: Pin<&mut Self>) -> bool {
-        self.as_file_device_mut().flush()
-    }
-
+impl QIODeviceExt for QTemporaryFile {
     fn get_error_kind(&self) -> io::ErrorKind {
         self.as_file_device().get_error_kind()
     }
@@ -229,16 +224,17 @@ impl QIO for QTemporaryFile {
 
 impl Read for Pin<&mut QTemporaryFile> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QTemporaryFile> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        self.as_file_device_mut().flush();
+        Ok(())
     }
 }

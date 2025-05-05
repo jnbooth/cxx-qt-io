@@ -1,6 +1,5 @@
-use crate::qio::{QIOExt, QIO};
 use crate::util::IsNonNull;
-use crate::{FileDescriptor, QIODevice};
+use crate::{FileDescriptor, QIODevice, QIODeviceExt};
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
@@ -283,11 +282,7 @@ impl AsRef<QObject> for QFileDevice {
     }
 }
 
-impl QIO for QFileDevice {
-    fn flush(self: Pin<&mut Self>) -> bool {
-        self.flush()
-    }
-
+impl QIODeviceExt for QFileDevice {
     fn get_error_kind(&self) -> io::ErrorKind {
         self.error().into()
     }
@@ -295,17 +290,18 @@ impl QIO for QFileDevice {
 
 impl Read for Pin<&mut QFileDevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QFileDevice> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        self.as_mut().flush();
+        Ok(())
     }
 }
 

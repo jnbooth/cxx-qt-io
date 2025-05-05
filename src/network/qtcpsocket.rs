@@ -1,5 +1,4 @@
-use crate::qio::{QIOExt, QIO};
-use crate::{QAbstractSocket, QIODevice};
+use crate::{QAbstractSocket, QIODevice, QIODeviceExt};
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
 use std::io::{self, Read, Write};
@@ -124,11 +123,7 @@ impl AsRef<QObject> for QTcpSocket {
     }
 }
 
-impl QIO for QTcpSocket {
-    fn flush(mut self: Pin<&mut Self>) -> bool {
-        self.as_abstract_socket_mut().flush()
-    }
-
+impl QIODeviceExt for QTcpSocket {
     fn get_error_kind(&self) -> io::ErrorKind {
         self.as_abstract_socket().get_error_kind()
     }
@@ -136,16 +131,17 @@ impl QIO for QTcpSocket {
 
 impl Read for Pin<&mut QTcpSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QTcpSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        self.as_abstract_socket_mut().flush();
+        Ok(())
     }
 }

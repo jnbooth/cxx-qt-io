@@ -1,4 +1,3 @@
-use crate::qio::{QIOExt, QIO};
 use crate::util::MSecs;
 use crate::QFile;
 use cxx_qt::{Downcast, QObject, Upcast};
@@ -358,6 +357,18 @@ pub use ffi::{QIODevice, QIODeviceOpenModeFlag};
 pub type QIODeviceOpenMode = QFlags<QIODeviceOpenModeFlag>;
 unsafe_impl_qflag!(QIODeviceOpenModeFlag, "QIODeviceOpenMode");
 
+/** A trait for Qt classes that extend from [`QIODevice`]. */
+#[allow(unused_variables)]
+pub trait QIODeviceExt: Upcast<QIODevice> {
+    /**
+     * Returns the error kind associated with the most recent error that occurred, as given by
+     * [`QIODevice::error_string`].
+     */
+    fn get_error_kind(&self) -> io::ErrorKind {
+        io::ErrorKind::Other
+    }
+}
+
 #[allow(non_upper_case_globals)]
 impl QIODevice {
     /// Shorthand for [`QIODeviceOpenModeFlag::ReadOnly`]`.into()`.
@@ -509,6 +520,39 @@ impl QIODevice {
         // SAFETY: `data` is a zero-terminated string of 8-bit characters.
         unsafe { self.write_cstr_unsafe(data.as_ptr()) }
     }
+
+    pub fn try_read<T>(mut reader: Pin<&mut T>, buf: &mut [u8]) -> io::Result<usize>
+    where
+        T: QIODeviceExt,
+    {
+        let buf_ptr = buf.as_mut_ptr().cast::<c_char>();
+        let device = reader.as_mut().upcast_pin();
+        // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
+        let result = unsafe { device.read_unsafe(buf_ptr, buf.len() as i64) };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err((*reader).upcast().get_error(reader.get_error_kind()))
+    }
+
+    pub fn try_write<T>(mut writer: Pin<&mut T>, buf: &[u8]) -> io::Result<usize>
+    where
+        T: QIODeviceExt,
+    {
+        let buf_ptr = buf.as_ptr().cast::<c_char>();
+        let device = writer.as_mut().upcast_pin();
+        // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
+        let result = unsafe { device.write_unsafe(buf_ptr, buf.len() as i64) };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err((*writer).upcast().get_error(writer.get_error_kind()))
+    }
+
+    #[cold]
+    fn get_error(&self, error_kind: io::ErrorKind) -> io::Error {
+        io::Error::new(error_kind, String::from(&self.error_string()))
+    }
 }
 
 impl AsRef<QObject> for QIODevice {
@@ -517,17 +561,17 @@ impl AsRef<QObject> for QIODevice {
     }
 }
 
-impl QIO for QIODevice {}
+impl QIODeviceExt for QIODevice {}
 
 impl Read for Pin<&mut QIODevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QIODevice> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

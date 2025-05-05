@@ -33,8 +33,6 @@ macro_rules! unsafe_impl_qflag {
     };
 }
 
-mod qio;
-
 mod core;
 pub use crate::core::*;
 

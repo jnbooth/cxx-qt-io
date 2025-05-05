@@ -1,6 +1,7 @@
-use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
-use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescriptor};
+use crate::{
+    QHostAddress, QIODevice, QIODeviceExt, QIODeviceOpenMode, QSocketAddr, SocketDescriptor,
+};
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
@@ -565,11 +566,7 @@ impl AsRef<QObject> for QAbstractSocket {
         self.upcast()
     }
 }
-impl QIO for QAbstractSocket {
-    fn flush(self: Pin<&mut Self>) -> bool {
-        self.flush()
-    }
-
+impl QIODeviceExt for QAbstractSocket {
     fn get_error_kind(&self) -> io::ErrorKind {
         self.error().into()
     }
@@ -577,17 +574,18 @@ impl QIO for QAbstractSocket {
 
 impl Read for Pin<&mut QAbstractSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QAbstractSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        self.as_mut().flush();
+        Ok(())
     }
 }
 

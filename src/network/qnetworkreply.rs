@@ -1,8 +1,7 @@
-use crate::qio::{QIOExt, QIO};
 use crate::util::IsNonNull;
 #[cfg(feature = "ssl")]
 use crate::QSslConfiguration;
-use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
+use crate::{QIODevice, QIODeviceExt, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
 use cxx_qt::{QObject, Upcast};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
@@ -450,20 +449,20 @@ impl AsRef<QObject> for QNetworkReply {
     }
 }
 
-impl QIO for QNetworkReply {}
+impl QIODeviceExt for QNetworkReply {}
 
 impl Read for Pin<&mut QNetworkReply> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QNetworkReply> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        Ok(())
     }
 }

@@ -27,7 +27,7 @@ mod qfile;
 pub use qfile::QFile;
 
 mod qiodevice;
-pub use qiodevice::{QIODevice, QIODeviceOpenMode, QIODeviceOpenModeFlag};
+pub use qiodevice::{QIODevice, QIODeviceExt, QIODeviceOpenMode, QIODeviceOpenModeFlag};
 
 mod qlist;
 

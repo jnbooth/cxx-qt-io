@@ -1,5 +1,4 @@
-use crate::qio::{QIOExt, QIO};
-use crate::QIODevice;
+use crate::{QIODevice, QIODeviceExt};
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QByteArray;
@@ -156,21 +155,21 @@ impl AsRef<QObject> for QBuffer {
     }
 }
 
-impl QIO for QBuffer {}
+impl QIODeviceExt for QBuffer {}
 
 impl Read for Pin<&mut QBuffer> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QBuffer> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        Ok(())
     }
 }
 

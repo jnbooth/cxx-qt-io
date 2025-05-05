@@ -1,8 +1,7 @@
-use crate::qio::{QIOExt, QIO};
 use crate::util::{IsNonNull, MSecs};
 use crate::{
-    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
-    SocketDescriptor,
+    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceExt,
+    QIODeviceOpenMode, SocketDescriptor,
 };
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
@@ -314,11 +313,7 @@ impl AsRef<QObject> for QLocalSocket {
     }
 }
 
-impl QIO for QLocalSocket {
-    fn flush(self: Pin<&mut Self>) -> bool {
-        self.flush()
-    }
-
+impl QIODeviceExt for QLocalSocket {
     fn get_error_kind(&self) -> io::ErrorKind {
         self.error().into()
     }
@@ -326,17 +321,18 @@ impl QIO for QLocalSocket {
 
 impl Read for Pin<&mut QLocalSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIOExt::read(self.as_mut(), buf)
+        QIODevice::try_read(self.as_mut(), buf)
     }
 }
 
 impl Write for Pin<&mut QLocalSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIOExt::write(self.as_mut(), buf)
+        QIODevice::try_write(self.as_mut(), buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        QIOExt::flush(self.as_mut())
+        self.as_mut().flush();
+        Ok(())
     }
 }
 
