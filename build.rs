@@ -147,6 +147,9 @@ fn main() {
         include_header!("include/core/qeventloop.h"),
         include_header!("include/core/qfile.h"),
         include_header!("include/core/qfiledevice.h"),
+        include_header!("include/core/qhash/qhash_i32_qvariant.h"),
+        include_header!("include/core/qhash/qhash_private.h"),
+        include_header!("include/core/qhash/qhash.h"),
         include_header!("include/core/qiodevice.h"),
         include_header!("include/core/qlist/qlist_private.h"),
         include_header!("include/core/qlist/qlist_qdeadlinetimer.h"),
@@ -176,6 +179,7 @@ fn main() {
         .build_cpp(&[
             "core/qbuffer",
             "core/qdeadlinetimer",
+            "core/qhash/qhash",
             "core/qiodevice",
             "core/qlist/qlist",
             "core/qpair/qpair",

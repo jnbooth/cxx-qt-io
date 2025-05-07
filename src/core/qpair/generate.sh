@@ -42,8 +42,6 @@ function generate_bridge() {
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qpair/generate.sh
 
-use cxx::{type_id, ExternType};
-
 #[cxx::bridge]
 pub mod ffi {
     extern "C++" {
@@ -63,11 +61,6 @@ pub mod ffi {
 #[allow(non_camel_case_types)]
 pub struct $QPAIRPAIR;
 
-unsafe impl ExternType for $QPAIRPAIR {
-    type Id = type_id!("$QPAIRPAIR");
-    type Kind = cxx::kind::Trivial;
-}
-
 pub(crate) fn drop(pair: &mut ffi::$QPAIR) {
     ffi::qpair_drop_$SUFFIX(pair);
 }
@@ -76,7 +69,7 @@ EOF
 }
 
 generate_qpair_header "QByteArray_QByteArray" "::QByteArray" "::QByteArray" "QtCore/QByteArray" ""
-generate_bridge "QByteArray" "QByteArray" "cxx-qt-lib/qstring" ""
+generate_bridge "QByteArray" "QByteArray"
 
 generate_qpair_header "QHostAddress_i32" "::QHostAddress" "::std::int32_t" "QtNetwork/QHostAddress" ""
-generate_bridge "QHostAddress" "i32" "cxx-qt-io/qhostaddress" ""
+generate_bridge "QHostAddress" "i32"
