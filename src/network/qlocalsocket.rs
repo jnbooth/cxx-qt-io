@@ -1,7 +1,7 @@
 use crate::util::{IsNonNull, MSecs};
 use crate::{
-    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceExt,
-    QIODeviceOpenMode, SocketDescriptor,
+    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
+    SocketDescriptor,
 };
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
@@ -313,21 +313,15 @@ impl AsRef<QObject> for QLocalSocket {
     }
 }
 
-impl QIODeviceExt for QLocalSocket {
-    fn get_error_kind(&self) -> io::ErrorKind {
-        self.error().into()
-    }
-}
-
 impl Read for Pin<&mut QLocalSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QLocalSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

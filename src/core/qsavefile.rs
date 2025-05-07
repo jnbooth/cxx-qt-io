@@ -1,4 +1,4 @@
-use crate::{QFileDevice, QIODevice, QIODeviceExt};
+use crate::{QFileDevice, QIODevice};
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::QString;
@@ -162,21 +162,15 @@ impl AsRef<QObject> for QSaveFile {
     }
 }
 
-impl QIODeviceExt for QSaveFile {
-    fn get_error_kind(&self) -> io::ErrorKind {
-        self.as_file_device().get_error_kind()
-    }
-}
-
 impl Read for Pin<&mut QSaveFile> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QSaveFile> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

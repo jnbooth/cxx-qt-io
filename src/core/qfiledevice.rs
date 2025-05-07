@@ -1,5 +1,5 @@
 use crate::util::IsNonNull;
-use crate::{FileDescriptor, QIODevice, QIODeviceExt};
+use crate::{FileDescriptor, QIODevice};
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
@@ -250,6 +250,16 @@ impl QFileDevice {
     pub fn handle(&self) -> Option<FileDescriptor> {
         FileDescriptor::from(self.handle_or_negative()).nonnull()
     }
+
+    /// Casts this object to `QIODevice`.
+    pub fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QIODevice`.
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
+    }
 }
 
 impl Deref for QFileDevice {
@@ -282,21 +292,15 @@ impl AsRef<QObject> for QFileDevice {
     }
 }
 
-impl QIODeviceExt for QFileDevice {
-    fn get_error_kind(&self) -> io::ErrorKind {
-        self.error().into()
-    }
-}
-
 impl Read for Pin<&mut QFileDevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QFileDevice> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

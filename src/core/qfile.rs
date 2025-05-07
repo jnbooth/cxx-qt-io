@@ -1,6 +1,5 @@
 use crate::{
-    FileDescriptor, QFileDevice, QFileDeviceFileHandleFlags, QIODevice, QIODeviceExt,
-    QIODeviceOpenMode,
+    FileDescriptor, QFileDevice, QFileDeviceFileHandleFlags, QIODevice, QIODeviceOpenMode,
 };
 use cxx::UniquePtr;
 use cxx_qt::{QObject, Upcast};
@@ -255,21 +254,15 @@ impl AsRef<QObject> for QFile {
     }
 }
 
-impl QIODeviceExt for QFile {
-    fn get_error_kind(&self) -> io::ErrorKind {
-        self.as_file_device().get_error_kind()
-    }
-}
-
 impl Read for Pin<&mut QFile> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QFile> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

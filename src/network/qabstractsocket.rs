@@ -1,7 +1,5 @@
 use crate::util::{IsNonNull, MSecs};
-use crate::{
-    QHostAddress, QIODevice, QIODeviceExt, QIODeviceOpenMode, QSocketAddr, SocketDescriptor,
-};
+use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescriptor};
 use cxx_qt::{QObject, Upcast};
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
@@ -535,6 +533,16 @@ impl QAbstractSocket {
     ) -> bool {
         self.wait_for_disconnected_msecs(duration.msecs())
     }
+
+    /// Casts this object to `QIODevice`.
+    pub fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QIODevice`.
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
+    }
 }
 
 impl Deref for QAbstractSocket {
@@ -566,21 +574,16 @@ impl AsRef<QObject> for QAbstractSocket {
         self.upcast()
     }
 }
-impl QIODeviceExt for QAbstractSocket {
-    fn get_error_kind(&self) -> io::ErrorKind {
-        self.error().into()
-    }
-}
 
 impl Read for Pin<&mut QAbstractSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QAbstractSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

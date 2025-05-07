@@ -1,7 +1,7 @@
 use crate::util::{IsNonNull, MSecs};
 use crate::{
-    QAbstractSocket, QAbstractSocketNetworkLayerProtocol, QIODevice, QIODeviceExt,
-    QIODeviceOpenMode, QSslCertificate, QSslSslProtocol, QTcpSocket,
+    QAbstractSocket, QAbstractSocketNetworkLayerProtocol, QIODevice, QIODeviceOpenMode,
+    QSslCertificate, QSslSslProtocol, QTcpSocket,
 };
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 use crate::{QSslImplementedClass, QSslSupportedFeature};
@@ -760,21 +760,15 @@ impl AsRef<QObject> for QSslSocket {
     }
 }
 
-impl QIODeviceExt for QSslSocket {
-    fn get_error_kind(&self) -> io::ErrorKind {
-        self.as_abstract_socket().get_error_kind()
-    }
-}
-
 impl Read for Pin<&mut QSslSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QSslSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

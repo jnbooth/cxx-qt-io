@@ -1,7 +1,7 @@
 use crate::util::IsNonNull;
 #[cfg(feature = "ssl")]
 use crate::QSslConfiguration;
-use crate::{QIODevice, QIODeviceExt, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
+use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
 use cxx_qt::{QObject, Upcast};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
@@ -417,6 +417,16 @@ impl QNetworkReply {
     pub fn ssl_configuration(&self) -> Option<QSslConfiguration> {
         self.ssl_configuration_or_invalid().nonnull()
     }
+
+    /// Casts this object to `QIODevice`.
+    pub fn as_io_device(&self) -> &QIODevice {
+        self.upcast()
+    }
+
+    /// Mutably casts this object to `QIODevice`.
+    pub fn as_io_device_mut<'a>(self: &'a mut Pin<&mut Self>) -> Pin<&'a mut QIODevice> {
+        self.as_mut().upcast_pin()
+    }
 }
 
 impl Deref for QNetworkReply {
@@ -449,17 +459,15 @@ impl AsRef<QObject> for QNetworkReply {
     }
 }
 
-impl QIODeviceExt for QNetworkReply {}
-
 impl Read for Pin<&mut QNetworkReply> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        QIODevice::try_read(self.as_mut(), buf)
+        self.as_io_device_mut().try_read(buf)
     }
 }
 
 impl Write for Pin<&mut QNetworkReply> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        QIODevice::try_write(self.as_mut(), buf)
+        self.as_io_device_mut().try_write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
