@@ -1,5 +1,5 @@
 use crate::util::MSecs;
-use crate::QFile;
+use crate::{QAbstractSocket, QFile, QFileDevice, QLocalSocket};
 use cxx_qt::{Downcast, QObject, Upcast};
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
@@ -531,7 +531,20 @@ impl QIODevice {
 
     #[cold]
     fn get_error(&self) -> io::Error {
-        io::Error::other(String::from(&self.error_string()))
+        io::Error::new(self.get_error_kind(), String::from(&self.error_string()))
+    }
+
+    fn get_error_kind(&self) -> io::ErrorKind {
+        if let Some(file_device) = self.downcast::<QFileDevice>() {
+            return file_device.error().into();
+        }
+        if let Some(abstract_socket) = self.downcast::<QAbstractSocket>() {
+            return abstract_socket.error().into();
+        }
+        if let Some(local_socket) = self.downcast::<QLocalSocket>() {
+            return local_socket.error().into();
+        }
+        io::ErrorKind::Other
     }
 }
 
