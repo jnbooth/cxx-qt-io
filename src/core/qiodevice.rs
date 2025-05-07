@@ -117,7 +117,7 @@ mod ffi {
         #[rust_name = "open_mode"]
         fn openMode(self: &QIODevice) -> QIODeviceOpenMode;
 
-        /// Reads at most `max_size` bytes from the device into `data`, without side effects (i.e., if you call [`read_unsafe`](QIODevice::read) after [`peek_unsafe`](QIODevice::peek), you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
+        /// Reads at most `max_size` bytes from the device into `data`, without side effects (i.e., if you call [`read_unsafe`](QIODevice::read_unsafe) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
         ///
         /// 0 is returned when no more data is available for reading.
         ///
@@ -173,9 +173,9 @@ mod ffi {
         #[rust_name = "read_channel_count"]
         fn readChannelCount(self: &QIODevice) -> i32;
 
-        /// This function reads a line of ASCII characters from the device, up to a maximum of `max_size` - 1 bytes, stores the characters in data, and returns the number of bytes read. If a line could not be read but no error occurred, this function returns 0. If an error occurs, this function returns the length of what could be read, or -1 if nothing was read.
+        /// This function reads a line of ASCII characters from the device, up to a maximum of `max_size` - 1 bytes, stores the characters in `data`, and returns the number of bytes read. If a line could not be read but no error occurred, this function returns 0. If an error occurs, this function returns the length of what could be read, or -1 if nothing was read.
         ///
-        /// A terminating `'\0'` byte is always appended to data, so `max_size` must be larger than 1.
+        /// A terminating `'\0'` byte is always appended to `data`, so `max_size` must be larger than 1.
         ///
         /// Data is read until either of the following conditions are met:
         ///
@@ -266,7 +266,7 @@ mod ffi {
         #[rust_name = "wait_for_ready_read_msecs"]
         fn waitForReadyRead(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
 
-        /// Writes at most `max_size` bytes of data from data to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
+        /// Writes at most `max_size` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
         ///
         /// # Safety
         ///
@@ -429,20 +429,72 @@ impl QIODevice {
         unsafe { self.open_unsafe(mode) }
     }
 
+    /// Reads bytes from the device into `data`, without side effects (i.e., if you call [`try_read`](QIODevice::try_read) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
+    ///
+    /// `Ok(0)` is returned when no more data is available for reading.
+    pub fn peek(mut self: Pin<&mut Self>, data: &mut [u8]) -> io::Result<usize> {
+        let data_ptr = data.as_mut_ptr().cast::<c_char>();
+        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        let result = unsafe { self.as_mut().peek_unsafe(data_ptr, data.len() as i64) };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err(self.get_error())
+    }
+
     /// Reads at most `data.len()` bytes from the device into `data`, without side effects (i.e., if you call [`read`](QIODevice::read) after [`peek`](QIODevice::peek), you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
     ///
     /// 0 is returned when no more data is available for reading.
-    pub fn peek(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
+    pub fn peek_chars(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
         // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`.
         unsafe { self.peek_unsafe(data.as_mut_ptr(), data.len() as i64) }
+    }
+
+    /// Reads bytes from the device into `data`, and returns the number of bytes read. If an error occurs, such as when attempting to read from a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
+    ///
+    /// `Ok(0)` is returned when no more data is available for reading. However, reading past the end of the stream is considered an error, so this function returns an error in those cases (that is, reading on a closed socket or after a process has died).
+    pub fn read(mut self: Pin<&mut Self>, data: &mut [u8]) -> io::Result<usize> {
+        let data_ptr = data.as_mut_ptr().cast::<c_char>();
+        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        let result = unsafe { self.as_mut().read_unsafe(data_ptr, data.len() as i64) };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err(self.get_error())
     }
 
     /// Reads at most `data.len()` bytes from the device into `data`, and returns the number of bytes read. If an error occurs, such as when attempting to read from a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
     ///
     /// 0 is returned when no more data is available for reading. However, reading past the end of the stream is considered an error, so this function returns -1 in those cases (that is, reading on a closed socket or after a process has died).
-    pub fn read(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
+    pub fn read_chars(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
         // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`.
         unsafe { self.read_unsafe(data.as_mut_ptr(), data.len() as i64) }
+    }
+
+    /// This function reads a line of ASCII characters from the device, stores the characters in `data`, and returns the number of bytes read. If a line could not be read but no error occurred, this function returns `Ok(0)`. If an error occurs, this function returns `Ok(n)` where `n` is the length of what could be read, or an error if nothing was read.
+    ///
+    /// A terminating `'\0'` byte is always appended to `data`, so `data.len()` must be larger than 1.
+    ///
+    /// Data is read until either of the following conditions are met:
+    ///
+    /// * The first `'\n'` character is read.
+    /// * `data.len() - 1` bytes are read.
+    /// * The end of the device data is detected.
+    ///
+    /// The newline character (`'\n'`) is included in the buffer. If a newline is not encountered before `data.len() - 1` bytes are read, a newline will not be inserted into the buffer. On windows newline characters are replaced with `'\n'`.
+    ///
+    /// Note that on sequential devices, data may not be immediately available, which may result in a partial line being returned. By calling [`can_read_line`](QIODevice::can_read_line) before reading, you can check whether a complete line (including the newline character) can be read.
+    pub fn read_line(mut self: Pin<&mut QIODevice>, data: &mut [u8]) -> io::Result<usize> {
+        if data.len() < 2 {
+            return Ok(0);
+        }
+        let data_ptr = data.as_mut_ptr().cast::<c_char>();
+        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        let result = unsafe { self.as_mut().read_line_unsafe(data_ptr, data.len() as i64) };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err(self.get_error())
     }
 
     /// This function reads a line of ASCII characters from the device, up to a maximum of `max_size` - 1 bytes, stores the characters in data, and returns the number of bytes read. If a line could not be read but no error occurred, this function returns 0. If an error occurs, this function returns the length of what could be read, or -1 if nothing was read.
@@ -458,7 +510,7 @@ impl QIODevice {
     /// The newline character (`'\n'`) is included in the buffer. If a newline is not encountered before maxSize - 1 bytes are read, a newline will not be inserted into the buffer. On windows newline characters are replaced with `'\n'`.
     ///
     /// Note that on sequential devices, data may not be immediately available, which may result in a partial line being returned. By calling [`can_read_line`](QIODevice::can_read_line) before reading, you can check whether a complete line (including the newline character) can be read.
-    pub fn read_line(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
+    pub fn read_line_chars(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
         if data.len() < 2 {
             return 0;
         }
@@ -497,8 +549,19 @@ impl QIODevice {
         self.wait_for_ready_read_msecs(duration.msecs())
     }
 
+    /// Writes bytes of data from `data` to the device. Returns the number of bytes that were actually written, or an error if an error occurred.
+    pub fn write(mut self: Pin<&mut Self>, data: &[u8]) -> io::Result<usize> {
+        let data_ptr = data.as_ptr().cast::<c_char>();
+        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        let result = unsafe { self.as_mut().write_unsafe(data_ptr, data.len() as i64) };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err(self.get_error())
+    }
+
     /// Writes at most `data.len()` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
-    pub fn write(self: Pin<&mut Self>, data: &[c_char]) -> i64 {
+    pub fn write_chars(self: Pin<&mut Self>, data: &[c_char]) -> i64 {
         // SAFETY: `data.ptr()` is valid up to `data.len()`.
         unsafe { self.write_unsafe(data.as_ptr(), data.len() as i64) }
     }
@@ -509,28 +572,8 @@ impl QIODevice {
         unsafe { self.write_cstr_unsafe(data.as_ptr()) }
     }
 
-    pub fn try_read(mut self: Pin<&mut Self>, buf: &mut [u8]) -> io::Result<usize> {
-        let buf_ptr = buf.as_mut_ptr().cast::<c_char>();
-        // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
-        let result = unsafe { self.as_mut().read_unsafe(buf_ptr, buf.len() as i64) };
-        if let Ok(n) = usize::try_from(result) {
-            return Ok(n);
-        }
-        Err(self.get_error())
-    }
-
-    pub fn try_write(mut self: Pin<&mut Self>, buf: &[u8]) -> io::Result<usize> {
-        let buf_ptr = buf.as_ptr().cast::<c_char>();
-        // SAFETY: buf_ptr is valid and its size is not greater than buf.len().
-        let result = unsafe { self.as_mut().write_unsafe(buf_ptr, buf.len() as i64) };
-        if let Ok(n) = usize::try_from(result) {
-            return Ok(n);
-        }
-        Err(self.get_error())
-    }
-
     #[cold]
-    fn get_error(&self) -> io::Error {
+    pub fn get_error(&self) -> io::Error {
         io::Error::new(self.get_error_kind(), String::from(&self.error_string()))
     }
 
@@ -556,13 +599,13 @@ impl AsRef<QObject> for QIODevice {
 
 impl Read for Pin<&mut QIODevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        self.as_mut().try_read(buf)
+        self.as_mut().read(buf)
     }
 }
 
 impl Write for Pin<&mut QIODevice> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.as_mut().try_write(buf)
+        self.as_mut().write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

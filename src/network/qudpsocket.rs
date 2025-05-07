@@ -208,10 +208,38 @@ impl QUdpSocket {
 
     ///Receives a datagram stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
     ///
-    /// On success, returns `Some((n, address, port))`, where `n` is the size of the datagram received, `address` is the sender's host address, and `port` is the sender's port. On failure, returns `None`.
+    /// On success, returns `Ok((n, address, port))`, where `n` is the size of the datagram received, `address` is the sender's host address, and `port` is the sender's port. On failure, returns an error.
     ///
     /// If `data.len()` is too small, the rest of the datagram will be lost. To avoid loss of data, call `pending_datagram_size()` to determine the size of the pending datagram before attempting to read it. If `data.len()` is 0, the datagram will be discarded.
     pub fn read_datagram(
+        mut self: Pin<&mut Self>,
+        data: &mut [u8],
+    ) -> io::Result<(usize, QHostAddress, u16)> {
+        let mut address: MaybeUninit<QHostAddress> = MaybeUninit::uninit();
+        let mut port = 0;
+        let data_ptr = data.as_mut_ptr().cast::<c_char>();
+        unsafe {
+            // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`, and `address.as_mut_ptr()`
+            // and `&mut port` are valid.
+            let result = self.as_mut().read_datagram_unsafe(
+                data_ptr,
+                data.len() as i64,
+                address.as_mut_ptr(),
+                &mut port,
+            );
+            if let Ok(n) = usize::try_from(result) {
+                return Ok((n, address.assume_init(), port));
+            }
+            Err(self.get_error())
+        }
+    }
+
+    ///Receives a datagram stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
+    ///
+    /// On success, returns `Some((n, address, port))`, where `n` is the size of the datagram received, `address` is the sender's host address, and `port` is the sender's port. On failure, returns an error.
+    ///
+    /// If `data.len()` is too small, the rest of the datagram will be lost. To avoid loss of data, call `pending_datagram_size()` to determine the size of the pending datagram before attempting to read it. If `data.len()` is 0, the datagram will be discarded.
+    pub fn read_datagram_chars(
         self: Pin<&mut Self>,
         data: &mut [c_char],
     ) -> Option<(i64, QHostAddress, u16)> {
@@ -246,20 +274,45 @@ impl QUdpSocket {
             .nonnull()
     }
 
-    /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
+    /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns an error.
     ///
-    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return `None` and [`error`](QAbstractSocket::error) will return `DatagramTooLargeError`.
+    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return an error and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLargeError).
     ///
     /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
     ///
     /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use [`write`](QIODevice::write) to send datagrams.
     pub fn write_datagram(
+        mut self: Pin<&mut Self>,
+        data: &[u8],
+        address: &QHostAddress,
+        port: u16,
+    ) -> io::Result<usize> {
+        let data_ptr = data.as_ptr().cast::<c_char>();
+        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        let result = unsafe {
+            self.as_mut()
+                .write_datagram_unsafe(data_ptr, data.len() as i64, address, port)
+        };
+        if let Ok(n) = usize::try_from(result) {
+            return Ok(n);
+        }
+        Err(self.get_error())
+    }
+
+    /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
+    ///
+    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return an error and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLargeError)
+    ///
+    /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
+    ///
+    /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use [`write`](QIODevice::write) to send datagrams.
+    pub fn write_datagram_chars(
         self: Pin<&mut Self>,
         data: &[c_char],
         address: &QHostAddress,
         port: u16,
     ) -> i64 {
-        // SAFETY: `data.as_ptr()` is valid up to `data.len()`.
+        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
         unsafe { self.write_datagram_unsafe(data.as_ptr(), data.len() as i64, address, port) }
     }
 
@@ -334,13 +387,13 @@ impl AsRef<QObject> for QUdpSocket {
 
 impl Read for Pin<&mut QUdpSocket> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        self.as_io_device_mut().try_read(buf)
+        self.as_io_device_mut().read(buf)
     }
 }
 
 impl Write for Pin<&mut QUdpSocket> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.as_io_device_mut().try_write(buf)
+        self.as_io_device_mut().write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {

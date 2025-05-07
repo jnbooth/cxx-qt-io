@@ -294,13 +294,13 @@ impl AsRef<QObject> for QFileDevice {
 
 impl Read for Pin<&mut QFileDevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        self.as_io_device_mut().try_read(buf)
+        self.as_io_device_mut().read(buf)
     }
 }
 
 impl Write for Pin<&mut QFileDevice> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.as_io_device_mut().try_write(buf)
+        self.as_io_device_mut().write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
