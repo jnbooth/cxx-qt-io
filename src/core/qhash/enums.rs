@@ -104,3 +104,6 @@ mod network {
         crate::QHashPair_i32_QVariant
     );
 }
+
+#[cfg(feature = "qt_network")]
+pub use network::*;

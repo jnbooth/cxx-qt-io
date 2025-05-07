@@ -27,7 +27,7 @@ mod qfile;
 pub use qfile::QFile;
 
 mod qhash;
-pub use qhash::QHashPair_i32_QVariant;
+pub use qhash::*;
 
 mod qiodevice;
 pub use qiodevice::{QIODevice, QIODeviceOpenMode, QIODeviceOpenModeFlag};

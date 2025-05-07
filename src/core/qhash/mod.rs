@@ -1,4 +1,5 @@
 mod enums;
+pub use enums::*;
 
 use cxx::type_id;
 use cxx_qt_lib::{QHash, QHashPair};

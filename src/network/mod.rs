@@ -40,6 +40,12 @@ pub use qnetworkaccessmanager::QNetworkAccessManagerOperation;
 mod qnetworkaddressentry;
 pub use qnetworkaddressentry::{QNetworkAddressEntry, QNetworkAddressEntryDnsEligibilityStatus};
 
+mod qnetworkcachemetadata;
+pub use qnetworkcachemetadata::{
+    QNetworkCacheMetaData, QNetworkCacheMetaDataAttributesMap, QNetworkCacheMetaDataRawHeader,
+    QNetworkCacheMetaDataRawHeaderList,
+};
+
 mod qnetworkcookie;
 pub use qnetworkcookie::{QNetworkCookie, QNetworkCookieRawForm};
 
