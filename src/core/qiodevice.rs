@@ -374,10 +374,22 @@ impl QIODevice {
 
 #[allow(clippy::cast_possible_wrap)]
 impl QIODevice {
-    /// Reads one character from the device and discards it. Returns `true` on success; otherwise returns `false`.
+    /// Reads one byte from the device and discards it. Returns `true` on success; otherwise returns `false`.
+    pub fn discard_byte(self: Pin<&mut Self>) -> bool {
+        // SAFETY: `ptr::null_mut()` is null.
+        unsafe { self.get_char_unsafe(ptr::null_mut()) }
+    }
+
+    /// Reads one byte from the device and discards it. Returns `true` on success; otherwise returns `false`.
     pub fn discard_char(self: Pin<&mut Self>) -> bool {
         // SAFETY: `ptr::null_mut()` is null.
         unsafe { self.get_char_unsafe(ptr::null_mut()) }
+    }
+
+    /// Reads one byte from the device and stores it in `c`. Returns `true` on success; otherwise returns `false`.
+    pub fn get_byte(self: Pin<&mut Self>, c: &mut u8) -> bool {
+        // SAFETY: `c` is valid.
+        unsafe { self.get_char_unsafe(ptr::from_mut(c).cast::<c_char>()) }
     }
 
     /// Reads one character from the device and stores it in `c`. Returns `true` on success; otherwise returns `false`.
@@ -448,6 +460,11 @@ impl QIODevice {
     pub fn peek_chars(self: Pin<&mut Self>, data: &mut [c_char]) -> i64 {
         // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`.
         unsafe { self.peek_unsafe(data.as_mut_ptr(), data.len() as i64) }
+    }
+
+    /// Writes the byte `c` to the device. Returns `true` on success; otherwise returns `false`.
+    pub fn put_byte(self: Pin<&mut QIODevice>, c: u8) -> bool {
+        self.put_char(c as c_char)
     }
 
     /// Reads bytes from the device into `data`, and returns the number of bytes read. If an error occurs, such as when attempting to read from a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
