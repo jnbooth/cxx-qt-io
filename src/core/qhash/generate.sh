@@ -110,8 +110,8 @@ pub mod ffi {
     }
 }
 
-pub(crate) fn clear(v: &mut ffi::$QHASH) {
-    ffi::cxx_qhash_clear_$SUFFIX(v);
+pub(crate) fn clear(hash: &mut ffi::$QHASH) {
+    ffi::cxx_qhash_clear_$SUFFIX(hash);
 }
 
 pub(crate) fn contains(

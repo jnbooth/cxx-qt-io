@@ -1,7 +1,4 @@
 #![allow(clippy::wildcard_imports)]
-use std::{mem, ptr};
-
-use cxx::type_id;
 use cxx_qt_lib::{QList, QListElement};
 
 unsafe fn cast_enum_list<From, To>(list: &QList<From>) -> &QList<To>
@@ -9,7 +6,7 @@ where
     From: QListElement,
     To: QListElement,
 {
-    unsafe { &*(ptr::from_ref(list).cast()) }
+    unsafe { &*(std::ptr::from_ref(list).cast()) }
 }
 
 unsafe fn cast_enum_list_mut<From, To>(list: &mut QList<From>) -> &mut QList<To>
@@ -17,7 +14,7 @@ where
     From: QListElement,
     To: QListElement,
 {
-    unsafe { &mut *(ptr::from_mut(list).cast()) }
+    unsafe { &mut *(std::ptr::from_mut(list).cast()) }
 }
 
 macro_rules! impl_qlist_element {
@@ -26,7 +23,7 @@ macro_rules! impl_qlist_element {
     };
     ($t:ty, $typeId:literal, $r:ty) => {
         impl QListElement for $t {
-            type TypeId = type_id!($typeId);
+            type TypeId = cxx::type_id!($typeId);
 
             fn append(list: &mut QList<Self>, value: Self) {
                 <$r as QListElement>::append(unsafe { cast_enum_list_mut(list) }, value.repr);
@@ -41,20 +38,20 @@ macro_rules! impl_qlist_element {
                 <$r as QListElement>::clear(unsafe { cast_enum_list_mut(list) });
             }
             fn clone(list: &QList<Self>) -> QList<Self> {
-                unsafe { mem::transmute(<$r as QListElement>::clone(cast_enum_list(list))) }
+                unsafe { std::mem::transmute(<$r as QListElement>::clone(cast_enum_list(list))) }
             }
             fn contains(list: &QList<Self>, value: &Self) -> bool {
                 <$r as QListElement>::contains(unsafe { cast_enum_list(list) }, &value.repr)
             }
             fn default() -> QList<Self> {
-                unsafe { mem::transmute(<$r as QListElement>::default()) }
+                unsafe { std::mem::transmute(<$r as QListElement>::default()) }
             }
             fn drop(list: &mut QList<Self>) {
                 <$r as QListElement>::drop(unsafe { cast_enum_list_mut(list) })
             }
             unsafe fn get_unchecked(list: &QList<Self>, pos: isize) -> &Self {
                 unsafe {
-                    &*ptr::from_ref(<$r as QListElement>::get_unchecked(
+                    &*std::ptr::from_ref(<$r as QListElement>::get_unchecked(
                         cast_enum_list(list),
                         pos,
                     ))

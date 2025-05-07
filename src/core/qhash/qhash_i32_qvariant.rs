@@ -50,8 +50,8 @@ pub mod ffi {
     }
 }
 
-pub(crate) fn clear(v: &mut ffi::QHash_i32_QVariant) {
-    ffi::cxx_qhash_clear_i32_QVariant(v);
+pub(crate) fn clear(hash: &mut ffi::QHash_i32_QVariant) {
+    ffi::cxx_qhash_clear_i32_QVariant(hash);
 }
 
 pub(crate) fn contains(hash: &ffi::QHash_i32_QVariant, k: &i32) -> bool {

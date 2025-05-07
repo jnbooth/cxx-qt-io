@@ -1,7 +1,7 @@
+mod enums;
+
 use cxx::type_id;
 use cxx_qt_lib::{QList, QListElement};
-
-mod enums;
 
 macro_rules! impl_qlist_element {
     ( $typeName:ty, $module:ident, $typeId:literal $(,)? ) => {
