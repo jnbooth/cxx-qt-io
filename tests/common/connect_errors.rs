@@ -1,11 +1,11 @@
-use cxx_qt_io::{QAbstractSocket, QSslServer, QSslSocket, QTcpServer, QTcpSocket};
 use std::pin::Pin;
 
 pub trait ConnectErrors {
     fn connect_errors(self: Pin<&mut Self>, context: &'static str);
 }
 
-impl ConnectErrors for QTcpServer {
+#[cfg(feature = "qt_network")]
+impl ConnectErrors for cxx_qt_io::QTcpServer {
     fn connect_errors(self: Pin<&mut Self>, context: &'static str) {
         self.on_accept_error(move |_, error| {
             eprintln!("[{context}] QTcpServer::accept_error: {error:?}");
@@ -14,7 +14,8 @@ impl ConnectErrors for QTcpServer {
     }
 }
 
-impl ConnectErrors for QSslServer {
+#[cfg(feature = "ssl")]
+impl ConnectErrors for cxx_qt_io::QSslServer {
     fn connect_errors(mut self: Pin<&mut Self>, context: &'static str) {
         self.as_mut()
             .on_error_occurred(move |_, _, error| {
@@ -46,7 +47,8 @@ impl ConnectErrors for QSslServer {
     }
 }
 
-impl ConnectErrors for QAbstractSocket {
+#[cfg(feature = "qt_network")]
+impl ConnectErrors for cxx_qt_io::QAbstractSocket {
     fn connect_errors(self: Pin<&mut Self>, context: &'static str) {
         self.on_error_occurred(move |_, error| {
             eprintln!("[{context}] QAbstractSocket::error_occurred: {error:?}");
@@ -55,13 +57,15 @@ impl ConnectErrors for QAbstractSocket {
     }
 }
 
-impl ConnectErrors for QTcpSocket {
+#[cfg(feature = "qt_network")]
+impl ConnectErrors for cxx_qt_io::QTcpSocket {
     fn connect_errors(mut self: Pin<&mut Self>, context: &'static str) {
         self.as_abstract_socket_mut().connect_errors(context);
     }
 }
 
-impl ConnectErrors for QSslSocket {
+#[cfg(feature = "ssl")]
+impl ConnectErrors for cxx_qt_io::QSslSocket {
     fn connect_errors(mut self: Pin<&mut Self>, context: &'static str) {
         self.as_mut()
             .on_handshake_interrupted_on_error(move |_, error| {

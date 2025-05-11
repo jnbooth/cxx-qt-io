@@ -90,6 +90,7 @@ pub use qudpsocket::QUdpSocket;
 
 #[cfg(feature = "ssl")]
 mod ssl;
+#[cfg(feature = "ssl")]
 pub use ssl::*;
 
 mod socket_descriptor;

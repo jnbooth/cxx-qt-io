@@ -47,7 +47,14 @@ mod ffi {
         /// Introduced in Qt 6.9.
         #[cfg(cxxqt_qt_version_at_least_6_9)]
         #[rust_name = "set_max_concurrent_streams"]
-        fn setMaxFrameSize(&mut self, size: u32);
+        fn setMaxConcurrentStreams(&mut self, value: u32);
+
+        /// Sets the maximum frame size that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) will advertise to the server when sending its initial SETTINGS frame.
+        ///
+        /// **Note:** While this size is required to be within a range between 16384 and 16777215 inclusive, the actual payload size in frames that carry payload maybe be less than 16384.
+        ///
+        /// Returns `true` on success, `false` otherwise.
+        fn setMaxFrameSize(&mut self, size: u32) -> bool;
 
         /// If `enable` is true, a remote server can potentially use server push to send responses in advance.
         #[rust_name = "set_server_push_enabled"]

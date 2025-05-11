@@ -1,6 +1,7 @@
 use std::pin::Pin;
 
 use crate::util::IsNonNull;
+use cxx::UniquePtr;
 use cxx_qt_lib::{QString, QVariant};
 
 #[cxx::bridge]
@@ -61,6 +62,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
+        #[rust_name = "qauthenticator_init_default"]
+        fn make_unique() -> UniquePtr<QAuthenticator>;
         #[rust_name = "qauthenticator_eq"]
         fn operatorEq(a: &QAuthenticator, b: &QAuthenticator) -> bool;
     }
@@ -83,6 +86,11 @@ impl IsNonNull for QAuthenticator {
 }
 
 impl QAuthenticator {
+    /// Constructs an empty authentication object.
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qauthenticator_init_default()
+    }
+
     /// Sets the outgoing option `opt` to value `value`.
     pub fn set_option<T>(self: Pin<&mut Self>, opt: &QString, value: T)
     where

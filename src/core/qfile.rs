@@ -140,6 +140,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
+        #[rust_name = "qfile_init_default"]
+        fn make_unique() -> UniquePtr<QFile>;
         #[rust_name = "qfile_new"]
         fn make_unique(path: &QString) -> UniquePtr<QFile>;
     }
@@ -151,6 +153,11 @@ impl QFile {
     /// Constructs a new file object to represent the file with the given `name`.
     pub fn new(name: &QString) -> UniquePtr<Self> {
         ffi::qfile_new(name)
+    }
+
+    /// Constructs a `QFile` object.
+    pub fn new_default() -> UniquePtr<Self> {
+        ffi::qfile_init_default()
     }
 
     /// This does the reverse of [`encode_name`](QFile::encode_name) using `local_file_name`.

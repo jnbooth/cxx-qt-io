@@ -105,6 +105,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
+        #[rust_name = "qtemporaryfile_init_default"]
+        fn make_unique() -> UniquePtr<QTemporaryFile>;
         #[rust_name = "qtemporaryfile_new"]
         fn make_unique(path: &QString) -> UniquePtr<QTemporaryFile>;
     }
@@ -113,8 +115,26 @@ mod ffi {
 pub use ffi::QTemporaryFile;
 
 impl QTemporaryFile {
-    pub fn new(path: &QString) -> UniquePtr<Self> {
-        ffi::qtemporaryfile_new(path)
+    /// Constructs a `QTemporaryFile` with `template_name` as the file name template.
+    ///
+    /// Upon opening the temporary file, `template_name` will be used to create a unique filename.
+    ///
+    /// If the file name (the part after the last directory path separator in `template_name`) doesn't contain `"XXXXXX"`, it will be added automatically.
+    ///
+    /// `"XXXXXX"` will be replaced with the dynamic part of the file name, which is calculated to be unique.
+    ///
+    /// If `template_name` is a relative path, the path will be relative to the current working directory. You can use [`QDir::temp_path()`](crate::QDir::temp_path) to construct `template_name` if you want use the system's temporary directory.
+    ///
+    /// It is important to specify the correct directory if the [rename](crate::QFile::rename) function will be called, as `QTemporaryFile` can only rename files within the same volume / filesystem as the temporary file itself was created on.
+    pub fn new(template_name: &QString) -> UniquePtr<Self> {
+        ffi::qtemporaryfile_new(template_name)
+    }
+
+    /// Constructs a `QTemporaryFile`.
+    ///
+    /// The default file name template is determined from the application name as returned by [`QCoreApplication::application_name()`](cxx_qt_lib::QCoreApplication::application_name) (or `"qt_temp"` if the application name is empty), followed by `".XXXXXX"`. The file is stored in the system's temporary directory, as returned by [`QDir::temp_path()`](crate::QDir::temp_path).
+    pub fn new_default() -> UniquePtr<Self> {
+        ffi::qtemporaryfile_init_default()
     }
 
     /// If `file` is not already a native file, then a `QTemporaryFile` is created in [`QDir::temp_path()`](crate::QDir::temp_path), the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.

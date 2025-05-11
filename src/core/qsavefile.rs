@@ -84,6 +84,8 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
+        #[rust_name = "qsavefile_init_default"]
+        fn make_unique() -> UniquePtr<QSaveFile>;
         #[rust_name = "qsavefile_new"]
         fn make_unique(path: &QString) -> UniquePtr<QSaveFile>;
     }
@@ -92,8 +94,14 @@ mod ffi {
 pub use ffi::QSaveFile;
 
 impl QSaveFile {
+    /// Constructs a new file object to represent the file with the given `name`.
     pub fn new(path: &QString) -> UniquePtr<Self> {
         ffi::qsavefile_new(path)
+    }
+
+    /// Constructs a new file object. You need to call [`set_file_name`](QSaveFile::set_file_name) before [`open`](QIODevice::open).
+    pub fn new_default() -> UniquePtr<Self> {
+        ffi::qsavefile_init_default()
     }
 
     /// Casts this object to `QIODevice`.
