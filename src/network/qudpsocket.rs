@@ -1,7 +1,8 @@
 use crate::util::IsNonNull;
 use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use std::ffi::c_char;
 use std::io::{self, Read, Write};
 use std::mem::MaybeUninit;
@@ -353,7 +354,7 @@ impl AsRef<QAbstractSocket> for QUdpSocket {
     }
 }
 
-impl Upcast<QIODevice> for QUdpSocket {
+unsafe impl Upcast<QIODevice> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qudpsocket_qiodevice(this)
     }
@@ -369,7 +370,7 @@ impl AsRef<QIODevice> for QUdpSocket {
     }
 }
 
-impl Upcast<QObject> for QUdpSocket {
+unsafe impl Upcast<QObject> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qudpsocket_qobject(this)
     }

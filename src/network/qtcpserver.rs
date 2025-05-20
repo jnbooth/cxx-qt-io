@@ -1,5 +1,6 @@
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;

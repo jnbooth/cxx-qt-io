@@ -22,6 +22,7 @@ where
     unsafe { &mut *(std::ptr::from_mut(list).cast()) }
 }
 
+#[allow(unused)]
 macro_rules! impl_qhash_pair {
     ($t:ident, $typeId:literal, $k:ty, $v:ty, $r:ty) => {
         pub struct $t;

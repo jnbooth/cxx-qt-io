@@ -2,7 +2,8 @@ use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::QByteArray;
 
 use crate::util::{unpin_for_qt, IsNonNull};

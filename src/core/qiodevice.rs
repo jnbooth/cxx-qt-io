@@ -1,6 +1,9 @@
 use crate::util::MSecs;
-use crate::{QAbstractSocket, QFile, QFileDevice, QLocalSocket};
-use cxx_qt::{Downcast, QObject, Upcast};
+#[cfg(feature = "qt_network")]
+use crate::{QAbstractSocket, QLocalSocket};
+use crate::{QFile, QFileDevice};
+use cxx_qt::casting::{Downcast, Upcast};
+use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};

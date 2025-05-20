@@ -1,7 +1,8 @@
 use crate::util::MSecs;
 use crate::QTcpServer;
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
@@ -228,7 +229,7 @@ impl AsRef<QTcpServer> for QSslServer {
     }
 }
 
-impl Upcast<QObject> for QSslServer {
+unsafe impl Upcast<QObject> for QSslServer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsslserver_qobject(this)
     }

@@ -2,7 +2,7 @@
 name = "cxx-qt-io"
 version = "0.1.0"
 edition = "2021"
-links = "cxx-qt-io"
+links = "cxx-qt-io"   
 
 [dependencies]
 cxx = "1.0.144"
@@ -21,6 +21,7 @@ full = ["ssl"]
 link_qt_object_files = ["cxx-qt-build/link_qt_object_files"]
 
 [lints.clippy]
+all = { level = "warn", priority = -1 }
 pedantic = { level = "warn", priority = -1 }
 inline_always = "allow"
 manual_assert = "allow"

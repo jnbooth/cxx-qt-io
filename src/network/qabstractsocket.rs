@@ -1,6 +1,7 @@
 use crate::util::{IsNonNull, MSecs};
 use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescriptor};
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -559,7 +560,7 @@ impl AsRef<QIODevice> for QAbstractSocket {
     }
 }
 
-impl Upcast<QObject> for QAbstractSocket {
+unsafe impl Upcast<QObject> for QAbstractSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qabstractsocket_qobject(this)
     }

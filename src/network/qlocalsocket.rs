@@ -4,7 +4,8 @@ use crate::{
     SocketDescriptor,
 };
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::{QFlags, QString};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -297,7 +298,7 @@ impl AsRef<QIODevice> for QLocalSocket {
     }
 }
 
-impl Upcast<QObject> for QLocalSocket {
+unsafe impl Upcast<QObject> for QLocalSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qlocalsocket_qobject(this)
     }

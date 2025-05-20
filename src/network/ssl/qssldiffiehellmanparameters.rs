@@ -3,7 +3,7 @@ use std::mem::MaybeUninit;
 use std::pin::Pin;
 
 use cxx::{type_id, ExternType};
-use cxx_qt::Upcast;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QByteArray;
 
 use crate::util::{unpin_for_qt, IsNonNull};

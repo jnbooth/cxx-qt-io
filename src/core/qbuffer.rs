@@ -1,6 +1,7 @@
 use crate::QIODevice;
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::QByteArray;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -139,7 +140,7 @@ impl AsRef<QIODevice> for QBuffer {
     }
 }
 
-impl Upcast<QObject> for QBuffer {
+unsafe impl Upcast<QObject> for QBuffer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qbuffer_qobject(this)
     }

@@ -1,6 +1,7 @@
 use crate::util::IsNonNull;
 use crate::{FileDescriptor, QIODevice};
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -276,7 +277,7 @@ impl AsRef<QIODevice> for QFileDevice {
     }
 }
 
-impl Upcast<QObject> for QFileDevice {
+unsafe impl Upcast<QObject> for QFileDevice {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qfiledevice_qobject(this)
     }

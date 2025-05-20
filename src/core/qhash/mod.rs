@@ -1,4 +1,5 @@
 mod enums;
+#[allow(unused)]
 pub use enums::*;
 
 use cxx::type_id;

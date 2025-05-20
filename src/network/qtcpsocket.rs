@@ -1,6 +1,7 @@
 use crate::{QAbstractSocket, QIODevice};
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -91,7 +92,7 @@ impl AsRef<QAbstractSocket> for QTcpSocket {
     }
 }
 
-impl Upcast<QIODevice> for QTcpSocket {
+unsafe impl Upcast<QIODevice> for QTcpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qtcpsocket_qiodevice(this)
     }
@@ -107,7 +108,7 @@ impl AsRef<QIODevice> for QTcpSocket {
     }
 }
 
-impl Upcast<QObject> for QTcpSocket {
+unsafe impl Upcast<QObject> for QTcpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qtcpsocket_qobject(this)
     }

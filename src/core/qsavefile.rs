@@ -1,6 +1,7 @@
 use crate::{QFileDevice, QIODevice};
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::QString;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -138,7 +139,7 @@ impl AsRef<QFileDevice> for QSaveFile {
     }
 }
 
-impl Upcast<QIODevice> for QSaveFile {
+unsafe impl Upcast<QIODevice> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qsavefile_qiodevice(this)
     }
@@ -154,7 +155,7 @@ impl AsRef<QIODevice> for QSaveFile {
     }
 }
 
-impl Upcast<QObject> for QSaveFile {
+unsafe impl Upcast<QObject> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsavefile_qobject(this)
     }

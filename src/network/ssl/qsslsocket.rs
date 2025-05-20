@@ -6,7 +6,8 @@ use crate::{
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 use crate::{QSslImplementedClass, QSslSupportedFeature};
 use cxx::UniquePtr;
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::{QList, QString};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -712,7 +713,7 @@ impl AsRef<QTcpSocket> for QSslSocket {
     }
 }
 
-impl Upcast<QAbstractSocket> for QSslSocket {
+unsafe impl Upcast<QAbstractSocket> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QAbstractSocket {
         ffi::upcast_qsslsocket_qabstractsocket(this)
     }
@@ -728,7 +729,7 @@ impl AsRef<QAbstractSocket> for QSslSocket {
     }
 }
 
-impl Upcast<QIODevice> for QSslSocket {
+unsafe impl Upcast<QIODevice> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qsslsocket_qiodevice(this)
     }
@@ -744,7 +745,7 @@ impl AsRef<QIODevice> for QSslSocket {
     }
 }
 
-impl Upcast<QObject> for QSslSocket {
+unsafe impl Upcast<QObject> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsslsocket_qobject(this)
     }

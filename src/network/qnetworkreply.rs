@@ -2,7 +2,8 @@ use crate::util::IsNonNull;
 #[cfg(feature = "ssl")]
 use crate::QSslConfiguration;
 use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
-use cxx_qt::{QObject, Upcast};
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QVariant};
@@ -443,7 +444,7 @@ impl AsRef<QIODevice> for QNetworkReply {
     }
 }
 
-impl Upcast<QObject> for QNetworkReply {
+unsafe impl Upcast<QObject> for QNetworkReply {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qnetworkreply_qobject(this)
     }
