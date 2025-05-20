@@ -5,7 +5,7 @@ pub use v6_1::QNetworkCookieSameSite;
 
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QByteArray, QDateTime, QList};
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 #[cxx::bridge]
@@ -165,9 +165,9 @@ impl PartialEq for QNetworkCookie {
 
 impl Eq for QNetworkCookie {}
 
-impl Debug for QNetworkCookie {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qnetworkcookie_to_debug_qstring(self))
+impl fmt::Debug for QNetworkCookie {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qnetworkcookie_to_debug_qstring(self).fmt(f)
     }
 }
 

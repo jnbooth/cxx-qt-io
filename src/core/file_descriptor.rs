@@ -1,5 +1,5 @@
 use crate::util::IsNonNull;
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 
 /// An `int` that references a native file descriptor.
 #[repr(transparent)]
@@ -15,15 +15,15 @@ impl FileDescriptor {
     pub const STDERR: Self = Self(2);
 }
 
-impl Debug for FileDescriptor {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        Debug::fmt(&self.0, f)
+impl fmt::Debug for FileDescriptor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.0.fmt(f)
     }
 }
 
-impl Display for FileDescriptor {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        Display::fmt(&self.0, f)
+impl fmt::Display for FileDescriptor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.0.fmt(f)
     }
 }
 

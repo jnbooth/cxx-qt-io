@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -138,9 +138,9 @@ impl PartialEq for QSslError {
 
 impl Eq for QSslError {}
 
-impl Debug for QSslError {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        Debug::fmt(&self.error(), f)
+impl fmt::Debug for QSslError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.error().fmt(f)
     }
 }
 

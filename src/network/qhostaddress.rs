@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
@@ -260,15 +260,15 @@ impl PartialEq for QHostAddress {
 
 impl Eq for QHostAddress {}
 
-impl Display for QHostAddress {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_qstring())
+impl fmt::Display for QHostAddress {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.to_qstring().fmt(f)
     }
 }
 
-impl Debug for QHostAddress {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qhostaddress_to_debug_qstring(self))
+impl fmt::Debug for QHostAddress {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qhostaddress_to_debug_qstring(self).fmt(f)
     }
 }
 
@@ -321,8 +321,8 @@ impl From<Ipv4Addr> for QHostAddress {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct QHostAddressTryFromError(pub(crate) ());
 
-impl Display for QHostAddressTryFromError {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+impl fmt::Display for QHostAddressTryFromError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("address is neither an IPv4 address nor an IPv4-mapped IPv6 address")
     }
 }

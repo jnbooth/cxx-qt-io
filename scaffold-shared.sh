@@ -36,7 +36,7 @@ assert_shared_pointer_type($CLASS);
 EOF
 
 tee "$SCRIPTPATH/src/$MODULE_LOWER/$CLASS_LOWER.rs" <<EOF
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -110,9 +110,9 @@ impl PartialEq for $CLASS {
 
 impl Eq for $CLASS {}
 
-impl Debug for $CLASS {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::${CLASS_LOWER}_to_debug_qstring(self))
+impl fmt::Debug for $CLASS {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::${CLASS_LOWER}_to_debug_qstring(self).fmt(f)
     }
 }
 

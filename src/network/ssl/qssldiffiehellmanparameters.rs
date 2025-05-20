@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 
@@ -148,13 +148,9 @@ impl PartialEq for QSslDiffieHellmanParameters {
 
 impl Eq for QSslDiffieHellmanParameters {}
 
-impl Debug for QSslDiffieHellmanParameters {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            ffi::qssldiffiehellmanparameters_to_debug_qstring(self)
-        )
+impl fmt::Debug for QSslDiffieHellmanParameters {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qssldiffiehellmanparameters_to_debug_qstring(self).fmt(f)
     }
 }
 

@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 use std::ptr;
@@ -284,15 +284,15 @@ impl PartialEq for QSslCertificate {
 
 impl Eq for QSslCertificate {}
 
-impl Debug for QSslCertificate {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qsslcertificate_to_debug_qstring(self))
+impl fmt::Debug for QSslCertificate {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qsslcertificate_to_debug_qstring(self).fmt(f)
     }
 }
 
-impl Display for QSslCertificate {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_text())
+impl fmt::Display for QSslCertificate {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.to_text().fmt(f)
     }
 }
 

@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -119,9 +119,9 @@ impl PartialEq for QSslCipher {
 
 impl Eq for QSslCipher {}
 
-impl Debug for QSslCipher {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qsslcipher_to_debug_qstring(self))
+impl fmt::Debug for QSslCipher {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qsslcipher_to_debug_qstring(self).fmt(f)
     }
 }
 
@@ -139,8 +139,8 @@ impl QSslCipher {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct QSslCipherError(pub(crate) ());
 
-impl Display for QSslCipherError {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+impl fmt::Display for QSslCipherError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("SSL name does not correctly identify a supported cipher")
     }
 }

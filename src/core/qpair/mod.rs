@@ -1,6 +1,6 @@
 use cxx::{type_id, ExternType};
 use std::cmp::Ordering;
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::hash::{Hash, Hasher};
 
 /// Typedef for `std::pair<T::First, T::Second>`.
@@ -82,13 +82,13 @@ where
     }
 }
 
-impl<T> Debug for QPair<T>
+impl<T> fmt::Debug for QPair<T>
 where
     T: QPairPair,
-    T::First: Debug,
-    T::Second: Debug,
+    T::First: fmt::Debug,
+    T::Second: fmt::Debug,
 {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("QPair")
             .field("first", &self.first)
             .field("second", &self.second)

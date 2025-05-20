@@ -1,7 +1,7 @@
 use cxx::{type_id, ExternType};
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QByteArray;
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 
@@ -132,9 +132,9 @@ impl PartialEq for QSslKey {
 
 impl Eq for QSslKey {}
 
-impl Debug for QSslKey {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qsslkey_to_debug_qstring(self))
+impl fmt::Debug for QSslKey {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qsslkey_to_debug_qstring(self).fmt(f)
     }
 }
 
@@ -240,8 +240,8 @@ unsafe impl ExternType for QSslKey {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DecodeSslKeyError(pub(crate) ());
 
-impl Display for DecodeSslKeyError {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+impl fmt::Display for DecodeSslKeyError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("unable to decode file data to SSL key or certificate")
     }
 }

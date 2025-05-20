@@ -1,5 +1,5 @@
 use cxx_qt_lib::qintptr;
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 
 use crate::util::IsNonNull;
 #[cfg(unix)]
@@ -16,15 +16,15 @@ impl IsNonNull for SocketDescriptor {
     }
 }
 
-impl Debug for SocketDescriptor {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        Debug::fmt(&self.0, f)
+impl fmt::Debug for SocketDescriptor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.0.fmt(f)
     }
 }
 
-impl Display for SocketDescriptor {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        Display::fmt(&self.0, f)
+impl fmt::Display for SocketDescriptor {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.0.fmt(f)
     }
 }
 

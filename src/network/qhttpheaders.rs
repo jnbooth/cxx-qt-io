@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use crate::{QPair, QPairPair_QByteArray_QByteArray};
@@ -403,9 +403,9 @@ impl Drop for QHttpHeaders {
     }
 }
 
-impl Debug for QHttpHeaders {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qhttpheaders_to_debug_qstring(self))
+impl fmt::Debug for QHttpHeaders {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qhttpheaders_to_debug_qstring(self).fmt(f)
     }
 }
 

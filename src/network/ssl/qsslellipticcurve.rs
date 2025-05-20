@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Display, Formatter};
+use std::fmt;
 
 use cxx::{type_id, ExternType};
 
@@ -79,9 +79,9 @@ impl Default for QSslEllipticCurve {
     }
 }
 
-impl Debug for QSslEllipticCurve {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qsslellipticcurve_to_debug_qstring(self))
+impl fmt::Debug for QSslEllipticCurve {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qsslellipticcurve_to_debug_qstring(self).fmt(f)
     }
 }
 
@@ -123,8 +123,8 @@ unsafe impl ExternType for QSslEllipticCurve {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct QSslEllipticCurveError(pub(crate) ());
 
-impl Display for QSslEllipticCurveError {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+impl fmt::Display for QSslEllipticCurveError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("the supplied name is not a supported elliptic curve")
     }
 }

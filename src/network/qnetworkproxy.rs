@@ -1,4 +1,4 @@
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -262,9 +262,9 @@ impl PartialEq for QNetworkProxy {
 
 impl Eq for QNetworkProxy {}
 
-impl Debug for QNetworkProxy {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qnetworkproxy_to_debug_qstring(self))
+impl fmt::Debug for QNetworkProxy {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qnetworkproxy_to_debug_qstring(self).fmt(f)
     }
 }
 

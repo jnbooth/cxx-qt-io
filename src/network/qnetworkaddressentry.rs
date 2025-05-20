@@ -1,5 +1,5 @@
 use cxx::{type_id, ExternType};
-use std::fmt::{self, Debug, Formatter};
+use std::fmt;
 use std::mem::MaybeUninit;
 
 #[cxx::bridge]
@@ -167,9 +167,9 @@ impl PartialEq for QNetworkAddressEntry {
 
 impl Eq for QNetworkAddressEntry {}
 
-impl Debug for QNetworkAddressEntry {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{}", ffi::qnetworkaddressentry_to_debug_qstring(self))
+impl fmt::Debug for QNetworkAddressEntry {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        ffi::qnetworkaddressentry_to_debug_qstring(self).fmt(f)
     }
 }
 
