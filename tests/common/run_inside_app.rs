@@ -1,7 +1,7 @@
 use std::any::Any;
 use std::panic::{self, UnwindSafe};
 
-use cxx_qt_io::QEventLoop;
+use cxx_qt_lib_extras::QEventLoop;
 
 use super::ensure_app_is_running;
 

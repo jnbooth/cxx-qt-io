@@ -601,9 +601,11 @@ impl QIODevice {
         if let Some(file_device) = self.downcast::<QFileDevice>() {
             return file_device.error().into();
         }
+        #[cfg(feature = "qt_network")]
         if let Some(abstract_socket) = self.downcast::<QAbstractSocket>() {
             return abstract_socket.error().into();
         }
+        #[cfg(feature = "qt_network")]
         if let Some(local_socket) = self.downcast::<QLocalSocket>() {
             return local_socket.error().into();
         }
