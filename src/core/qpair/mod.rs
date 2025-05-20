@@ -30,7 +30,7 @@ where
     T::Second: PartialEq,
 {
     fn eq(&self, other: &Self) -> bool {
-        self.first == other.first && self.second == other.second
+        self.first() == other.first() && self.second() == other.second()
     }
 }
 
@@ -49,8 +49,8 @@ where
     T::Second: PartialOrd,
 {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        match self.first.partial_cmp(&other.first) {
-            Some(core::cmp::Ordering::Equal) => self.second.partial_cmp(&other.second),
+        match self.first().partial_cmp(other.first()) {
+            Some(core::cmp::Ordering::Equal) => self.second().partial_cmp(other.second()),
             ord => ord,
         }
     }
@@ -63,8 +63,8 @@ where
     T::Second: Ord,
 {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        match self.first.cmp(&other.first) {
-            Ordering::Equal => self.second.cmp(&other.second),
+        match self.first().cmp(other.first()) {
+            Ordering::Equal => self.second().cmp(other.second()),
             ord => ord,
         }
     }
@@ -77,8 +77,8 @@ where
     T::Second: Hash,
 {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.first.hash(state);
-        self.second.hash(state);
+        self.first().hash(state);
+        self.second().hash(state);
     }
 }
 
@@ -89,9 +89,9 @@ where
     T::Second: fmt::Debug,
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.debug_struct("QPair")
-            .field("first", &self.first)
-            .field("second", &self.second)
+        f.debug_tuple("QPair")
+            .field(self.first())
+            .field(self.second())
             .finish()
     }
 }
@@ -100,21 +100,12 @@ impl<T> QPair<T>
 where
     T: QPairPair,
 {
-    pub fn first(&self) -> &T::First {
+    pub const fn first(&self) -> &T::First {
         &self.first
     }
 
-    pub fn second(&self) -> &T::Second {
+    pub const fn second(&self) -> &T::Second {
         &self.second
-    }
-}
-
-impl<T> From<(T::First, T::Second)> for QPair<T>
-where
-    T: QPairPair,
-{
-    fn from((first, second): (T::First, T::Second)) -> Self {
-        Self { first, second }
     }
 }
 

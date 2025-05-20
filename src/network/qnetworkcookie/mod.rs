@@ -122,9 +122,6 @@ mod ffi {
 
         #[rust_name = "qnetworkcookie_eq"]
         fn operatorEq(a: &QNetworkCookie, b: &QNetworkCookie) -> bool;
-
-        #[rust_name = "qnetworkcookie_to_debug_qstring"]
-        fn toDebugQString(value: &QNetworkCookie) -> QString;
     }
 }
 
@@ -167,7 +164,13 @@ impl Eq for QNetworkCookie {}
 
 impl fmt::Debug for QNetworkCookie {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qnetworkcookie_to_debug_qstring(self).fmt(f)
+        self.to_raw_form(QNetworkCookieRawForm::Full).fmt(f)
+    }
+}
+
+impl fmt::Display for QNetworkCookie {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.to_raw_form(QNetworkCookieRawForm::Full).fmt(f)
     }
 }
 

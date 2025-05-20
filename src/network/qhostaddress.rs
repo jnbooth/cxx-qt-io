@@ -262,7 +262,7 @@ impl Eq for QHostAddress {}
 
 impl fmt::Display for QHostAddress {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        self.to_qstring().fmt(f)
+        IpAddr::from(self).fmt(f)
     }
 }
 
@@ -327,10 +327,10 @@ impl fmt::Display for QHostAddressTryFromError {
     }
 }
 
-impl TryFrom<QHostAddress> for Ipv4Addr {
+impl TryFrom<&QHostAddress> for Ipv4Addr {
     type Error = QHostAddressTryFromError;
 
-    fn try_from(value: QHostAddress) -> Result<Self, Self::Error> {
+    fn try_from(value: &QHostAddress) -> Result<Self, Self::Error> {
         let mut ok = false;
         // SAFETY: ptr::from_mut(&mut ok) is valid.
         let address = unsafe { value.to_ipv4_address(ptr::from_mut(&mut ok)) };
@@ -341,15 +341,29 @@ impl TryFrom<QHostAddress> for Ipv4Addr {
     }
 }
 
+impl TryFrom<QHostAddress> for Ipv4Addr {
+    type Error = QHostAddressTryFromError;
+
+    fn try_from(value: QHostAddress) -> Result<Self, Self::Error> {
+        Self::try_from(&value)
+    }
+}
+
 impl From<Ipv6Addr> for QHostAddress {
     fn from(value: Ipv6Addr) -> Self {
         ffi::qhostaddress_from_qipv6addr(&value.into())
     }
 }
 
+impl From<&QHostAddress> for Ipv6Addr {
+    fn from(value: &QHostAddress) -> Self {
+        ffi::qhostaddress_to_ipv6_address(value).into()
+    }
+}
+
 impl From<QHostAddress> for Ipv6Addr {
     fn from(value: QHostAddress) -> Self {
-        ffi::qhostaddress_to_ipv6_address(&value).into()
+        Self::from(&value)
     }
 }
 
@@ -362,14 +376,20 @@ impl From<IpAddr> for QHostAddress {
     }
 }
 
-impl From<QHostAddress> for IpAddr {
-    fn from(value: QHostAddress) -> Self {
+impl From<&QHostAddress> for IpAddr {
+    fn from(value: &QHostAddress) -> Self {
         if value.protocol() != QAbstractSocketNetworkLayerProtocol::IPv4Protocol {
             return IpAddr::V6(value.into());
         }
         // SAFETY: Null pointer is ignored.
         let address = unsafe { value.to_ipv4_address(ptr::null_mut()) };
         IpAddr::V4(Ipv4Addr::from_bits(address))
+    }
+}
+
+impl From<QHostAddress> for IpAddr {
+    fn from(value: QHostAddress) -> Self {
+        Self::from(&value)
     }
 }
 

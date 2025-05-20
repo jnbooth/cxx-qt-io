@@ -51,9 +51,6 @@ mod ffi {
 
         #[rust_name = "qsslellipticcurve_init_default"]
         fn construct() -> QSslEllipticCurve;
-
-        #[rust_name = "qsslellipticcurve_to_debug_qstring"]
-        fn toDebugQString(value: &QSslEllipticCurve) -> QString;
     }
 }
 
@@ -81,7 +78,13 @@ impl Default for QSslEllipticCurve {
 
 impl fmt::Debug for QSslEllipticCurve {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qsslellipticcurve_to_debug_qstring(self).fmt(f)
+        self.short_name_or_empty().fmt(f)
+    }
+}
+
+impl fmt::Display for QSslEllipticCurve {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.short_name_or_empty().fmt(f)
     }
 }
 
