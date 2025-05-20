@@ -1,8 +1,10 @@
 use cxx::{type_id, ExternType};
+use std::cmp::Ordering;
+use std::fmt::{self, Debug, Formatter};
+use std::hash::{Hash, Hasher};
 
 /// Typedef for `std::pair<T::First, T::Second>`.
 #[repr(C)]
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct QPair<T>
 where
     T: QPairPair,
@@ -21,6 +23,79 @@ where
     }
 }
 
+impl<T> PartialEq for QPair<T>
+where
+    T: QPairPair,
+    T::First: PartialEq,
+    T::Second: PartialEq,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.first == other.first && self.second == other.second
+    }
+}
+
+impl<T> Eq for QPair<T>
+where
+    T: QPairPair,
+    T::First: Eq,
+    T::Second: Eq,
+{
+}
+
+impl<T> PartialOrd for QPair<T>
+where
+    T: QPairPair,
+    T::First: PartialOrd,
+    T::Second: PartialOrd,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        match self.first.partial_cmp(&other.first) {
+            Some(core::cmp::Ordering::Equal) => self.second.partial_cmp(&other.second),
+            ord => ord,
+        }
+    }
+}
+
+impl<T> Ord for QPair<T>
+where
+    T: QPairPair,
+    T::First: Ord,
+    T::Second: Ord,
+{
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        match self.first.cmp(&other.first) {
+            Ordering::Equal => self.second.cmp(&other.second),
+            ord => ord,
+        }
+    }
+}
+
+impl<T> Hash for QPair<T>
+where
+    T: QPairPair,
+    T::First: Hash,
+    T::Second: Hash,
+{
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.first.hash(state);
+        self.second.hash(state);
+    }
+}
+
+impl<T> Debug for QPair<T>
+where
+    T: QPairPair,
+    T::First: Debug,
+    T::Second: Debug,
+{
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.debug_struct("QPair")
+            .field("first", &self.first)
+            .field("second", &self.second)
+            .finish()
+    }
+}
+
 impl<T> QPair<T>
 where
     T: QPairPair,
@@ -31,6 +106,15 @@ where
 
     pub fn second(&self) -> &T::Second {
         &self.second
+    }
+}
+
+impl<T> From<(T::First, T::Second)> for QPair<T>
+where
+    T: QPairPair,
+{
+    fn from((first, second): (T::First, T::Second)) -> Self {
+        Self { first, second }
     }
 }
 
