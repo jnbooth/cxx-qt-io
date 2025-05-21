@@ -281,7 +281,7 @@ impl IsNonNull for QHostAddress {
 impl QHostAddress {
     pub fn parse_subnet(subnet: &QString) -> (QHostAddress, i32) {
         let pair = ffi::qhostaddress_parse_subnet(subnet);
-        (pair.first().clone(), *pair.second())
+        (pair.first, pair.second)
     }
 
     pub fn set_address<T>(&mut self, address: T)

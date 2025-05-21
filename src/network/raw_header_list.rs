@@ -80,7 +80,7 @@ impl RawHeaderList {
     /// Returns the item at `index` position in the list.
     pub fn get(&self, index: isize) -> Option<(&QByteArray, &QByteArray)> {
         let pair = self.inner.get(index)?;
-        Some((pair.first(), pair.second()))
+        Some((&pair.first, &pair.second))
     }
 
     /// Returns the index position of the first occurrence of a pair with name `name` in the list,
@@ -207,7 +207,7 @@ impl<'a> Iterator for Iter<'a> {
         }
         let next = unsafe { QListElement::get_unchecked(self.list, self.index) };
         self.index += 1;
-        Some((next.first(), next.second()))
+        Some((&next.first, &next.second))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
