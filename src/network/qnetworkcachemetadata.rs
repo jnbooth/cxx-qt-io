@@ -125,7 +125,8 @@ mod ffi {
 pub type QNetworkCacheMetaDataAttributesMap =
     QHash<crate::QHashPair_QNetworkRequestAttribute_QVariant>;
 
-pub type QNetworkCacheMetaDataRawHeader = crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
+pub type QNetworkCacheMetaDataRawHeader =
+    crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
 
 pub type QNetworkCacheMetaDataRawHeaderList = cxx_qt_lib::QList<QNetworkCacheMetaDataRawHeader>;
 
