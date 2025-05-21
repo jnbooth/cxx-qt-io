@@ -35,7 +35,7 @@ mod qmap;
 pub use qmap::QMapPair_QByteArray_QVariant;
 
 mod qpair;
-pub use qpair::QPair;
+pub(crate) use qpair::QPair;
 
 mod qsavefile;
 pub use qsavefile::QSaveFile;

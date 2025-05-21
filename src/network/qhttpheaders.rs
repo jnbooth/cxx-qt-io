@@ -301,7 +301,7 @@ mod ffi {
         fn size(&self) -> qsizetype;
 
         #[doc(hidden)]
-        #[rust_name = "to_list_of_pairs_raw"]
+        #[rust_name = "to_list_of_pairs_qlist"]
         fn toListOfPairs(&self) -> QList_QPair_QByteArray_QByteArray;
 
         #[doc(hidden)]
@@ -545,7 +545,9 @@ impl QHttpHeaders {
     }
 
     pub fn to_list_of_pairs(&self) -> RawHeaderList {
-        self.to_list_of_pairs_raw().into()
+        RawHeaderList {
+            inner: self.to_list_of_pairs_qlist(),
+        }
     }
 
     /// Returns the value of the (first) header `name`, or `None` if it doesn't exist.
@@ -598,7 +600,7 @@ impl QHttpHeaders {
 
 impl From<&RawHeaderList> for QHttpHeaders {
     fn from(value: &RawHeaderList) -> Self {
-        ffi::qhttpheaders_from_list_of_pairs(value.as_ref())
+        ffi::qhttpheaders_from_list_of_pairs(&value.inner)
     }
 }
 

@@ -52,13 +52,7 @@ mod ffi {
 /// Qt Documentation: [QNetworkCacheMetaData::RawHeaderList](https://doc.qt.io/qt-6/qnetworkcachemetadata.html#RawHeaderList-typedef)
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct RawHeaderList {
-    inner: QList<QPair<QByteArray, QByteArray>>,
-}
-
-impl AsRef<QList<QPair<QByteArray, QByteArray>>> for RawHeaderList {
-    fn as_ref(&self) -> &QList<QPair<QByteArray, QByteArray>> {
-        &self.inner
-    }
+    pub(crate) inner: QList<QPair<QByteArray, QByteArray>>,
 }
 
 impl RawHeaderList {
@@ -131,18 +125,6 @@ impl RawHeaderList {
             self.inner
                 .reserve(isize::try_from(size).unwrap_or(isize::MAX));
         }
-    }
-}
-
-impl From<RawHeaderList> for QList<QPair<QByteArray, QByteArray>> {
-    fn from(value: RawHeaderList) -> Self {
-        value.inner
-    }
-}
-
-impl From<QList<QPair<QByteArray, QByteArray>>> for RawHeaderList {
-    fn from(value: QList<QPair<QByteArray, QByteArray>>) -> Self {
-        Self { inner: value }
     }
 }
 

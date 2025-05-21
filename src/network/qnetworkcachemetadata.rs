@@ -58,7 +58,7 @@ mod ffi {
         fn lastModified(&self) -> QDateTime;
 
         #[doc(hidden)]
-        #[rust_name = "raw_headers_raw"]
+        #[rust_name = "raw_headers_qlist"]
         fn rawHeaders(&self) -> QList_QPair_QByteArray_QByteArray;
 
         /// Returns if this cache should be allowed to be stored on disk.
@@ -89,7 +89,7 @@ mod ffi {
         fn setLastModified(&mut self, date_time: &QDateTime);
 
         #[doc(hidden)]
-        #[rust_name = "set_raw_headers_raw"]
+        #[rust_name = "set_raw_headers_qlist"]
         fn setRawHeaders(&mut self, list: &QList_QPair_QByteArray_QByteArray);
 
         /// Sets whether this network cache meta data and associated content should be allowed to be stored on disk to `allow`.
@@ -174,12 +174,14 @@ impl IsNonNull for QNetworkCacheMetaData {
 impl QNetworkCacheMetaData {
     /// Returns a list of all raw headers that are set in this meta data. The list is in the same order that the headers were set.
     pub fn raw_headers(&self) -> RawHeaderList {
-        self.raw_headers_raw().into()
+        RawHeaderList {
+            inner: self.raw_headers_qlist(),
+        }
     }
 
     /// Sets the raw headers to `list`.
     pub fn set_raw_headers(&mut self, list: &RawHeaderList) {
-        self.set_raw_headers_raw(list.as_ref());
+        self.set_raw_headers_qlist(&list.inner);
     }
 }
 
