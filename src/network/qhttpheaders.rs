@@ -1,7 +1,7 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use crate::{QPair, QPairPair_QByteArray_QByteArray};
+use crate::QPair;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QAnyStringView, QByteArray, QList};
 
@@ -206,7 +206,7 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qlist_qpair_qbytearray_qbytearray.h");
-        type QPair_QByteArray_QByteArray = crate::QPair<crate::QPairPair_QByteArray_QByteArray>;
+        type QPair_QByteArray_QByteArray = crate::QPair<QByteArray, QByteArray>;
         type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;
 
         include!("cxx-qt-io/qhttpheaders.h");
@@ -584,8 +584,8 @@ impl QHttpHeaders {
     }
 }
 
-impl From<&QList<QPair<QPairPair_QByteArray_QByteArray>>> for QHttpHeaders {
-    fn from(value: &QList<QPair<QPairPair_QByteArray_QByteArray>>) -> Self {
+impl From<&QList<QPair<QByteArray, QByteArray>>> for QHttpHeaders {
+    fn from(value: &QList<QPair<QByteArray, QByteArray>>) -> Self {
         ffi::qhttpheaders_from_list_of_pairs(value)
     }
 }

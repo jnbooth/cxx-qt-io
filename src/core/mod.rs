@@ -35,10 +35,7 @@ mod qmap;
 pub use qmap::QMapPair_QByteArray_QVariant;
 
 mod qpair;
-pub use qpair::{QPair, QPairPair, QPairPair_QByteArray_QByteArray};
-
-#[cfg(feature = "qt_network")]
-pub use qpair::QPairPair_QHostAddress_i32;
+pub use qpair::QPair;
 
 mod qsavefile;
 pub use qsavefile::QSaveFile;

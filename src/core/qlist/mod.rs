@@ -70,7 +70,7 @@ macro_rules! impl_qlist_element {
 }
 
 impl_qlist_element!(
-    crate::QPair<crate::QPairPair_QByteArray_QByteArray>,
+    crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>,
     qlist_qpair_qbytearray_qbytearray,
     "QList_QPair_QByteArray_QByteArray",
 );

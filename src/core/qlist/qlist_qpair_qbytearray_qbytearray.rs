@@ -6,7 +6,8 @@
 pub mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qpair_qbytearray_qbytearray.h");
-        type QPair_QByteArray_QByteArray = crate::QPair<crate::QPairPair_QByteArray_QByteArray>;
+        type QPair_QByteArray_QByteArray =
+            crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
 
         include!("cxx-qt-io/qlist_qpair_qbytearray_qbytearray.h");
         type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;

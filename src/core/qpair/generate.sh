@@ -46,7 +46,7 @@ function generate_bridge() {
 pub mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qpair_$LOWER.h");
-        type $QPAIR = crate::QPair<super::$QPAIRPAIR>;
+        type $QPAIR = crate::QPair<$3, $4>;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -58,9 +58,6 @@ pub mod ffi {
     }
 }
 
-#[allow(non_camel_case_types)]
-pub struct $QPAIRPAIR;
-
 pub(crate) fn drop(pair: &mut ffi::$QPAIR) {
     ffi::qpair_drop_$SUFFIX(pair);
 }
@@ -69,7 +66,7 @@ EOF
 }
 
 generate_qpair_header "QByteArray_QByteArray" "::QByteArray" "::QByteArray" "QtCore/QByteArray" ""
-generate_bridge "QByteArray" "QByteArray"
+generate_bridge "QByteArray" "QByteArray" "cxx_qt_lib::QByteArray" "cxx_qt_lib::QByteArray"
 
 generate_qpair_header "QHostAddress_i32" "::QHostAddress" "::std::int32_t" "QtNetwork/QHostAddress" ""
-generate_bridge "QHostAddress" "i32"
+generate_bridge "QHostAddress" "i32" "crate::QHostAddress" "i32"

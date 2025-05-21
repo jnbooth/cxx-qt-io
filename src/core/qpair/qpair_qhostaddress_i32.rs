@@ -5,7 +5,7 @@
 pub mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qpair_qhostaddress_i32.h");
-        type QPair_QHostAddress_i32 = crate::QPair<super::QPairPair_QHostAddress_i32>;
+        type QPair_QHostAddress_i32 = crate::QPair<crate::QHostAddress, i32>;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -16,9 +16,6 @@ pub mod ffi {
         fn drop(_: &mut QPair_QHostAddress_i32);
     }
 }
-
-#[allow(non_camel_case_types)]
-pub struct QPairPair_QHostAddress_i32;
 
 pub(crate) fn drop(pair: &mut ffi::QPair_QHostAddress_i32) {
     ffi::qpair_drop_QHostAddress_i32(pair);

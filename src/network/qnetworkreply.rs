@@ -113,7 +113,8 @@ mod ffi {
         type QNetworkRequestAttribute = crate::QNetworkRequestAttribute;
         type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
         include!("cxx-qt-io/qpair.h");
-        type QPair_QByteArray_QByteArray = crate::QPair<crate::QPairPair_QByteArray_QByteArray>;
+        type QPair_QByteArray_QByteArray =
+            crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
         include!("cxx-qt-io/qlist.h");
         type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;
     }

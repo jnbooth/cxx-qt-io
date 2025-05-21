@@ -5,7 +5,8 @@
 pub mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qpair_qbytearray_qbytearray.h");
-        type QPair_QByteArray_QByteArray = crate::QPair<super::QPairPair_QByteArray_QByteArray>;
+        type QPair_QByteArray_QByteArray =
+            crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -16,9 +17,6 @@ pub mod ffi {
         fn drop(_: &mut QPair_QByteArray_QByteArray);
     }
 }
-
-#[allow(non_camel_case_types)]
-pub struct QPairPair_QByteArray_QByteArray;
 
 pub(crate) fn drop(pair: &mut ffi::QPair_QByteArray_QByteArray) {
     ffi::qpair_drop_QByteArray_QByteArray(pair);

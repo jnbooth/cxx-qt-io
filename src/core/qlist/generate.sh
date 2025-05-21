@@ -261,7 +261,7 @@ EOF
 
 generate_bridge "QDeadlineTimer"
 
-generate_bridge "QPair_QByteArray_QByteArray" "QPair<crate::QPairPair_QByteArray_QByteArray>"
+generate_bridge "QPair_QByteArray_QByteArray" "QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>"
 
 generate_bridge "QHostAddress"
 generate_bridge "QNetworkAddressEntry"

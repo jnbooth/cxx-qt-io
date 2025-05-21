@@ -1,142 +1,63 @@
 use cxx::{type_id, ExternType};
-use std::cmp::Ordering;
-use std::fmt;
-use std::hash::{Hash, Hasher};
+use std::hash::Hash;
 
-/// Typedef for `std::pair<T::First, T::Second>`.
+/// Typedef for `std::pair<T1, T1>`.
 #[repr(C)]
-pub struct QPair<T>
+#[derive(Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct QPair<T1, T2>
 where
-    T: QPairPair,
+    Self: QPairPair,
 {
-    first: T::First,
-    second: T::Second,
+    first: T1,
+    second: T2,
 }
 
-impl<T> Drop for QPair<T>
+impl<T1, T2> Drop for QPair<T1, T2>
 where
-    T: QPairPair,
+    Self: QPairPair,
 {
     /// Destroys the pair.
     fn drop(&mut self) {
-        T::drop(self);
+        QPairPair::drop(self);
     }
 }
 
-impl<T> PartialEq for QPair<T>
+impl<T1, T2> QPair<T1, T2>
 where
-    T: QPairPair,
-    T::First: PartialEq,
-    T::Second: PartialEq,
+    Self: QPairPair,
 {
-    fn eq(&self, other: &Self) -> bool {
-        self.first() == other.first() && self.second() == other.second()
-    }
-}
-
-impl<T> Eq for QPair<T>
-where
-    T: QPairPair,
-    T::First: Eq,
-    T::Second: Eq,
-{
-}
-
-impl<T> PartialOrd for QPair<T>
-where
-    T: QPairPair,
-    T::First: PartialOrd,
-    T::Second: PartialOrd,
-{
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        match self.first().partial_cmp(other.first()) {
-            Some(core::cmp::Ordering::Equal) => self.second().partial_cmp(other.second()),
-            ord => ord,
-        }
-    }
-}
-
-impl<T> Ord for QPair<T>
-where
-    T: QPairPair,
-    T::First: Ord,
-    T::Second: Ord,
-{
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        match self.first().cmp(other.first()) {
-            Ordering::Equal => self.second().cmp(other.second()),
-            ord => ord,
-        }
-    }
-}
-
-impl<T> Hash for QPair<T>
-where
-    T: QPairPair,
-    T::First: Hash,
-    T::Second: Hash,
-{
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        self.first().hash(state);
-        self.second().hash(state);
-    }
-}
-
-impl<T> fmt::Debug for QPair<T>
-where
-    T: QPairPair,
-    T::First: fmt::Debug,
-    T::Second: fmt::Debug,
-{
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.debug_tuple("QPair")
-            .field(self.first())
-            .field(self.second())
-            .finish()
-    }
-}
-
-impl<T> QPair<T>
-where
-    T: QPairPair,
-{
-    pub const fn first(&self) -> &T::First {
+    pub fn first(&self) -> &T1 {
         &self.first
     }
 
-    pub const fn second(&self) -> &T::Second {
+    pub fn second(&self) -> &T2 {
         &self.second
     }
 }
 
-unsafe impl<T> ExternType for QPair<T>
+unsafe impl<T1, T2> ExternType for QPair<T1, T2>
 where
-    T: QPairPair,
+    Self: QPairPair,
 {
-    type Id = T::TypeId;
+    type Id = <Self as QPairPair>::TypeId;
     type Kind = cxx::kind::Trivial;
 }
 
 /// Trait implementation for a pair in a [`QPair`].
 pub trait QPairPair: Sized {
-    type First;
-    type Second;
     type TypeId;
 
-    fn drop(pair: &mut QPair<Self>);
+    fn drop(pair: &mut Self);
 }
 
 macro_rules! impl_qpair_pair {
     ( $firstTypeName:ty, $secondTypeName:ty, $module:ident, $pairTypeName:ident, $typeId:literal ) => {
         mod $module;
-        pub use $module::$pairTypeName;
 
-        impl QPairPair for $module::$pairTypeName {
-            type First = $firstTypeName;
-            type Second = $secondTypeName;
+        impl QPairPair for QPair<$firstTypeName, $secondTypeName> {
             type TypeId = type_id!($typeId);
 
-            fn drop(pair: &mut QPair<Self>) {
+            fn drop(pair: &mut Self) {
                 $module::drop(pair);
             }
         }

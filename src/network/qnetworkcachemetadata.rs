@@ -19,7 +19,7 @@ mod ffi {
 
         include!("cxx-qt-io/qlist.h");
         type QList_QPair_QByteArray_QByteArray =
-            cxx_qt_lib::QList<crate::QPair<crate::QPairPair_QByteArray_QByteArray>>;
+            cxx_qt_lib::QList<crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>>;
     }
 
     #[cfg(cxxqt_qt_version_at_least_6_8)]
@@ -125,7 +125,7 @@ mod ffi {
 pub type QNetworkCacheMetaDataAttributesMap =
     QHash<crate::QHashPair_QNetworkRequestAttribute_QVariant>;
 
-pub type QNetworkCacheMetaDataRawHeader = crate::QPair<crate::QPairPair_QByteArray_QByteArray>;
+pub type QNetworkCacheMetaDataRawHeader = crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
 
 pub type QNetworkCacheMetaDataRawHeaderList = cxx_qt_lib::QList<QNetworkCacheMetaDataRawHeader>;
 
