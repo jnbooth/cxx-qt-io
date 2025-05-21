@@ -436,7 +436,7 @@ impl QIODevice {
     }
 
     /// Opens the device and sets [`self.open_mode()`](QIODevice::open_mode) to `mode`. Returns `true` if successful; otherwise returns `false`. This function should be called from any reimplementations of it or other functions that open the device.
-    pub fn open(self: Pin<&mut QIODevice>, mut mode: QIODeviceOpenMode) -> bool {
+    pub fn open(self: Pin<&mut Self>, mut mode: QIODeviceOpenMode) -> bool {
         if mode.test_flag(QIODeviceOpenModeFlag::NewOnly) && (*self).downcast::<QFile>().is_none() {
             mode.set_flag(QIODeviceOpenModeFlag::NewOnly, false);
         }
@@ -466,7 +466,7 @@ impl QIODevice {
     }
 
     /// Writes the byte `c` to the device. Returns `true` on success; otherwise returns `false`.
-    pub fn put_byte(self: Pin<&mut QIODevice>, c: u8) -> bool {
+    pub fn put_byte(self: Pin<&mut Self>, c: u8) -> bool {
         self.put_char(c as c_char)
     }
 
@@ -504,7 +504,7 @@ impl QIODevice {
     /// The newline character (`'\n'`) is included in the buffer. If a newline is not encountered before `data.len() - 1` bytes are read, a newline will not be inserted into the buffer. On windows newline characters are replaced with `'\n'`.
     ///
     /// Note that on sequential devices, data may not be immediately available, which may result in a partial line being returned. By calling [`can_read_line`](QIODevice::can_read_line) before reading, you can check whether a complete line (including the newline character) can be read.
-    pub fn read_line(mut self: Pin<&mut QIODevice>, data: &mut [u8]) -> io::Result<usize> {
+    pub fn read_line(mut self: Pin<&mut Self>, data: &mut [u8]) -> io::Result<usize> {
         if data.len() < 2 {
             return Ok(0);
         }
@@ -554,7 +554,7 @@ impl QIODevice {
     /// This function can operate without an event loop. It is useful when writing non-GUI applications and when performing I/O operations in a non-GUI thread.
     ///
     /// If called from within a slot connected to the [`bytes_written`](QIODevice::bytes_written) signal, [`bytes_written`](QIODevice::bytes_written) will not be reemitted.
-    pub fn wait_for_bytes_written(self: Pin<&mut QIODevice>, duration: Option<Duration>) -> bool {
+    pub fn wait_for_bytes_written(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         self.wait_for_bytes_written_msecs(duration.msecs())
     }
 
@@ -565,7 +565,7 @@ impl QIODevice {
     /// This function can operate without an event loop. It is useful when writing non-GUI applications and when performing I/O operations in a non-GUI thread.
     ///
     /// If called from within a slot connected to the [`ready_read`](QIODevice::ready_read) signal, [`ready_read`](QIODevice::ready_read) will not be reemitted.
-    pub fn wait_for_ready_read(self: Pin<&mut QIODevice>, duration: Option<Duration>) -> bool {
+    pub fn wait_for_ready_read(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         self.wait_for_ready_read_msecs(duration.msecs())
     }
 

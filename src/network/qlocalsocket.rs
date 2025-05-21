@@ -236,7 +236,7 @@ impl QLocalSocket {
     }
 
     /// Returns the name of the peer as specified by [`set_server_name`](QLocalSocket::set_server_name), or `None` if [`set_server_name`](QLocalSocket::set_server_name) has not been called or [`connect_to_server`](QLocalSocket::connect_to_server) failed.
-    pub fn server_name(self: &QLocalSocket) -> Option<QString> {
+    pub fn server_name(&self) -> Option<QString> {
         self.server_name_or_empty().nonnull()
     }
 

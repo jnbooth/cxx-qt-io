@@ -486,7 +486,7 @@ impl QSslSocket {
     ///
     /// If the SSL handshake is successful, `QSslSocket` emits [`encrypted`](QSslSocket::encrypted).
     pub fn connect_to_host_encrypted(
-        self: Pin<&mut QSslSocket>,
+        self: Pin<&mut Self>,
         host_name: &QString,
         port: u16,
         mode: QIODeviceOpenMode,
@@ -536,7 +536,7 @@ impl QSslSocket {
     /// Waits until the socket has completed the SSL handshake and has emitted [`encrypted`](QSslSocket::encrypted), or `duration`, whichever comes first. If [`encrypted`](QSslSocket::encrypted) has been emitted, this function returns `true`; otherwise (e.g., the socket is disconnected, or the SSL handshake fails), `false` is returned.
     ///
     /// If `duration` is `None`, this function will not time out.
-    pub fn wait_for_encrypted(self: Pin<&mut QSslSocket>, duration: Option<Duration>) -> bool {
+    pub fn wait_for_encrypted(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         self.wait_for_encrypted_msecs(duration.msecs())
     }
 

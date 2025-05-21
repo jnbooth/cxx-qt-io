@@ -198,7 +198,7 @@ impl QTcpServer {
     /// The non-blocking alternative is to connect to the [`new_connection`](QTcpServer::new_connection) signal.
     ///
     /// If `duration` is `None`, this function will not time out.
-    pub fn wait_for_new_connection(self: Pin<&mut QTcpServer>, duration: Option<Duration>) -> bool {
+    pub fn wait_for_new_connection(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         // SAFETY: Qt ignores the null pointer.
         unsafe { self.wait_for_new_connection_msec(duration.msecs(), std::ptr::null_mut()) }
     }

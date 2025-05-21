@@ -492,7 +492,7 @@ impl QAbstractSocket {
 
     /// Sets the given `option` to the value described by `value`.
     pub fn set_socket_option<T>(
-        self: Pin<&mut QAbstractSocket>,
+        self: Pin<&mut Self>,
         option: QAbstractSocketSocketOption,
         variant: T,
     ) where
@@ -519,7 +519,7 @@ impl QAbstractSocket {
     /// **Note:** Multiple calls to this functions do not accumulate the time. If the function times out, the connecting process will be aborted.
     ///
     /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the [`connected`](QAbstractSocket::connected) signal if your software will run on Windows.
-    pub fn wait_for_connected(self: Pin<&mut QAbstractSocket>, duration: Option<Duration>) -> bool {
+    pub fn wait_for_connected(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         self.wait_for_connected_msecs(duration.msecs())
     }
 
@@ -528,10 +528,7 @@ impl QAbstractSocket {
     /// If `duration` is `None`, this function will not time out.
     ///
     /// **Note:** This function may fail randomly on Windows. Consider using the event loop and the [`disconnected`](QAbstractSocket::disconnected) signal if your software will run on Windows.
-    pub fn wait_for_disconnected(
-        self: Pin<&mut QAbstractSocket>,
-        duration: Option<Duration>,
-    ) -> bool {
+    pub fn wait_for_disconnected(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         self.wait_for_disconnected_msecs(duration.msecs())
     }
 

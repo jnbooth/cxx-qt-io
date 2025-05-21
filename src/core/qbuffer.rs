@@ -16,11 +16,10 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qbuffer.h");
+        type QIODevice = crate::QIODevice;
     }
 
     unsafe extern "C++Qt" {
-        type QIODevice = crate::QIODevice;
-
         /// The `QBuffer` class provides a [`QIODevice`](crate::QIODevice) interface for a [`QByteArray`](cxx_qt_lib::QByteArray).
         ///
         /// Qt Documentation: [QBuffer](https://doc.qt.io/qt-6/qbuffer.html#details)
