@@ -4,7 +4,7 @@ use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
 
 use crate::util::IsNonNull;
-use crate::{QAbstractSocketNetworkLayerProtocol, QPair};
+use crate::QAbstractSocketNetworkLayerProtocol;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QFlags, QString};
 
@@ -279,8 +279,9 @@ impl IsNonNull for QHostAddress {
 }
 
 impl QHostAddress {
-    pub fn parse_subnet(subnet: &QString) -> QPair<QHostAddress, i32> {
-        ffi::qhostaddress_parse_subnet(subnet)
+    pub fn parse_subnet(subnet: &QString) -> (QHostAddress, i32) {
+        let pair = ffi::qhostaddress_parse_subnet(subnet);
+        (pair.first().clone(), *pair.second())
     }
 
     pub fn set_address<T>(&mut self, address: T)

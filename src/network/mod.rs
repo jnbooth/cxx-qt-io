@@ -1,3 +1,6 @@
+mod raw_header_list;
+pub use raw_header_list::RawHeaderList;
+
 mod qabstractsocket;
 pub use qabstractsocket::{
     QAbstractSocket, QAbstractSocketBindFlag, QAbstractSocketBindMode,

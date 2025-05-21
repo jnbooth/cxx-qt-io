@@ -1,7 +1,7 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use crate::QPair;
+use crate::RawHeaderList;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QAnyStringView, QByteArray, QList};
 
@@ -300,7 +300,8 @@ mod ffi {
         #[rust_name = "size_qsizetype"]
         fn size(&self) -> qsizetype;
 
-        #[rust_name = "to_list_of_pairs"]
+        #[doc(hidden)]
+        #[rust_name = "to_list_of_pairs_raw"]
         fn toListOfPairs(&self) -> QList_QPair_QByteArray_QByteArray;
 
         #[doc(hidden)]
@@ -531,9 +532,20 @@ impl QHttpHeaders {
         self.reserve_qsizetype(size.into());
     }
 
+    /// Helper function for handling Rust values.
+    fn reserve_usize(&mut self, size: usize) {
+        if size != 0 {
+            self.reserve(isize::try_from(size).unwrap_or(isize::MAX));
+        }
+    }
+
     /// Returns the number of header entries.
     pub fn len(&self) -> isize {
         self.size_qsizetype().into()
+    }
+
+    pub fn to_list_of_pairs(&self) -> RawHeaderList {
+        self.to_list_of_pairs_raw().into()
     }
 
     /// Returns the value of the (first) header `name`, or `None` if it doesn't exist.
@@ -584,9 +596,61 @@ impl QHttpHeaders {
     }
 }
 
-impl From<&QList<QPair<QByteArray, QByteArray>>> for QHttpHeaders {
-    fn from(value: &QList<QPair<QByteArray, QByteArray>>) -> Self {
-        ffi::qhttpheaders_from_list_of_pairs(value)
+impl From<&RawHeaderList> for QHttpHeaders {
+    fn from(value: &RawHeaderList) -> Self {
+        ffi::qhttpheaders_from_list_of_pairs(value.as_ref())
+    }
+}
+
+impl<'a, K, V> Extend<&'a (K, V)> for QHttpHeaders
+where
+    K: Into<QAnyStringView<'a>> + Copy,
+    V: Into<QAnyStringView<'a>> + Copy,
+{
+    fn extend<I: IntoIterator<Item = &'a (K, V)>>(&mut self, iter: I) {
+        let iter = iter.into_iter();
+        self.reserve_usize(iter.size_hint().0);
+        for (name, value) in iter {
+            self.append(*name, *value);
+        }
+    }
+}
+
+impl<'a, K, V> Extend<(K, V)> for QHttpHeaders
+where
+    K: Into<QAnyStringView<'a>>,
+    V: Into<QAnyStringView<'a>>,
+{
+    fn extend<I: IntoIterator<Item = (K, V)>>(&mut self, iter: I) {
+        let iter = iter.into_iter();
+        self.reserve_usize(iter.size_hint().0);
+        for (name, value) in iter {
+            self.append(name, value);
+        }
+    }
+}
+
+impl<'a, K, V> FromIterator<&'a (K, V)> for QHttpHeaders
+where
+    K: Into<QAnyStringView<'a>> + Copy,
+    V: Into<QAnyStringView<'a>> + Copy,
+{
+    fn from_iter<I: IntoIterator<Item = &'a (K, V)>>(iter: I) -> Self {
+        let mut headers = Self::default();
+        headers.extend(iter);
+        headers
+    }
+}
+
+impl<'a, K, V> FromIterator<(K, V)> for QHttpHeaders
+where
+    K: Into<QAnyStringView<'a>>,
+    V: Into<QAnyStringView<'a>>,
+{
+    fn from_iter<I: IntoIterator<Item = (K, V)>>(iter: I) -> Self {
+        let mut headers = Self::default();
+        headers.extend(iter);
+        headers
     }
 }
 

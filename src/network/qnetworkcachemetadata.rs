@@ -4,6 +4,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt_lib::QHash;
 
 use crate::util::IsNonNull;
+use crate::RawHeaderList;
 
 #[cxx::bridge]
 mod ffi {
@@ -56,8 +57,8 @@ mod ffi {
         #[rust_name = "last_modified"]
         fn lastModified(&self) -> QDateTime;
 
-        /// Returns a list of all raw headers that are set in this meta data. The list is in the same order that the headers were set.
-        #[rust_name = "raw_headers"]
+        #[doc(hidden)]
+        #[rust_name = "raw_headers_raw"]
         fn rawHeaders(&self) -> QList_QPair_QByteArray_QByteArray;
 
         /// Returns if this cache should be allowed to be stored on disk.
@@ -87,8 +88,8 @@ mod ffi {
         #[rust_name = "set_last_modified"]
         fn setLastModified(&mut self, date_time: &QDateTime);
 
-        /// Sets the raw headers to `list`.
-        #[rust_name = "set_raw_headers"]
+        #[doc(hidden)]
+        #[rust_name = "set_raw_headers_raw"]
         fn setRawHeaders(&mut self, list: &QList_QPair_QByteArray_QByteArray);
 
         /// Sets whether this network cache meta data and associated content should be allowed to be stored on disk to `allow`.
@@ -170,7 +171,17 @@ impl IsNonNull for QNetworkCacheMetaData {
     }
 }
 
-impl QNetworkCacheMetaData {}
+impl QNetworkCacheMetaData {
+    /// Returns a list of all raw headers that are set in this meta data. The list is in the same order that the headers were set.
+    pub fn raw_headers(&self) -> RawHeaderList {
+        self.raw_headers_raw().into()
+    }
+
+    /// Sets the raw headers to `list`.
+    pub fn set_raw_headers(&mut self, list: &RawHeaderList) {
+        self.set_raw_headers_raw(list.as_ref());
+    }
+}
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QNetworkCacheMetaData {
