@@ -200,14 +200,14 @@ mod ffi {
         fn stateChanged(self: Pin<&mut QLocalSocket>, socket_state: QLocalSocketLocalSocketState);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qlocalsocket_qobject"]
-        unsafe fn upcast(socket: *const QLocalSocket) -> *const QObject;
+        unsafe fn upcastPtr(socket: *const QLocalSocket) -> *const QObject;
         #[rust_name = "downcast_qobject_qlocalsocket"]
-        unsafe fn downcast(socket: *const QObject) -> *const QLocalSocket;
+        unsafe fn downcastPtr(socket: *const QObject) -> *const QLocalSocket;
     }
 
     #[namespace = "rust::cxxqtlib1"]

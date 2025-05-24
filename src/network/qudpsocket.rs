@@ -125,19 +125,19 @@ mod ffi {
 
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qudpsocket_qobject"]
-        unsafe fn upcast(socket: *const QUdpSocket) -> *const QObject;
+        unsafe fn upcastPtr(socket: *const QUdpSocket) -> *const QObject;
         #[rust_name = "downcast_qobject_qudpsocket"]
-        unsafe fn downcast(socket: *const QObject) -> *const QUdpSocket;
+        unsafe fn downcastPtr(socket: *const QObject) -> *const QUdpSocket;
 
         #[rust_name = "upcast_qudpsocket_qiodevice"]
-        unsafe fn upcast(socket: *const QUdpSocket) -> *const QIODevice;
+        unsafe fn upcastPtr(socket: *const QUdpSocket) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qudpsocket"]
-        unsafe fn downcast(socket: *const QIODevice) -> *const QUdpSocket;
+        unsafe fn downcastPtr(socket: *const QIODevice) -> *const QUdpSocket;
     }
 
     #[namespace = "rust::cxxqtlib1"]

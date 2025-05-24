@@ -421,14 +421,14 @@ mod ffi {
         fn stateChanged(self: Pin<&mut QAbstractSocket>, socket_state: QAbstractSocketSocketState);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qabstractsocket_qobject"]
-        unsafe fn upcast(socket: *const QAbstractSocket) -> *const QObject;
+        unsafe fn upcastPtr(socket: *const QAbstractSocket) -> *const QObject;
         #[rust_name = "downcast_qobject_qabstractsocket"]
-        unsafe fn downcast(socket: *const QObject) -> *const QAbstractSocket;
+        unsafe fn downcastPtr(socket: *const QObject) -> *const QAbstractSocket;
     }
 }
 

@@ -66,19 +66,19 @@ mod ffi {
         fn setFileName(self: Pin<&mut QSaveFile>, name: &QString);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qsavefile_qobject"]
-        unsafe fn upcast(file: *const QSaveFile) -> *const QObject;
+        unsafe fn upcastPtr(file: *const QSaveFile) -> *const QObject;
         #[rust_name = "downcast_qobject_qsavefile"]
-        unsafe fn downcast(file: *const QObject) -> *const QSaveFile;
+        unsafe fn downcastPtr(file: *const QObject) -> *const QSaveFile;
 
         #[rust_name = "upcast_qsavefile_qiodevice"]
-        unsafe fn upcast(file: *const QSaveFile) -> *const QIODevice;
+        unsafe fn upcastPtr(file: *const QSaveFile) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qsavefile"]
-        unsafe fn downcast(file: *const QIODevice) -> *const QSaveFile;
+        unsafe fn downcastPtr(file: *const QIODevice) -> *const QSaveFile;
     }
 
     #[namespace = "rust::cxxqtlib1"]

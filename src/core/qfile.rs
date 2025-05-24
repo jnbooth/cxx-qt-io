@@ -122,19 +122,19 @@ mod ffi {
         fn qfileSupportsMoveToTrash() -> bool;
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qfile_qobject"]
-        unsafe fn upcast(file: *const QFile) -> *const QObject;
+        unsafe fn upcastPtr(file: *const QFile) -> *const QObject;
         #[rust_name = "downcast_qobject_qfile"]
-        unsafe fn downcast(file: *const QObject) -> *const QFile;
+        unsafe fn downcastPtr(file: *const QObject) -> *const QFile;
 
         #[rust_name = "upcast_qfile_qiodevice"]
-        unsafe fn upcast(file: *const QFile) -> *const QIODevice;
+        unsafe fn upcastPtr(file: *const QFile) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qfile"]
-        unsafe fn downcast(file: *const QIODevice) -> *const QFile;
+        unsafe fn downcastPtr(file: *const QIODevice) -> *const QFile;
     }
 
     #[namespace = "rust::cxxqtlib1"]

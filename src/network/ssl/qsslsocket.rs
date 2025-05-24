@@ -446,24 +446,24 @@ mod ffi {
         fn qsslsocketIsProtocolSupported(support: QSslSslProtocol, backend: &QString) -> bool;
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qsslsocket_qobject"]
-        unsafe fn upcast(socket: *const QSslSocket) -> *const QObject;
+        unsafe fn upcastPtr(socket: *const QSslSocket) -> *const QObject;
         #[rust_name = "downcast_qobject_qsslsocket"]
-        unsafe fn downcast(socket: *const QObject) -> *const QSslSocket;
+        unsafe fn downcastPtr(socket: *const QObject) -> *const QSslSocket;
 
         #[rust_name = "upcast_qsslsocket_qiodevice"]
-        unsafe fn upcast(socket: *const QSslSocket) -> *const QIODevice;
+        unsafe fn upcastPtr(socket: *const QSslSocket) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qsslsocket"]
-        unsafe fn downcast(socket: *const QIODevice) -> *const QSslSocket;
+        unsafe fn downcastPtr(socket: *const QIODevice) -> *const QSslSocket;
 
         #[rust_name = "upcast_qsslsocket_qabstractsocket"]
-        unsafe fn upcast(socket: *const QSslSocket) -> *const QAbstractSocket;
+        unsafe fn upcastPtr(socket: *const QSslSocket) -> *const QAbstractSocket;
         #[rust_name = "downcast_qabstractsocket_qsslsocket"]
-        unsafe fn downcast(socket: *const QAbstractSocket) -> *const QSslSocket;
+        unsafe fn downcastPtr(socket: *const QAbstractSocket) -> *const QSslSocket;
     }
 
     #[namespace = "rust::cxxqtlib1"]

@@ -209,14 +209,14 @@ mod ffi {
         fn unsetError(self: Pin<&mut QFileDevice>);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qfiledevice_qobject"]
-        unsafe fn upcast(device: *const QFileDevice) -> *const QObject;
+        unsafe fn upcastPtr(device: *const QFileDevice) -> *const QObject;
         #[rust_name = "downcast_qobject_qfiledevice"]
-        unsafe fn downcast(device: *const QObject) -> *const QFileDevice;
+        unsafe fn downcastPtr(device: *const QObject) -> *const QFileDevice;
     }
 }
 

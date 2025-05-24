@@ -164,14 +164,14 @@ mod ffi {
         unsafe fn startedEncryptionHandshake(self: Pin<&mut QSslServer>, socket: *mut QSslSocket);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qsslserver_qobject"]
-        unsafe fn upcast(server: *const QSslServer) -> *const QObject;
+        unsafe fn upcastPtr(server: *const QSslServer) -> *const QObject;
         #[rust_name = "downcast_qobject_qsslserver"]
-        unsafe fn downcast(server: *const QObject) -> *const QSslServer;
+        unsafe fn downcastPtr(server: *const QObject) -> *const QSslServer;
     }
 
     #[namespace = "rust::cxxqtlib1"]

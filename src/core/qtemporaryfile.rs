@@ -82,24 +82,24 @@ mod ffi {
         fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qtemporaryfile_qobject"]
-        unsafe fn upcast(file: *const QTemporaryFile) -> *const QObject;
+        unsafe fn upcastPtr(file: *const QTemporaryFile) -> *const QObject;
         #[rust_name = "downcast_qobject_qtemporaryfile"]
-        unsafe fn downcast(file: *const QObject) -> *const QTemporaryFile;
+        unsafe fn downcastPtr(file: *const QObject) -> *const QTemporaryFile;
 
         #[rust_name = "upcast_qtemporaryfile_qiodevice"]
-        unsafe fn upcast(file: *const QTemporaryFile) -> *const QIODevice;
+        unsafe fn upcastPtr(file: *const QTemporaryFile) -> *const QIODevice;
         #[rust_name = "downcast_qiodevice_qtemporaryfile"]
-        unsafe fn downcast(file: *const QIODevice) -> *const QTemporaryFile;
+        unsafe fn downcastPtr(file: *const QIODevice) -> *const QTemporaryFile;
 
         #[rust_name = "upcast_qtemporaryfile_qfiledevice"]
-        unsafe fn upcast(file: *const QTemporaryFile) -> *const QFileDevice;
+        unsafe fn upcastPtr(file: *const QTemporaryFile) -> *const QFileDevice;
         #[rust_name = "downcast_qfiledevice_qtemporaryfile"]
-        unsafe fn downcast(file: *const QFileDevice) -> *const QTemporaryFile;
+        unsafe fn downcastPtr(file: *const QFileDevice) -> *const QTemporaryFile;
     }
 
     #[namespace = "rust::cxxqtlib1"]

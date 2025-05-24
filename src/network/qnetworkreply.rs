@@ -364,14 +364,14 @@ mod ffi {
         fn uploadProgress(self: Pin<&mut QNetworkReply>, bytes_sent: i64, bytes_total: i64);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qnetworkreply_qobject"]
-        unsafe fn upcast(reply: *const QNetworkReply) -> *const QObject;
+        unsafe fn upcastPtr(reply: *const QNetworkReply) -> *const QObject;
         #[rust_name = "downcast_qobject_qnetworkreply"]
-        unsafe fn downcast(reply: *const QObject) -> *const QNetworkReply;
+        unsafe fn downcastPtr(reply: *const QObject) -> *const QNetworkReply;
     }
 }
 

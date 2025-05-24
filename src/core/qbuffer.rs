@@ -60,14 +60,14 @@ mod ffi {
         fn qbufferSetData(buffer: Pin<&mut QBuffer>, data: &[u8]);
     }
 
-    #[namespace = "rust::cxxqtio1"]
+    #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
-        include!("cxx-qt-io/common.h");
+        include!("cxx-qt/casting.h");
 
         #[rust_name = "upcast_qbuffer_qobject"]
-        unsafe fn upcast(buffer: *const QBuffer) -> *const QObject;
+        unsafe fn upcastPtr(buffer: *const QBuffer) -> *const QObject;
         #[rust_name = "downcast_qobject_qbuffer"]
-        unsafe fn downcast(buffer: *const QObject) -> *const QBuffer;
+        unsafe fn downcastPtr(buffer: *const QObject) -> *const QBuffer;
     }
 
     #[namespace = "rust::cxxqtlib1"]
