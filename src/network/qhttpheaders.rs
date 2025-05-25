@@ -330,6 +330,9 @@ mod ffi {
 
         #[rust_name = "qhttpheaders_value_at"]
         fn qhttpheadersValueAt(headers: &QHttpHeaders, i: isize) -> &[u8];
+
+        #[rust_name = "qhttpheaders_eq"]
+        fn qhttpheadersEq(a: &QHttpHeaders, b: &QHttpHeaders) -> bool;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -403,6 +406,14 @@ impl Drop for QHttpHeaders {
         ffi::qhttpheaders_drop(self);
     }
 }
+
+impl PartialEq for QHttpHeaders {
+    fn eq(&self, other: &Self) -> bool {
+        ffi::qhttpheaders_eq(self, other)
+    }
+}
+
+impl Eq for QHttpHeaders {}
 
 impl fmt::Debug for QHttpHeaders {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

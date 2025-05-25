@@ -37,6 +37,24 @@ qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i)
 {
   return qbytearrayviewAsSlice(headers.valueAt(static_cast<qsizetype>(i)));
 }
+
+bool
+qhttpheadersEq(const QHttpHeaders& a, const QHttpHeaders& b)
+{
+  const qsizetype size = a.size();
+  if (b.size() != size) {
+    return false;
+  }
+
+  for (qsizetype i = 0; i < size; ++i) {
+    if (a.nameAt(i) != b.nameAt(i) || a.valueAt(i) != b.valueAt(i)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 }
 
 }

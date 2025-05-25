@@ -30,6 +30,10 @@ qhttpheadersValue(const QHttpHeaders& headers,
 
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i);
+
+bool
+qhttpheadersEq(const QHttpHeaders& a, const QHttpHeaders& b);
+
 }
 
 }
