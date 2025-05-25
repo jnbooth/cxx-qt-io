@@ -8,6 +8,8 @@ use cxx_qt_lib::{QByteArray, QDateTime, QList};
 use std::fmt;
 use std::mem::MaybeUninit;
 
+use crate::util::IsNonNull;
+
 #[cxx::bridge]
 mod ffi {
     /// This enum is used with [`QNetworkCookie::to_raw_form`] to declare which form of a cookie shall be returned.
@@ -28,6 +30,9 @@ mod ffi {
         type QDateTime = cxx_qt_lib::QDateTime;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qurl.h");
+        type QUrl = cxx_qt_lib::QUrl;
+
         include!("cxx-qt-io/qlist.h");
         type QList_QNetworkCookie = cxx_qt_lib::QList<QNetworkCookie>;
     }
@@ -41,6 +46,41 @@ mod ffi {
 
     unsafe extern "C++" {
         type QNetworkCookie = super::QNetworkCookie;
+
+        /// Returns the domain this cookie is associated with. This corresponds to the "domain" field of the cookie string.
+        ///
+        /// Note that the domain here may start with a dot, which is not a valid hostname. However, it means this cookie matches all hostnames ending with that domain name.
+        fn domain(&self) -> QString;
+
+        #[doc(hidden)]
+        #[rust_name = "expiration_date_or_null"]
+        fn expirationDate(&self) -> QDateTime;
+
+        /// Returns `true` if this cookie has the same identifier tuple as `other`. The identifier tuple is composed of the name, domain and path.
+        #[rust_name = "has_same_identifier"]
+        fn hasSameIdentifier(&self, other: &QNetworkCookie) -> bool;
+
+        /// Returns `true` if the "HttpOnly" flag is enabled for this cookie.
+        ///
+        /// A cookie that is "HttpOnly" is only set and retrieved by the network requests and replies; i.e., the HTTP protocol. It is not accessible from scripts running on browsers.
+        #[rust_name = "is_http_only"]
+        fn isHttpOnly(&self) -> bool;
+
+        /// Returns `true` if the "secure" option was specified in the cookie string, `false` otherwise.
+        ///
+        /// Secure cookies may contain private information and should not be resent over unencrypted connections.
+        #[rust_name = "is_secure"]
+        fn isSecure(&self) -> bool;
+
+        /// Returns `true` if this cookie is a session cookie. A session cookie is a cookie which has no expiration date, which means it should be discarded when the application's concept of session is over (usually, when the application exits).
+        #[rust_name = "is_session_cookie"]
+        fn isSessionCookie(&self) -> bool;
+
+        /// Returns the name of this cookie. The only mandatory field of a cookie is its name, without which it is not considered valid.
+        fn name(&self) -> QByteArray;
+
+        /// This functions normalizes the path and domain of the cookie if they were previously empty. The `url` parameter is used to determine the correct domain and path.
+        fn normalize(&mut self, url: &QUrl);
 
         /// Returns the path associated with this cookie. This corresponds to the "path" field of the cookie string.
         fn path(&self) -> QString;
@@ -175,6 +215,13 @@ impl fmt::Display for QNetworkCookie {
 }
 
 impl QNetworkCookie {
+    /// Returns the expiration date for this cookie. Returns `None` if this cookie is a session cookie. If the date is in the past, this cookie has already expired and should not be sent again back to a remote server.
+    ///
+    /// The expiration date corresponds to the parameters of the "expires" entry in the cookie string.
+    pub fn expiration_date(&self) -> Option<QDateTime> {
+        self.expiration_date_or_null().nonnull()
+    }
+
     /// Parses the cookie string `cookie_string` as received from a server response in the `Set-Cookie` header. If there's a parsing error, this function returns an empty list.
     ///
     /// Since the HTTP header can set more than one cookie at the same time, this function returns a `QList<QNetworkCookie>`, one for each cookie that is parsed.
