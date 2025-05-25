@@ -37,7 +37,7 @@ impl ConnectErrors for cxx_qt_io::QSslServer {
 
         self.as_mut()
             .on_ssl_errors(move |_, _, errors| {
-                for error in errors.iter() {
+                for error in errors {
                     eprintln!("[{context}] QSslServer::ssl_errors: {error:?}");
                 }
             })
@@ -81,7 +81,7 @@ impl ConnectErrors for cxx_qt_io::QSslSocket {
 
         self.as_mut()
             .on_ssl_errors(move |_, errors| {
-                for error in errors.iter() {
+                for error in errors {
                     eprintln!("[{context}] QSslSocket::ssl_errors: {error:?}");
                 }
             })

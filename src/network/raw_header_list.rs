@@ -1,7 +1,7 @@
 use std::borrow::Borrow;
 use std::iter::FusedIterator;
 
-use cxx_qt_lib::{QByteArray, QList, QListElement};
+use cxx_qt_lib::{QByteArray, QList};
 
 use crate::QPair;
 
@@ -97,9 +97,7 @@ impl RawHeaderList {
     /// The iterator element type is `(&'a QByteArray, &'a QByteArray)`.
     pub fn iter(&self) -> Iter {
         Iter {
-            list: &self.inner,
-            index: 0,
-            len: self.len(),
+            inner: self.inner.iter(),
         }
     }
 
@@ -201,32 +199,25 @@ where
 }
 
 pub struct Iter<'a> {
-    list: &'a QList<QPair<QByteArray, QByteArray>>,
-    index: isize,
-    len: isize,
+    inner: <&'a QList<QPair<QByteArray, QByteArray>> as IntoIterator>::IntoIter,
 }
 
 impl<'a> Iterator for Iter<'a> {
     type Item = (&'a QByteArray, &'a QByteArray);
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.index == self.len {
-            return None;
-        }
-        let next = unsafe { QListElement::get_unchecked(self.list, self.index) };
-        self.index += 1;
+        let next = self.inner.next()?;
         Some((&next.first, &next.second))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        let len = self.len();
-        (len, Some(len))
+        self.inner.size_hint()
     }
 }
 
 impl<'a> ExactSizeIterator for Iter<'a> {
     fn len(&self) -> usize {
-        usize::try_from(self.len - self.index).unwrap_or_default()
+        self.inner.len()
     }
 }
 
