@@ -278,3 +278,36 @@ impl Write for Pin<&mut QFile> {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn create() {
+        let filename = QString::from("myfile.md");
+        let file = QFile::new(&filename);
+        assert_eq!(file.file_name(), filename);
+    }
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QFileProps {
+            file_name: QString,
+        }
+
+        let props = QFileProps {
+            file_name: QString::from("myfile.txt"),
+        };
+
+        let mut file = QFile::new_default();
+        file.pin_mut().set_file_name(&props.file_name);
+
+        let actual_props = QFileProps {
+            file_name: file.file_name(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

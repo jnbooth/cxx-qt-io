@@ -253,3 +253,40 @@ impl Write for Pin<&mut QTemporaryFile> {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn create() {
+        let template_name = QString::from("template-XXXXXX");
+        let file = QTemporaryFile::new(&template_name);
+        assert_eq!(file.file_template(), template_name);
+    }
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QTemporaryFileProps {
+            auto_remove: bool,
+            file_template: QString,
+        }
+
+        let props = QTemporaryFileProps {
+            auto_remove: false,
+            file_template: QString::from("mytemplate-XXXXXX"),
+        };
+
+        let mut file = QTemporaryFile::new(&QString::from("template-XXXXXX"));
+        file.pin_mut().set_auto_remove(props.auto_remove);
+        file.pin_mut().set_file_template(&props.file_template);
+
+        let actual_props = QTemporaryFileProps {
+            auto_remove: file.auto_remove(),
+            file_template: file.file_template(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

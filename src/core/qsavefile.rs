@@ -187,3 +187,41 @@ impl Write for Pin<&mut QSaveFile> {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn create() {
+        let filename = QString::from("myfile.md");
+        let file = QSaveFile::new(&filename);
+        assert_eq!(file.file_name(), filename);
+    }
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QSaveFileProps {
+            direct_write_fallback: bool,
+            file_name: QString,
+        }
+
+        let props = QSaveFileProps {
+            direct_write_fallback: true,
+            file_name: QString::from("myfile.txt"),
+        };
+
+        let mut file = QSaveFile::new_default();
+        file.pin_mut()
+            .set_direct_write_fallback(props.direct_write_fallback);
+        file.pin_mut().set_file_name(&props.file_name);
+
+        let actual_props = QSaveFileProps {
+            direct_write_fallback: file.direct_write_fallback(),
+            file_name: file.file_name(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}
