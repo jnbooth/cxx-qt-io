@@ -162,12 +162,38 @@ where
     }
 }
 
+impl<K, V> Extend<(K, V)> for RawHeaderList
+where
+    K: Borrow<QByteArray>,
+    V: Borrow<QByteArray>,
+{
+    fn extend<I: IntoIterator<Item = (K, V)>>(&mut self, iter: I) {
+        let iter = iter.into_iter();
+        self.reserve_usize(iter.size_hint().0);
+        for (name, value) in iter {
+            self.append(name.borrow(), value.borrow());
+        }
+    }
+}
+
 impl<'a, K, V> FromIterator<&'a (K, V)> for RawHeaderList
 where
     K: Borrow<QByteArray>,
     V: Borrow<QByteArray>,
 {
     fn from_iter<I: IntoIterator<Item = &'a (K, V)>>(iter: I) -> Self {
+        let mut list = Self::default();
+        list.extend(iter);
+        list
+    }
+}
+
+impl<K, V> FromIterator<(K, V)> for RawHeaderList
+where
+    K: Borrow<QByteArray>,
+    V: Borrow<QByteArray>,
+{
+    fn from_iter<I: IntoIterator<Item = (K, V)>>(iter: I) -> Self {
         let mut list = Self::default();
         list.extend(iter);
         list
