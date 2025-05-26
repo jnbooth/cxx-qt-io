@@ -190,3 +190,55 @@ unsafe impl ExternType for QNetworkCacheMetaData {
     type Id = type_id!("QNetworkCacheMetaData");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::{QByteArray, QDateTime, QString, QUrl};
+
+    use crate::RawHeaderList;
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QNetworkCacheMetaDataProps {
+            expiration_date: QDateTime,
+            last_modified: QDateTime,
+            raw_headers: RawHeaderList,
+            save_to_disk: bool,
+            url: QUrl,
+        }
+
+        let props = QNetworkCacheMetaDataProps {
+            expiration_date: QDateTime::current_date_time_utc().add_days(2.into()),
+            last_modified: QDateTime::current_date_time_utc().add_days((-2).into()),
+            raw_headers: [
+                (QByteArray::from("a"), QByteArray::from("b")),
+                (QByteArray::from("c"), QByteArray::from("d")),
+            ]
+            .iter()
+            .collect(),
+            save_to_disk: true,
+            url: QUrl::from_local_file(&QString::from("./test")),
+        };
+
+        let mut metadata = QNetworkCacheMetaData::default();
+
+        metadata.set_expiration_date(&props.expiration_date);
+        metadata.set_last_modified(&props.last_modified);
+        metadata.set_raw_headers(&props.raw_headers);
+        metadata.set_save_to_disk(props.save_to_disk);
+        metadata.set_url(&props.url);
+
+        let actual_props = QNetworkCacheMetaDataProps {
+            expiration_date: metadata.expiration_date(),
+            last_modified: metadata.last_modified(),
+            raw_headers: metadata.raw_headers(),
+            save_to_disk: metadata.save_to_disk(),
+            url: metadata.url(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

@@ -273,3 +273,61 @@ unsafe impl ExternType for QNetworkDatagram {
     type Id = type_id!("QNetworkDatagram");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::QByteArray;
+
+    use crate::QHostAddressSpecialAddress;
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QNetworkDatagramProps {
+            data: QByteArray,
+            destination_address: Option<QHostAddress>,
+            destination_port: Option<u16>,
+            hop_limit: Option<i32>,
+            interface_index: Option<u32>,
+            sender_address: Option<QHostAddress>,
+            sender_port: Option<u16>,
+        }
+
+        let props = QNetworkDatagramProps {
+            data: QByteArray::from("test"),
+            destination_address: Some(QHostAddressSpecialAddress::Any.into()),
+            destination_port: Some(80),
+            hop_limit: Some(10),
+            interface_index: Some(1),
+            sender_address: Some(QHostAddressSpecialAddress::LocalHost.into()),
+            sender_port: Some(150),
+        };
+
+        let mut datagram = QNetworkDatagram::default();
+        datagram.set_data(&props.data);
+        datagram.set_destination(
+            props.destination_address.as_ref().unwrap(),
+            props.destination_port.unwrap(),
+        );
+        datagram.set_hop_limit(props.hop_limit);
+        datagram.set_interface_index(props.interface_index);
+        datagram.set_sender(
+            props.sender_address.as_ref().unwrap(),
+            props.sender_port.unwrap(),
+        );
+
+        let actual_props = QNetworkDatagramProps {
+            data: datagram.data(),
+            destination_address: datagram.destination_address(),
+            destination_port: datagram.destination_port(),
+            hop_limit: datagram.hop_limit(),
+            interface_index: datagram.interface_index(),
+            sender_address: datagram.sender_address(),
+            sender_port: datagram.sender_port(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

@@ -54,6 +54,7 @@ mod ffi {
         /// **Note:** While this size is required to be within a range between 16384 and 16777215 inclusive, the actual payload size in frames that carry payload maybe be less than 16384.
         ///
         /// Returns `true` on success, `false` otherwise.
+        #[rust_name = "set_max_frame_size"]
         fn setMaxFrameSize(&mut self, size: u32) -> bool;
 
         /// If `enable` is true, a remote server can potentially use server push to send responses in advance.
@@ -136,4 +137,52 @@ impl QHttp2Configuration {}
 unsafe impl ExternType for QHttp2Configuration {
     type Id = type_id!("QHttp2Configuration");
     type Kind = cxx::kind::Trivial;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QHttp2ConfigurationProps {
+            huffman_compression_enabled: bool,
+            #[cfg(cxxqt_qt_version_at_least_6_9)]
+            max_concurrent_streams: u32,
+            server_push_enabled: bool,
+            session_receive_window_size: u32,
+            stream_receive_window_size: u32,
+        }
+
+        let props = QHttp2ConfigurationProps {
+            huffman_compression_enabled: true,
+            #[cfg(cxxqt_qt_version_at_least_6_9)]
+            max_concurrent_streams: 5,
+            server_push_enabled: true,
+            session_receive_window_size: 100,
+            stream_receive_window_size: 200,
+        };
+
+        let mut config = QHttp2Configuration::default();
+
+        config.set_huffman_compression_enabled(props.huffman_compression_enabled);
+        config.set_server_push_enabled(props.server_push_enabled);
+        #[cfg(cxxqt_qt_version_at_least_6_9)]
+        config.set_max_concurrent_streams(props.max_concurrent_streams);
+        config.set_server_push_enabled(props.server_push_enabled);
+        config.set_session_receive_window_size(props.session_receive_window_size);
+        config.set_stream_receive_window_size(props.stream_receive_window_size);
+
+        let actual_props = QHttp2ConfigurationProps {
+            huffman_compression_enabled: config.huffman_compression_enabled(),
+            #[cfg(cxxqt_qt_version_at_least_6_9)]
+            max_concurrent_streams: config.max_concurrent_streams(),
+            server_push_enabled: config.server_push_enabled(),
+            session_receive_window_size: config.session_receive_window_size(),
+            stream_receive_window_size: config.stream_receive_window_size(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
 }

@@ -104,3 +104,35 @@ impl QAuthenticator {
         self.option_or_invalid(opt).nonnull()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::QString;
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QAuthenticatorProps {
+            password: QString,
+            user: QString,
+        }
+
+        let props = QAuthenticatorProps {
+            password: QString::from("mypassword"),
+            user: QString::from("myuser"),
+        };
+
+        let mut authenticator = QAuthenticator::new();
+        authenticator.pin_mut().set_password(&props.password);
+        authenticator.pin_mut().set_user(&props.user);
+
+        let actual_props = QAuthenticatorProps {
+            password: authenticator.password(),
+            user: authenticator.user(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

@@ -199,3 +199,46 @@ unsafe impl ExternType for QNetworkAddressEntry {
     type Id = type_id!("QNetworkAddressEntry");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use std::net::Ipv4Addr;
+
+    use super::*;
+
+    use crate::QHostAddress;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QNetworkAddressEntryProps {
+            broadcast: QHostAddress,
+            dns_eligibility: QNetworkAddressEntryDnsEligibilityStatus,
+            ip: QHostAddress,
+            netmask: QHostAddress,
+        }
+
+        let props = QNetworkAddressEntryProps {
+            broadcast: QHostAddress::from(Ipv4Addr::new(192, 168, 0, 15)),
+            dns_eligibility: QNetworkAddressEntryDnsEligibilityStatus::DnsEligible,
+            ip: QHostAddress::from(Ipv4Addr::new(192, 168, 0, 16)),
+            netmask: QHostAddress::from(Ipv4Addr::new(255, 255, 0, 0)),
+        };
+
+        let mut entry = QNetworkAddressEntry::default();
+
+        entry.set_broadcast(&props.broadcast);
+        entry.set_dns_eligibility(props.dns_eligibility);
+        entry.set_ip(&props.ip);
+        entry.set_netmask(&props.netmask);
+
+        let actual_props = QNetworkAddressEntryProps {
+            broadcast: entry.broadcast(),
+            dns_eligibility: entry.dns_eligibility(),
+            ip: entry.ip(),
+            netmask: entry.netmask(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

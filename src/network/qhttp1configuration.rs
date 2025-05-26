@@ -98,3 +98,30 @@ unsafe impl ExternType for QHttp1Configuration {
     type Id = type_id!("QHttp1Configuration");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QHttp1ConfigurationProps {
+            number_of_connections_per_host: isize,
+        }
+
+        let props = QHttp1ConfigurationProps {
+            number_of_connections_per_host: 3,
+        };
+
+        let mut config = QHttp1Configuration::default();
+
+        config.set_number_of_connections_per_host(props.number_of_connections_per_host);
+
+        let actual_props = QHttp1ConfigurationProps {
+            number_of_connections_per_host: config.number_of_connections_per_host(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

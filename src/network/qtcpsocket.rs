@@ -140,3 +140,50 @@ impl Write for Pin<&mut QTcpSocket> {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::QString;
+
+    use crate::{QAbstractSocketPauseMode, QAbstractSocketPauseModes};
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QTcpSocketProps {
+            pause_mode: i32,
+            protocol_tag: QString,
+            read_buffer_size: i64,
+        }
+
+        let props = QTcpSocketProps {
+            pause_mode: QAbstractSocketPauseMode::PauseOnSslErrors.repr,
+            protocol_tag: QString::from("xmpp"),
+            read_buffer_size: 1024 * 6,
+        };
+
+        let mut socket_ptr = QTcpSocket::new();
+        let mut socket = socket_ptr.pin_mut();
+        unsafe {
+            socket
+                .as_abstract_socket_mut()
+                .set_pause_mode(QAbstractSocketPauseModes::from_int(props.pause_mode));
+        }
+        socket
+            .as_abstract_socket_mut()
+            .set_protocol_tag(&props.protocol_tag);
+        socket
+            .as_abstract_socket_mut()
+            .set_read_buffer_size(props.read_buffer_size);
+
+        let actual_props = QTcpSocketProps {
+            pause_mode: socket.pause_mode().to_int(),
+            protocol_tag: socket.protocol_tag(),
+            read_buffer_size: socket.read_buffer_size(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

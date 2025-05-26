@@ -148,13 +148,9 @@ mod ffi {
     unsafe extern "C++" {
         type QNetworkRequest = super::QNetworkRequest;
 
-        /// Returns the threshold for archive bomb checks.
-        ///
-        /// If the decompressed size of a reply is smaller than this, Qt will simply decompress it, without further checking.
-        ///
-        /// Introduced in Qt 6.2.
+        #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_2)]
-        #[rust_name = "decompressed_safety_check_threshold"]
+        #[rust_name = "decompressed_safety_check_threshold_or_negative"]
         fn decompressedSafetyCheckThreshold(&self) -> i64;
 
         #[doc(hidden)]
@@ -369,6 +365,21 @@ impl QNetworkRequest {
         ffi::qnetworkrequest_attribute(self, code).nonnull()
     }
 
+    /// Returns the threshold for archive bomb checks.
+    ///
+    /// If the decompressed size of a reply is smaller than this, Qt will simply decompress it, without further checking.
+    ///
+    /// Introduced in Qt 6.2.
+    #[cfg(cxxqt_qt_version_at_least_6_2)]
+    pub fn decompressed_safety_check_threshold(&self) -> Option<i64> {
+        let threshold = self.decompressed_safety_check_threshold_or_negative();
+        if threshold < 0 {
+            None
+        } else {
+            Some(threshold)
+        }
+    }
+
     /// Returns `true` if the raw header `header_name` is present in this network request.
     ///
     /// **Note:** In Qt versions before 6.7, `header_name` must be [`&QByteArray`](cxx_qt_lib::QByteArray).
@@ -462,6 +473,14 @@ unsafe impl ExternType for QNetworkRequest {
 
 #[cfg(test)]
 mod tests {
+    use std::fmt;
+
+    use cxx_qt_lib::QString;
+
+    #[cfg(feature = "ssl")]
+    use crate::QSslConfiguration;
+    use crate::{QHttp1Configuration, QHttp2Configuration, QHttpHeaders};
+
     use super::*;
 
     #[test]
@@ -477,5 +496,97 @@ mod tests {
         let mut request = QNetworkRequest::default();
         request.set_transfer_timeout(None);
         assert_eq!(request.transfer_timeout(), None);
+    }
+
+    #[test]
+    fn props() {
+        #[derive(PartialEq, Eq)]
+        struct QNetworkRequestProps {
+            decompressed_safety_check_threshold: Option<i64>,
+            #[cfg(cxxqt_qt_version_at_least_6_8)]
+            headers: QHttpHeaders,
+            http1_configuration: QHttp1Configuration,
+            http2_configuration: QHttp2Configuration,
+            maximum_redirects_allowed: i32,
+            peer_verify_name: QString,
+            priority: QNetworkRequestPriority,
+            #[cfg(feature = "ssl")]
+            ssl_configuration: QSslConfiguration,
+            url: QUrl,
+        }
+
+        impl fmt::Debug for QNetworkRequestProps {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.debug_struct("QNetworkRequestProps")
+                    .field(
+                        "decompressed_safety_check_threshold",
+                        &self.decompressed_safety_check_threshold,
+                    )
+                    .field("headers", &self.headers)
+                    .field("http1_configuration", &"<QHttp1Configuration>")
+                    .field("http2_configuration", &"<QHttp2Configuration>")
+                    .field("maximum_redirects_allowed", &self.maximum_redirects_allowed)
+                    .field("peer_verify_name", &self.peer_verify_name)
+                    .field("priority", &self.priority)
+                    .field("ssl_configuration", &"<QSslConfiguration>")
+                    .field("url", &self.url)
+                    .finish()
+            }
+        }
+
+        let mut http1_configuration = QHttp1Configuration::default();
+        http1_configuration.set_number_of_connections_per_host(30);
+        let mut http2_configuration = QHttp2Configuration::default();
+        http2_configuration.set_max_frame_size(100);
+        #[cfg(feature = "ssl")]
+        let mut ssl_configuration = QSslConfiguration::default();
+        #[cfg(feature = "ssl")]
+        ssl_configuration.set_peer_verify_depth(2);
+
+        let props = QNetworkRequestProps {
+            decompressed_safety_check_threshold: Some(17),
+            #[cfg(cxxqt_qt_version_at_least_6_8)]
+            headers: [(&QByteArray::from("name"), &QByteArray::from("value"))]
+                .iter()
+                .collect(),
+            http1_configuration,
+            http2_configuration,
+            maximum_redirects_allowed: 20,
+            peer_verify_name: QString::from("peer_verify_name"),
+            priority: QNetworkRequestPriority::HighPriority,
+            #[cfg(feature = "ssl")]
+            ssl_configuration,
+            url: QUrl::from_local_file(&QString::from("/local/file")),
+        };
+
+        let mut request = QNetworkRequest::default();
+
+        request.set_decompressed_safety_check_threshold(props.decompressed_safety_check_threshold);
+        #[cfg(cxxqt_qt_version_at_least_6_8)]
+        request.set_headers(&props.headers);
+        request.set_http1_configuration(&props.http1_configuration);
+        request.set_http2_configuration(&props.http2_configuration);
+        request.set_maximum_redirects_allowed(props.maximum_redirects_allowed);
+        request.set_peer_verify_name(&props.peer_verify_name);
+        request.set_priority(props.priority);
+        #[cfg(feature = "ssl")]
+        request.set_ssl_configuration(&props.ssl_configuration);
+        request.set_url(&props.url);
+
+        let actual_props = QNetworkRequestProps {
+            decompressed_safety_check_threshold: request.decompressed_safety_check_threshold(),
+            #[cfg(cxxqt_qt_version_at_least_6_8)]
+            headers: request.headers(),
+            http1_configuration: request.http1_configuration(),
+            http2_configuration: request.http2_configuration(),
+            maximum_redirects_allowed: request.maximum_redirects_allowed(),
+            peer_verify_name: request.peer_verify_name(),
+            priority: request.priority(),
+            #[cfg(feature = "ssl")]
+            ssl_configuration: request.ssl_configuration(),
+            url: request.url(),
+        };
+
+        assert_eq!(actual_props, props);
     }
 }

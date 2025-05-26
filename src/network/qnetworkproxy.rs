@@ -171,7 +171,7 @@ mod ffi {
         /// Sets the proxy type for this instance to be `proxy_type`.
         ///
         /// Note that changing the type of a proxy does not change the set of capabilities this `QNetworkProxy` object holds if any capabilities have been set with [`set_capabilities`](QNetworkProxy::set_capabilities).
-        #[rust_name = "set_type"]
+        #[rust_name = "set_proxy_type"]
         fn setType(&mut self, proxy_type: QNetworkProxyProxyType);
 
         /// Sets the user for proxy authentication to be `user`.
@@ -311,4 +311,53 @@ impl From<QNetworkProxyProxyType> for QNetworkProxy {
 unsafe impl ExternType for QNetworkProxy {
     type Id = type_id!("QNetworkProxy");
     type Kind = cxx::kind::Trivial;
+}
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::QString;
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QNetworkProxyProps {
+            capabilities: QNetworkProxyCapabilities,
+            host_name: QString,
+            password: QString,
+            port: u16,
+            proxy_type: QNetworkProxyProxyType,
+            user: QString,
+        }
+
+        let props = QNetworkProxyProps {
+            capabilities: QNetworkProxyCapability::CachingCapability.into(),
+            host_name: QString::from("host"),
+            password: QString::from("password"),
+            port: 32,
+            proxy_type: QNetworkProxyProxyType::FtpCachingProxy,
+            user: QString::from("user"),
+        };
+
+        let mut proxy = QNetworkProxy::default();
+
+        proxy.set_capabilities(props.capabilities);
+        proxy.set_host_name(&props.host_name);
+        proxy.set_password(&props.password);
+        proxy.set_port(props.port);
+        proxy.set_proxy_type(props.proxy_type);
+        proxy.set_user(&props.user);
+
+        let actual_props = QNetworkProxyProps {
+            capabilities: proxy.capabilities(),
+            host_name: proxy.host_name(),
+            password: proxy.password(),
+            port: proxy.port(),
+            proxy_type: proxy.proxy_type(),
+            user: proxy.user(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
 }

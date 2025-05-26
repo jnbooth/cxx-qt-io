@@ -348,3 +348,36 @@ impl From<QLocalSocketLocalSocketState> for QAbstractSocketSocketState {
         Self { repr: value.repr }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QLocalSocketProps {
+            read_buffer_size: i64,
+            server_name: QString,
+        }
+
+        let props = QLocalSocketProps {
+            read_buffer_size: 100,
+            server_name: QString::from("local socket"),
+        };
+
+        let mut socket = QLocalSocket::new();
+
+        socket
+            .pin_mut()
+            .set_read_buffer_size(props.read_buffer_size);
+        socket.pin_mut().set_server_name(&props.server_name);
+
+        let actual_props = QLocalSocketProps {
+            read_buffer_size: socket.read_buffer_size(),
+            server_name: socket.server_name().unwrap(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

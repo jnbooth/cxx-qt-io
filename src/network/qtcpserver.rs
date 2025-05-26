@@ -217,3 +217,53 @@ impl AsRef<QObject> for QTcpServer {
         self.upcast()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::QString;
+
+    use crate::QNetworkProxy;
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QTcpServerProps {
+            #[cfg(cxxqt_qt_version_at_least_6_3)]
+            listen_backlog_size: i32,
+            max_pending_connections: i32,
+            proxy: QNetworkProxy,
+        }
+
+        let mut proxy = QNetworkProxy::default();
+        proxy.set_host_name(&QString::from("host"));
+
+        let props = QTcpServerProps {
+            #[cfg(cxxqt_qt_version_at_least_6_3)]
+            listen_backlog_size: 10,
+            max_pending_connections: 15,
+            proxy,
+        };
+
+        let mut server = QTcpServer::new();
+
+        #[cfg(cxxqt_qt_version_at_least_6_3)]
+        server
+            .pin_mut()
+            .set_listen_backlog_size(props.listen_backlog_size);
+        server
+            .pin_mut()
+            .set_max_pending_connections(props.max_pending_connections);
+        server.pin_mut().set_proxy(&props.proxy);
+
+        let actual_props = QTcpServerProps {
+            #[cfg(cxxqt_qt_version_at_least_6_3)]
+            listen_backlog_size: server.listen_backlog_size(),
+            max_pending_connections: server.max_pending_connections(),
+            proxy: server.proxy(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}

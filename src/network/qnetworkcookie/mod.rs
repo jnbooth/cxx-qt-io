@@ -250,3 +250,62 @@ unsafe impl ExternType for QNetworkCookie {
     type Id = type_id!("QNetworkCookie");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use cxx_qt_lib::{QString, QTimeZone};
+
+    use super::*;
+
+    #[test]
+    fn props() {
+        #[derive(Debug, PartialEq, Eq)]
+        struct QNetworkCookieProps {
+            domain: QString,
+            expiration_date: Option<QDateTime>,
+            http_only: bool,
+            name: QByteArray,
+            path: QString,
+            same_site_policy: QNetworkCookieSameSite,
+            secure: bool,
+            value: QByteArray,
+        }
+
+        let props = QNetworkCookieProps {
+            domain: QString::from("cookie_domain"),
+            expiration_date: Some(QDateTime::from_secs_since_epoch(
+                100_000.into(),
+                &QTimeZone::utc(),
+            )),
+            http_only: true,
+            name: QByteArray::from("cookie_name"),
+            path: QString::from("cookie_path"),
+            same_site_policy: QNetworkCookieSameSite::Strict,
+            secure: true,
+            value: QByteArray::from("cookie_value"),
+        };
+
+        let mut cookie = QNetworkCookie::default();
+        cookie.set_domain(&props.domain);
+        cookie.set_expiration_date(props.expiration_date.as_ref());
+        cookie.set_http_only(props.http_only);
+        cookie.set_name(&props.name);
+        cookie.set_path(&props.path);
+        cookie.set_same_site_policy(props.same_site_policy);
+        cookie.set_secure(props.secure);
+        cookie.set_value(&props.value);
+
+        let actual_props = QNetworkCookieProps {
+            domain: cookie.domain(),
+            expiration_date: cookie.expiration_date(),
+            http_only: cookie.is_http_only(),
+            name: cookie.name(),
+            path: cookie.path(),
+            same_site_policy: cookie.same_site_policy(),
+            secure: cookie.is_secure(),
+            value: cookie.value(),
+        };
+
+        assert_eq!(actual_props, props);
+    }
+}
