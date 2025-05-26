@@ -477,8 +477,6 @@ mod tests {
 
     use cxx_qt_lib::QString;
 
-    #[cfg(feature = "ssl")]
-    use crate::QSslConfiguration;
     use crate::{QHttp1Configuration, QHttp2Configuration, QHttpHeaders};
 
     use super::*;
@@ -510,8 +508,6 @@ mod tests {
             maximum_redirects_allowed: i32,
             peer_verify_name: QString,
             priority: QNetworkRequestPriority,
-            #[cfg(feature = "ssl")]
-            ssl_configuration: QSslConfiguration,
             url: QUrl,
         }
 
@@ -528,7 +524,6 @@ mod tests {
                     .field("maximum_redirects_allowed", &self.maximum_redirects_allowed)
                     .field("peer_verify_name", &self.peer_verify_name)
                     .field("priority", &self.priority)
-                    .field("ssl_configuration", &"<QSslConfiguration>")
                     .field("url", &self.url)
                     .finish()
             }
@@ -537,11 +532,7 @@ mod tests {
         let mut http1_configuration = QHttp1Configuration::default();
         http1_configuration.set_number_of_connections_per_host(30);
         let mut http2_configuration = QHttp2Configuration::default();
-        http2_configuration.set_max_frame_size(100);
-        #[cfg(feature = "ssl")]
-        let mut ssl_configuration = QSslConfiguration::default();
-        #[cfg(feature = "ssl")]
-        ssl_configuration.set_peer_verify_depth(2);
+        http2_configuration.set_max_frame_size(16385);
 
         let props = QNetworkRequestProps {
             decompressed_safety_check_threshold: Some(17),
@@ -554,8 +545,6 @@ mod tests {
             maximum_redirects_allowed: 20,
             peer_verify_name: QString::from("peer_verify_name"),
             priority: QNetworkRequestPriority::HighPriority,
-            #[cfg(feature = "ssl")]
-            ssl_configuration,
             url: QUrl::from_local_file(&QString::from("/local/file")),
         };
 
@@ -570,7 +559,6 @@ mod tests {
         request.set_peer_verify_name(&props.peer_verify_name);
         request.set_priority(props.priority);
         #[cfg(feature = "ssl")]
-        request.set_ssl_configuration(&props.ssl_configuration);
         request.set_url(&props.url);
 
         let actual_props = QNetworkRequestProps {
@@ -582,8 +570,6 @@ mod tests {
             maximum_redirects_allowed: request.maximum_redirects_allowed(),
             peer_verify_name: request.peer_verify_name(),
             priority: request.priority(),
-            #[cfg(feature = "ssl")]
-            ssl_configuration: request.ssl_configuration(),
             url: request.url(),
         };
 
