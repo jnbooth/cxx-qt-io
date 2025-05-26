@@ -3,6 +3,7 @@ use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescr
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QFlags, QString, QVariant};
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -626,5 +627,27 @@ impl From<QAbstractSocketSocketError> for io::ErrorKind {
             QAbstractSocketSocketError::TemporaryError => io::ErrorKind::WouldBlock,
             _ => io::ErrorKind::Other,
         }
+    }
+}
+
+impl fmt::Display for QAbstractSocketNetworkLayerProtocol {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::IPv4Protocol => "IPv4",
+            Self::IPv6Protocol => "IPv6",
+            Self::AnyIPProtocol => "IPv4/IPv6",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QAbstractSocketSocketType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::TcpSocket => "TCP",
+            Self::UdpSocket => "UDP",
+            Self::SctpSocket => "SCTP",
+            _ => "unknown",
+        })
     }
 }

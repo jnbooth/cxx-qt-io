@@ -7,6 +7,7 @@ use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QFlags, QString};
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -346,6 +347,18 @@ impl From<QLocalSocketLocalSocketError> for io::ErrorKind {
 impl From<QLocalSocketLocalSocketState> for QAbstractSocketSocketState {
     fn from(value: QLocalSocketLocalSocketState) -> Self {
         Self { repr: value.repr }
+    }
+}
+
+impl fmt::Display for QLocalSocketLocalSocketState {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::UnconnectedState => "unconnected",
+            Self::ConnectingState => "connecting",
+            Self::ConnectedState => "connected",
+            Self::ClosingState => "closing",
+            _ => "unknown",
+        })
     }
 }
 

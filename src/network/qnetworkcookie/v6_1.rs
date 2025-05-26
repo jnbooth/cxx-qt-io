@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
@@ -20,3 +22,15 @@ mod ffi {
 }
 
 pub use ffi::QNetworkCookieSameSite;
+
+impl fmt::Display for QNetworkCookieSameSite {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Default => "Default",
+            Self::None => "None",
+            Self::Lax => "Lax",
+            Self::Strict => "Strict",
+            _ => "unknown",
+        })
+    }
+}

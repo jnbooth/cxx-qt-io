@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[cxx::bridge]
 mod ffi {
     /// Enumerates classes that a TLS backend implements.
@@ -52,3 +54,33 @@ mod ffi {
 }
 
 pub use ffi::{QSslImplementedClass, QSslSupportedFeature};
+
+impl fmt::Display for QSslImplementedClass {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Key => "QSslKey",
+            Self::Certificate => "QSslCertificate",
+            Self::Socket => "QSslSocket",
+            Self::DiffieHellman => "QSslDiffieHellmanParameters",
+            Self::EllipticCurve => "QSslEllipticCurve",
+            Self::Dtls => "QDtls",
+            Self::DtlsCookie => "QDtlsClientVerifier",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QSslSupportedFeature {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::CertificateVerification => "certificate verification",
+            Self::ClientSideAlpn => "client-side ALPN",
+            Self::ServerSideAlpn => "server-side ALPN",
+            Self::Ocsp => "OCSP stapling",
+            Self::Psk => "pre-shared keys",
+            Self::SessionTicket => "session tickets",
+            Self::Alerts => "alert messages",
+            _ => "unknown",
+        })
+    }
+}

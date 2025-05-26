@@ -200,6 +200,16 @@ unsafe impl ExternType for QNetworkAddressEntry {
     type Kind = cxx::kind::Trivial;
 }
 
+impl fmt::Display for QNetworkAddressEntryDnsEligibilityStatus {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::DnsEligible => "eligible",
+            Self::DnsIneligible => "ineligible",
+            _ => "unknown",
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::net::Ipv4Addr;

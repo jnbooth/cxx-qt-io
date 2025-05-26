@@ -5,6 +5,7 @@ use cxx::{type_id, ExternType};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QUrl, QVariant};
+use std::fmt;
 use std::mem::MaybeUninit;
 use std::time::Duration;
 
@@ -469,6 +470,27 @@ impl From<&QUrl> for QNetworkRequest {
 unsafe impl ExternType for QNetworkRequest {
     type Id = type_id!("QNetworkRequest");
     type Kind = cxx::kind::Trivial;
+}
+
+impl fmt::Display for QNetworkRequestKnownHeaders {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::ContentTypeHeader => "Content-Type",
+            Self::ContentLengthHeader => "Content-Length",
+            Self::LocationHeader => "Location",
+            Self::LastModifiedHeader => "Last-Modified",
+            Self::CookieHeader => "Cookie",
+            Self::SetCookieHeader => "Set-Cookie",
+            Self::ContentDispositionHeader => "Content-Disposition",
+            Self::UserAgentHeader => "User-Agent",
+            Self::ServerHeader => "Server",
+            Self::IfModifiedSinceHeader => "If-Modified-Since",
+            Self::ETagHeader => "ETag",
+            Self::IfMatchHeader => "If-Match",
+            Self::IfNoneMatchHeader => "If-None-Match",
+            _ => "unknown",
+        })
+    }
 }
 
 #[cfg(test)]

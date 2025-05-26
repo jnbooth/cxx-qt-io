@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[cxx::bridge]
 mod ffi {
     /// Indicates the operation this reply is processing.
@@ -25,3 +27,17 @@ mod ffi {
 }
 
 pub use ffi::QNetworkAccessManagerOperation;
+
+impl fmt::Display for QNetworkAccessManagerOperation {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::HeadOperation => "HEAD",
+            Self::GetOperation => "GET",
+            Self::PutOperation => "PUT",
+            Self::PostOperation => "POST",
+            Self::DeleteOperation => "DELETE",
+            Self::CustomOperation => "Custom",
+            _ => "unknown",
+        })
+    }
+}

@@ -3,6 +3,8 @@ mod v6_1;
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 pub use v6_1::{QSslImplementedClass, QSslSupportedFeature};
 
+use std::fmt;
+
 use cxx_qt_lib::QFlags;
 
 #[cxx::bridge]
@@ -178,3 +180,63 @@ pub use ffi::{
 pub type QSslSslOptions = QFlags<QSslSslOption>;
 
 unsafe_impl_qflag!(QSslSslOption, "QSslSslOptions");
+
+impl fmt::Display for QSslKeyType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::PrivateKey => "private",
+            Self::PublicKey => "public",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QSslEncodingFormat {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Pem => "PEM",
+            Self::Der => "DER",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QSslKeyAlgorithm {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Opaque => "opaque",
+            Self::Rsa => "RSA",
+            Self::Dsa => "DSA",
+            Self::Ec => "elliptic-curve",
+            Self::Dh => "Diffie-Hellman",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QSslSslProtocol {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::TlsV1_2 => "TLS v1.2",
+            Self::AnyProtocol => "any protocol",
+            Self::SecureProtocols => "secure protocols",
+            Self::TlsV1_2OrLater => "TLS v1.2+",
+            Self::DtlsV1_2 => "DTLS v1.2",
+            Self::DtlsV1_2OrLater => "DTLS v1.2+",
+            Self::TlsV1_3 => "TLS v1.3",
+            Self::TlsV1_3OrLater => "TLS v1.3+",
+            Self::UnknownProtocol => "unknown protocol",
+            _ => unreachable!(),
+        })
+    }
+}
+
+impl fmt::Display for QSslAlertLevel {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Warning => "warning",
+            Self::Fatal => "fatal",
+            _ => "unknown",
+        })
+    }
+}

@@ -288,3 +288,24 @@ unsafe impl ExternType for QNetworkInterface {
     type Id = type_id!("QNetworkInterface");
     type Kind = cxx::kind::Trivial;
 }
+
+impl fmt::Display for QNetworkInterfaceInterfaceType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Loopback => "loopback",
+            Self::Virtual => "virtual",
+            Self::Ethernet => "Ethernet",
+            Self::Slip => "SLIP",
+            Self::CanBus => "CAN bus",
+            Self::Ppp => "PPP",
+            Self::Fddi => "FDDI",
+            Self::Wifi => "Wi-Fi",
+            Self::Phonet => "Phonet",
+            Self::Ieee802154 => "PAN",
+            Self::SixLoWPAN => "6LoWPAN",
+            Self::Ieee80216 => "WiMAX",
+            Self::Ieee1394 => "FireWire",
+            _ => "unknown",
+        })
+    }
+}
