@@ -3,7 +3,30 @@ use std::pin::Pin;
 use std::ptr;
 use std::time::Duration;
 
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime, QVariant};
+
+#[cxx::bridge]
+mod ffi {
+    extern "C++" {
+        include!("cxx-qt-io/util.h");
+        type QObject = cxx_qt::QObject;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        #[rust_name = "qobject_delete"]
+        unsafe fn qobjectDelete(object: *mut QObject);
+    }
+}
+
+pub(crate) unsafe fn delete_qobject<T>(qobject: *mut T)
+where
+    T: Upcast<QObject>,
+{
+    unsafe { ffi::qobject_delete(T::upcast_ptr(qobject).cast_mut()) }
+}
 
 /// Unwraps a`Pin<&mut T>` into a mutable pointer. This function should only be used
 /// to directly pass the resulting pointer to an extern Qt function.
@@ -22,7 +45,7 @@ use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime, QVariant};
 ///
 /// *For more information, see the [`pin` module docs][std::pin]*
 #[allow(dead_code)]
-pub unsafe fn unpin_for_qt<T>(pin: Pin<&mut T>) -> *mut T {
+pub(crate) unsafe fn unpin_for_qt<T>(pin: Pin<&mut T>) -> *mut T {
     unsafe { ptr::from_mut(Pin::into_inner_unchecked(pin)) }
 }
 

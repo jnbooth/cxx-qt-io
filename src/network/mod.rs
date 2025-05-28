@@ -1,6 +1,11 @@
 mod raw_header_list;
 pub use raw_header_list::RawHeaderList;
 
+mod qabstractnetworkcache;
+pub use qabstractnetworkcache::{
+    QAbstractNetworkCache, QAbstractNetworkCacheReader, QAbstractNetworkCacheWriter,
+};
+
 mod qabstractsocket;
 pub use qabstractsocket::{
     QAbstractSocket, QAbstractSocketBindFlag, QAbstractSocketBindMode,

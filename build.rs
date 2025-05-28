@@ -166,6 +166,7 @@ fn main() {
         include_header!("include/core/qset/qset.h"),
         include_header!("include/core/qtemporaryfile.h"),
         include_header!("include/core/qvariant/qvariant.h"),
+        include_header!("include/util.h"),
         include_header!("include/views.h"),
     ]);
 
@@ -200,6 +201,7 @@ fn main() {
             "core/qsavefile",
             "core/qt",
             "core/qtemporaryfile",
+            "util",
         ]);
 
     if features.network {
@@ -217,6 +219,7 @@ fn main() {
             include_header!("include/core/qset/qset_qhttp1configuration.h"),
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
             include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
+            include_header!("include/network/qabstractnetworkcache.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qauthenticator.h"),
             include_header!("include/network/qhostaddress.h"),
@@ -227,6 +230,7 @@ fn main() {
             include_header!("include/network/qnetworkcachemetadata.h"),
             include_header!("include/network/qnetworkcookie.h"),
             include_header!("include/network/qnetworkdatagram.h"),
+            include_header!("include/network/qnetworkdiskcache.h"),
             include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
@@ -239,6 +243,8 @@ fn main() {
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
+                "network/qabstractnetworkcache",
+                "network/qnetworkcachemetadata",
                 "network/qhostaddress",
                 "network/qhttp2configuration",
                 "network/qnetworkaddressentry",
@@ -260,6 +266,7 @@ fn main() {
                 "core/qlist/qlist_qnetworkrequest",
                 "core/qvariant/qvariant_qnetworkcookie",
                 "network/raw_header_list",
+                "network/qabstractnetworkcache",
                 "network/qabstractsocket",
                 "network/qauthenticator",
                 "network/qhostaddress",
@@ -270,6 +277,7 @@ fn main() {
                 "network/qnetworkcachemetadata",
                 "network/qnetworkcookie/mod",
                 "network/qnetworkdatagram",
+                "network/qnetworkdiskcache",
                 "network/qnetworkinterface",
                 "network/qnetworkproxy",
                 "network/qnetworkrequest/mod",
