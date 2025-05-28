@@ -17,6 +17,9 @@ mod ffi {
 
         include!("cxx-qt-io/qnetworkcachemetadata.h");
         type QNetworkCacheMetaData = crate::QNetworkCacheMetaData;
+    }
+
+    extern "C++" {
         include!("cxx-qt-io/qnetworkdiskcache.h");
         type QAbstractNetworkCache = crate::QAbstractNetworkCache;
     }
