@@ -23,6 +23,9 @@ pub use qhostaddress::{
     QHostAddressSpecialAddress, QHostAddressTryFromError,
 };
 
+mod qhstspolicy;
+pub use qhstspolicy::QHstsPolicy;
+
 #[cfg(cxxqt_qt_version_at_least_6_5)]
 mod qhttp1configuration;
 #[cfg(cxxqt_qt_version_at_least_6_5)]
