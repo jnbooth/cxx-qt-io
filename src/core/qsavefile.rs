@@ -133,12 +133,6 @@ impl Deref for QSaveFile {
     }
 }
 
-impl AsRef<QFileDevice> for QSaveFile {
-    fn as_ref(&self) -> &QFileDevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QIODevice> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qsavefile_qiodevice(this)
@@ -149,12 +143,6 @@ unsafe impl Upcast<QIODevice> for QSaveFile {
     }
 }
 
-impl AsRef<QIODevice> for QSaveFile {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsavefile_qobject(this)
@@ -162,12 +150,6 @@ unsafe impl Upcast<QObject> for QSaveFile {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qsavefile(base)
-    }
-}
-
-impl AsRef<QObject> for QSaveFile {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

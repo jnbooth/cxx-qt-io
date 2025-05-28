@@ -707,12 +707,6 @@ impl Deref for QSslSocket {
     }
 }
 
-impl AsRef<QTcpSocket> for QSslSocket {
-    fn as_ref(&self) -> &QTcpSocket {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QAbstractSocket> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QAbstractSocket {
         ffi::upcast_qsslsocket_qabstractsocket(this)
@@ -720,12 +714,6 @@ unsafe impl Upcast<QAbstractSocket> for QSslSocket {
 
     unsafe fn from_base_ptr(base: *const QAbstractSocket) -> *const Self {
         ffi::downcast_qabstractsocket_qsslsocket(base)
-    }
-}
-
-impl AsRef<QAbstractSocket> for QSslSocket {
-    fn as_ref(&self) -> &QAbstractSocket {
-        self.upcast()
     }
 }
 
@@ -739,12 +727,6 @@ unsafe impl Upcast<QIODevice> for QSslSocket {
     }
 }
 
-impl AsRef<QIODevice> for QSslSocket {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsslsocket_qobject(this)
@@ -752,12 +734,6 @@ unsafe impl Upcast<QObject> for QSslSocket {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qsslsocket(base)
-    }
-}
-
-impl AsRef<QObject> for QSslSocket {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

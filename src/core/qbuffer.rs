@@ -133,12 +133,6 @@ impl Deref for QBuffer {
     }
 }
 
-impl AsRef<QIODevice> for QBuffer {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QBuffer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qbuffer_qobject(this)
@@ -146,12 +140,6 @@ unsafe impl Upcast<QObject> for QBuffer {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qbuffer(base)
-    }
-}
-
-impl AsRef<QObject> for QBuffer {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

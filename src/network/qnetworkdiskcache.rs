@@ -109,12 +109,6 @@ impl Deref for QNetworkDiskCache {
     }
 }
 
-impl AsRef<QAbstractNetworkCache> for QNetworkDiskCache {
-    fn as_ref(&self) -> &QAbstractNetworkCache {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QNetworkDiskCache {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qnetworkdiskcache_qobject(this)
@@ -122,11 +116,5 @@ unsafe impl Upcast<QObject> for QNetworkDiskCache {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qnetworkdiskcache(base)
-    }
-}
-
-impl AsRef<QObject> for QNetworkDiskCache {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }

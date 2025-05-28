@@ -369,9 +369,3 @@ impl Deref for QDtls {
         self.upcast()
     }
 }
-
-impl AsRef<QObject> for QDtls {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
-    }
-}

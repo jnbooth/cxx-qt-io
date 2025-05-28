@@ -118,9 +118,3 @@ impl Deref for QDtlsClientVerifier {
         self.upcast()
     }
 }
-
-impl AsRef<QObject> for QDtlsClientVerifier {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
-    }
-}

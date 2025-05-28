@@ -552,12 +552,6 @@ impl Deref for QAbstractSocket {
     }
 }
 
-impl AsRef<QIODevice> for QAbstractSocket {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QAbstractSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qabstractsocket_qobject(this)
@@ -565,12 +559,6 @@ unsafe impl Upcast<QObject> for QAbstractSocket {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qabstractsocket(base)
-    }
-}
-
-impl AsRef<QObject> for QAbstractSocket {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

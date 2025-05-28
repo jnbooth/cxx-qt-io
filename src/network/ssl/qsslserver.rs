@@ -223,12 +223,6 @@ impl Deref for QSslServer {
     }
 }
 
-impl AsRef<QTcpServer> for QSslServer {
-    fn as_ref(&self) -> &QTcpServer {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QSslServer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsslserver_qobject(this)
@@ -236,11 +230,5 @@ unsafe impl Upcast<QObject> for QSslServer {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qsslserver(base)
-    }
-}
-
-impl AsRef<QObject> for QSslServer {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }

@@ -622,12 +622,6 @@ impl Deref for QIODevice {
     }
 }
 
-impl AsRef<QObject> for QIODevice {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
-    }
-}
-
 impl Read for Pin<&mut QIODevice> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         self.as_mut().read(buf)

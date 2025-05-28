@@ -183,12 +183,6 @@ impl Deref for QTemporaryFile {
     }
 }
 
-impl AsRef<QFile> for QTemporaryFile {
-    fn as_ref(&self) -> &QFile {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QFileDevice> for QTemporaryFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QFileDevice {
         ffi::upcast_qtemporaryfile_qfiledevice(this)
@@ -196,12 +190,6 @@ unsafe impl Upcast<QFileDevice> for QTemporaryFile {
 
     unsafe fn from_base_ptr(base: *const QFileDevice) -> *const Self {
         ffi::downcast_qfiledevice_qtemporaryfile(base)
-    }
-}
-
-impl AsRef<QFileDevice> for QTemporaryFile {
-    fn as_ref(&self) -> &QFileDevice {
-        self.upcast()
     }
 }
 
@@ -215,12 +203,6 @@ unsafe impl Upcast<QIODevice> for QTemporaryFile {
     }
 }
 
-impl AsRef<QIODevice> for QTemporaryFile {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QTemporaryFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qtemporaryfile_qobject(this)
@@ -228,12 +210,6 @@ unsafe impl Upcast<QObject> for QTemporaryFile {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qtemporaryfile(base)
-    }
-}
-
-impl AsRef<QObject> for QTemporaryFile {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

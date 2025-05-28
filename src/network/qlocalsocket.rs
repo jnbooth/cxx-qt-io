@@ -293,12 +293,6 @@ impl Deref for QLocalSocket {
     }
 }
 
-impl AsRef<QIODevice> for QLocalSocket {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QLocalSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qlocalsocket_qobject(this)
@@ -306,12 +300,6 @@ unsafe impl Upcast<QObject> for QLocalSocket {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qlocalsocket(base)
-    }
-}
-
-impl AsRef<QObject> for QLocalSocket {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

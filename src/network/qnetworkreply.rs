@@ -439,12 +439,6 @@ impl Deref for QNetworkReply {
     }
 }
 
-impl AsRef<QIODevice> for QNetworkReply {
-    fn as_ref(&self) -> &QIODevice {
-        self.upcast()
-    }
-}
-
 unsafe impl Upcast<QObject> for QNetworkReply {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qnetworkreply_qobject(this)
@@ -452,12 +446,6 @@ unsafe impl Upcast<QObject> for QNetworkReply {
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
         ffi::downcast_qobject_qnetworkreply(base)
-    }
-}
-
-impl AsRef<QObject> for QNetworkReply {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
     }
 }
 

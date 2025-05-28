@@ -212,12 +212,6 @@ impl Deref for QTcpServer {
     }
 }
 
-impl AsRef<QObject> for QTcpServer {
-    fn as_ref(&self) -> &QObject {
-        self.upcast()
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use cxx_qt_lib::QString;
