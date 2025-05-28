@@ -63,6 +63,9 @@ pub use qnetworkcookie::QNetworkCookieSameSite;
 mod qnetworkdatagram;
 pub use qnetworkdatagram::QNetworkDatagram;
 
+mod qnetworkdiskcache;
+pub use qnetworkdiskcache::QNetworkDiskCache;
+
 mod qnetworkinterface;
 pub use qnetworkinterface::{
     QNetworkInterface, QNetworkInterfaceInterfaceFlag, QNetworkInterfaceInterfaceFlags,
