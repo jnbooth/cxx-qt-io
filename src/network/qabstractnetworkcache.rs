@@ -1,6 +1,9 @@
 use std::io::{self, Read, Write};
+use std::ops::Deref;
 use std::pin::Pin;
 
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 use cxx_qt_lib::QUrl;
 
 use crate::util::delete_qobject;
@@ -188,6 +191,14 @@ impl QAbstractNetworkCache {
     /// If the cache does not contains a cache item for the url then no action is taken.
     pub fn update_meta_data(self: Pin<&mut Self>, meta_data: &QNetworkCacheMetaData) {
         ffi::qabstractnetworkcache_update_meta_data(self, meta_data);
+    }
+}
+
+impl Deref for QAbstractNetworkCache {
+    type Target = QObject;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
     }
 }
 

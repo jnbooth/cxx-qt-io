@@ -7,6 +7,7 @@ use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};
+use std::ops::Deref;
 use std::pin::Pin;
 use std::ptr;
 use std::time::Duration;
@@ -610,6 +611,14 @@ impl QIODevice {
             return local_socket.error().into();
         }
         io::ErrorKind::Other
+    }
+}
+
+impl Deref for QIODevice {
+    type Target = QObject;
+
+    fn deref(&self) -> &Self::Target {
+        self.upcast()
     }
 }
 
