@@ -1,5 +1,5 @@
 use cxx_qt_build::CxxQtBuilder;
-use qt_build_utils::{QtBuild, SemVer};
+use qt_build_utils::QtBuild;
 use std::env;
 use std::ffi::OsStr;
 use std::fs::{self, File};
@@ -102,9 +102,9 @@ impl BridgeBuilder for CxxQtBuilder {
 }
 
 trait AtLeast {
-    fn at_least(&self, major: u32, minor: u32) -> bool;
+    fn at_least(&self, major: u64, minor: u64) -> bool;
 
-    fn find(&self, name: &str, versions: &[(u32, u32)]) -> String {
+    fn find(&self, name: &str, versions: &[(u64, u64)]) -> String {
         for &(major, minor) in versions {
             if self.at_least(major, minor) {
                 return format!("{name}/v{major}_{minor}");
@@ -114,8 +114,8 @@ trait AtLeast {
     }
 }
 
-impl AtLeast for SemVer {
-    fn at_least(&self, major: u32, minor: u32) -> bool {
+impl AtLeast for semver::Version {
+    fn at_least(&self, major: u64, minor: u64) -> bool {
         self.major > major || (self.major == major && self.minor >= minor)
     }
 }

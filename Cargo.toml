@@ -12,6 +12,7 @@ cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt" }
 [build-dependencies]
 cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt" }
 qt-build-utils = { git = "https://github.com/KDAB/cxx-qt" }
+semver = "1.0"
 
 [dev-dependencies]
 cxx-qt-lib-extras = { git = "https://github.com/KDAB/cxx-qt" }
