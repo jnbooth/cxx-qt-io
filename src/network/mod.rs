@@ -39,6 +39,9 @@ mod qhttpheaders;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 pub use qhttpheaders::{HttpHeader, QHttpHeaders, QHttpHeadersWellKnownHeader};
 
+mod qhttppart;
+pub use qhttppart::QHttpPart;
+
 mod qlocalsocket;
 pub use qlocalsocket::{
     QLocalSocket, QLocalSocketLocalSocketError, QLocalSocketLocalSocketState,

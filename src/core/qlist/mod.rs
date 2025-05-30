@@ -95,6 +95,9 @@ impl_qlist_element!(
     "QList_QHttp2Configuration",
 );
 
+#[cfg(feature = "qt_network")]
+impl_qlist_element!(crate::QHttpPart, qlist_qhttppart, "QList_QHttpPart");
+
 #[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
 impl_qlist_element!(
     crate::QHttpHeaders,

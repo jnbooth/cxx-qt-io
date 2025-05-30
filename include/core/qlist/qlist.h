@@ -13,6 +13,7 @@
 #include "qlist_qhostaddress.h"
 #include "qlist_qhstspolicy.h"
 #include "qlist_qhttp2configuration.h"
+#include "qlist_qhttppart.h"
 #include "qlist_qnetworkaddressentry.h"
 #include "qlist_qnetworkcachemetadata.h"
 #include "qlist_qnetworkcookie.h"
