@@ -52,7 +52,7 @@ pub use qlocalsocket::{
 };
 
 mod qnetworkaccessmanager;
-pub use qnetworkaccessmanager::QNetworkAccessManagerOperation;
+pub use qnetworkaccessmanager::{QNetworkAccessManager, QNetworkAccessManagerOperation};
 
 mod qnetworkaddressentry;
 pub use qnetworkaddressentry::{QNetworkAddressEntry, QNetworkAddressEntryDnsEligibilityStatus};

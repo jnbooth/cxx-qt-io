@@ -42,6 +42,9 @@ pub use qsavefile::QSaveFile;
 
 mod qset;
 
+mod qstandardpaths;
+pub use qstandardpaths::{QStandardPaths, QStandardPathsStandardLocation};
+
 mod qt;
 pub use qt::TimerType;
 
