@@ -42,6 +42,9 @@ pub use qhttpheaders::{HttpHeader, QHttpHeaders, QHttpHeadersWellKnownHeader};
 mod qhttppart;
 pub use qhttppart::QHttpPart;
 
+mod qhttpmultipart;
+pub use qhttpmultipart::QHttpMultiPart;
+
 mod qlocalsocket;
 pub use qlocalsocket::{
     QLocalSocket, QLocalSocketLocalSocketError, QLocalSocketLocalSocketState,
