@@ -6,7 +6,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QByteArray;
 
-use crate::util::{unpin_for_qt, IsNonNull};
+use crate::util::{unpin_for_qt, upcast_mut, IsNonNull};
 use crate::{QIODevice, QSslEncodingFormat};
 
 #[cxx::bridge]
@@ -176,10 +176,10 @@ impl QSslDiffieHellmanParameters {
     where
         T: Upcast<QIODevice>,
     {
-        // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
+        // SAFETY: `upcast_mut(unpin_for_qt(device))` is passed directly to Qt.
         unsafe {
             ffi::qssldiffiehellmanparameters_from_encoded_device(
-                unpin_for_qt(device.upcast_pin()),
+                upcast_mut(unpin_for_qt(device)),
                 encoding,
             )
         }

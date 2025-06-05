@@ -81,6 +81,9 @@ impl_qlist_element!(
     "QList_QDeadlineTimer"
 );
 
+#[cfg(feature = "qt_network")]
+impl_qlist_element!(crate::QHstsPolicy, qlist_qhstspolicy, "QList_QHstsPolicy");
+
 #[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_5))]
 impl_qlist_element!(
     crate::QHttp1Configuration,

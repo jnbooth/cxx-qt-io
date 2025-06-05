@@ -2,9 +2,11 @@ use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QVariant;
 
-use crate::QNetworkRequestKnownHeaders;
+use crate::util::upcast_mut;
+use crate::{QIODevice, QNetworkRequestKnownHeaders};
 
 #[cxx::bridge]
 mod ffi {
@@ -33,12 +35,8 @@ mod ffi {
         #[rust_name = "set_body"]
         fn setBody(&mut self, body: &QByteArray);
 
-        /// Sets the device to read the content from to `device`. For large amounts of data this method should be preferred over [`set_body`](QHttpPart::set_body), because the content is not copied when using this method, but read directly from the device. device must be open and readable. `QHttpPart` does not take ownership of `device`, i.e. the device must be closed and destroyed if necessary. if device is sequential (e.g. sockets, but not files), [`QNetworkAccessManager::post`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html#post) should be called after `device` has emitted [`finished`](QIODevice::finished). For unsetting the device and using data set via [`set_body`](QHttpPart::set_body), call this method with a null pointer.
-        ///
-        /// # Safety
-        /// *device* must remain a valid pointer for the lifespan of the request and should not be
-        /// mutated until afterward.
-        #[rust_name = "set_body_device"]
+        #[doc(hidden)]
+        #[rust_name = "set_body_device_raw"]
         unsafe fn setBodyDevice(&mut self, device: *mut QIODevice);
 
         #[doc(hidden)]
@@ -114,6 +112,19 @@ impl fmt::Debug for QHttpPart {
 }
 
 impl QHttpPart {
+    /// Sets the device to read the content from to `device`. For large amounts of data this method should be preferred over [`set_body`](QHttpPart::set_body), because the content is not copied when using this method, but read directly from the device. device must be open and readable. `QHttpPart` does not take ownership of `device`, i.e. the device must be closed and destroyed if necessary. if device is sequential (e.g. sockets, but not files), [`QNetworkAccessManager::post`](crate::QNetworkAccessManager::post) should be called after `device` has emitted [`finished`](QIODevice::finished). For unsetting the device and using data set via [`set_body`](QHttpPart::set_body), call this method with a null pointer.
+    ///
+    /// # Safety
+    ///
+    /// *device* must remain a valid pointer for the lifespan of the request and should not be
+    /// mutated until afterward.
+    pub unsafe fn set_body_device<T>(&mut self, device: *mut T)
+    where
+        T: Upcast<QIODevice>,
+    {
+        self.set_body_device_raw(upcast_mut(device));
+    }
+
     // Sets the value of the known header `header` to be `value`, overriding any previously set headers.
     pub fn set_header<T>(&mut self, header: QNetworkRequestKnownHeaders, value: T)
     where

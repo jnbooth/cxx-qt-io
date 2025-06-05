@@ -7,7 +7,7 @@ use cxx::{type_id, ExternType};
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
-use crate::util::{unpin_for_qt, IsNonNull};
+use crate::util::{unpin_for_qt, upcast_mut, IsNonNull};
 use crate::{DecodeSslKeyError, QIODevice, QSslEncodingFormat, QSslError, QSslKey};
 
 #[cxx::bridge]
@@ -318,7 +318,7 @@ impl QSslCertificate {
     {
         // SAFETY: Qt knows what it's doing.
         unsafe {
-            let device_mut = unpin_for_qt(device.upcast_pin());
+            let device_mut = upcast_mut(unpin_for_qt(device));
             let key_mut = ptr::from_ref(key).cast_mut();
             let certificate_mut = ptr::from_ref(certificate).cast_mut();
             let ca_certificates_mut = ptr::from_ref(ca_certificates).cast_mut();
@@ -374,8 +374,8 @@ impl QSslCertificate {
     where
         T: Upcast<QIODevice>,
     {
-        // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
-        unsafe { ffi::qsslcertificate_init_device(unpin_for_qt(device.upcast_pin()), format) }
+        // SAFETY: `upcast_mut(unpin_for_qt(device))` is passed directly to Qt.
+        unsafe { ffi::qsslcertificate_init_device(upcast_mut(unpin_for_qt(device)), format) }
             .nonnull_or(DecodeSslKeyError(()))
     }
 
@@ -390,7 +390,7 @@ impl QSslCertificate {
         T: Upcast<QIODevice>,
     {
         // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
-        unsafe { ffi::qsslcertificate_from_device(unpin_for_qt(device.upcast_pin()), format) }
+        unsafe { ffi::qsslcertificate_from_device(upcast_mut(unpin_for_qt(device)), format) }
     }
 
     /// Searches all files in the `path` for certificates encoded in the specified `format` and returns them in a list. `path` must be a file or a pattern matching one or more files, as specified by `syntax`.

@@ -174,14 +174,14 @@ mod ffi {
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         fn headers(&self) -> QHttpHeaders;
 
-        /// Returns the current parameters that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) is using for the underlying HTTP/1 connection of this request.
+        /// Returns the current parameters that [`QNetworkAccessManager`](crate::QNetworkAccessManager) is using for the underlying HTTP/1 connection of this request.
         ///
         /// Introduced in Qt 6.5.
         #[cfg(cxxqt_qt_version_at_least_6_5)]
         #[rust_name = "http1_configuration"]
         fn http1Configuration(&self) -> QHttp1Configuration;
 
-        /// Returns the current parameters that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) is using for this request and its underlying HTTP/2 connection. This is either a configuration previously set by an application or a default configuration.
+        /// Returns the current parameters that [`QNetworkAccessManager`](crate::QNetworkAccessManager) is using for this request and its underlying HTTP/2 connection. This is either a configuration previously set by an application or a default configuration.
         #[rust_name = "http2_configuration"]
         fn http2Configuration(&self) -> QHttp2Configuration;
 
@@ -245,7 +245,7 @@ mod ffi {
         ///
         /// **Note:** The configuration must be set prior to making a request.
         ///
-        /// **Note:** HTTP/2 multiplexes several streams in a single HTTP/2 connection. This implies that [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) will use the configuration found in the first request from a series of requests sent to the same host.
+        /// **Note:** HTTP/2 multiplexes several streams in a single HTTP/2 connection. This implies that [`QNetworkAccessManager`](crate::QNetworkAccessManager) will use the configuration found in the first request from a series of requests sent to the same host.
         #[rust_name = "set_http2_configuration"]
         fn setHttp2Configuration(&mut self, configuration: &QHttp2Configuration);
 

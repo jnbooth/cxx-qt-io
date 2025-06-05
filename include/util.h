@@ -10,5 +10,11 @@ qobjectDelete(QObject* object)
   delete object;
 }
 
+inline bool
+qobjectThreadEq(const QObject& lhs, const QObject& rhs)
+{
+  return lhs.thread() == rhs.thread();
+}
+
 }
 }

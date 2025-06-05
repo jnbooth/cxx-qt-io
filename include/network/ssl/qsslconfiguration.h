@@ -34,5 +34,11 @@ QList<QSslEllipticCurve> (*qsslconfigurationSupportedEllipticCurves)() =
 QList<QSslCertificate> (*qsslconfigurationSystemCaCertificates)() =
   QSslConfiguration::systemCaCertificates;
 
+::rust::String
+qsslconfigurationALPNProtocolHTTP2();
+
+::rust::String
+qsslconfigurationNextProtocolHttp1_1();
+
 }
 }

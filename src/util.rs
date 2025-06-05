@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 use std::pin::Pin;
 use std::ptr;
 use std::time::Duration;
@@ -15,17 +15,44 @@ mod ffi {
     }
 
     #[namespace = "rust::cxxqtio1"]
-    extern "C++" {
+    unsafe extern "C++" {
         #[rust_name = "qobject_delete"]
         unsafe fn qobjectDelete(object: *mut QObject);
+
+        #[rust_name = "qobject_thread_eq"]
+        fn qobjectThreadEq(lhs: &QObject, rhs: &QObject) -> bool;
     }
 }
 
+#[inline(always)]
+pub(crate) fn upcast_mut<From, To>(pointer: *mut From) -> *mut To
+where
+    From: Upcast<To>,
+{
+    // SAFETY: Provided by Upcast's contract.
+    unsafe { From::upcast_ptr(pointer) }.cast_mut()
+}
+
+/// Calls the virtual destructor of a `QObject`.
+///
+/// # Safety
+///
+/// `qobject` must be valid. It must not be accessed after calling this function.
 pub(crate) unsafe fn delete_qobject<T>(qobject: *mut T)
 where
     T: Upcast<QObject>,
 {
-    unsafe { ffi::qobject_delete(T::upcast_ptr(qobject).cast_mut()) }
+    // SAFETY: Provided by this function's unsafe contract.
+    unsafe { ffi::qobject_delete(upcast_mut(qobject)) }
+}
+
+/// Returns `true` if both objects are in the same thread.
+pub(crate) fn in_same_thread<T, U>(lhs: &T, rhs: &U) -> bool
+where
+    T: Upcast<QObject>,
+    U: Upcast<QObject>,
+{
+    ffi::qobject_thread_eq(lhs.upcast(), rhs.upcast())
 }
 
 /// Unwraps a`Pin<&mut T>` into a mutable pointer. This function should only be used
@@ -44,12 +71,10 @@ where
 /// will be treated as pinned all the way until its `drop` handler is complete!
 ///
 /// *For more information, see the [`pin` module docs][std::pin]*
-#[allow(dead_code)]
 pub(crate) unsafe fn unpin_for_qt<T>(pin: Pin<&mut T>) -> *mut T {
     unsafe { ptr::from_mut(Pin::into_inner_unchecked(pin)) }
 }
 
-#[allow(dead_code)]
 pub(crate) trait MSecs: Sized {
     fn msecs(self) -> i32;
 }
@@ -69,7 +94,6 @@ impl MSecs for Option<Duration> {
     }
 }
 
-#[allow(dead_code)]
 pub(crate) trait IsNonNull: Sized {
     fn is_nonnull(value: &Self) -> bool;
 

@@ -10,15 +10,15 @@ mod ffi {
         RedirectionTargetAttribute,
         /// Replies only, type: `QMetaType::Bool` (default: false) Indicates whether the data was obtained through an encrypted (secure) connection.
         ConnectionEncryptedAttribute,
-        /// Requests only, type: `QMetaType::Int` (default: `QNetworkRequest::PreferNetwork`) Controls how the cache should be accessed. The possible values are those of `QNetworkRequest::CacheLoadControl`. Note that the default [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) implementation does not support caching. However, this attribute may be used by certain backends to modify their requests (for example, for caching proxies).
+        /// Requests only, type: `QMetaType::Int` (default: `QNetworkRequest::PreferNetwork`) Controls how the cache should be accessed. The possible values are those of `QNetworkRequest::CacheLoadControl`. Note that the default [`QNetworkAccessManager`](crate::QNetworkAccessManager) implementation does not support caching. However, this attribute may be used by certain backends to modify their requests (for example, for caching proxies).
         CacheLoadControlAttribute,
-        /// Requests only, type: `QMetaType::Int` (default: `QNetworkRequest::PreferNetwork`) Controls how the cache should be accessed. The possible values are those of `QNetworkRequest::CacheLoadControl`. Note that the default [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) implementation does not support caching. However, this attribute may be used by certain backends to modify their requests (for example, for caching proxies).
+        /// Requests only, type: `QMetaType::Int` (default: `QNetworkRequest::PreferNetwork`) Controls how the cache should be accessed. The possible values are those of `QNetworkRequest::CacheLoadControl`. Note that the default [`QNetworkAccessManager`](crate::QNetworkAccessManager) implementation does not support caching. However, this attribute may be used by certain backends to modify their requests (for example, for caching proxies).
         CacheSaveControlAttribute,
         /// Replies only, type: `QMetaType::Bool` (default: false) Indicates whether the data was obtained from cache or not.
         SourceIsFromCacheAttribute,
-        /// Requests only, type: `QMetaType::Bool` (default: false) Indicates whether the [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) code is allowed to buffer the upload data, e.g. when doing a HTTP POST. When using this flag with sequential upload data, the ContentLengthHeader header must be set.
+        /// Requests only, type: `QMetaType::Bool` (default: false) Indicates whether the [`QNetworkAccessManager`](crate::QNetworkAccessManager) code is allowed to buffer the upload data, e.g. when doing a HTTP POST. When using this flag with sequential upload data, the ContentLengthHeader header must be set.
         DoNotBufferUploadDataAttribute,
-        /// Requests only, type: `QMetaType::Bool` (default: false) Indicates whether the [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) code is allowed to use HTTP pipelining with this request.
+        /// Requests only, type: `QMetaType::Bool` (default: false) Indicates whether the [`QNetworkAccessManager`](crate::QNetworkAccessManager) code is allowed to use HTTP pipelining with this request.
         HttpPipeliningAllowedAttribute,
         /// Replies only, type: `QMetaType::Bool` Indicates whether the HTTP pipelining was used for receiving this reply.
         HttpPipeliningWasUsedAttribute,
@@ -40,7 +40,7 @@ mod ffi {
         BackgroundRequestAttribute,
         /// Requests only, type: `QMetaType::Bool` (default: false) Indicates whether all upload signals should be emitted. By default, the uploadProgress signal is emitted only in 100 millisecond intervals.
         EmitAllUploadProgressSignalsAttribute,
-        /// Requests only, type: `QMetaType::Bool` (default: true) Indicates whether the [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) code is allowed to use HTTP/2 with this request. This applies to SSL requests or 'cleartext' HTTP/2 if Http2CleartextAllowedAttribute is set.
+        /// Requests only, type: `QMetaType::Bool` (default: true) Indicates whether the [`QNetworkAccessManager`](crate::QNetworkAccessManager) code is allowed to use HTTP/2 with this request. This applies to SSL requests or 'cleartext' HTTP/2 if Http2CleartextAllowedAttribute is set.
         Http2AllowedAttribute,
         /// Replies only, type: `QMetaType::Bool` (default: false) Indicates whether HTTP/2 was used for receiving this reply.
         Http2WasUsedAttribute,
@@ -48,20 +48,21 @@ mod ffi {
         OriginalContentLengthAttribute,
         /// Requests only, type: `QMetaType::Int`, should be one of the `QNetworkRequest::RedirectPolicy` values (default: `NoLessSafeRedirectPolicy`).
         RedirectPolicyAttribute,
-        /// Requests only, type: `QMetaType::Bool` (default: false) If set, this attribute will force [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) to use HTTP/2 protocol without initial HTTP/2 protocol negotiation. Use of this attribute implies prior knowledge that a particular server supports HTTP/2. The attribute works with SSL or with 'cleartext' HTTP/2 if Http2CleartextAllowedAttribute is set. If a server turns out to not support HTTP/2, when HTTP/2 direct was specified, [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) gives up, without attempting to fall back to HTTP/1.1. If both Http2AllowedAttribute and Http2DirectAttribute are set, Http2DirectAttribute takes priority.
+        /// Requests only, type: `QMetaType::Bool` (default: false) If set, this attribute will force [`QNetworkAccessManager`](crate::QNetworkAccessManager) to use HTTP/2 protocol without initial HTTP/2 protocol negotiation. Use of this attribute implies prior knowledge that a particular server supports HTTP/2. The attribute works with SSL or with 'cleartext' HTTP/2 if Http2CleartextAllowedAttribute is set. If a server turns out to not support HTTP/2, when HTTP/2 direct was specified, [`QNetworkAccessManager`](crate::QNetworkAccessManager) gives up, without attempting to fall back to HTTP/1.1. If both Http2AllowedAttribute and Http2DirectAttribute are set, Http2DirectAttribute takes priority.
         Http2DirectAttribute,
         #[doc(hidden)]
         ResourceTypeAttribute, // internal
-        /// Requests only, type: `QMetaType::Bool` (default: false) If set, this attribute will make [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) delete the `QNetworkReply` after having emitted "finished".
+        /// Requests only, type: `QMetaType::Bool` (default: false) If set, this attribute will make [`QNetworkAccessManager`](crate::QNetworkAccessManager) delete the `QNetworkReply` after having emitted "finished".
+        #[doc(hidden)]
         AutoDeleteReplyOnFinishAttribute,
         /// Requests only, type: `QMetaType::Int` To set when the TCP connections to a server (HTTP1 and HTTP2) should be closed after the last pending request had been processed.
         ConnectionCacheExpiryTimeoutSecondsAttribute,
-        /// Requests only, type: `QMetaType::Bool` (default: false) If set, this attribute will tell [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) to attempt an upgrade to HTTP/2 over cleartext (also known as h2c). Until Qt 7 the default value for this attribute can be overridden to true by setting the QT_NETWORK_H2C_ALLOWED environment variable. This attribute is ignored if the Http2AllowedAttribute is not set.
+        /// Requests only, type: `QMetaType::Bool` (default: false) If set, this attribute will tell [`QNetworkAccessManager`](crate::QNetworkAccessManager) to attempt an upgrade to HTTP/2 over cleartext (also known as h2c). Until Qt 7 the default value for this attribute can be overridden to true by setting the QT_NETWORK_H2C_ALLOWED environment variable. This attribute is ignored if the Http2AllowedAttribute is not set.
         Http2CleartextAllowedAttribute,
         /// Requests only, type: `QMetaType::Bool` (default: false) Indicates if the underlying XMLHttpRequest cross-site Access-Control requests should be made using credentials. Has no effect on same-origin requests. This only affects the WebAssembly platform.
         UseCredentialsAttribute,
 
-        /// Special type. Additional information can be passed in QVariants with types ranging from User to UserMax. The default implementation of Network Access will ignore any request attributes in this range and it will not produce any attributes in this range in replies. The range is reserved for extensions of [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html).
+        /// Special type. Additional information can be passed in QVariants with types ranging from User to UserMax. The default implementation of Network Access will ignore any request attributes in this range and it will not produce any attributes in this range in replies. The range is reserved for extensions of [`QNetworkAccessManager`](crate::QNetworkAccessManager).
         User = 1000,
         /// Special type. See User.
         UserMax = 32767,

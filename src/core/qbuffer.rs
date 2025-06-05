@@ -39,6 +39,10 @@ mod ffi {
         /// This is the same as [`buffer`](QBuffer::buffer).
         fn data(self: &QBuffer) -> &QByteArray;
 
+        /// Sets the contents of the internal buffer to be `data`. This is the same as assigning `data` to [`self.buffer_mut()`](QBuffer::buffer_mut).
+        #[rust_name = "set_buffer"]
+        fn setData(self: Pin<&mut QBuffer>, data: &QByteArray);
+
         /// Makes `QBuffer` use the `QByteArray` pointed to by `byte_array` as its internal buffer. `QBuffer` doesn't take ownership of the `QByteArray`.
         ///
         /// Does nothing if [`self.is_open()`](QIODevice::is_open) is `true`.
@@ -50,7 +54,7 @@ mod ffi {
         /// # Safety
         ///
         /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until this function is called again to change the buffer.
-        #[rust_name = "set_buffer"]
+        #[rust_name = "set_buffer_mut"]
         unsafe fn setBuffer(self: Pin<&mut QBuffer>, byte_array: *mut QByteArray);
     }
 
@@ -110,7 +114,7 @@ impl QBuffer {
         self.buffer_mut().as_mut_slice()
     }
 
-    /// Sets the contents of the internal buffer to be `data`. This is the same as assigning data to [`self.buffer()`](QBuffer::buffer).
+    /// Sets the contents of the internal buffer to be `data`.
     pub fn set_data<T: AsRef<[u8]>>(self: Pin<&mut Self>, data: T) {
         ffi::qbuffer_set_data(self, data.as_ref());
     }

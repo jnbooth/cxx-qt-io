@@ -46,7 +46,7 @@ mod ffi {
         /// Returns the boundary.
         fn boundary(self: &QHttpMultiPart) -> QByteArray;
 
-        /// Sets the content type to `content_type`. The content type will be used in the HTTP header section when sending the multipart message via [`QNetworkAccessManager::post`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html#post). In case you want to use a multipart subtype not contained in [`QHttpMultiPartContentType`], you can add the `"Content-Type"` header field to the [`QNetworkRequest`](crate::QNetworkRequest) by hand, and then use this request together with the multipart message for posting.
+        /// Sets the content type to `content_type`. The content type will be used in the HTTP header section when sending the multipart message via [`QNetworkAccessManager::post`](crate::QNetworkAccessManager::post). In case you want to use a multipart subtype not contained in [`QHttpMultiPartContentType`], you can add the `"Content-Type"` header field to the [`QNetworkRequest`](crate::QNetworkRequest) by hand, and then use this request together with the multipart message for posting.
         #[rust_name = "set_content_type"]
         fn setContentType(self: Pin<&mut QHttpMultiPart>, content_type: QHttpMultiPartContentType);
     }

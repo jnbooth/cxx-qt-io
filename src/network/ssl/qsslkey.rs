@@ -5,7 +5,7 @@ use std::fmt;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 
-use crate::util::{unpin_for_qt, IsNonNull};
+use crate::util::{unpin_for_qt, upcast_mut, IsNonNull};
 use crate::{QIODevice, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType};
 
 #[cxx::bridge]
@@ -160,10 +160,10 @@ impl QSslKey {
     where
         T: Upcast<QIODevice>,
     {
-        // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
+        // SAFETY: `upcast_mut(unpin_for_qt(device))` is passed directly to Qt.
         unsafe {
             ffi::qsslkey_init_device(
-                unpin_for_qt(device.upcast_pin()),
+                upcast_mut(unpin_for_qt(device)),
                 algorithm,
                 encoding,
                 key_type,

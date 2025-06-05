@@ -7,7 +7,7 @@ use cxx_qt::QObject;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QVariant};
-use std::io::{self, Read, Write};
+use std::io::{self, Read};
 use std::ops::Deref;
 use std::pin::Pin;
 
@@ -107,6 +107,7 @@ mod ffi {
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
 
         include!("cxx-qt-io/qnetworkaccessmanager.h");
+        type QNetworkAccessManager = crate::QNetworkAccessManager;
         type QNetworkAccessManagerOperation = crate::QNetworkAccessManagerOperation;
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequest = crate::QNetworkRequest;
@@ -147,7 +148,7 @@ mod ffi {
     }
 
     unsafe extern "C++Qt" {
-        /// The `QNetworkReply` class contains the data and headers for a request sent with [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html).
+        /// The `QNetworkReply` class contains the data and headers for a request sent with [`QNetworkAccessManager`].
         ///
         /// Qt Documentation: [QNetworkReply](https://doc.qt.io/qt-6/qnetworkreply.html#details)
         #[qobject]
@@ -189,7 +190,7 @@ mod ffi {
         ///
         /// This function can be called from the slot connected to the [`ssl_errors`](QNetworkReply::ssl_errors) signal, which indicates which errors were found.
         ///
-        /// **Note:** If HTTP Strict Transport Security is enabled for [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html), this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for [`QNetworkAccessManager`], this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_all_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>);
@@ -198,7 +199,7 @@ mod ffi {
         ///
         /// Multiple calls to this function will replace the list of errors that were passed in previous calls. You can clear the list of errors you want to ignore by calling this function with an empty list.
         ///
-        /// **Note:** If HTTP Strict Transport Security is enabled for [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html), this function has no effect.
+        /// **Note:** If HTTP Strict Transport Security is enabled for [`QNetworkAccessManager`], this function has no effect.
         #[cfg(feature = "ssl")]
         #[rust_name = "ignore_ssl_errors"]
         fn ignoreSslErrors(self: Pin<&mut QNetworkReply>, errors: &QList_QSslError);
@@ -211,7 +212,8 @@ mod ffi {
         #[rust_name = "is_running"]
         fn isRunning(self: &QNetworkReply) -> bool;
 
-        // fn manager(self: &QNetworkReply) -> *mut QNetworkAccessManager;
+        /// Returns the `QNetworkAccessManager` that was used to create this `QNetworkReply` object.
+        unsafe fn manager(self: &QNetworkReply) -> *mut QNetworkAccessManager;
 
         /// Returns the operation that was posted for this reply.
         fn operation(self: &QNetworkReply) -> QNetworkAccessManagerOperation;
@@ -275,7 +277,7 @@ mod ffi {
 
         /// This signal is emitted when an SSL/TLS session has successfully completed the initial handshake. At this point, no user data has been transmitted. The signal can be used to perform additional checks on the certificate chain, for example to notify users when the certificate for a website has changed. If the reply does not match the expected criteria then it should be aborted by calling [`abort`](QNetworkReply::abort) by a slot connected to this signal. The SSL configuration in use can be inspected using [`ssl_configuration`](QNetworkReply::ssl_configuration).
         ///
-        /// Internally, [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html) may open multiple connections to a server, in order to allow it process requests in parallel. These connections may be reused, which means that this signal would not be emitted. This means that you are only guaranteed to receive this signal for the first connection to a site in the lifespan of the [`QNetworkAccessManager`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html).
+        /// Internally, [`QNetworkAccessManager`](crate::QNetworkAccessManager) may open multiple connections to a server, in order to allow it process requests in parallel. These connections may be reused, which means that this signal would not be emitted. This means that you are only guaranteed to receive this signal for the first connection to a site in the lifespan of the [`QNetworkAccessManager`](crate::QNetworkAccessManager).
         #[cfg(feature = "ssl")]
         #[qsignal]
         fn encrypted(self: Pin<&mut QNetworkReply>);
@@ -293,7 +295,7 @@ mod ffi {
         ///
         /// Unless [`close`](QIODevice::close) or [`abort`](QNetworkReply::abort) have been called, the reply will still be opened for reading, so the data can be retrieved by calls to [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all). In particular, if no calls to [`read`](QIODevice::read) were made as a result of [`ready_read`](QIODevice::ready_read), a call to [`read_all`](QIODevice::read_all) will retrieve the full contents in a `QByteArray`.
         ///
-        /// This signal is emitted in tandem with [`QNetworkAccessManager::finished`](https://doc.qt.io/qt-6/qnetworkaccessmanager.html#finished) where that signal's reply parameter is this object.
+        /// This signal is emitted in tandem with [`QNetworkAccessManager::finished`](crate::QNetworkAccessManager::finished) where that signal's reply parameter is this object.
         ///
         /// **Note:** Do not delete the object in the slot connected to this signal.
         ///
@@ -452,15 +454,5 @@ unsafe impl Upcast<QObject> for QNetworkReply {
 impl Read for Pin<&mut QNetworkReply> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         self.as_io_device_mut().read(buf)
-    }
-}
-
-impl Write for Pin<&mut QNetworkReply> {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.as_io_device_mut().write(buf)
-    }
-
-    fn flush(&mut self) -> io::Result<()> {
-        Ok(())
     }
 }

@@ -253,6 +253,7 @@ fn main() {
             .qt_module("Network")
             .build_cpp(&[
                 "network/qabstractnetworkcache",
+                "network/qnetworkaccessmanager",
                 "network/qnetworkcachemetadata",
                 "network/qhostaddress",
                 "network/qhstspolicy",
@@ -267,6 +268,7 @@ fn main() {
             ])
             .build_rust(&[
                 "core/qlist/qlist_qhostaddress",
+                "core/qlist/qlist_qhstspolicy",
                 "core/qlist/qlist_qhttp2configuration",
                 "core/qlist/qlist_qhttppart",
                 "core/qlist/qlist_qnetworkaddressentry",
