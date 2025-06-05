@@ -5,7 +5,10 @@
 
 #ifdef CXX_QT_IO_NETWORK_FEATURE
 #include "qset_qhostaddress.h"
+
+#ifdef CXX_QT_IO_REQUEST_FEATURE
 #include "qset_qhttp1configuration.h"
+#endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
 #include "qset_qocspresponse.h"

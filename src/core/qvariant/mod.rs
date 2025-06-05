@@ -21,5 +21,5 @@ macro_rules! impl_qvariant_value {
     };
 }
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "request")]
 impl_qvariant_value!(QNetworkCookie, qvariant_qnetworkcookie);

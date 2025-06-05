@@ -81,24 +81,24 @@ impl_qlist_element!(
     "QList_QDeadlineTimer"
 );
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "request")]
 impl_qlist_element!(crate::QHstsPolicy, qlist_qhstspolicy, "QList_QHstsPolicy");
 
-#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_5))]
+#[cfg(all(feature = "request", cxxqt_qt_version_at_least_6_5))]
 impl_qlist_element!(
     crate::QHttp1Configuration,
     qlist_qhttp1configuration,
     "QList_QHttp1Configuration",
 );
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "request")]
 impl_qlist_element!(
     crate::QHttp2Configuration,
     qlist_qhttp2configuration,
     "QList_QHttp2Configuration",
 );
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "request")]
 impl_qlist_element!(crate::QHttpPart, qlist_qhttppart, "QList_QHttpPart");
 
 #[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
@@ -122,7 +122,7 @@ impl_qlist_element!(
     "QList_QNetworkAddressEntry",
 );
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "request")]
 impl_qlist_element!(
     crate::QNetworkCookie,
     qlist_qnetworkcookie,
@@ -150,7 +150,7 @@ impl_qlist_element!(
     "QList_QNetworkProxy",
 );
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "request")]
 impl_qlist_element!(
     crate::QNetworkRequest,
     qlist_qnetworkrequest,

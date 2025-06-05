@@ -93,18 +93,11 @@ macro_rules! impl_qhash_pair {
     };
 }
 
-#[cfg(feature = "qt_network")]
-mod network {
-    use super::*;
-
-    impl_qhash_pair!(
-        QHashPair_QNetworkRequestAttribute_QVariant,
-        "QHash_QNetworkRequestAttribute_QVariant",
-        crate::QNetworkRequestAttribute,
-        cxx_qt_lib::QVariant,
-        crate::QHashPair_i32_QVariant
-    );
-}
-
-#[cfg(feature = "qt_network")]
-pub use network::*;
+#[cfg(feature = "request")]
+impl_qhash_pair!(
+    QHashPair_QNetworkRequestAttribute_QVariant,
+    "QHash_QNetworkRequestAttribute_QVariant",
+    crate::QNetworkRequestAttribute,
+    cxx_qt_lib::QVariant,
+    crate::QHashPair_i32_QVariant
+);

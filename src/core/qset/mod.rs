@@ -57,6 +57,13 @@ macro_rules! impl_qset_element {
     };
 }
 
+#[cfg(feature = "request")]
+impl_qset_element!(
+    QHttp1Configuration,
+    qset_qhttp1configuration,
+    "QSet_QHttp1Configuration"
+);
+
 #[cfg(feature = "ssl")]
 impl_qset_element!(QOcspResponse, qset_qocspresponse, "QSet_QOcspResponse");
 

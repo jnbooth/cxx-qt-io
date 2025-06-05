@@ -14,6 +14,7 @@ macro_rules! include_header {
 
 struct Features {
     pub network: bool,
+    pub request: bool,
     pub ssl: bool,
 }
 
@@ -25,6 +26,7 @@ impl Features {
     pub fn from_env() -> Self {
         Self {
             network: Self::env("QT_NETWORK"),
+            request: Self::env("REQUEST"),
             ssl: Self::env("SSL"),
         }
     }
@@ -51,6 +53,10 @@ impl HeaderBuilder {
 
         if features.network {
             definitions.push_str("#define CXX_QT_IO_NETWORK_FEATURE\n");
+        }
+
+        if features.request {
+            definitions.push_str("#define CXX_QT_IO_REQUEST_FEATURE\n");
         }
 
         if features.ssl {
@@ -210,40 +216,21 @@ fn main() {
     if features.network {
         header_dir.write_headers(&[
             include_header!("include/core/qlist/qlist_qhostaddress.h"),
-            include_header!("include/core/qlist/qlist_qhttp2configuration.h"),
-            include_header!("include/core/qlist/qlist_qhttppart.h"),
-            include_header!("include/core/qlist/qlist_qhstspolicy.h"),
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
-            include_header!("include/core/qlist/qlist_qnetworkcachemetadata.h"),
-            include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
             include_header!("include/core/qlist/qlist_qnetworkdatagram.h"),
             include_header!("include/core/qlist/qlist_qnetworkinterface.h"),
             include_header!("include/core/qlist/qlist_qnetworkproxy.h"),
-            include_header!("include/core/qlist/qlist_qnetworkrequest.h"),
             include_header!("include/core/qset/qset_qhostaddress.h"),
-            include_header!("include/core/qset/qset_qhttp1configuration.h"),
             include_header!("include/core/qpair/qpair_qhostaddress_i32.h"),
-            include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
-            include_header!("include/network/qabstractnetworkcache.h"),
             include_header!("include/network/qabstractsocket.h"),
             include_header!("include/network/qauthenticator.h"),
             include_header!("include/network/qhostaddress.h"),
-            include_header!("include/network/qhstspolicy.h"),
-            include_header!("include/network/qhttp2configuration.h"),
-            include_header!("include/network/qhttpmultipart.h"),
-            include_header!("include/network/qhttppart.h"),
             include_header!("include/network/qlocalsocket.h"),
-            include_header!("include/network/qnetworkaccessmanager.h"),
             include_header!("include/network/qnetworkaddressentry.h"),
-            include_header!("include/network/qnetworkcachemetadata.h"),
-            include_header!("include/network/qnetworkcookie.h"),
-            include_header!("include/network/qnetworkcookiejar.h"),
             include_header!("include/network/qnetworkdatagram.h"),
-            include_header!("include/network/qnetworkdiskcache.h"),
             include_header!("include/network/qnetworkinterface.h"),
             include_header!("include/network/qnetworkproxy.h"),
             include_header!("include/network/qnetworkrequest.h"),
-            include_header!("include/network/qnetworkreply.h"),
             include_header!("include/network/qtcpserver.h"),
             include_header!("include/network/qtcpsocket.h"),
             include_header!("include/network/qudpsocket.h"),
@@ -252,61 +239,102 @@ fn main() {
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
-                "network/qabstractnetworkcache",
-                "network/qnetworkaccessmanager",
-                "network/qnetworkcachemetadata",
                 "network/qhostaddress",
-                "network/qhstspolicy",
-                "network/qhttp2configuration",
-                "network/qhttppart",
                 "network/qnetworkaddressentry",
-                "network/qnetworkcachemetadata",
-                "network/qnetworkcookie/qnetworkcookie",
                 "network/qnetworkdatagram",
                 "network/qnetworkproxy",
-                "network/qnetworkrequest/qnetworkrequest",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qhostaddress",
-                "core/qlist/qlist_qhstspolicy",
-                "core/qlist/qlist_qhttp2configuration",
-                "core/qlist/qlist_qhttppart",
                 "core/qlist/qlist_qnetworkaddressentry",
-                "core/qlist/qlist_qnetworkcachemetadata",
-                "core/qlist/qlist_qnetworkcookie",
                 "core/qlist/qlist_qnetworkdatagram",
                 "core/qlist/qlist_qnetworkinterface",
                 "core/qlist/qlist_qnetworkproxy",
-                "core/qlist/qlist_qnetworkrequest",
-                "core/qvariant/qvariant_qnetworkcookie",
                 "network/raw_header_list",
-                "network/qabstractnetworkcache",
                 "network/qabstractsocket",
                 "network/qauthenticator",
                 "network/qhostaddress",
+                "network/qlocalsocket",
+                "network/qnetworkaddressentry",
+                "network/qnetworkdatagram",
+                "network/qnetworkinterface",
+                "network/qnetworkproxy",
+                "network/qnetworkrequestknownheaders",
+                "network/qtcpserver",
+                "network/qtcpsocket",
+                "network/qudpsocket",
+            ]);
+
+        if version.at_least(6, 7) {
+            header_dir.write_headers(&[
+                include_header!("include/core/qlist/qlist_qhttpheaders.h"),
+                include_header!("include/network/qhttpheaders.h"),
+            ]);
+            builder = builder
+                .build_cpp(&["network/qhttpheaders"])
+                .build_rust(&["core/qlist/qlist_qhttpheaders", "network/qhttpheaders"]);
+        }
+    }
+
+    if features.request {
+        header_dir.write_headers(&[
+            include_header!("include/core/qlist/qlist_qhstspolicy.h"),
+            include_header!("include/core/qlist/qlist_qhttp2configuration.h"),
+            include_header!("include/core/qlist/qlist_qhttppart.h"),
+            include_header!("include/core/qlist/qlist_qnetworkcachemetadata.h"),
+            include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
+            include_header!("include/core/qlist/qlist_qnetworkrequest.h"),
+            include_header!("include/core/qset/qset_qhttp1configuration.h"),
+            include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
+            include_header!("include/network/qabstractnetworkcache.h"),
+            include_header!("include/network/qhstspolicy.h"),
+            include_header!("include/network/qhttp2configuration.h"),
+            include_header!("include/network/qhttpmultipart.h"),
+            include_header!("include/network/qhttppart.h"),
+            include_header!("include/network/qnetworkaccessmanager.h"),
+            include_header!("include/network/qnetworkcachemetadata.h"),
+            include_header!("include/network/qnetworkcookie.h"),
+            include_header!("include/network/qnetworkcookiejar.h"),
+            include_header!("include/network/qnetworkdiskcache.h"),
+            include_header!("include/network/qnetworkreply.h"),
+        ]);
+
+        builder = builder
+            .build_cpp(&[
+                "network/qabstractnetworkcache",
+                "network/qnetworkaccessmanager",
+                "network/qnetworkcachemetadata",
+                "network/qhstspolicy",
+                "network/qhttp2configuration",
+                "network/qhttppart",
+                "network/qnetworkcachemetadata",
+                "network/qnetworkcookie/qnetworkcookie",
+                "network/qnetworkrequest/qnetworkrequest",
+            ])
+            .build_rust(&[
+                "core/qlist/qlist_qhstspolicy",
+                "core/qlist/qlist_qhttp2configuration",
+                "core/qlist/qlist_qhttppart",
+                "core/qlist/qlist_qnetworkcachemetadata",
+                "core/qlist/qlist_qnetworkcookie",
+                "core/qlist/qlist_qnetworkrequest",
+                "core/qvariant/qvariant_qnetworkcookie",
+                "network/qabstractnetworkcache",
                 "network/qhstspolicy",
                 "network/qhttp2configuration",
                 "network/qhttpmultipart",
                 "network/qhttppart",
-                "network/qlocalsocket",
                 "network/qnetworkaccessmanager",
-                "network/qnetworkaddressentry",
                 "network/qnetworkcachemetadata",
                 "network/qnetworkcookie/mod",
                 "network/qnetworkcookiejar",
-                "network/qnetworkdatagram",
                 "network/qnetworkdiskcache",
-                "network/qnetworkinterface",
-                "network/qnetworkproxy",
                 "network/qnetworkrequest/mod",
                 &version.find(
                     "network/qnetworkrequest/attribute",
                     &[(6, 8), (6, 5), (6, 3)],
                 ),
                 "network/qnetworkreply",
-                "network/qtcpserver",
-                "network/qtcpsocket",
-                "network/qudpsocket",
             ]);
 
         if version.at_least(6, 1) {
@@ -325,17 +353,8 @@ fn main() {
                     "network/qhttp1configuration",
                 ]);
         }
-
-        if version.at_least(6, 7) {
-            header_dir.write_headers(&[
-                include_header!("include/core/qlist/qlist_qhttpheaders.h"),
-                include_header!("include/network/qhttpheaders.h"),
-            ]);
-            builder = builder
-                .build_cpp(&["network/qhttpheaders"])
-                .build_rust(&["core/qlist/qlist_qhttpheaders", "network/qhttpheaders"]);
-        }
     }
+
     if features.ssl {
         header_dir.write_headers(&[
             include_header!("include/core/qlist/qlist_qdtlsgeneratorparameters.h"),

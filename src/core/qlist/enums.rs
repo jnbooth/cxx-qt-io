@@ -167,13 +167,6 @@ mod network {
         i8
     );
 
-    impl_qlist_element!(crate::QNetworkCookieRawForm, "QList_QNetworkCookieRawForm");
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
-    impl_qlist_element!(
-        crate::QNetworkCookieSameSite,
-        "QList_QNetworkCookieSameSite"
-    );
-
     impl_qlist_element!(
         crate::QNetworkInterfaceInterfaceFlag,
         "QList_QNetworkInterfaceInterfaceFlag"
@@ -193,16 +186,31 @@ mod network {
     );
 
     impl_qlist_element!(
+        crate::QNetworkRequestKnownHeaders,
+        "QList_QNetworkRequestKnownHeaders"
+    );
+}
+
+#[cfg(feature = "request")]
+mod request {
+    use super::*;
+    impl_qlist_element!(
+        crate::QNetworkAccessManagerOperation,
+        "QList_QNetworkAccessManagerOperation"
+    );
+    impl_qlist_element!(crate::QNetworkCookieRawForm, "QList_QNetworkCookieRawForm");
+    #[cfg(cxxqt_qt_version_at_least_6_1)]
+    impl_qlist_element!(
+        crate::QNetworkCookieSameSite,
+        "QList_QNetworkCookieSameSite"
+    );
+    impl_qlist_element!(
         crate::QNetworkRequestAttribute,
         "QList_QNetworkRequestAttribute"
     );
     impl_qlist_element!(
         crate::QNetworkRequestCacheLoadControl,
         "QList_QNetworkRequestCacheLoadControl"
-    );
-    impl_qlist_element!(
-        crate::QNetworkRequestKnownHeaders,
-        "QList_QNetworkRequestKnownHeaders"
     );
     impl_qlist_element!(
         crate::QNetworkRequestLoadControl,

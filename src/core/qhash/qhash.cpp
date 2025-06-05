@@ -21,7 +21,7 @@
 
 CXX_QT_IO_QHASH_ASSERTS(::std::int32_t, QVariant, i32_QVariant);
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_REQUEST_FEATURE
 CXX_QT_IO_QHASH_ASSERTS(QNetworkRequest::Attribute,
                         QVariant,
                         QNetworkRequestAttribute_QVariant);
