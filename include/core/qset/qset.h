@@ -3,8 +3,9 @@
 #include <cxx-qt-io/definitions.h>
 #include <cxx-qt-lib/qset.h>
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 #include "qset_qhostaddress.h"
+#endif
 
 #ifdef CXX_QT_IO_REQUEST_FEATURE
 #include "qset_qhttp1configuration.h"
@@ -16,6 +17,4 @@
 #include "qset_qssldiffiehellmanparameters.h"
 #include "qset_qsslellipticcurve.h"
 #include "qset_qsslerror.h"
-#endif
-
 #endif

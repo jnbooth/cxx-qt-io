@@ -9,26 +9,30 @@
 #include "qlist_qdeadlinetimer.h"
 #include "qlist_qpair_qbytearray_qbytearray.h"
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 #include "qlist_qhostaddress.h"
-#include "qlist_qhstspolicy.h"
-#include "qlist_qhttp2configuration.h"
-#include "qlist_qhttppart.h"
 #include "qlist_qnetworkaddressentry.h"
-#include "qlist_qnetworkcachemetadata.h"
-#include "qlist_qnetworkcookie.h"
 #include "qlist_qnetworkproxy.h"
-#include "qlist_qnetworkrequest.h"
 
 #include "qlist_qnetworkdatagram.h"
 #include "qlist_qnetworkinterface.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+#include "qlist_qhttpheaders.h"
+#endif
+#endif
+
+#ifdef CXX_QT_IO_REQUEST_FEATURE
+#include "qlist_qhstspolicy.h"
+#include "qlist_qhttp2configuration.h"
+#include "qlist_qhttppart.h"
+#include "qlist_qnetworkcachemetadata.h"
+#include "qlist_qnetworkcookie.h"
+#include "qlist_qnetworkrequest.h"
+
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
 #include "qlist_qhttp1configuration.h"
 #endif
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
-#include "qlist_qhttpheaders.h"
 #endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
@@ -46,8 +50,6 @@
 #include "qlist_qsslcertificateextension.h"
 #endif
 
-#endif
-
 using QList_QCryptographicHashAlgorithm = QList<QCryptographicHash::Algorithm>;
 
 using QList_QFileDeviceFileError = QList<QFileDevice::FileError>;
@@ -58,7 +60,7 @@ using QList_QFileDevicePermission = QList<QFileDevice::Permission>;
 
 using QList_QIODeviceOpenModeFlag = QList<QIODevice::OpenModeFlag>;
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 using QList_QAbstractSocketBindFlag = QList<QAbstractSocket::BindFlag>;
 using QList_QAbstractSocketBindMode = QList<QAbstractSocket::BindMode>;
 using QList_QAbstractSocketNetworkLayerProtocol =
@@ -75,8 +77,6 @@ using QList_QHostAddressSpecialAddress = QList<QHostAddress::SpecialAddress>;
 using QList_QNetworkAddressEntryDnsEligibilityStatus =
   QList<QNetworkAddressEntry::DnsEligibilityStatus>;
 
-using QList_QNetworkCookieRawForm = QList<QNetworkCookieRawForm>;
-
 using QList_QNetworkInterfaceInterfaceFlag =
   QList<QNetworkInterface::InterfaceFlag>;
 using QList_QNeteworkInterfaceInterfaceType =
@@ -90,9 +90,14 @@ using QList_QNetworkRequestKnownHeaders = QList<QNetworkRequest::KnownHeaders>;
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
 using QList_QHttpHeadersWellKnownHeader = QList<QHttpHeaders::WellKnownHeader>;
 #endif
+#endif
+
+#ifdef CXX_QT_IO_REQUEST_FEATURE
+using QList_QNetworkCookieRawForm = QList<QNetworkCookieRawForm>;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QList_QNetworkCookieSameSite = QList<QNetworkCookie::SameSite>;
+#endif
 #endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
@@ -124,7 +129,5 @@ using QList_QSslAlertType = QList<QSsl::AlertType>;
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QList_QSslImplementedClass = QList<QSsl::ImplementedClass>;
 using QList_QSslSupportedFeature = QList<QSsl::SupportedFeature>;
-#endif
-
 #endif
 #endif

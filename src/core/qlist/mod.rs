@@ -81,6 +81,48 @@ impl_qlist_element!(
     "QList_QDeadlineTimer"
 );
 
+#[cfg(all(feature = "net", cxxqt_qt_version_at_least_6_7))]
+impl_qlist_element!(
+    crate::QHttpHeaders,
+    qlist_qhttpheaders,
+    "QList_QHttpHeaders",
+);
+
+#[cfg(feature = "net")]
+impl_qlist_element!(
+    crate::QHostAddress,
+    qlist_qhostaddress,
+    "QList_QHostAddress",
+);
+
+#[cfg(feature = "net")]
+impl_qlist_element!(
+    crate::QNetworkAddressEntry,
+    qlist_qnetworkaddressentry,
+    "QList_QNetworkAddressEntry",
+);
+
+#[cfg(feature = "net")]
+impl_qlist_element!(
+    crate::QNetworkDatagram,
+    qlist_qnetworkdatagram,
+    "QList_QNetworkDatagram",
+);
+
+#[cfg(feature = "net")]
+impl_qlist_element!(
+    crate::QNetworkInterface,
+    qlist_qnetworkinterface,
+    "QList_QNetworkInterface",
+);
+
+#[cfg(feature = "net")]
+impl_qlist_element!(
+    crate::QNetworkProxy,
+    qlist_qnetworkproxy,
+    "QList_QNetworkProxy",
+);
+
 #[cfg(feature = "request")]
 impl_qlist_element!(crate::QHstsPolicy, qlist_qhstspolicy, "QList_QHstsPolicy");
 
@@ -101,53 +143,11 @@ impl_qlist_element!(
 #[cfg(feature = "request")]
 impl_qlist_element!(crate::QHttpPart, qlist_qhttppart, "QList_QHttpPart");
 
-#[cfg(all(feature = "qt_network", cxxqt_qt_version_at_least_6_7))]
-impl_qlist_element!(
-    crate::QHttpHeaders,
-    qlist_qhttpheaders,
-    "QList_QHttpHeaders",
-);
-
-#[cfg(feature = "qt_network")]
-impl_qlist_element!(
-    crate::QHostAddress,
-    qlist_qhostaddress,
-    "QList_QHostAddress",
-);
-
-#[cfg(feature = "qt_network")]
-impl_qlist_element!(
-    crate::QNetworkAddressEntry,
-    qlist_qnetworkaddressentry,
-    "QList_QNetworkAddressEntry",
-);
-
 #[cfg(feature = "request")]
 impl_qlist_element!(
     crate::QNetworkCookie,
     qlist_qnetworkcookie,
     "QList_QNetworkCookie",
-);
-
-#[cfg(feature = "qt_network")]
-impl_qlist_element!(
-    crate::QNetworkDatagram,
-    qlist_qnetworkdatagram,
-    "QList_QNetworkDatagram",
-);
-
-#[cfg(feature = "qt_network")]
-impl_qlist_element!(
-    crate::QNetworkInterface,
-    qlist_qnetworkinterface,
-    "QList_QNetworkInterface",
-);
-
-#[cfg(feature = "qt_network")]
-impl_qlist_element!(
-    crate::QNetworkProxy,
-    qlist_qnetworkproxy,
-    "QList_QNetworkProxy",
 );
 
 #[cfg(feature = "request")]

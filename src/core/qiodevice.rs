@@ -1,8 +1,7 @@
 use crate::util::MSecs;
-#[cfg(feature = "qt_network")]
-use crate::{QAbstractSocket, QLocalSocket};
-use crate::{QFile, QFileDevice};
-use cxx_qt::casting::{Downcast, Upcast};
+#[cfg(any(feature = "fs", feature = "net"))]
+use cxx_qt::casting::Downcast;
+use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
@@ -591,15 +590,16 @@ impl QIODevice {
     }
 
     fn get_error_kind(&self) -> io::ErrorKind {
-        if let Some(file_device) = self.downcast::<QFileDevice>() {
+        #[cfg(feature = "fs")]
+        if let Some(file_device) = self.downcast::<crate::QFileDevice>() {
             return file_device.error().into();
         }
-        #[cfg(feature = "qt_network")]
-        if let Some(abstract_socket) = self.downcast::<QAbstractSocket>() {
+        #[cfg(feature = "net")]
+        if let Some(abstract_socket) = self.downcast::<crate::QAbstractSocket>() {
             return abstract_socket.error().into();
         }
-        #[cfg(feature = "qt_network")]
-        if let Some(local_socket) = self.downcast::<QLocalSocket>() {
+        #[cfg(feature = "net")]
+        if let Some(local_socket) = self.downcast::<crate::QLocalSocket>() {
             return local_socket.error().into();
         }
         io::ErrorKind::Other

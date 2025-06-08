@@ -1,4 +1,4 @@
-#![cfg(feature = "qt_network")]
+#![cfg(feature = "net")]
 mod common;
 use common::{run_inside_app, ConnectErrors};
 

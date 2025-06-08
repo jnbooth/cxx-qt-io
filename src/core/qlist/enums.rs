@@ -84,24 +84,25 @@ macro_rules! impl_qlist_element {
     };
 }
 
-impl_qlist_element!(
-    crate::QCryptographicHashAlgorithm,
-    "QList_QCryptographicHashAlgorithm"
-);
-impl_qlist_element!(crate::QFileDeviceFileError, "QList_QFileDeviceFileError");
-impl_qlist_element!(
-    crate::QFileDeviceFileHandleFlag,
-    "QList_QFileDeviceFileHandleFlag"
-);
-impl_qlist_element!(crate::QFileDeviceFileTime, "QList_QFileDeviceFileTime");
-impl_qlist_element!(
-    crate::QFileDeviceMemoryMapFlag,
-    "QList_QFileDeviceMemoryMapFlag"
-);
-impl_qlist_element!(crate::QFileDevicePermission, "QList_QFileDevicePermission");
 impl_qlist_element!(crate::QIODeviceOpenModeFlag, "QList_QIODeviceOpenModeFlag");
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "fs")]
+mod fs {
+    use super::*;
+    impl_qlist_element!(crate::QFileDeviceFileError, "QList_QFileDeviceFileError");
+    impl_qlist_element!(
+        crate::QFileDeviceFileHandleFlag,
+        "QList_QFileDeviceFileHandleFlag"
+    );
+    impl_qlist_element!(crate::QFileDeviceFileTime, "QList_QFileDeviceFileTime");
+    impl_qlist_element!(
+        crate::QFileDeviceMemoryMapFlag,
+        "QList_QFileDeviceMemoryMapFlag"
+    );
+    impl_qlist_element!(crate::QFileDevicePermission, "QList_QFileDevicePermission");
+}
+
+#[cfg(feature = "net")]
 mod network {
     use super::*;
     impl_qlist_element!(
@@ -229,6 +230,10 @@ mod request {
 #[cfg(feature = "ssl")]
 mod ssl {
     use super::*;
+    impl_qlist_element!(
+        crate::QCryptographicHashAlgorithm,
+        "QList_QCryptographicHashAlgorithm"
+    );
     impl_qlist_element!(
         crate::QOcspCertificateStatus,
         "QList_QOcspCertificateStatus"

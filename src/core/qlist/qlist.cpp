@@ -24,26 +24,30 @@
 CXX_QT_IO_QLIST_ASSERTS(QDeadlineTimer);
 CXX_QT_IO_QLIST_ASSERTS(QPair_QByteArray_QByteArray);
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 CXX_QT_IO_QLIST_ASSERTS(QHostAddress);
-CXX_QT_IO_QLIST_ASSERTS(QHstsPolicy);
-CXX_QT_IO_QLIST_ASSERTS(QHttp2Configuration);
-CXX_QT_IO_QLIST_ASSERTS(QHttpPart);
 CXX_QT_IO_QLIST_ASSERTS(QNetworkAddressEntry);
-CXX_QT_IO_QLIST_ASSERTS(QNetworkCacheMetaData);
-CXX_QT_IO_QLIST_ASSERTS(QNetworkCookie);
 CXX_QT_IO_QLIST_ASSERTS(QNetworkProxy);
-CXX_QT_IO_QLIST_ASSERTS(QNetworkRequest);
 
 CXX_QT_IO_QLIST_ASSERTS(QNetworkDatagram);
 CXX_QT_IO_QLIST_ASSERTS(QNetworkInterface);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+CXX_QT_IO_QLIST_ASSERTS(QHttpHeaders);
+#endif
+#endif
+
+#ifdef CXX_QT_IO_REQUEST_FEATURE
+CXX_QT_IO_QLIST_ASSERTS(QHstsPolicy);
+CXX_QT_IO_QLIST_ASSERTS(QHttp2Configuration);
+CXX_QT_IO_QLIST_ASSERTS(QHttpPart);
+CXX_QT_IO_QLIST_ASSERTS(QNetworkCacheMetaData);
+CXX_QT_IO_QLIST_ASSERTS(QNetworkCookie);
+CXX_QT_IO_QLIST_ASSERTS(QNetworkRequest);
+
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
 CXX_QT_IO_QLIST_ASSERTS(QHttp1Configuration);
 #endif
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
-CXX_QT_IO_QLIST_ASSERTS(QHttpHeaders);
 #endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
@@ -59,6 +63,4 @@ CXX_QT_IO_QLIST_ASSERTS(QSslPreSharedKeyAuthenticator);
 CXX_QT_IO_QLIST_ASSERTS(QDtlsGeneratorParameters)
 CXX_QT_IO_QLIST_ASSERTS(QOcspResponse);
 CXX_QT_IO_QLIST_ASSERTS(QSslCertificateExtension);
-#endif
-
 #endif

@@ -21,5 +21,5 @@ macro_rules! impl_extern {
 
 impl_extern!(QByteArray, QByteArray, "QPair_QByteArray_QByteArray");
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "net")]
 impl_extern!(crate::QHostAddress, i32, "QPair_QHostAddress_i32");

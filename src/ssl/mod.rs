@@ -1,3 +1,6 @@
+mod qcryptographichash;
+pub use qcryptographichash::QCryptographicHashAlgorithm;
+
 mod qdtls;
 pub use qdtls::{QDtls, QDtlsError, QDtlsHandshakeState};
 

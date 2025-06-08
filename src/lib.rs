@@ -34,11 +34,26 @@ macro_rules! unsafe_impl_qflag {
 }
 
 mod core;
-pub use crate::core::*;
+pub use core::*;
 
-#[cfg(feature = "qt_network")]
-mod network;
-#[cfg(feature = "qt_network")]
-pub use crate::network::*;
+#[cfg(feature = "fs")]
+mod fs;
+#[cfg(feature = "fs")]
+pub use fs::*;
+
+#[cfg(feature = "net")]
+mod net;
+#[cfg(feature = "net")]
+pub use net::*;
+
+#[cfg(feature = "request")]
+mod request;
+#[cfg(feature = "request")]
+pub use request::*;
+
+#[cfg(feature = "ssl")]
+mod ssl;
+#[cfg(feature = "ssl")]
+pub use ssl::*;
 
 mod util;

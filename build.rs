@@ -13,7 +13,8 @@ macro_rules! include_header {
 }
 
 struct Features {
-    pub network: bool,
+    pub fs: bool,
+    pub net: bool,
     pub request: bool,
     pub ssl: bool,
 }
@@ -25,7 +26,8 @@ impl Features {
 
     pub fn from_env() -> Self {
         Self {
-            network: Self::env("QT_NETWORK"),
+            fs: Self::env("FS"),
+            net: Self::env("NET"),
             request: Self::env("REQUEST"),
             ssl: Self::env("SSL"),
         }
@@ -51,8 +53,12 @@ impl HeaderBuilder {
     pub fn write_definitions(&self, features: &Features) {
         let mut definitions = "#pragma once\n".to_owned();
 
-        if features.network {
-            definitions.push_str("#define CXX_QT_IO_NETWORK_FEATURE\n");
+        if features.fs {
+            definitions.push_str("#define CXX_QT_IO_FS_FEATURE\n");
+        }
+
+        if features.net {
+            definitions.push_str("#define CXX_QT_IO_NET_FEATURE\n");
         }
 
         if features.request {
@@ -130,7 +136,7 @@ fn main() {
     let features = Features::from_env();
 
     let mut qt_modules = vec!["Core".to_owned()];
-    if features.network {
+    if features.net {
         qt_modules.push("Network".to_owned());
     }
 
@@ -147,11 +153,7 @@ fn main() {
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
         include_header!("include/core/qbuffer.h"),
-        include_header!("include/core/qcryptographichash.h"),
         include_header!("include/core/qdeadlinetimer.h"),
-        include_header!("include/core/qdir.h"),
-        include_header!("include/core/qfile.h"),
-        include_header!("include/core/qfiledevice.h"),
         include_header!("include/core/qhash/qhash_i32_qvariant.h"),
         include_header!("include/core/qhash/qhash_private.h"),
         include_header!("include/core/qhash/qhash.h"),
@@ -167,11 +169,8 @@ fn main() {
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
-        include_header!("include/core/qsavefile.h"),
-        include_header!("include/core/qstandardpaths.h"),
         include_header!("include/core/qset/qset_private.h"),
         include_header!("include/core/qset/qset.h"),
-        include_header!("include/core/qtemporaryfile.h"),
         include_header!("include/core/qvariant/qvariant.h"),
         include_header!("include/util.h"),
         include_header!("include/views.h"),
@@ -197,23 +196,36 @@ fn main() {
         ])
         .build_rust(&[
             "core/qbuffer",
-            "core/qcryptographichash",
             "core/qdeadlinetimer",
-            "core/qdir",
-            "core/qfile",
-            "core/qfiledevice",
             "core/qiodevice",
             "core/qlist/qlist_qpair_qbytearray_qbytearray",
             "core/qmap/qmap_qbytearray_qvariant",
-            "core/qsavefile",
-            "core/qstandardpaths/mod",
-            &version.find("core/qstandardpaths", &[(6, 7), (6, 4)]),
             "core/qt",
-            "core/qtemporaryfile",
             "util",
         ]);
 
-    if features.network {
+    if features.fs {
+        header_dir.write_headers(&[
+            include_header!("include/core/qdir.h"),
+            include_header!("include/core/qfile.h"),
+            include_header!("include/core/qfiledevice.h"),
+            include_header!("include/core/qsavefile.h"),
+            include_header!("include/core/qstandardpaths.h"),
+            include_header!("include/core/qtemporaryfile.h"),
+        ]);
+
+        builder = builder.build_rust(&[
+            "fs/qdir",
+            "fs/qfile",
+            "fs/qfiledevice",
+            "fs/qsavefile",
+            "fs/qstandardpaths/mod",
+            &version.find("fs/qstandardpaths", &[(6, 7), (6, 4)]),
+            "fs/qtemporaryfile",
+        ]);
+    }
+
+    if features.net {
         header_dir.write_headers(&[
             include_header!("include/core/qlist/qlist_qhostaddress.h"),
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
@@ -239,10 +251,10 @@ fn main() {
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
-                "network/qhostaddress",
-                "network/qnetworkaddressentry",
-                "network/qnetworkdatagram",
-                "network/qnetworkproxy",
+                "net/qhostaddress",
+                "net/qnetworkaddressentry",
+                "net/qnetworkdatagram",
+                "net/qnetworkproxy",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qhostaddress",
@@ -250,19 +262,19 @@ fn main() {
                 "core/qlist/qlist_qnetworkdatagram",
                 "core/qlist/qlist_qnetworkinterface",
                 "core/qlist/qlist_qnetworkproxy",
-                "network/raw_header_list",
-                "network/qabstractsocket",
-                "network/qauthenticator",
-                "network/qhostaddress",
-                "network/qlocalsocket",
-                "network/qnetworkaddressentry",
-                "network/qnetworkdatagram",
-                "network/qnetworkinterface",
-                "network/qnetworkproxy",
-                "network/qnetworkrequestknownheaders",
-                "network/qtcpserver",
-                "network/qtcpsocket",
-                "network/qudpsocket",
+                "net/raw_header_list",
+                "net/qabstractsocket",
+                "net/qauthenticator",
+                "net/qhostaddress",
+                "net/qlocalsocket",
+                "net/qnetworkaddressentry",
+                "net/qnetworkdatagram",
+                "net/qnetworkinterface",
+                "net/qnetworkproxy",
+                "net/qnetworkrequestknownheaders",
+                "net/qtcpserver",
+                "net/qtcpsocket",
+                "net/qudpsocket",
             ]);
 
         if version.at_least(6, 7) {
@@ -271,8 +283,8 @@ fn main() {
                 include_header!("include/network/qhttpheaders.h"),
             ]);
             builder = builder
-                .build_cpp(&["network/qhttpheaders"])
-                .build_rust(&["core/qlist/qlist_qhttpheaders", "network/qhttpheaders"]);
+                .build_cpp(&["net/qhttpheaders"])
+                .build_rust(&["core/qlist/qlist_qhttpheaders", "net/qhttpheaders"]);
         }
     }
 
@@ -301,15 +313,15 @@ fn main() {
 
         builder = builder
             .build_cpp(&[
-                "network/qabstractnetworkcache",
-                "network/qnetworkaccessmanager",
-                "network/qnetworkcachemetadata",
-                "network/qhstspolicy",
-                "network/qhttp2configuration",
-                "network/qhttppart",
-                "network/qnetworkcachemetadata",
-                "network/qnetworkcookie/qnetworkcookie",
-                "network/qnetworkrequest/qnetworkrequest",
+                "request/qabstractnetworkcache",
+                "request/qnetworkaccessmanager",
+                "request/qnetworkcachemetadata",
+                "request/qhstspolicy",
+                "request/qhttp2configuration",
+                "request/qhttppart",
+                "request/qnetworkcachemetadata",
+                "request/qnetworkcookie/qnetworkcookie",
+                "request/qnetworkrequest/qnetworkrequest",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qhstspolicy",
@@ -319,26 +331,26 @@ fn main() {
                 "core/qlist/qlist_qnetworkcookie",
                 "core/qlist/qlist_qnetworkrequest",
                 "core/qvariant/qvariant_qnetworkcookie",
-                "network/qabstractnetworkcache",
-                "network/qhstspolicy",
-                "network/qhttp2configuration",
-                "network/qhttpmultipart",
-                "network/qhttppart",
-                "network/qnetworkaccessmanager",
-                "network/qnetworkcachemetadata",
-                "network/qnetworkcookie/mod",
-                "network/qnetworkcookiejar",
-                "network/qnetworkdiskcache",
-                "network/qnetworkrequest/mod",
+                "request/qabstractnetworkcache",
+                "request/qhstspolicy",
+                "request/qhttp2configuration",
+                "request/qhttpmultipart",
+                "request/qhttppart",
+                "request/qnetworkaccessmanager",
+                "request/qnetworkcachemetadata",
+                "request/qnetworkcookie/mod",
+                "request/qnetworkcookiejar",
+                "request/qnetworkdiskcache",
+                "request/qnetworkrequest/mod",
                 &version.find(
-                    "network/qnetworkrequest/attribute",
+                    "request/qnetworkrequest/attribute",
                     &[(6, 8), (6, 5), (6, 3)],
                 ),
-                "network/qnetworkreply",
+                "request/qnetworkreply",
             ]);
 
         if version.at_least(6, 1) {
-            builder = builder.build_rust(&["network/qnetworkcookie/v6_1"]);
+            builder = builder.build_rust(&["request/qnetworkcookie/v6_1"]);
         }
 
         if version.at_least(6, 5) {
@@ -347,16 +359,17 @@ fn main() {
                 include_header!("include/network/qhttp1configuration.h"),
             ]);
             builder = builder
-                .build_cpp(&["network/qhttp1configuration"])
+                .build_cpp(&["request/qhttp1configuration"])
                 .build_rust(&[
                     "core/qlist/qlist_qhttp1configuration",
-                    "network/qhttp1configuration",
+                    "request/qhttp1configuration",
                 ]);
         }
     }
 
     if features.ssl {
         header_dir.write_headers(&[
+            include_header!("include/core/qcryptographichash.h"),
             include_header!("include/core/qlist/qlist_qdtlsgeneratorparameters.h"),
             include_header!("include/core/qlist/qlist_qocspresponse.h"),
             include_header!("include/core/qlist/qlist_qsslcertificate.h"),
@@ -373,37 +386,37 @@ fn main() {
             include_header!("include/core/qset/qset_qssldiffiehellmanparameters.h"),
             include_header!("include/core/qset/qset_qsslellipticcurve.h"),
             include_header!("include/core/qset/qset_qsslerror.h"),
-            include_header!("include/network/ssl/qdtls.h"),
-            include_header!("include/network/ssl/qdtlsclientverifier.h"),
-            include_header!("include/network/ssl/qdtlsgeneratorparameters.h"),
-            include_header!("include/network/ssl/qocspresponse.h"),
-            include_header!("include/network/ssl/qssl.h"),
-            include_header!("include/network/ssl/qsslcertificate.h"),
-            include_header!("include/network/ssl/qsslcertificateextension.h"),
-            include_header!("include/network/ssl/qsslcipher.h"),
-            include_header!("include/network/ssl/qsslconfiguration.h"),
-            include_header!("include/network/ssl/qssldiffiehellmanparameters.h"),
-            include_header!("include/network/ssl/qsslellipticcurve.h"),
-            include_header!("include/network/ssl/qsslerror.h"),
-            include_header!("include/network/ssl/qsslkey.h"),
-            include_header!("include/network/ssl/qsslpresharedkeyauthenticator.h"),
-            include_header!("include/network/ssl/qsslserver.h"),
+            include_header!("include/network/qdtls.h"),
+            include_header!("include/network/qdtlsclientverifier.h"),
+            include_header!("include/network/qdtlsgeneratorparameters.h"),
+            include_header!("include/network/qocspresponse.h"),
+            include_header!("include/network/qssl.h"),
+            include_header!("include/network/qsslcertificate.h"),
+            include_header!("include/network/qsslcertificateextension.h"),
+            include_header!("include/network/qsslcipher.h"),
+            include_header!("include/network/qsslconfiguration.h"),
+            include_header!("include/network/qssldiffiehellmanparameters.h"),
+            include_header!("include/network/qsslellipticcurve.h"),
+            include_header!("include/network/qsslerror.h"),
+            include_header!("include/network/qsslkey.h"),
+            include_header!("include/network/qsslpresharedkeyauthenticator.h"),
+            include_header!("include/network/qsslserver.h"),
         ]);
 
         builder = builder
             .qt_module("Network")
             .build_cpp(&[
-                "network/ssl/qdtlsgeneratorparameters",
-                "network/ssl/qocspresponse",
-                "network/ssl/qsslcertificate",
-                "network/ssl/qsslcertificateextension",
-                "network/ssl/qsslconfiguration",
-                "network/ssl/qssldiffiehellmanparameters",
-                "network/ssl/qsslellipticcurve",
-                "network/ssl/qsslerror",
-                "network/ssl/qsslkey",
-                "network/ssl/qsslpresharedkeyauthenticator",
-                "network/ssl/qsslsocket",
+                "ssl/qdtlsgeneratorparameters",
+                "ssl/qocspresponse",
+                "ssl/qsslcertificate",
+                "ssl/qsslcertificateextension",
+                "ssl/qsslconfiguration",
+                "ssl/qssldiffiehellmanparameters",
+                "ssl/qsslellipticcurve",
+                "ssl/qsslerror",
+                "ssl/qsslkey",
+                "ssl/qsslpresharedkeyauthenticator",
+                "ssl/qsslsocket",
             ])
             .build_rust(&[
                 "core/qlist/qlist_qdtlsgeneratorparameters",
@@ -416,30 +429,31 @@ fn main() {
                 "core/qlist/qlist_qsslerror",
                 "core/qlist/qlist_qsslkey",
                 "core/qlist/qlist_qsslpresharedkeyauthenticator",
-                "network/ssl/qdtls",
-                "network/ssl/qdtlsclientverifier",
-                "network/ssl/qdtlsgeneratorparameters",
-                "network/ssl/qocspresponse",
-                "network/ssl/qssl/mod",
-                "network/ssl/qsslcertificate",
-                "network/ssl/qsslcertificateextension",
-                "network/ssl/qsslcipher",
-                "network/ssl/qsslconfiguration",
-                "network/ssl/qssldiffiehellmanparameters",
-                "network/ssl/qsslellipticcurve",
-                "network/ssl/qsslerror",
-                "network/ssl/qsslkey",
-                "network/ssl/qsslpresharedkeyauthenticator",
-                "network/ssl/qsslsocket",
+                "ssl/qcryptographichash",
+                "ssl/qdtls",
+                "ssl/qdtlsclientverifier",
+                "ssl/qdtlsgeneratorparameters",
+                "ssl/qocspresponse",
+                "ssl/qssl/mod",
+                "ssl/qsslcertificate",
+                "ssl/qsslcertificateextension",
+                "ssl/qsslcipher",
+                "ssl/qsslconfiguration",
+                "ssl/qssldiffiehellmanparameters",
+                "ssl/qsslellipticcurve",
+                "ssl/qsslerror",
+                "ssl/qsslkey",
+                "ssl/qsslpresharedkeyauthenticator",
+                "ssl/qsslsocket",
             ]);
 
         if version.at_least(6, 1) {
-            builder = builder.build_rust(&["network/ssl/qssl/v6_1"]);
+            builder = builder.build_rust(&["ssl/qssl/v6_1"]);
         }
 
         if version.at_least(6, 4) {
-            header_dir.write_headers(&[include_header!("include/network/ssl/qsslsocket.h")]);
-            builder = builder.build_rust(&["network/ssl/qsslserver"]);
+            header_dir.write_headers(&[include_header!("include/network/qsslsocket.h")]);
+            builder = builder.build_rust(&["ssl/qsslserver"]);
         }
     }
 

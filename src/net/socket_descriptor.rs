@@ -2,7 +2,7 @@ use cxx_qt_lib::qintptr;
 use std::fmt;
 
 use crate::util::IsNonNull;
-#[cfg(unix)]
+#[cfg(all(unix, feature = "fs"))]
 use crate::FileDescriptor;
 
 /// A [`qintptr`](https://doc.qt.io/qt-6/qttypes.html#qintptr-typedef) that references a native socket descriptor.
@@ -53,7 +53,7 @@ impl From<SocketDescriptor> for qintptr {
 }
 
 /// On Unix platforms, file descriptors are used for sockets.
-#[cfg(unix)]
+#[cfg(all(unix, feature = "fs"))]
 impl From<FileDescriptor> for SocketDescriptor {
     fn from(value: FileDescriptor) -> Self {
         #[allow(clippy::cast_possible_truncation)]
@@ -61,7 +61,7 @@ impl From<FileDescriptor> for SocketDescriptor {
     }
 }
 /// On Unix platforms, file descriptors are used for sockets.
-#[cfg(unix)]
+#[cfg(all(unix, feature = "fs"))]
 impl From<SocketDescriptor> for FileDescriptor {
     fn from(value: SocketDescriptor) -> Self {
         #[allow(clippy::cast_possible_truncation)]

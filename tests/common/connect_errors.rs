@@ -4,7 +4,7 @@ pub trait ConnectErrors {
     fn connect_errors(self: Pin<&mut Self>, context: &'static str);
 }
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "net")]
 impl ConnectErrors for cxx_qt_io::QTcpServer {
     fn connect_errors(self: Pin<&mut Self>, context: &'static str) {
         self.on_accept_error(move |_, error| {
@@ -47,7 +47,7 @@ impl ConnectErrors for cxx_qt_io::QSslServer {
     }
 }
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "net")]
 impl ConnectErrors for cxx_qt_io::QAbstractSocket {
     fn connect_errors(self: Pin<&mut Self>, context: &'static str) {
         self.on_error_occurred(move |_, error| {
@@ -57,7 +57,7 @@ impl ConnectErrors for cxx_qt_io::QAbstractSocket {
     }
 }
 
-#[cfg(feature = "qt_network")]
+#[cfg(feature = "net")]
 impl ConnectErrors for cxx_qt_io::QTcpSocket {
     fn connect_errors(mut self: Pin<&mut Self>, context: &'static str) {
         self.as_abstract_socket_mut().connect_errors(context);

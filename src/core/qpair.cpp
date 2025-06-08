@@ -2,7 +2,7 @@
 
 #include <QtCore/QByteArray>
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 #include <QtNetwork/QHostAddress>
 #endif
 
@@ -32,6 +32,6 @@
 
 CXX_QT_IO_QPAIR_ASSERTS(QByteArray, QByteArray, QByteArray_QByteArray);
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 CXX_QT_IO_QPAIR_ASSERTS(QHostAddress, ::std::int32_t, QPair_QHostAddress_i32);
 #endif
