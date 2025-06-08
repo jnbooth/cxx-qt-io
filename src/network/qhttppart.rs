@@ -112,7 +112,7 @@ impl fmt::Debug for QHttpPart {
 }
 
 impl QHttpPart {
-    /// Sets the device to read the content from to `device`. For large amounts of data this method should be preferred over [`set_body`](QHttpPart::set_body), because the content is not copied when using this method, but read directly from the device. device must be open and readable. `QHttpPart` does not take ownership of `device`, i.e. the device must be closed and destroyed if necessary. if device is sequential (e.g. sockets, but not files), [`QNetworkAccessManager::post`](crate::QNetworkAccessManager::post) should be called after `device` has emitted [`finished`](QIODevice::finished). For unsetting the device and using data set via [`set_body`](QHttpPart::set_body), call this method with a null pointer.
+    /// Sets the device to read the content from to `device`. For large amounts of data this method should be preferred over [`set_body`](QHttpPart::set_body), because the content is not copied when using this method, but read directly from the device. device must be open and readable. `QHttpPart` does not take ownership of `device`, i.e. the device must be closed and destroyed if necessary. if device is sequential (e.g. sockets, but not files), [`QNetworkAccessManager::post`](crate::QNetworkAccessManager::post) should be called after `device` has emitted [`finished`](crate::QNetworkAccessManager::finished). For unsetting the device and using data set via [`set_body`](QHttpPart::set_body), call this method with a null pointer.
     ///
     /// # Safety
     ///

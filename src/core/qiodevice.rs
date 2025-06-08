@@ -445,7 +445,7 @@ impl QIODevice {
         unsafe { self.open_unsafe(mode) }
     }
 
-    /// Reads bytes from the device into `data`, without side effects (i.e., if you call [`try_read`](QIODevice::try_read) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
+    /// Reads bytes from the device into `data`, without side effects (i.e., if you call [`read`](QIODevice::read) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
     ///
     /// `Ok(0)` is returned when no more data is available for reading.
     pub fn peek(mut self: Pin<&mut Self>, data: &mut [u8]) -> io::Result<usize> {
