@@ -1,3 +1,5 @@
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+
 #[cfg(not(cxxqt_qt_version_major = "6"))]
 compile_error!("cxxqt_qt_version_major must be \"6\"");
 

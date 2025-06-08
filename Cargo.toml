@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 links = "cxx-qt-io"
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
 [dependencies]
 cxx = "1.0.144"
 cxx-qt = { git = "https://github.com/KDAB/cxx-qt" }
