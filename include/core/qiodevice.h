@@ -25,5 +25,8 @@ qiodeviceIsTransactionStarted(const QIODevice& device);
 bool
 qiodeviceIsWritable(const QIODevice& device);
 
+bool
+qiodeviceOpen(QIODevice& device, QIODeviceOpenMode mode);
+
 }
 }

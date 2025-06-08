@@ -110,13 +110,6 @@ mod ffi {
         #[rust_name = "get_char_unsafe"]
         unsafe fn getChar(self: Pin<&mut QIODevice>, c: *mut c_char) -> bool;
 
-        /// # Safety
-        ///
-        /// [`QIODeviceModeFlag::NewOnly`] may cause undefined behavior if `self` is not a `QFile`.
-        #[doc(hidden)]
-        #[rust_name = "open_unsafe"]
-        unsafe fn open(self: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
-
         /// Returns the mode in which the device has been opened; i.e. [`QIODeviceOpenModeFlag::ReadOnly`] or [`QIODeviceOpenModeFlag::WriteOnly`].
         #[rust_name = "open_mode"]
         fn openMode(self: &QIODevice) -> QIODeviceOpenMode;
@@ -352,6 +345,9 @@ mod ffi {
 
         #[rust_name = "qiodevice_is_writable"]
         fn qiodeviceIsWritable(device: &QIODevice) -> bool;
+
+        #[rust_name = "qiodevice_open"]
+        fn qiodeviceOpen(device: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
     }
 }
 
@@ -436,13 +432,9 @@ impl QIODevice {
         ffi::qiodevice_is_writable(self)
     }
 
-    /// Opens the device and sets [`self.open_mode()`](QIODevice::open_mode) to `mode`. Returns `true` if successful; otherwise returns `false`. This function should be called from any reimplementations of it or other functions that open the device.
-    pub fn open(self: Pin<&mut Self>, mut mode: QIODeviceOpenMode) -> bool {
-        if mode.test_flag(QIODeviceOpenModeFlag::NewOnly) && (*self).downcast::<QFile>().is_none() {
-            mode.set_flag(QIODeviceOpenModeFlag::NewOnly, false);
-        }
-        // SAFETY: `mode` does not contain `NewOnly` unless `self` is a `QFile`.
-        unsafe { self.open_unsafe(mode) }
+    /// Opens the device and sets [`self.open_mode()`](QIODevice::open_mode) to `mode`. Returns `true` if successful; otherwise returns `false`.
+    pub fn open(self: Pin<&mut Self>, mode: QIODeviceOpenMode) -> bool {
+        ffi::qiodevice_open(self, mode)
     }
 
     /// Reads bytes from the device into `data`, without side effects (i.e., if you call [`read`](QIODevice::read) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
