@@ -6,4 +6,5 @@
   static_assert(!::std::is_trivially_copy_assignable<typeName>::value);        \
   static_assert(!::std::is_trivially_copy_constructible<typeName>::value);     \
   static_assert(!::std::is_trivially_destructible<typeName>::value);           \
+  static_assert(::std::is_move_constructible<typeName>::value);                \
   static_assert(QTypeInfo<typeName>::isRelocatable);

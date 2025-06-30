@@ -2,11 +2,11 @@ use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
 
+use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::QUrl;
 
-use crate::util::delete_qobject;
 use crate::{QIODevice, QNetworkCacheMetaData};
 
 #[cxx_qt::bridge]
@@ -92,13 +92,11 @@ impl QAbstractNetworkCache {
 
     /// Returns the data associated with `url`.
     ///
-    /// Returns `None` if there is no cache for `url`, the url is invalid, or if there is an internal cache error.
-    pub fn data(self: Pin<&mut Self>, url: &QUrl) -> Option<QAbstractNetworkCacheReader> {
+    /// Returns a null pointer if there is no cache for `url`, the url is invalid, or if there is an internal cache error.
+    pub fn data(self: Pin<&mut Self>, url: &QUrl) -> UniquePtr<QIODevice> {
         let device = ffi::qabstractnetworkcache_data(self, url);
-        if device.is_null() {
-            return None;
-        }
-        Some(QAbstractNetworkCacheReader { device })
+        // SAFETY: `device` is valid and Qt expects us to delete it when done with it.
+        unsafe { UniquePtr::from_raw(device) }
     }
 
     /// Returns the meta data for the url `url`.
@@ -199,29 +197,6 @@ impl Deref for QAbstractNetworkCache {
 
     fn deref(&self) -> &Self::Target {
         self.upcast()
-    }
-}
-
-#[derive(Debug)]
-pub struct QAbstractNetworkCacheReader {
-    device: *mut QIODevice,
-}
-
-impl QAbstractNetworkCacheReader {
-    fn pin_mut(&mut self) -> Pin<&mut QIODevice> {
-        unsafe { Pin::new_unchecked(&mut *self.device) }
-    }
-}
-
-impl Drop for QAbstractNetworkCacheReader {
-    fn drop(&mut self) {
-        unsafe { delete_qobject(self.device) };
-    }
-}
-
-impl Read for QAbstractNetworkCacheReader {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        self.pin_mut().read(buf)
     }
 }
 

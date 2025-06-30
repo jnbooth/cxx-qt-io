@@ -5,8 +5,6 @@ use common::{run_inside_app, ConnectErrors};
 use std::io::{Read, Write};
 use std::time::Duration;
 
-use cxx::UniquePtr;
-
 use cxx_qt_io::{QHostAddressSpecialAddress, QIODevice, QTcpServer, QTcpSocket};
 
 const PORT: u16 = 8012;
@@ -34,8 +32,7 @@ fn tcp_round_trip() {
             panic!("failed to acquire connection");
         }
 
-        let mut server_socket_ptr =
-            unsafe { UniquePtr::from_raw(server.as_mut().next_pending_connection()) };
+        let mut server_socket_ptr = server.as_mut().next_pending_connection();
 
         let mut server_socket = server_socket_ptr.as_mut().expect("received null socket");
 

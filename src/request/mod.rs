@@ -1,7 +1,5 @@
 mod qabstractnetworkcache;
-pub use qabstractnetworkcache::{
-    QAbstractNetworkCache, QAbstractNetworkCacheReader, QAbstractNetworkCacheWriter,
-};
+pub use qabstractnetworkcache::{QAbstractNetworkCache, QAbstractNetworkCacheWriter};
 
 mod qhstspolicy;
 pub use qhstspolicy::QHstsPolicy;

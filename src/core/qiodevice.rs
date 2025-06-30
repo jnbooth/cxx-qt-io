@@ -323,6 +323,7 @@ mod ffi {
         #[qsignal]
         #[rust_name = "ready_read"]
         fn readyRead(self: Pin<&mut QIODevice>);
+
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -348,6 +349,8 @@ mod ffi {
         #[rust_name = "qiodevice_open"]
         fn qiodeviceOpen(device: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
     }
+
+    impl UniquePtr<QIODevice> {}
 }
 
 pub use ffi::{QIODevice, QIODeviceOpenModeFlag};

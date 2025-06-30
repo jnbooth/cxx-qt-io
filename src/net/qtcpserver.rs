@@ -6,7 +6,7 @@ use std::pin::Pin;
 use std::time::Duration;
 
 use crate::util::{IsNonNull, MSecs};
-use crate::{QHostAddress, SocketDescriptor};
+use crate::{QHostAddress, QTcpSocket, SocketDescriptor};
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -68,14 +68,8 @@ mod ffi {
         #[rust_name = "max_pending_connections"]
         fn maxPendingConnections(self: &QTcpServer) -> i32;
 
-        /// Returns the next pending connection as a connected [`QTcpSocket`] object.
-        ///
-        /// The socket is created as a child of the server, which means that it is automatically deleted when the QTcpServer object is destroyed. It is still a good idea to delete the object explicitly when you are done with it, to avoid wasting memory.
-        ///
-        /// A null pointer is returned if this function is called when there are no pending connections.
-        ///
-        /// **Note:** The returned [`QTcpSocket`] object cannot be used from another thread.
-        #[rust_name = "next_pending_connection"]
+        #[doc(hidden)]
+        #[rust_name = "next_pending_connection_raw"]
         fn nextPendingConnection(self: Pin<&mut QTcpServer>) -> *mut QTcpSocket;
 
         /// Pauses accepting new connections. Queued connections will remain in queue.
@@ -167,6 +161,17 @@ impl QTcpServer {
     /// Constructs a `QTcpServer` object.
     pub fn new() -> UniquePtr<Self> {
         ffi::qtcpserver_init_default()
+    }
+
+    /// Returns the next pending connection as a connected [`QTcpSocket`] object.
+    ///
+    /// A null pointer is returned if this function is called when there are no pending connections.
+    ///
+    /// **Note:** The returned [`QTcpSocket`] object cannot be used from another thread.
+    pub fn next_pending_connection(self: Pin<&mut Self>) -> UniquePtr<QTcpSocket> {
+        let conn = self.next_pending_connection_raw();
+        // SAFETY: `conn` is valid and Qt expects us to delete it when done.
+        unsafe { UniquePtr::from_raw(conn) }
     }
 
     /// Returns the server's address if the server is listening for connections; otherwise returns `None`.

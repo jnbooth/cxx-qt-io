@@ -375,6 +375,8 @@ mod ffi {
         #[rust_name = "downcast_qobject_qnetworkreply"]
         unsafe fn downcastPtr(reply: *const QObject) -> *const QNetworkReply;
     }
+
+    impl UniquePtr<QNetworkReply> {}
 }
 
 pub use ffi::{QNetworkReply, QNetworkReplyNetworkError};
