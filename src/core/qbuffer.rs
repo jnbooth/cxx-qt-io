@@ -36,10 +36,10 @@ mod ffi {
 
         /// Returns the data contained in the buffer.
         ///
-        /// This is the same as [`buffer`](QBuffer::buffer).
+        /// This is the same as [`buffer`](Self::buffer).
         fn data(self: &QBuffer) -> &QByteArray;
 
-        /// Sets the contents of the internal buffer to be `data`. This is the same as assigning `data` to [`self.buffer_mut()`](QBuffer::buffer_mut).
+        /// Sets the contents of the internal buffer to be `data`. This is the same as assigning `data` to [`self.buffer_mut()`](Self::buffer_mut).
         #[rust_name = "set_buffer"]
         fn setData(self: Pin<&mut QBuffer>, data: &QByteArray);
 
@@ -88,7 +88,7 @@ mod ffi {
 pub use ffi::QBuffer;
 
 impl QBuffer {
-    /// Constructs an empty buffer. You can call [`set_data`](QBuffer::set_data) to fill the buffer with data, or you can open it in write mode and use [`write`](QIODevice::write).
+    /// Constructs an empty buffer. You can call [`set_data`](Self::set_data) to fill the buffer with data, or you can open it in write mode and use [`write`](QIODevice::write).
     pub fn new() -> UniquePtr<Self> {
         ffi::qbuffer_default()
     }
@@ -99,7 +99,7 @@ impl QBuffer {
     ///
     /// # Safety
     ///
-    /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until [`set_buffer`](QBuffer::set_buffer) is called to change the buffer.
+    /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until [`set_buffer`](Self::set_buffer) is called to change the buffer.
     pub unsafe fn for_array(byte_array: *mut QByteArray) -> UniquePtr<Self> {
         unsafe { ffi::qbuffer_new(byte_array) }
     }

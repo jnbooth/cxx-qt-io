@@ -176,7 +176,7 @@ impl QSslDiffieHellmanParameters {
     where
         T: Upcast<QIODevice>,
     {
-        // SAFETY: `upcast_mut(unpin_for_qt(device))` is passed directly to Qt.
+        // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
         unsafe {
             ffi::qssldiffiehellmanparameters_from_encoded_device(
                 upcast_mut(unpin_for_qt(device)),
