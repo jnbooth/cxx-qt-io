@@ -38,6 +38,7 @@ where
 /// # Safety
 ///
 /// `qobject` must be valid. It must not be accessed after calling this function.
+#[inline(always)]
 pub(crate) unsafe fn delete_qobject<T>(qobject: *mut T)
 where
     T: Upcast<QObject>,
@@ -47,6 +48,7 @@ where
 }
 
 /// Returns `true` if both objects are in the same thread.
+#[inline(always)]
 pub(crate) fn in_same_thread<T, U>(lhs: &T, rhs: &U) -> bool
 where
     T: Upcast<QObject>,
@@ -71,6 +73,7 @@ where
 /// will be treated as pinned all the way until its `drop` handler is complete!
 ///
 /// *For more information, see the [`pin` module docs][std::pin]*
+#[inline(always)]
 pub(crate) unsafe fn unpin_for_qt<T>(pin: Pin<&mut T>) -> *mut T {
     unsafe { ptr::from_mut(Pin::into_inner_unchecked(pin)) }
 }
