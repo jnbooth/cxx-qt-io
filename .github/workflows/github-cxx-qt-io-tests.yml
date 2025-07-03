@@ -35,9 +35,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: rustup default 1.77.2
+      - run: rustup default nightly
       - run: rustup component add rustfmt
-      - run: cargo +nightly fmt --all --check --verbose
+      - run: cargo fmt --all --check --verbose
 
   check_scripts:
     runs-on: ubuntu-24.04
@@ -94,8 +94,8 @@ jobs:
       # Note we still need rustfmt for the cxx-qt-gen tests
       - name: "Install Rust toolchain"
         run: |
-          rustup toolchain add 1.78.0 --component clippy
-          rustup default 1.77.2
+          rustup default stable
+          rustup component add clippy
           rustup component add rustfmt
 
       - name: "Rust tools cache"
