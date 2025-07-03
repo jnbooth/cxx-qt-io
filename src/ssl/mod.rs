@@ -14,13 +14,11 @@ mod qocspresponse;
 pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationReason};
 
 mod qssl;
+pub use qssl::{QSslAlertLevel, QSslAlertType};
 pub use qssl::{
     QSslAlternativeNameEntryType, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType, QSslSslOption,
     QSslSslOptions, QSslSslProtocol,
 };
-
-pub use qssl::{QSslAlertLevel, QSslAlertType};
-
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 pub use qssl::{QSslImplementedClass, QSslSupportedFeature};
 

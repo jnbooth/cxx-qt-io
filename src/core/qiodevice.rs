@@ -1,15 +1,17 @@
-use crate::util::MSecs;
-#[cfg(any(feature = "fs", feature = "net"))]
-use cxx_qt::casting::Downcast;
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
-use cxx_qt_lib::{QByteArray, QFlags};
 use std::ffi::{c_char, CStr};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
 use std::ptr;
 use std::time::Duration;
+
+#[cfg(any(feature = "fs", feature = "net"))]
+use cxx_qt::casting::Downcast;
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
+use cxx_qt_lib::{QByteArray, QFlags};
+
+use crate::util::MSecs;
 
 #[cxx_qt::bridge]
 mod ffi {

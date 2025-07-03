@@ -1,3 +1,13 @@
+use std::io::{self, Read, Write};
+use std::ops::Deref;
+use std::pin::Pin;
+use std::time::Duration;
+
+use cxx::UniquePtr;
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
+use cxx_qt_lib::{QList, QString};
+
 use crate::util::{IsNonNull, MSecs};
 use crate::{
     QAbstractSocket, QAbstractSocketNetworkLayerProtocol, QIODevice, QIODeviceOpenMode,
@@ -5,14 +15,6 @@ use crate::{
 };
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 use crate::{QSslImplementedClass, QSslSupportedFeature};
-use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
-use cxx_qt_lib::{QList, QString};
-use std::io::{self, Read, Write};
-use std::ops::Deref;
-use std::pin::Pin;
-use std::time::Duration;
 
 #[cxx_qt::bridge]
 mod ffi {

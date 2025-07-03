@@ -1,16 +1,15 @@
 #![cfg(feature = "ssl")]
 mod common;
-use common::{run_inside_app, ConnectErrors};
-use cxx_qt_lib::{QByteArray, QString};
-use cxx_qt_lib_extras::QEventLoop;
-
 use std::time::{Duration, Instant};
 
+use common::{run_inside_app, ConnectErrors};
 use cxx_qt_io::{
     QAbstractSocketSocketError, QAbstractSocketSocketState, QHostAddressSpecialAddress, QIODevice,
     QSslCertificate, QSslConfiguration, QSslError, QSslErrorSslError, QSslKey, QSslServer,
     QSslSocket,
 };
+use cxx_qt_lib::{QByteArray, QString};
+use cxx_qt_lib_extras::QEventLoop;
 
 const CERT: &[u8] = include_bytes!("local.crt");
 const KEY: &[u8] = include_bytes!("local.key");

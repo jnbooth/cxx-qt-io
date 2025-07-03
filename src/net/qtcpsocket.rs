@@ -1,10 +1,12 @@
-use crate::{QAbstractSocket, QIODevice};
-use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
+
+use cxx::UniquePtr;
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
+
+use crate::{QAbstractSocket, QIODevice};
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -127,9 +129,8 @@ impl Write for Pin<&mut QTcpSocket> {
 mod tests {
     use cxx_qt_lib::QString;
 
-    use crate::{QAbstractSocketPauseMode, QAbstractSocketPauseModes};
-
     use super::*;
+    use crate::{QAbstractSocketPauseMode, QAbstractSocketPauseModes};
 
     #[test]
     fn props() {

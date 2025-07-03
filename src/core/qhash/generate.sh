@@ -163,7 +163,7 @@ pub(crate) fn remove(hash: &mut ffi::$QHASH, key: &$FK) -> bool {
 #[allow(non_camel_case_types)]
 pub struct QHashPair_$SUFFIX;
 EOF
-    rustfmt "$SCRIPTPATH/qhash_$LOWER.rs"
+    rustfmt +nightly "$SCRIPTPATH/qhash_$LOWER.rs"
 }
 
 generate_qhash_header "i32_QVariant" "::std::int32_t" "::QVariant" "" "QtCore/QVariant"

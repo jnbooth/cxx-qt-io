@@ -1,11 +1,10 @@
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 mod v6_1;
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use v6_1::{QSslImplementedClass, QSslSupportedFeature};
-
 use std::fmt;
 
 use cxx_qt_lib::QFlags;
+#[cfg(cxxqt_qt_version_at_least_6_1)]
+pub use v6_1::{QSslImplementedClass, QSslSupportedFeature};
 
 #[cxx::bridge]
 mod ffi {

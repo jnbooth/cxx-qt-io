@@ -1,6 +1,7 @@
+use std::mem::MaybeUninit;
+
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::QByteArray;
-use std::mem::MaybeUninit;
 
 use crate::util::IsNonNull;
 use crate::QHostAddress;
@@ -278,9 +279,8 @@ unsafe impl ExternType for QNetworkDatagram {
 mod tests {
     use cxx_qt_lib::QByteArray;
 
-    use crate::QHostAddressSpecialAddress;
-
     use super::*;
+    use crate::QHostAddressSpecialAddress;
 
     #[test]
     fn props() {

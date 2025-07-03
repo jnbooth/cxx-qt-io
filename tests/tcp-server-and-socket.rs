@@ -1,10 +1,9 @@
 #![cfg(feature = "net")]
 mod common;
-use common::{run_inside_app, ConnectErrors};
-
 use std::io::{Read, Write};
 use std::time::Duration;
 
+use common::{run_inside_app, ConnectErrors};
 use cxx_qt_io::{QHostAddressSpecialAddress, QIODevice, QTcpServer, QTcpSocket};
 
 const PORT: u16 = 8012;

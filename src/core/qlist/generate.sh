@@ -256,7 +256,7 @@ pub(crate) fn remove(s: &mut ffi::QList_$1, pos: isize) {
     ffi::remove_$1(s, pos);
 }
 EOF
-    rustfmt "$SCRIPTPATH/qlist_$LOWER.rs"
+    rustfmt +nightly "$SCRIPTPATH/qlist_$LOWER.rs"
 }
 
 generate_bridge "QDeadlineTimer"

@@ -1,8 +1,9 @@
 use std::pin::Pin;
 
-use crate::util::IsNonNull;
 use cxx::UniquePtr;
 use cxx_qt_lib::{QString, QVariant};
+
+use crate::util::IsNonNull;
 
 #[cxx::bridge]
 mod ffi {

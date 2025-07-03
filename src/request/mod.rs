@@ -31,10 +31,9 @@ mod qnetworkcookie;
 pub use qnetworkcookie::{QNetworkCookie, QNetworkCookieRawForm};
 
 mod qnetworkcookiejar;
-pub use qnetworkcookiejar::QNetworkCookieJar;
-
 #[cfg(cxxqt_qt_version_at_least_6_1)]
 pub use qnetworkcookie::QNetworkCookieSameSite;
+pub use qnetworkcookiejar::QNetworkCookieJar;
 
 mod qnetworkdiskcache;
 pub use qnetworkdiskcache::QNetworkDiskCache;

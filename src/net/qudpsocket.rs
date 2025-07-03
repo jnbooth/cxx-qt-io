@@ -1,13 +1,15 @@
-use crate::util::IsNonNull;
-use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
-use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
 use std::ffi::c_char;
 use std::io::{self, Read, Write};
 use std::mem::MaybeUninit;
 use std::ops::Deref;
 use std::pin::Pin;
+
+use cxx::UniquePtr;
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
+
+use crate::util::IsNonNull;
+use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
 
 #[cxx_qt::bridge]
 mod ffi {

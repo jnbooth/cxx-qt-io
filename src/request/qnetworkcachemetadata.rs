@@ -195,9 +195,8 @@ unsafe impl ExternType for QNetworkCacheMetaData {
 mod tests {
     use cxx_qt_lib::{QByteArray, QDateTime, QString, QUrl};
 
-    use crate::RawHeaderList;
-
     use super::*;
+    use crate::RawHeaderList;
 
     #[test]
     fn props() {

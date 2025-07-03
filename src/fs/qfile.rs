@@ -1,13 +1,15 @@
-use crate::{
-    FileDescriptor, QFileDevice, QFileDeviceFileHandleFlags, QIODevice, QIODeviceOpenMode,
-};
+use std::io::{self, Read, Write};
+use std::ops::Deref;
+use std::pin::Pin;
+
 use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QString};
-use std::io::{self, Read, Write};
-use std::ops::Deref;
-use std::pin::Pin;
+
+use crate::{
+    FileDescriptor, QFileDevice, QFileDeviceFileHandleFlags, QIODevice, QIODeviceOpenMode,
+};
 
 #[cxx_qt::bridge]
 mod ffi {

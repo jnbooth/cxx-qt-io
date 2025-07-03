@@ -1,6 +1,7 @@
-use cxx::{type_id, ExternType};
 use std::fmt;
 use std::mem::MaybeUninit;
+
+use cxx::{type_id, ExternType};
 
 #[cxx::bridge]
 mod ffi {
@@ -215,7 +216,6 @@ mod tests {
     use std::net::Ipv4Addr;
 
     use super::*;
-
     use crate::QHostAddress;
 
     #[test]

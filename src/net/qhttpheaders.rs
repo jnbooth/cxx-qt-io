@@ -1,9 +1,10 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use crate::RawHeaderList;
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QAnyStringView, QByteArray, QList};
+
+use crate::RawHeaderList;
 
 #[cxx::bridge]
 mod ffi {

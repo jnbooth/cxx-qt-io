@@ -1,5 +1,6 @@
-use crate::util::IsNonNull;
 use std::fmt;
+
+use crate::util::IsNonNull;
 
 /// An `int` that references a native file descriptor.
 #[repr(transparent)]

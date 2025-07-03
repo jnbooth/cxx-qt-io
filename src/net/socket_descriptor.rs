@@ -1,5 +1,6 @@
-use cxx_qt_lib::qintptr;
 use std::fmt;
+
+use cxx_qt_lib::qintptr;
 
 use crate::util::IsNonNull;
 #[cfg(all(unix, feature = "fs"))]

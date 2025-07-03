@@ -1,9 +1,9 @@
-use cxx::{type_id, ExternType};
-use cxx_qt_lib::{QFlags, QList};
 use std::fmt;
 use std::mem::MaybeUninit;
 
+use cxx::{type_id, ExternType};
 use cxx_qt_lib::QString;
+use cxx_qt_lib::{QFlags, QList};
 
 use crate::util::IsNonNull;
 use crate::QHostAddress;

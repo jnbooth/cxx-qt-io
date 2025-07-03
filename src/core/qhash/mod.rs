@@ -1,9 +1,8 @@
 mod enums;
-#[allow(unused)]
-pub use enums::*;
-
 use cxx::type_id;
 use cxx_qt_lib::{QHash, QHashPair};
+#[allow(unused)]
+pub use enums::*;
 
 macro_rules! impl_qhash_pair {
     ( $keyTypeName:ty, $valueTypeName:ty, $module:ident, $pairTypeName:ident, $typeId:literal ) => {

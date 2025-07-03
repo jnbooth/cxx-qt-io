@@ -1,9 +1,9 @@
 use std::fmt;
 
 use cxx::{type_id, ExternType};
+use cxx_qt_lib::QString;
 
 use crate::util::IsNonNull;
-use cxx_qt_lib::QString;
 
 #[cxx::bridge]
 mod ffi {

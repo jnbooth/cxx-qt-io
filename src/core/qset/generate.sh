@@ -121,7 +121,7 @@ pub(crate) fn reserve(s: &mut ffi::QSet_$1, size: isize) {
   ffi::reserve_$1(s, size);
 }
 EOF
-    rustfmt "$SCRIPTPATH/qset_$LOWER.rs"
+    rustfmt +nightly "$SCRIPTPATH/qset_$LOWER.rs"
 }
 
 generate_bridge "QHostAddress"

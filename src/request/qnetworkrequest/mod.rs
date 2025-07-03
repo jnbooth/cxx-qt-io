@@ -1,12 +1,12 @@
 mod attribute;
-pub use attribute::QNetworkRequestAttribute;
+use std::mem::MaybeUninit;
+use std::time::Duration;
 
+pub use attribute::QNetworkRequestAttribute;
 use cxx::{type_id, ExternType};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QUrl, QVariant};
-use std::mem::MaybeUninit;
-use std::time::Duration;
 
 use crate::util::IsNonNull;
 use crate::QNetworkRequestKnownHeaders;
@@ -447,9 +447,8 @@ mod tests {
 
     use cxx_qt_lib::QString;
 
-    use crate::{QHttp1Configuration, QHttp2Configuration, QHttpHeaders};
-
     use super::*;
+    use crate::{QHttp1Configuration, QHttp2Configuration, QHttpHeaders};
 
     #[test]
     fn transfer_timeout_some() {

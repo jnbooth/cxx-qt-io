@@ -1,17 +1,19 @@
-use crate::util::{IsNonNull, MSecs};
-use crate::{
-    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
-    SocketDescriptor,
-};
-use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
-use cxx_qt_lib::{QFlags, QString};
 use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
+
+use cxx::UniquePtr;
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
+use cxx_qt_lib::{QFlags, QString};
+
+use crate::util::{IsNonNull, MSecs};
+use crate::{
+    QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
+    SocketDescriptor,
+};
 
 #[cxx_qt::bridge]
 mod ffi {

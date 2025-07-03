@@ -64,7 +64,7 @@ pub(crate) fn value_or_default(variant: &ffi::QVariant) -> ffi::$1 {
     ffi::value_or_default_$1(variant)
 }
 EOF
-    rustfmt "$SCRIPTPATH/qvariant_$LOWER.rs"
+    rustfmt +nightly "$SCRIPTPATH/qvariant_$LOWER.rs"
 }
 
 generate_bridge_qt "QNetworkCookie"

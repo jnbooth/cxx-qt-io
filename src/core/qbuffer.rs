@@ -1,11 +1,13 @@
-use crate::QIODevice;
+use std::io::{self, Read, Write};
+use std::ops::Deref;
+use std::pin::Pin;
+
 use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::QByteArray;
-use std::io::{self, Read, Write};
-use std::ops::Deref;
-use std::pin::Pin;
+
+use crate::QIODevice;
 
 #[cxx_qt::bridge]
 mod ffi {

@@ -1,11 +1,13 @@
-use crate::util::IsNonNull;
-use crate::{FileDescriptor, QIODevice};
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
-use cxx_qt_lib::{QDateTime, QFlags};
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
+
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
+use cxx_qt_lib::{QDateTime, QFlags};
+
+use crate::util::IsNonNull;
+use crate::{FileDescriptor, QIODevice};
 
 #[cxx_qt::bridge]
 mod ffi {

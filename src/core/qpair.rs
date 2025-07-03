@@ -1,6 +1,7 @@
+use std::hash::Hash;
+
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::QByteArray;
-use std::hash::Hash;
 
 /// Typedef for `std::pair<T1, T1>`.
 #[repr(C)]

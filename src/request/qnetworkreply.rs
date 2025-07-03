@@ -1,15 +1,17 @@
-use crate::util::IsNonNull;
-#[cfg(feature = "ssl")]
-use crate::QSslConfiguration;
-use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
+use std::io::{self, Read};
+use std::ops::Deref;
+use std::pin::Pin;
+
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QVariant};
-use std::io::{self, Read};
-use std::ops::Deref;
-use std::pin::Pin;
+
+use crate::util::IsNonNull;
+#[cfg(feature = "ssl")]
+use crate::QSslConfiguration;
+use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
 
 #[cxx_qt::bridge]
 mod ffi {

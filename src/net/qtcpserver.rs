@@ -1,9 +1,10 @@
-use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
 use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
+
+use cxx::UniquePtr;
+use cxx_qt::casting::Upcast;
+use cxx_qt::QObject;
 
 use crate::util::{IsNonNull, MSecs};
 use crate::{QHostAddress, QTcpSocket, SocketDescriptor};
@@ -221,9 +222,8 @@ impl Deref for QTcpServer {
 mod tests {
     use cxx_qt_lib::QString;
 
-    use crate::QNetworkProxy;
-
     use super::*;
+    use crate::QNetworkProxy;
 
     #[test]
     fn props() {

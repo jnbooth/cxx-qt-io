@@ -1,10 +1,11 @@
-use cxx_qt_build::CxxQtBuilder;
-use qt_build_utils::QtBuild;
 use std::env;
 use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
+
+use cxx_qt_build::CxxQtBuilder;
+use qt_build_utils::QtBuild;
 
 macro_rules! include_header {
     ($file:literal) => {
