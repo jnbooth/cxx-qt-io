@@ -72,6 +72,8 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-lib/qlist.h");
@@ -121,7 +123,7 @@ mod ffi {
         #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_2)]
         #[rust_name = "decompressed_safety_check_threshold_or_negative"]
-        fn decompressedSafetyCheckThreshold(&self) -> i64;
+        fn decompressedSafetyCheckThreshold(&self) -> qint64;
 
         #[doc(hidden)]
         #[cfg(cxxqt_qt_version_at_least_6_7)]
@@ -188,7 +190,7 @@ mod ffi {
         #[cfg(cxxqt_qt_version_at_least_6_2)]
         #[doc(hidden)]
         #[rust_name = "set_decompressed_safety_check_threshold_or_negative"]
-        fn setDecompressedSafetyCheckThreshold(&mut self, threshold: i64);
+        fn setDecompressedSafetyCheckThreshold(&mut self, threshold: qint64);
 
         /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.
         #[rust_name = "set_header"]
@@ -342,7 +344,9 @@ impl QNetworkRequest {
     /// Introduced in Qt 6.2.
     #[cfg(cxxqt_qt_version_at_least_6_2)]
     pub fn decompressed_safety_check_threshold(&self) -> Option<i64> {
-        let threshold = self.decompressed_safety_check_threshold_or_negative();
+        let threshold = self
+            .decompressed_safety_check_threshold_or_negative()
+            .into();
         if threshold < 0 {
             None
         } else {
@@ -397,7 +401,7 @@ impl QNetworkRequest {
     /// Introduced in Qt 6.2.
     #[cfg(cxxqt_qt_version_at_least_6_2)]
     pub fn set_decompressed_safety_check_threshold(&mut self, threshold: Option<i64>) {
-        self.set_decompressed_safety_check_threshold_or_negative(threshold.unwrap_or(-1));
+        self.set_decompressed_safety_check_threshold_or_negative(threshold.unwrap_or(-1).into());
     }
 
     /// Sets `timeout` as the transfer timeout.

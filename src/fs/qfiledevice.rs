@@ -112,11 +112,12 @@ mod ffi {
     }
 
     extern "C++" {
-        include!("cxx-qt-lib/qstring.h");
-        type QString = cxx_qt_lib::QString;
-
         include!("cxx-qt-lib/qdatetime.h");
         type QDateTime = cxx_qt_lib::QDateTime;
+        include!("cxx-qt-lib/qstring.h");
+        type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
     }
 
     extern "C++" {
@@ -160,27 +161,21 @@ mod ffi {
         #[rust_name = "handle_or_negative"]
         fn handle(self: &QFileDevice) -> i32;
 
-        /// Maps size bytes of the file into memory starting at `offset`. A file should be open for a map to succeed but the file does not need to stay open after the memory has been mapped. When the `QFile` is destroyed or a new file is opened with this object, any maps that have not been unmapped will automatically be unmapped.
-        ///
-        /// The mapping will have the same open mode as the file (read and/or write), except when using [`QFileDeviceMemoryFlag::MapPrivateOption`], in which case it is always possible to write to the mapped memory.
-        ///
-        /// Any mapping options can be passed through flags.
-        ///
-        /// Returns a pointer to the memory or a null pointer if there is an error.
+        #[doc(hidden)]
+        #[rust_name = "map_qint64"]
         fn map(
             self: Pin<&mut QFileDevice>,
-            offset: i64,
-            size: i64,
+            offset: qint64,
+            size: qint64,
             flags: QFileDeviceMemoryMapFlags,
         ) -> *mut u8;
 
         /// Returns the complete OR-ed together combination of [`QFileDevicePermission`]s for the file.
         fn permissions(self: &QFileDevice) -> QFileDevicePermissions;
 
-        /// Sets the file size (in bytes) `sz`. Returns `true` if the resize succeeds; `false` otherwise. If `sz` is larger than the file currently is, the new bytes will be set to 0; if `sz` is smaller, the file is simply truncated.
-        ///
-        /// *Warning:* This function can fail if the file doesn't exist.
-        fn resize(self: Pin<&mut QFileDevice>, sz: i64) -> bool;
+        #[doc(hidden)]
+        #[rust_name = "resize_qint64"]
+        fn resize(self: Pin<&mut QFileDevice>, sz: qint64) -> bool;
 
         /// Sets the file time specified by `file_time` to `new_date`, returning `true` if successful; otherwise returns `false`.
         #[rust_name = "set_file_time"]
@@ -252,6 +247,29 @@ impl QFileDevice {
     /// If the file is not open, or there is an error, this function returns `None`.
     pub fn handle(&self) -> Option<FileDescriptor> {
         FileDescriptor::from(self.handle_or_negative()).nonnull()
+    }
+
+    /// Maps size bytes of the file into memory starting at `offset`. A file should be open for a map to succeed but the file does not need to stay open after the memory has been mapped. When the `QFile` is destroyed or a new file is opened with this object, any maps that have not been unmapped will automatically be unmapped.
+    ///
+    /// The mapping will have the same open mode as the file (read and/or write), except when using [`QFileDeviceMemoryFlag::MapPrivateOption`], in which case it is always possible to write to the mapped memory.
+    ///
+    /// Any mapping options can be passed through flags.
+    ///
+    /// Returns a pointer to the memory or a null pointer if there is an error.
+    pub fn map(
+        self: Pin<&mut Self>,
+        offset: i64,
+        size: i64,
+        flags: QFileDeviceMemoryMapFlags,
+    ) -> *mut u8 {
+        self.map_qint64(offset.into(), size.into(), flags)
+    }
+
+    /// Sets the file size (in bytes) `sz`. Returns `true` if the resize succeeds; `false` otherwise. If `sz` is larger than the file currently is, the new bytes will be set to 0; if `sz` is smaller, the file is simply truncated.
+    ///
+    /// *Warning:* This function can fail if the file doesn't exist.
+    pub fn resize(self: Pin<&mut Self>, sz: i64) -> bool {
+        self.resize_qint64(sz.into())
     }
 
     /// Casts this object to `QIODevice`.

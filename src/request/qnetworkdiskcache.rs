@@ -14,6 +14,8 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
 
         include!("cxx-qt-io/qnetworkcachemetadata.h");
         type QNetworkCacheMetaData = crate::QNetworkCacheMetaData;
@@ -40,9 +42,9 @@ mod ffi {
         #[rust_name = "file_meta_data_or_invalid"]
         fn fileMetaData(self: &QNetworkDiskCache, file_name: &QString) -> QNetworkCacheMetaData;
 
-        /// Returns the current maximum size for the disk cache.
-        #[rust_name = "maximum_cache_size"]
-        fn maximumCacheSize(self: &QNetworkDiskCache) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "maximum_cache_size_qint64"]
+        fn maximumCacheSize(self: &QNetworkDiskCache) -> qint64;
 
         /// Sets the directory where cached files will be stored to `cache_dir`.
         ///
@@ -52,11 +54,9 @@ mod ffi {
         #[rust_name = "set_cache_directory"]
         fn setCacheDirectory(self: Pin<&mut QNetworkDiskCache>, cache_dir: &QString);
 
-        /// Sets the maximum size of the disk cache to be size.
-        ///
-        /// If the new size is smaller then the current cache size then the cache will clean itself so that its size is under the maximum cache size.
-        #[rust_name = "set_maximum_cache_size"]
-        fn setMaximumCacheSize(self: Pin<&mut QNetworkDiskCache>, size: i64);
+        #[doc(hidden)]
+        #[rust_name = "set_maximum_cache_size_qint64"]
+        fn setMaximumCacheSize(self: Pin<&mut QNetworkDiskCache>, size: qint64);
     }
 
     #[namespace = "rust::cxxqt1"]
@@ -91,6 +91,17 @@ impl QNetworkDiskCache {
     /// Returns `None` if `file_name` is not a cache file.
     pub fn file_meta_data(&self, file_name: &QString) -> Option<QNetworkCacheMetaData> {
         self.file_meta_data_or_invalid(file_name).nonnull()
+    }
+
+    /// Returns the current maximum size for the disk cache.
+    pub fn maximum_cache_size(&self) -> i64 {
+        self.maximum_cache_size_qint64().into()
+    }
+    /// Sets the maximum size of the disk cache to be size.
+    ///
+    /// If the new size is smaller then the current cache size then the cache will clean itself so that its size is under the maximum cache size.
+    pub fn set_maximum_cache_size(self: Pin<&mut Self>, size: i64) {
+        self.set_maximum_cache_size_qint64(size.into());
     }
 
     /// Casts this object to `QAbstractNetworkCache`.
