@@ -29,4 +29,3 @@ CXX_QT_IO_QSET_ASSERTS(QSslDiffieHellmanParameters);
 CXX_QT_IO_QSET_ASSERTS(QSslEllipticCurve);
 CXX_QT_IO_QSET_ASSERTS(QSslError);
 #endif
-

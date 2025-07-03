@@ -2,7 +2,8 @@
 
 #include <QtNetwork/QAbstractSocket>
 
-using QAbstractSocketNetworkLayerProtocol = QAbstractSocket::NetworkLayerProtocol;
+using QAbstractSocketNetworkLayerProtocol =
+  QAbstractSocket::NetworkLayerProtocol;
 using QAbstractSocketSocketType = QAbstractSocket::SocketType;
 using QAbstractSocketSocketError = QAbstractSocket::SocketError;
 using QAbstractSocketSocketState = QAbstractSocket::SocketState;

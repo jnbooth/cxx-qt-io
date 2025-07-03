@@ -5,4 +5,5 @@
 #include "qlist_private.h"
 #include <cxx-qt-io/qsslpresharedkeyauthenticator.h>
 
-using QList_QSslPreSharedKeyAuthenticator = QList<QSslPreSharedKeyAuthenticator>;
+using QList_QSslPreSharedKeyAuthenticator =
+  QList<QSslPreSharedKeyAuthenticator>;

@@ -9,4 +9,3 @@ template<>
 struct IsRelocatable<QHttp2Configuration> : ::std::true_type
 {};
 }
-

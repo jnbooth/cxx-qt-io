@@ -8,7 +8,8 @@
 namespace rust {
 namespace cxxqtlib1 {
 namespace qvariant {
-bool qvariantCanConvertQNetworkCookie(const QVariant& variant);
+bool
+qvariantCanConvertQNetworkCookie(const QVariant& variant);
 }
 }
 }
