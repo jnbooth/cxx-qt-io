@@ -2,6 +2,7 @@
 # SPDX-FileContributor: Be <be.0@gmx.com>
 # SPDX-FileContributor: Emily Mabrey <emabrey@tenacityaudio.org>
 # SPDX-FileContributor: Leon Matthes <leon.matthes@kdab.com>
+# SPDX-FileContributor: Joshua Booth <joshua.n.booth@gmail.com>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #[=======================================================================[.rst:
