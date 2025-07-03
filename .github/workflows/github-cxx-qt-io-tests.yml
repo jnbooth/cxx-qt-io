@@ -29,6 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip install --user --break-system-packages clang-format==18.1.8
+      - run: shopt -s globstar
       - run: clang-format --dry-run -Werror include/**/*.h src/**/*.cpp
 
   check_rust:
@@ -44,6 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt-get install -y shellcheck
+      - run: shopt -s globstar
       - run: shellcheck scripts/*.sh src/**/*.sh
 
   build:
