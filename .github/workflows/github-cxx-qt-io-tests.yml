@@ -88,10 +88,6 @@ jobs:
     steps:
       - name: "Clone Git repository"
         uses: actions/checkout@v4
-      # Ensure clippy and rustfmt is installed, they should come from github runner
-      # clippy version needs to be 1.78.0 for the MSRV lint
-      #
-      # Note we still need rustfmt for the cxx-qt-gen tests
       - name: "Install Rust toolchain"
         run: |
           rustup default stable
