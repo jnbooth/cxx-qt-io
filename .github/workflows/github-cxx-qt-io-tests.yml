@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip install --user --break-system-packages clang-format==18.1.8
-      - run: ./home/runner/.local/bin/clang-format --dry-run -Werror include/**/*.h src/**/*.cpp
+      - run: clang-format --dry-run -Werror include/**/*.h src/**/*.cpp
 
   check_rust:
     runs-on: ubuntu-24.04
@@ -217,18 +217,6 @@ jobs:
       - name: "Print compiler cache statistics"
         run: sccache --show-stats
 
-      # This is a workaround for the fact that GH doesn't support updating existing caches.
-      # See: https://github.com/azu/github-actions-overwrite-cache-example
-      - name: "Delete previous compiler cache"
-        # Updating th cache doesn't work from forks
-        # So update it once it's merged into the repo
-        if: ${{ steps.compiler-cache-restore.outputs.cache-hit &&  github.event_name == 'push' && github.ref_name == 'main' }}
-        continue-on-error: true
-        run: |
-          gh extension install actions/gh-actions-cache
-          gh actions-cache delete "${{ matrix.name }}_compiler_cache" --confirm
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Save Compiler Cache"
         # Updating the cache doesn't work from forks
         # So update it once it's merged into the repo
