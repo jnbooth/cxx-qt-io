@@ -90,7 +90,7 @@ mod ffi {
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         #[rust_name = "qdeadlinetimer_add_nsecs"]
-        fn qdeadlinetimerAddNSecs(timer: QDeadlineTimer, nsecs: i64) -> QDeadlineTimer;
+        fn qdeadlinetimerAddNSecs(timer: QDeadlineTimer, nsecs: qint64) -> QDeadlineTimer;
 
         #[rust_name = "qdeadlinetimer_current"]
         fn qdeadlinetimerCurrent(timer_type: TimerType) -> QDeadlineTimer;
@@ -333,14 +333,14 @@ impl Add<Duration> for QDeadlineTimer {
     /// Returns a `QDeadlineTimer` whose deadline is `rhs` later than the deadline stored in `self`. If `self` is set to never expire, this function returns a `QDeadlineTimer` that does not expire either.
     fn add(self, rhs: Duration) -> Self::Output {
         if let Ok(nsecs) = i64::try_from(rhs.as_nanos()) {
-            return ffi::qdeadlinetimer_add_nsecs(self, nsecs);
+            return ffi::qdeadlinetimer_add_nsecs(self, nsecs.into());
         }
         let timer = ffi::qdeadlinetimer_plus(self, rhs.as_millis().try_into().unwrap_or(i64::MAX));
         let nsecs = rhs.subsec_nanos();
         if nsecs == 0 {
             timer
         } else {
-            ffi::qdeadlinetimer_add_nsecs(timer, nsecs.into())
+            ffi::qdeadlinetimer_add_nsecs(timer, i64::from(nsecs).into())
         }
     }
 }
@@ -358,14 +358,14 @@ impl Sub<Duration> for QDeadlineTimer {
     /// Returns a `QDeadlineTimer` whose deadline is `rhs` earlier than the deadline stored in `self`. If `self` is set to never expire, this function returns a `QDeadlineTimer` that does not expire either.
     fn sub(self, rhs: Duration) -> Self::Output {
         if let Ok(nsecs) = i64::try_from(rhs.as_nanos()) {
-            return ffi::qdeadlinetimer_add_nsecs(self, -nsecs);
+            return ffi::qdeadlinetimer_add_nsecs(self, (-nsecs).into());
         }
         let timer = ffi::qdeadlinetimer_minus(self, rhs.as_millis().try_into().unwrap_or(i64::MAX));
         let nsecs = rhs.subsec_nanos();
         if nsecs == 0 {
             timer
         } else {
-            ffi::qdeadlinetimer_add_nsecs(timer, -i64::from(nsecs))
+            ffi::qdeadlinetimer_add_nsecs(timer, (-i64::from(nsecs)).into())
         }
     }
 }

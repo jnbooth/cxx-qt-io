@@ -85,7 +85,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "receive_datagram_or_invalid"]
-        fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: i64) -> QNetworkDatagram;
+        fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: qint64) -> QNetworkDatagram;
 
         /// Sets the outgoing interface for multicast datagrams to the interface `iface`. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise this function does nothing.
         #[rust_name = "set_multicast_interface"]
@@ -276,7 +276,7 @@ impl QUdpSocket {
         self: Pin<&mut Self>,
         max_size: Option<i64>,
     ) -> Option<QNetworkDatagram> {
-        self.receive_datagram_or_invalid(max_size.unwrap_or(-1))
+        self.receive_datagram_or_invalid(max_size.unwrap_or(-1).into())
             .nonnull()
     }
 
