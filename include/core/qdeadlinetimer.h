@@ -12,11 +12,10 @@ struct IsRelocatable<QDeadlineTimer> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-QDeadlineTimer (*qdeadlinetimerAddNSecs)(QDeadlineTimer,
-                                         qint64) = QDeadlineTimer::addNSecs;
+inline QDeadlineTimer (*qdeadlinetimerAddNSecs)(QDeadlineTimer, qint64) =
+  QDeadlineTimer::addNSecs;
 
-QDeadlineTimer (*qdeadlinetimerCurrent)(Qt::TimerType) =
+inline QDeadlineTimer (*qdeadlinetimerCurrent)(Qt::TimerType) =
   QDeadlineTimer::current;
-
 }
 }
