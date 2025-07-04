@@ -6,9 +6,6 @@ assert_shared_pointer_type(QSslDiffieHellmanParameters);
 
 namespace rust {
 namespace cxxqtio1 {
-QSslDiffieHellmanParameters (*defaultParameters)() =
-  QSslDiffieHellmanParameters::defaultParameters;
-
 QSslDiffieHellmanParameters
 qssldiffiehellmanparametersFromEncoded(QIODevice* device,
                                        QSsl::EncodingFormat encoding)

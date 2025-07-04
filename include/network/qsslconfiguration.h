@@ -13,25 +13,25 @@ struct IsRelocatable<QSslConfiguration> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-QSslConfiguration (*qsslconfigurationDefaultConfiguration)() =
+inline QSslConfiguration (*qsslconfigurationDefaultConfiguration)() =
   QSslConfiguration::defaultConfiguration;
 
-QSslConfiguration (*qsslconfigurationDefaultDtlsConfiguration)() =
+inline QSslConfiguration (*qsslconfigurationDefaultDtlsConfiguration)() =
   QSslConfiguration::defaultDtlsConfiguration;
 
-void (*qsslconfigurationSetDefaultConfiguration)(const QSslConfiguration&) =
-  QSslConfiguration::setDefaultConfiguration;
+inline void (*qsslconfigurationSetDefaultConfiguration)(
+  const QSslConfiguration&) = QSslConfiguration::setDefaultConfiguration;
 
-void (*qsslconfigurationSetDefaultDtlsConfiguration)(const QSslConfiguration&) =
-  QSslConfiguration::setDefaultDtlsConfiguration;
+inline void (*qsslconfigurationSetDefaultDtlsConfiguration)(
+  const QSslConfiguration&) = QSslConfiguration::setDefaultDtlsConfiguration;
 
-QList<QSslCipher> (*qsslconfigurationSupportedCiphers)() =
+inline QList<QSslCipher> (*qsslconfigurationSupportedCiphers)() =
   QSslConfiguration::supportedCiphers;
 
-QList<QSslEllipticCurve> (*qsslconfigurationSupportedEllipticCurves)() =
+inline QList<QSslEllipticCurve> (*qsslconfigurationSupportedEllipticCurves)() =
   QSslConfiguration::supportedEllipticCurves;
 
-QList<QSslCertificate> (*qsslconfigurationSystemCaCertificates)() =
+inline QList<QSslCertificate> (*qsslconfigurationSystemCaCertificates)() =
   QSslConfiguration::systemCaCertificates;
 
 ::rust::String
