@@ -208,7 +208,7 @@ impl QUdpSocket {
                 data_ptr,
                 data.len() as i64,
                 address.as_mut_ptr(),
-                &mut port,
+                &raw mut port,
             );
             if let Ok(n) = usize::try_from(result) {
                 return Ok((n, address.assume_init(), port));
@@ -235,7 +235,7 @@ impl QUdpSocket {
                 data.as_mut_ptr(),
                 data.len() as i64,
                 address.as_mut_ptr(),
-                &mut port,
+                &raw mut port,
             );
             if n == -1 {
                 return None;
@@ -316,7 +316,7 @@ impl QUdpSocket {
 
     /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
     ///
-    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return -1 and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLarge).
+    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return -1 and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLargeError).
     ///
     /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
     ///

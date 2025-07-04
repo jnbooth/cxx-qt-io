@@ -215,13 +215,13 @@ impl<'a> Iterator for Iter<'a> {
     }
 }
 
-impl<'a> ExactSizeIterator for Iter<'a> {
+impl ExactSizeIterator for Iter<'_> {
     fn len(&self) -> usize {
         self.inner.len()
     }
 }
 
-impl<'a> FusedIterator for Iter<'a> {}
+impl FusedIterator for Iter<'_> {}
 
 impl<'a> IntoIterator for &'a RawHeaderList {
     type Item = (&'a QByteArray, &'a QByteArray);

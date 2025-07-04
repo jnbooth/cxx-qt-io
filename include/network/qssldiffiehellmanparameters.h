@@ -16,11 +16,11 @@ inline QSslDiffieHellmanParameters (
   *qssldiffiehellmanparametersDefaultParameters)() =
   QSslDiffieHellmanParameters::defaultParameters;
 
-inline QSslDiffieHellmanParameters
+QSslDiffieHellmanParameters
 qssldiffiehellmanparametersFromEncoded(QIODevice* device,
                                        QSsl::EncodingFormat encoding);
 
-inline QSslDiffieHellmanParameters
+QSslDiffieHellmanParameters
 qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
                                        QSsl::EncodingFormat encoding);
 }
