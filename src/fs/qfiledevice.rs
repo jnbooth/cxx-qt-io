@@ -251,7 +251,7 @@ impl QFileDevice {
 
     /// Maps size bytes of the file into memory starting at `offset`. A file should be open for a map to succeed but the file does not need to stay open after the memory has been mapped. When the `QFile` is destroyed or a new file is opened with this object, any maps that have not been unmapped will automatically be unmapped.
     ///
-    /// The mapping will have the same open mode as the file (read and/or write), except when using [`QFileDeviceMemoryFlag::MapPrivateOption`], in which case it is always possible to write to the mapped memory.
+    /// The mapping will have the same open mode as the file (read and/or write), except when using [`QFileDeviceMemoryFlag::MapPrivateOption`](crate::QFileDeviceMemoryFlag::MapPrivateOption), in which case it is always possible to write to the mapped memory.
     ///
     /// Any mapping options can be passed through flags.
     ///

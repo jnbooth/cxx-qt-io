@@ -241,7 +241,7 @@ impl QNetworkCookie {
         match date {
             Some(date) => self.set_expiration_date_or_null(date),
             None => self.set_expiration_date_or_null(&QDateTime::default()),
-        };
+        }
     }
 }
 

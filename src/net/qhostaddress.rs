@@ -335,7 +335,7 @@ impl TryFrom<&QHostAddress> for Ipv4Addr {
     fn try_from(value: &QHostAddress) -> Result<Self, Self::Error> {
         let mut ok = false;
         // SAFETY: ptr::from_mut(&mut ok) is valid.
-        let address = unsafe { value.to_ipv4_address(ptr::from_mut(&mut ok)) };
+        let address = unsafe { value.to_ipv4_address(&raw mut ok) };
         if !ok {
             return Err(QHostAddressTryFromError(()));
         }

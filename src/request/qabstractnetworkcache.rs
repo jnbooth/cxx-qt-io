@@ -219,7 +219,7 @@ pub struct QAbstractNetworkCacheWriter<'a> {
     url: QUrl,
 }
 
-impl<'a> QAbstractNetworkCacheWriter<'a> {
+impl QAbstractNetworkCacheWriter<'_> {
     /// Insert the written data into the cache.
     pub fn insert(mut self) {
         unsafe { self.cache.as_mut().insert_unsafe(self.device) };
@@ -237,7 +237,7 @@ impl<'a> QAbstractNetworkCacheWriter<'a> {
     }
 }
 
-impl<'a> Drop for QAbstractNetworkCacheWriter<'a> {
+impl Drop for QAbstractNetworkCacheWriter<'_> {
     fn drop(&mut self) {
         if self.inserted {
             return;
@@ -246,7 +246,7 @@ impl<'a> Drop for QAbstractNetworkCacheWriter<'a> {
     }
 }
 
-impl<'a> Write for QAbstractNetworkCacheWriter<'a> {
+impl Write for QAbstractNetworkCacheWriter<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         self.pin_mut().write(buf)
     }

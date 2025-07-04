@@ -268,6 +268,15 @@ impl QDeadlineTimer {
         self.remaining_time_n_secs_qint64().into()
     }
 
+    /// Sets the deadline for this `QDeadlineTimer` object to be the `msecs` absolute time point, counted in milliseconds since the reference clock (the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference)), and the timer type to `timer_type`. If the value is in the past, this `QDeadlineTimer` will be marked as expired.
+    ///
+    /// If msecs is [`i64::MAX`] or the deadline is beyond a representable point in the future, this `QDeadlineTimer` will be set to never expire.
+    ///
+    /// **Note:** For a more Rust-friendly option, see [`QDeadlineTimer::set_duration`].
+    pub fn set_deadline(&mut self, msecs: i64, timer_type: TimerType) {
+        self.set_deadline_qint64(msecs.into(), timer_type);
+    }
+
     /// Sets the remaining time for the timer to `duration`, using the specified `timer_type`.
     pub fn set_duration(&mut self, duration: Duration, timer_type: TimerType) {
         self.set_precise_remaining_time(
@@ -275,15 +284,6 @@ impl QDeadlineTimer {
             duration.subsec_nanos().into(),
             timer_type,
         );
-    }
-
-    /// Sets the deadline for this `QDeadlineTimer` object to be the `msecs` absolute time point, counted in milliseconds since the reference clock (the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference)), and the timer type to `timer_type`. If the value is in the past, this `QDeadlineTimer` will be marked as expired.
-    ///
-    /// If msecs is [`i64::MAX`] or the deadline is beyond a representable point in the future, this `QDeadlineTimer` will be set to never expire.
-    ///
-    /// **Note:** For a more Rust-friendly option, see [`QDeadlineTimer::set_time`] or [`QDeadlineTimer::set_duration`].
-    pub fn set_deadline(&mut self, msecs: i64, timer_type: TimerType) {
-        self.set_deadline_qint64(msecs.into(), timer_type);
     }
 
     /// Sets the timer to never expire.
@@ -295,7 +295,7 @@ impl QDeadlineTimer {
     ///
     /// If `secs` or `nsecs` is [`i64::MAX`], this `QDeadlineTimer` will be set to never expire. If `nsecs` is more than 1 billion nanoseconds (1 second), then `secs` will be adjusted accordingly.
     ///
-    /// **Note:** For a more Rust-friendly option, see [`QDeadlineTimer::set_time`] or [`QDeadlineTimer::set_duration`].
+    /// **Note:** For a more Rust-friendly option, see [`QDeadlineTimer::set_duration`].
     pub fn set_precise_deadline(&mut self, secs: i64, nsecs: i64, timer_type: TimerType) {
         self.set_precise_deadline_qint64(secs.into(), nsecs.into(), timer_type);
     }
