@@ -44,10 +44,219 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu 24.04 (gcc) Qt6
+          - name: Qt 6.9 (MacOS)
+            os: macos-14
+            qt_version: 6
+            aqt_version: "6.9.0"
+            aqt_arch: "clang_64"
+            aqt_host: "mac"
+            dyld_framework_path: /Users/runner/work/cxx-qt/Qt/6.9.0/macos/lib
+            # https://doc.qt.io/qt-6.7/macos.html#target-platforms
+            macosx_deployment_target: "13.0"
+            cores: 3
+            qt_qpa_platform: cocoa
+            compiler_cache_path: /Users/runner/Library/Caches/Mozilla.sccache
+            sccache_log_path: /Users/runner/Library/Caches/Mozilla.sccache.log.txt
+            clang_format_path: /Users/runner/Library/Python/3.13/bin/clang-format
+            cargo_dir: ~/.cargo
+            cc: clang
+            cxx: clang++
+            rustc_wrapper: sccache
+            build_type: Release
+
+          - name: Qt 6.9 (Windows MSVC)
+            os: windows-2022
+            qt_version: 6
+            aqt_version: "6.9.0"
+            aqt_arch: "win64_msvc2019_64"
+            aqt_host: "windows"
+            cores: 4
+            exe_suffix: .exe
+            qt_qpa_platform: windows
+            compiler_cache_path: C:\Users\runneradmin\AppData\Local\Mozilla\sccache\cache
+            sccache_log_path: C:\Users\runneradmin\AppData\Local\Mozilla\sccache\log.txt
+            clang_format_path: C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts\clang-format.exe
+            cargo_dir: C:\Users\runneradmin\.cargo
+            cc: cl
+            cxx: cl
+            rustc_wrapper: sccache
+            build_type: Release
+
+          - name: Ubuntu Qt 6.9
             os: ubuntu-24.04
             qt_version: 6
             aqt_version: "6.9.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.8
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.8.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.7
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.7.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.6
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.6.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.5
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.5.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.4
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.4.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.3
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.3.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.2
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.2.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.1
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.1.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.0
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.0.0"
             aqt_arch: "linux_gcc_64"
             aqt_host: "linux"
             cores: 4
