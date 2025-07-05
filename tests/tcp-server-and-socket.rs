@@ -11,6 +11,7 @@ const TIMEOUT: Option<Duration> = Some(Duration::from_secs(500));
 
 #[test]
 fn tcp_round_trip() {
+    init_crates!();
     run_inside_app(|| {
         let mut server_ptr = QTcpServer::new();
         let mut socket_ptr = QTcpSocket::new();
