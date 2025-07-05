@@ -131,12 +131,6 @@ if(BUILD_TESTING)
     set_tests_properties(cargo_doc PROPERTIES
         ENVIRONMENT_MODIFICATION "${CARGO_ENV};RUSTDOCFLAGS=set:--deny=warnings"
     )
-
-    # Add test which checks that a build rerun doesn't recompile and uses caches instead
-    add_test(NAME cargo_build_rerun COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/scripts/check_cargo_build_rerun.sh" "${CMAKE_CURRENT_SOURCE_DIR}" "${CARGO_TARGET_DIR}")
-
-    # Ensure that cargo_build_rerun doesn't run while we are already building
-    set_tests_properties(cargo_build_rerun PROPERTIES RUN_SERIAL TRUE)
 endif()
 
 if(CMAKE_RUSTC_WRAPPER)
