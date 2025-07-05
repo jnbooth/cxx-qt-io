@@ -139,7 +139,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.6
-            os: ubuntu-24.04
+            os: ubuntu-22.04
             qt_version: 6
             aqt_version: "6.6.0"
             aqt_arch: "linux_gcc_64"
@@ -158,7 +158,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.5
-            os: ubuntu-24.04
+            os: ubuntu-22.04
             qt_version: 6
             aqt_version: "6.5.0"
             aqt_arch: "linux_gcc_64"
@@ -177,7 +177,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.4
-            os: ubuntu-24.04
+            os: ubuntu-20.04
             qt_version: 6
             aqt_version: "6.4.0"
             aqt_arch: "linux_gcc_64"
@@ -196,7 +196,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.3
-            os: ubuntu-24.04
+            os: ubuntu-20.04
             qt_version: 6
             aqt_version: "6.3.0"
             aqt_arch: "linux_gcc_64"
@@ -215,7 +215,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.2
-            os: ubuntu-24.04
+            os: ubuntu-20.04
             qt_version: 6
             aqt_version: "6.2.0"
             aqt_arch: "linux_gcc_64"
@@ -234,7 +234,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.1
-            os: ubuntu-24.04
+            os: ubuntu-20.04
             qt_version: 6
             aqt_version: "6.1.0"
             aqt_arch: "linux_gcc_64"
@@ -253,7 +253,7 @@ jobs:
               libxkbcommon-dev
 
           - name: Ubuntu Qt 6.0
-            os: ubuntu-24.04
+            os: ubuntu-20.04
             qt_version: 6
             aqt_version: "6.0.0"
             aqt_arch: "linux_gcc_64"
