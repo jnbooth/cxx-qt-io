@@ -18,6 +18,7 @@ const TIMEOUT: Duration = Duration::from_secs(500);
 
 #[test]
 fn ssl_round_trip() {
+    init_crates!();
     run_inside_app(|| {
         let cert =
             QSslCertificate::try_from(&QByteArray::from(CERT)).expect("invalid certificate file");
