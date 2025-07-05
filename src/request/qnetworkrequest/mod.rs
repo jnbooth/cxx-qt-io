@@ -452,7 +452,9 @@ mod tests {
     use cxx_qt_lib::QString;
 
     use super::*;
-    use crate::{QHttp1Configuration, QHttp2Configuration, QHttpHeaders};
+    #[cfg(cxxqt_qt_version_at_least_6_8)]
+    use crate::QHttpHeaders;
+    use crate::{QHttp1Configuration, QHttp2Configuration};
 
     #[test]
     fn transfer_timeout_some() {
@@ -486,12 +488,16 @@ mod tests {
 
         impl fmt::Debug for QNetworkRequestProps {
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                f.debug_struct("QNetworkRequestProps")
-                    .field(
-                        "decompressed_safety_check_threshold",
-                        &self.decompressed_safety_check_threshold,
-                    )
-                    .field("headers", &self.headers)
+                let mut debug = f.debug_struct("QNetworkRequestProps");
+                debug.field(
+                    "decompressed_safety_check_threshold",
+                    &self.decompressed_safety_check_threshold,
+                );
+
+                #[cfg(cxxqt_qt_version_at_least_6_8)]
+                debug.field("headers", &self.headers);
+
+                debug
                     .field("http1_configuration", &"<QHttp1Configuration>")
                     .field("http2_configuration", &"<QHttp2Configuration>")
                     .field("maximum_redirects_allowed", &self.maximum_redirects_allowed)
