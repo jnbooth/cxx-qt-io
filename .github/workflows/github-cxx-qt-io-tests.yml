@@ -51,7 +51,6 @@ jobs:
             aqt_arch: "clang_64"
             aqt_host: "mac"
             dyld_framework_path: /Users/runner/work/cxx-qt/Qt/6.9.0/macos/lib
-            # https://doc.qt.io/qt-6.7/macos.html#target-platforms
             macosx_deployment_target: "13.0"
             cores: 3
             qt_qpa_platform: cocoa
@@ -64,10 +63,10 @@ jobs:
             rustc_wrapper: sccache
             build_type: Release
 
-          - name: Qt 6.9 (Windows MSVC)
+          - name: Qt 6.7 (Windows MSVC)
             os: windows-2022
             qt_version: 6
-            aqt_version: "6.9.0"
+            aqt_version: "6.7.3"
             aqt_arch: "win64_msvc2019_64"
             aqt_host: "windows"
             cores: 4
