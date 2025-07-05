@@ -212,7 +212,7 @@ mod tests {
     #[test]
     fn for_array() {
         let mut array = QByteArray::from(b"test".as_slice());
-        let mut buffer = unsafe { QBuffer::for_array(&mut array) };
+        let mut buffer = unsafe { QBuffer::for_array(&raw mut array) };
         buffer
             .pin_mut()
             .as_io_device_mut()

@@ -10,10 +10,9 @@ struct IsRelocatable<QSslEllipticCurve> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-QSslEllipticCurve (*qsslellipticcurveFromLongName)(const QString&) =
+inline QSslEllipticCurve (*qsslellipticcurveFromLongName)(const QString&) =
   QSslEllipticCurve::fromLongName;
-QSslEllipticCurve (*qsslellipticcurveFromShortName)(const QString&) =
+inline QSslEllipticCurve (*qsslellipticcurveFromShortName)(const QString&) =
   QSslEllipticCurve::fromShortName;
-
 }
 }

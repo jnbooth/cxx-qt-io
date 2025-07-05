@@ -12,7 +12,8 @@ struct IsRelocatable<QSslDiffieHellmanParameters> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-QSslDiffieHellmanParameters (*qssldiffiehellmanparametersDefaultParameters)() =
+inline QSslDiffieHellmanParameters (
+  *qssldiffiehellmanparametersDefaultParameters)() =
   QSslDiffieHellmanParameters::defaultParameters;
 
 QSslDiffieHellmanParameters
@@ -22,6 +23,5 @@ qssldiffiehellmanparametersFromEncoded(QIODevice* device,
 QSslDiffieHellmanParameters
 qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
                                        QSsl::EncodingFormat encoding);
-
 }
 }

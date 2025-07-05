@@ -9,7 +9,7 @@ namespace cxxqtio1 {
 void
 qabstractnetworkcacheClear(QAbstractNetworkCache& cache);
 
-::std::int64_t
+qint64
 qabstractnetworkcacheCacheSize(const QAbstractNetworkCache& cache);
 
 QIODevice*

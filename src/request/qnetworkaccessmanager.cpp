@@ -40,7 +40,7 @@ qnetworkaccessmanagerSetTransferTimeoutMsecs(QNetworkAccessManager& manager,
                                              ::std::int64_t timeout)
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
-  manager.setTransferTimeout(::std::chrono::milliseconds{ timeout });
+  manager.setTransferTimeout(::std::chrono::milliseconds(timeout));
 #else
   manager.setTransferTimeout(int(timeout));
 #endif
@@ -50,9 +50,9 @@ qnetworkaccessmanagerSetTransferTimeoutMsecs(QNetworkAccessManager& manager,
 qnetworkaccessmanagerTransferTimeoutMsecs(const QNetworkAccessManager& manager)
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
-  return manager.transferTimeoutAsDuration().count();
+  return ::std::int64_t(manager.transferTimeoutAsDuration().count());
 #else
-  return manager.transferTimeout();
+  return ::std::int64_t(manager.transferTimeout());
 #endif
 }
 

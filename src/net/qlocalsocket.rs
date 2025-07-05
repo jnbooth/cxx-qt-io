@@ -70,6 +70,8 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qtypes.h");
         type qintptr = cxx_qt_lib::qintptr;
+        type qint64 = cxx_qt_lib::qint64;
+
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
@@ -139,21 +141,17 @@ mod ffi {
         #[rust_name = "is_valid"]
         fn isValid(self: &QLocalSocket) -> bool;
 
-        /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all). A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
-        #[rust_name = "read_buffer_size"]
-        fn readBufferSize(self: &QLocalSocket) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "read_buffer_size_qint64"]
+        fn readBufferSize(self: &QLocalSocket) -> qint64;
 
         #[doc(hidden)]
         #[rust_name = "server_name_or_empty"]
         fn serverName(self: &QLocalSocket) -> QString;
 
-        /// Sets the size of `QLocalSocket`'s internal read buffer to be `size` bytes.
-        ///
-        /// If the buffer size is limited to a certain size, `QLocalSocket` won't buffer more than this size of data. Exceptionally, a buffer size of 0 means that the read buffer is unlimited and all incoming data is buffered. This is the default.
-        ///
-        /// This option is useful if you only read the data at certain points in time (e.g., in a real-time streaming application) or if you want to protect your socket against receiving too much data, which may eventually cause your application to run out of memory.
-        #[rust_name = "set_read_buffer_size"]
-        fn setReadBufferSize(self: Pin<&mut QLocalSocket>, size: i64);
+        #[doc(hidden)]
+        #[rust_name = "set_read_buffer_size_qint64"]
+        fn setReadBufferSize(self: Pin<&mut QLocalSocket>, size: qint64);
 
         /// Set the `name` of the peer to connect to. On Windows `name` is the name of a named pipe; on Unix `name` is the name of a local domain socket.
         ///
@@ -238,9 +236,25 @@ impl QLocalSocket {
         ffi::qlocalsocket_new()
     }
 
+    /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all). A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
+    pub fn read_buffer_size(&self) -> i64 {
+        self.read_buffer_size_qint64().into()
+    }
+
     /// Returns the name of the peer as specified by [`set_server_name`](QLocalSocket::set_server_name), or `None` if [`set_server_name`](QLocalSocket::set_server_name) has not been called or [`connect_to_server`](QLocalSocket::connect_to_server) failed.
     pub fn server_name(&self) -> Option<QString> {
         self.server_name_or_empty().nonnull()
+    }
+
+    /// Sets the size of `QAbstractSocket`'s internal read buffer to be size bytes.
+    ///
+    /// If the buffer size is limited to a certain size, `QAbstractSocket` won't buffer more than this size of data. Exceptionally, a buffer size of 0 means that the read buffer is unlimited and all incoming data is buffered. This is the default.
+    ///
+    /// This option is useful if you only read the data at certain points in time (e.g., in a real-time streaming application) or if you want to protect your socket against receiving too much data, which may eventually cause your application to run out of memory.
+    ///
+    /// Only [`QTcpSocket`](crate::QTcpSocket) uses `QAbstractSocket`'s internal buffer; [`QUdpSocket`](crate::QUdpSocket) does not use any buffering at all, but rather relies on the implicit buffering provided by the operating system. Because of this, calling this function on [`QUdpSocket`](crate::QUdpSocket) has no effect.
+    pub fn set_read_buffer_size(self: Pin<&mut Self>, size: i64) {
+        self.set_read_buffer_size_qint64(size.into());
     }
 
     /// Initializes `QLocalSocket` with the native socket descriptor `socket_descriptor`. Returns `true` if `socket_descriptor` is accepted as a valid socket descriptor; otherwise returns `false`. The socket is opened in the mode specified by `open_mode`, and enters the socket state specified by `socket_state`. Read and write buffers are cleared, discarding any pending data.

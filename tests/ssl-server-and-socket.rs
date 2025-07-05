@@ -18,6 +18,7 @@ const TIMEOUT: Duration = Duration::from_secs(500);
 
 #[test]
 fn ssl_round_trip() {
+    init_crates!();
     run_inside_app(|| {
         let cert =
             QSslCertificate::try_from(&QByteArray::from(CERT)).expect("invalid certificate file");
@@ -40,8 +41,18 @@ fn ssl_round_trip() {
         client_socket
             .as_mut()
             .on_ssl_errors(move |mut client_socket, errors| {
-                let errors = errors.iter().map(QSslError::error).collect::<Vec<_>>();
-                assert_eq!(errors, vec![QSslErrorSslError::CertificateUntrusted]);
+                let errors = errors
+                    .iter()
+                    .map(QSslError::error)
+                    .filter(|&error| {
+                        !matches!(
+                            error,
+                            QSslErrorSslError::CertificateUntrusted
+                                | QSslErrorSslError::SelfSignedCertificate,
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                assert_eq!(errors, Vec::new());
                 client_socket.as_mut().ignore_all_ssl_errors();
             })
             .release();

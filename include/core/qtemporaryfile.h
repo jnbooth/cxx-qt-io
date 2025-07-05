@@ -4,8 +4,7 @@
 
 namespace rust {
 namespace cxxqtio1 {
-QTemporaryFile* (*qtemporaryfileCreateNativeFile)(QFile&) =
+inline QTemporaryFile* (*qtemporaryfileCreateNativeFile)(QFile&) =
   QTemporaryFile::createNativeFile;
-
 }
 }
