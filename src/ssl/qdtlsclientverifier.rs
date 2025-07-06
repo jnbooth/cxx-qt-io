@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::Deref;
 use std::pin::Pin;
 
@@ -6,6 +7,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::QByteArray;
 
+use crate::qobject::debug_qobject;
 use crate::util::{unpin_for_qt, IsNonNull};
 use crate::{QHostAddress, QUdpSocket};
 
@@ -86,6 +88,12 @@ mod ffi {
 }
 
 pub use ffi::QDtlsClientVerifier;
+
+impl fmt::Debug for QDtlsClientVerifier {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QDtlsClientVerifier {
     /// Constructs a `QDtlsClientVerifier` object.

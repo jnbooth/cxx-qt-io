@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::Deref;
 use std::pin::Pin;
 
@@ -6,6 +7,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::QByteArray;
 
+use crate::qobject::debug_qobject;
 use crate::util::{unpin_for_qt, IsNonNull};
 use crate::{QHostAddress, QSslCipher, QSslSocketSslMode, QUdpSocket};
 
@@ -284,6 +286,12 @@ mod ffi {
 }
 
 pub use ffi::{QDtls, QDtlsError, QDtlsHandshakeState};
+
+impl fmt::Debug for QDtls {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QDtls {
     /// Creates a [`QDtls`] object depending on the `mode`:

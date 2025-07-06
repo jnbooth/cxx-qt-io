@@ -153,6 +153,7 @@ fn main() {
     header_dir.write_headers(&[
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
+        include_header!("include/core/qbytearray.h"),
         include_header!("include/core/qbuffer.h"),
         include_header!("include/core/qdeadlinetimer.h"),
         include_header!("include/core/qhash/qhash_i32_qvariant.h"),
@@ -167,13 +168,13 @@ fn main() {
         include_header!("include/core/qmap/qmap_private.h"),
         include_header!("include/core/qmap/qmap_qbytearray_qvariant.h"),
         include_header!("include/core/qmap/qmap.h"),
+        include_header!("include/core/qobject.h"),
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),
         include_header!("include/core/qpair/qpair.h"),
         include_header!("include/core/qset/qset_private.h"),
         include_header!("include/core/qset/qset.h"),
         include_header!("include/core/qvariant/qvariant.h"),
-        include_header!("include/util.h"),
         include_header!("include/views.h"),
     ]);
 
@@ -186,12 +187,14 @@ fn main() {
     let mut builder = CxxQtBuilder::library(interface)
         .build_cpp(&[
             "core/qbuffer",
+            "core/qbytearray",
             "core/qdeadlinetimer",
             "core/qhash/qhash",
             "core/qiodevice",
             "core/qlist/qlist",
-            "core/qpair",
             "core/qmap/qmap",
+            "core/qobject",
+            "core/qpair",
             "core/qset/qset",
             "core/qvariant/qvariant",
         ])
@@ -201,8 +204,8 @@ fn main() {
             "core/qiodevice",
             "core/qlist/qlist_qpair_qbytearray_qbytearray",
             "core/qmap/qmap_qbytearray_qvariant",
+            "core/qobject",
             "core/qt",
-            "util",
         ]);
 
     if features.fs {

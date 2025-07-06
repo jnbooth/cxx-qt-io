@@ -213,9 +213,6 @@ mod ffi {
 
         #[rust_name = "qhostaddress_eq"]
         fn operatorEq(a: &QHostAddress, b: &QHostAddress) -> bool;
-
-        #[rust_name = "qhostaddress_to_debug_qstring"]
-        fn toDebugQString(value: &QHostAddress) -> QString;
     }
 }
 
@@ -261,18 +258,17 @@ impl PartialEq for QHostAddress {
 
 impl Eq for QHostAddress {}
 
-impl fmt::Display for QHostAddress {
+impl fmt::Debug for QHostAddress {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         IpAddr::from(self).fmt(f)
     }
 }
 
-impl fmt::Debug for QHostAddress {
+impl fmt::Display for QHostAddress {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qhostaddress_to_debug_qstring(self).fmt(f)
+        IpAddr::from(self).fmt(f)
     }
 }
-
 impl IsNonNull for QHostAddress {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -75,6 +76,18 @@ impl Default for QSslCertificateExtension {
     /// Constructs a `QSslCertificateExtension`.
     fn default() -> Self {
         ffi::qsslcertificateextension_init_default()
+    }
+}
+
+impl fmt::Debug for QSslCertificateExtension {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("QSslCertificateExtension")
+            .field("is_critical", &self.is_critical())
+            .field("is_supported", &self.is_supported())
+            .field("name", &self.name())
+            .field("oid", &self.oid())
+            .field("value", &self.value())
+            .finish()
     }
 }
 

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -6,6 +7,7 @@ use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 
+use crate::qobject::debug_qobject;
 use crate::{QAbstractSocket, QIODevice};
 
 #[cxx_qt::bridge]
@@ -50,6 +52,12 @@ mod ffi {
 }
 
 pub use ffi::QTcpSocket;
+
+impl fmt::Debug for QTcpSocket {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QTcpSocket {
     /// Creates a `QTcpSocket` object in state [`QAbstractSocketSocketState::UnconnectedState`](crate::QAbstractSocketSocketState::UnconnectedState).

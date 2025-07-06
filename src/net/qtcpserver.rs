@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
@@ -6,6 +7,7 @@ use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 
+use crate::qobject::debug_qobject;
 use crate::util::{IsNonNull, MSecs};
 use crate::{QHostAddress, QTcpSocket, SocketDescriptor};
 
@@ -157,6 +159,12 @@ mod ffi {
 }
 
 pub use ffi::QTcpServer;
+
+impl fmt::Debug for QTcpServer {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QTcpServer {
     /// Constructs a `QTcpServer` object.

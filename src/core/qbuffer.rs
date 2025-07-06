@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -7,6 +8,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::QByteArray;
 
+use crate::qobject::debug_qobject;
 use crate::QIODevice;
 
 #[cxx_qt::bridge]
@@ -88,6 +90,12 @@ mod ffi {
 }
 
 pub use ffi::QBuffer;
+
+impl fmt::Debug for QBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QBuffer {
     /// Constructs an empty buffer. You can call [`set_data`](Self::set_data) to fill the buffer with data, or you can open it in write mode and use [`write`](QIODevice::write).

@@ -1,16 +1,15 @@
-#pragma once
-
-#include <QtCore/QObject>
+#include "cxx-qt-io/qobject.h"
 
 namespace rust {
 namespace cxxqtio1 {
-inline void
-qobjectDelete(QObject* object)
+
+const char*
+qobjectClassName(const QObject& obj)
 {
-  delete object;
+  return obj.metaObject()->className();
 }
 
-inline bool
+bool
 qobjectThreadEq(const QObject& lhs, const QObject& rhs)
 {
   return lhs.thread() == rhs.thread();

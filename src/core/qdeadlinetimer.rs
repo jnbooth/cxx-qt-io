@@ -134,12 +134,12 @@ pub enum QDeadlineTimerError {
 /// The `QDeadlineTimer` class marks a deadline in the future.
 ///
 /// Qt Documentation: [QDeadlineTimer](https://doc.qt.io/qt-6/qdeadlinetimer.html#details)
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 #[repr(C)]
 pub struct QDeadlineTimer {
     t1: i64,
     t2: u32,
-    timer_type: u32,
+    timer_type: TimerType,
 }
 
 impl Default for QDeadlineTimer {
@@ -179,7 +179,7 @@ impl QDeadlineTimer {
         let mut this = Self {
             t1: 0,
             t2: 0,
-            timer_type: 0,
+            timer_type: TimerType { repr: 0 },
         };
         this.set_duration(duration, timer_type);
         this

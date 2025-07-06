@@ -9,6 +9,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QFlags, QString};
 
+use crate::qobject::debug_qobject;
 use crate::util::{IsNonNull, MSecs};
 use crate::{
     QAbstractSocketSocketError, QAbstractSocketSocketState, QIODevice, QIODeviceOpenMode,
@@ -229,6 +230,12 @@ pub use ffi::{
 pub type QLocalSocketSocketOptions = QFlags<QLocalSocketSocketOption>;
 
 unsafe_impl_qflag!(QLocalSocketSocketOption, "QLocalSocketSocketOptions");
+
+impl fmt::Debug for QLocalSocket {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QLocalSocket {
     /// Constructs a new local socket.

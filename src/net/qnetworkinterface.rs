@@ -156,8 +156,6 @@ mod ffi {
         fn construct() -> QNetworkInterface;
         #[rust_name = "qnetworkinterface_clone"]
         fn construct(other: &QNetworkInterface) -> QNetworkInterface;
-        #[rust_name = "qnetworkinterface_to_debug_qstring"]
-        fn toDebugQString(value: &QNetworkInterface) -> QString;
     }
 }
 
@@ -208,7 +206,12 @@ impl Drop for QNetworkInterface {
 
 impl fmt::Debug for QNetworkInterface {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qnetworkinterface_to_debug_qstring(self).fmt(f)
+        f.debug_struct("QNetworkInterface")
+            .field("name", &self.name())
+            .field("hardware_address", &self.hardware_address())
+            .field("flags", &self.flags())
+            .field("entries", &self.address_entries())
+            .finish()
     }
 }
 

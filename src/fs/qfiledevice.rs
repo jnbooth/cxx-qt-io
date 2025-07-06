@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -6,6 +7,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QDateTime, QFlags};
 
+use crate::qobject::debug_qobject;
 use crate::util::IsNonNull;
 use crate::{FileDescriptor, QIODevice};
 
@@ -233,6 +235,12 @@ unsafe_impl_qflag!(QFileDeviceFileHandleFlag, "QFileDeviceFileHandleFlags");
 /// [`QFlags`] of [`QFileDeviceMemoryMapFlag`].
 pub type QFileDeviceMemoryMapFlags = QFlags<QFileDeviceMemoryMapFlag>;
 unsafe_impl_qflag!(QFileDeviceMemoryMapFlag, "QFileDeviceMemoryMapFlags");
+
+impl fmt::Debug for QFileDevice {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QFileDevice {
     /// Returns the file time specified by `time`. If the time cannot be determined return `None`.

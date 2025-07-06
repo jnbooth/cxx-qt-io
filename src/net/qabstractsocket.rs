@@ -8,6 +8,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QFlags, QString, QVariant};
 
+use crate::qobject::debug_qobject;
 use crate::util::{IsNonNull, MSecs};
 use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescriptor};
 
@@ -442,6 +443,12 @@ unsafe_impl_qflag!(QAbstractSocketBindFlag, "QAbstractSocketBindMode");
 /// [`QFlags`] of [`QAbstractSocketPauseMode`].
 pub type QAbstractSocketPauseModes = QFlags<QAbstractSocketPauseMode>;
 unsafe_impl_qflag!(QAbstractSocketPauseMode, "QAbstractSocketPauseModes");
+
+impl fmt::Debug for QAbstractSocket {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QAbstractSocket {
     pub fn connect_to_host<A>(self: Pin<&mut Self>, addr: A, mode: QIODeviceOpenMode)

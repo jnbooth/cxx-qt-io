@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -8,6 +9,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QList, QString};
 
+use crate::qobject::debug_qobject;
 use crate::util::{IsNonNull, MSecs};
 use crate::{
     QAbstractSocket, QAbstractSocketNetworkLayerProtocol, QIODevice, QIODeviceOpenMode,
@@ -481,6 +483,12 @@ mod ffi {
 }
 
 pub use ffi::{QSslSocket, QSslSocketPeerVerifyMode, QSslSocketSslMode};
+
+impl fmt::Debug for QSslSocket {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QSslSocket {
     /// Constructs a `QSslSocket` object. The new socket's cipher suite is set to be the one returned by [`QSslConfiguration::default_configuration()`](crate::QSslConfiguration::default_configuration)`.`[`ciphers()`](crate::QSslConfiguration::ciphers).

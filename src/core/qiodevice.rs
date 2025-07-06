@@ -1,4 +1,5 @@
 use std::ffi::{c_char, CStr};
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -11,6 +12,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QFlags};
 
+use crate::qobject::debug_qobject;
 use crate::util::MSecs;
 
 #[cxx_qt::bridge]
@@ -309,6 +311,12 @@ pub use ffi::{QIODevice, QIODeviceOpenModeFlag};
 /// [`QFlags`] of [`QIODeviceOpenModeFlag`].
 pub type QIODeviceOpenMode = QFlags<QIODeviceOpenModeFlag>;
 unsafe_impl_qflag!(QIODeviceOpenModeFlag, "QIODeviceOpenMode");
+
+impl fmt::Debug for QIODevice {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 #[allow(non_upper_case_globals)]
 impl QIODevice {

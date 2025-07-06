@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -78,6 +79,17 @@ impl PartialEq for QHttp1Configuration {
 }
 
 impl Eq for QHttp1Configuration {}
+
+impl fmt::Debug for QHttp1Configuration {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("QHttp1Configuration")
+            .field(
+                "number_of_connections_per_host",
+                &self.number_of_connections_per_host(),
+            )
+            .finish()
+    }
+}
 
 impl QHttp1Configuration {
     /// Returns the number of connections used per http(s) host:port combination. The default is 6.

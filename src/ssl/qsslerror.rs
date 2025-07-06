@@ -144,6 +144,12 @@ impl fmt::Debug for QSslError {
     }
 }
 
+impl fmt::Display for QSslError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.error_string().fmt(f)
+    }
+}
+
 impl QSslError {
     /// Constructs a `QSslError` object. The two arguments specify the `error` that occurred, and which `certificate` the error relates to.
     ///

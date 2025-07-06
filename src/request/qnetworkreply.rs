@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -8,6 +9,7 @@ use cxx_qt::QObject;
 use cxx_qt_lib::QAnyStringView;
 use cxx_qt_lib::{QByteArray, QVariant};
 
+use crate::qobject::debug_qobject;
 use crate::util::IsNonNull;
 #[cfg(feature = "ssl")]
 use crate::QSslConfiguration;
@@ -384,6 +386,12 @@ mod ffi {
 }
 
 pub use ffi::{QNetworkReply, QNetworkReplyNetworkError};
+
+impl fmt::Debug for QNetworkReply {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QNetworkReply {
     /// Returns the attribute associated with the code code. If the attribute has not been set, it returns `None`.

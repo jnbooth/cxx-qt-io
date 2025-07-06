@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -151,6 +152,19 @@ impl Default for QNetworkDatagram {
 impl Drop for QNetworkDatagram {
     fn drop(&mut self) {
         ffi::qnetworkdatagram_drop(self);
+    }
+}
+
+impl fmt::Debug for QNetworkDatagram {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("QNetworkDatagram")
+            .field("data", &self.data())
+            .field("destination_address", &self.destination_address_or_null())
+            .field("destination_port", &self.destination_port_or_negative())
+            .field("hop_limit", &self.hop_limit())
+            .field("interface_index", &self.interface_index_or_zero())
+            .field("sender_port", &self.sender_port_or_negative())
+            .finish()
     }
 }
 

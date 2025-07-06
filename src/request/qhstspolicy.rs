@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -120,6 +121,16 @@ impl PartialEq for QHstsPolicy {
 }
 
 impl Eq for QHstsPolicy {}
+
+impl fmt::Debug for QHstsPolicy {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("QHstsPolicy")
+            .field("expiry", &self.expiry())
+            .field("host", &self.host())
+            .field("includes_sub_domains", &self.includes_sub_domains())
+            .finish()
+    }
+}
 
 impl QHstsPolicy {
     /// Constructs `QHstsPolicy` with `expiry` (in UTC); `flags` is a value indicating whether this policy must also include subdomains.

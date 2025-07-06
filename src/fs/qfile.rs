@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -7,6 +8,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QString};
 
+use crate::qobject::debug_qobject;
 use crate::{
     FileDescriptor, QFileDevice, QFileDeviceFileHandleFlags, QIODevice, QIODeviceOpenMode,
 };
@@ -151,6 +153,12 @@ mod ffi {
 }
 
 pub use ffi::QFile;
+
+impl fmt::Debug for QFile {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QFile {
     /// Constructs a new file object to represent the file with the given `name`.

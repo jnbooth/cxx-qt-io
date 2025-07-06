@@ -1,4 +1,5 @@
 use std::ffi::c_char;
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::mem::MaybeUninit;
 use std::ops::Deref;
@@ -8,6 +9,7 @@ use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 
+use crate::qobject::debug_qobject;
 use crate::util::IsNonNull;
 use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetworkInterface};
 
@@ -375,6 +377,12 @@ impl QUdpSocket {
         self: &'a mut Pin<&mut Self>,
     ) -> Pin<&'a mut QAbstractSocket> {
         self.as_mut().upcast_pin()
+    }
+}
+
+impl fmt::Debug for QUdpSocket {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
     }
 }
 

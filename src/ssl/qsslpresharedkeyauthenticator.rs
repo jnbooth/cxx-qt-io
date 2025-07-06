@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -91,13 +92,6 @@ impl Drop for QSslPreSharedKeyAuthenticator {
     }
 }
 
-impl Default for QSslPreSharedKeyAuthenticator {
-    /// Constructs a `QSslPreSharedKeyAuthenticator` object with no error and default certificate.
-    fn default() -> Self {
-        ffi::qsslpresharedkeyauthenticator_init_default()
-    }
-}
-
 impl PartialEq for QSslPreSharedKeyAuthenticator {
     fn eq(&self, other: &Self) -> bool {
         ffi::qsslpresharedkeyauthenticator_eq(self, other)
@@ -105,6 +99,22 @@ impl PartialEq for QSslPreSharedKeyAuthenticator {
 }
 
 impl Eq for QSslPreSharedKeyAuthenticator {}
+
+impl Default for QSslPreSharedKeyAuthenticator {
+    /// Constructs a `QSslPreSharedKeyAuthenticator` object with no error and default certificate.
+    fn default() -> Self {
+        ffi::qsslpresharedkeyauthenticator_init_default()
+    }
+}
+
+impl fmt::Debug for QSslPreSharedKeyAuthenticator {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("QSslPreSharedKeyAuthenticator")
+            .field("identity", &self.identity())
+            .field("pre_shared_key", &self.pre_shared_key())
+            .finish()
+    }
+}
 
 unsafe impl ExternType for QSslPreSharedKeyAuthenticator {
     type Id = type_id!("QSslPreSharedKeyAuthenticator");

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
@@ -7,6 +8,7 @@ use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
 use cxx_qt_lib::QUrl;
 
+use crate::qobject::debug_qobject;
 use crate::{QIODevice, QNetworkCacheMetaData};
 
 #[cxx_qt::bridge]
@@ -80,6 +82,12 @@ mod ffi {
 }
 
 pub use ffi::QAbstractNetworkCache;
+
+impl fmt::Debug for QAbstractNetworkCache {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QAbstractNetworkCache {
     /// Returns the current size taken up by the cache. Depending upon the cache implementation this might be disk or memory size.

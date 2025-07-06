@@ -72,9 +72,6 @@ mod ffi {
 
         #[rust_name = "qsslcipher_eq"]
         fn operatorEq(a: &QSslCipher, b: &QSslCipher) -> bool;
-
-        #[rust_name = "qsslcipher_to_debug_qstring"]
-        fn toDebugQString(value: &QSslCipher) -> QString;
     }
 }
 
@@ -121,7 +118,11 @@ impl Eq for QSslCipher {}
 
 impl fmt::Debug for QSslCipher {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qsslcipher_to_debug_qstring(self).fmt(f)
+        f.debug_struct("QSslCipher")
+            .field("name", &self.name())
+            .field("bits", &self.used_bits())
+            .field("protocol_string", &self.protocol_string())
+            .finish()
     }
 }
 

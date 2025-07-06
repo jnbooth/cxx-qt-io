@@ -3,6 +3,9 @@ use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
 
+use crate::util::IsNonNull;
+use crate::QHostAddress;
+
 #[cxx::bridge]
 mod ffi {
     /// This enum indicates whether a given host address is eligible to be published in the Domain Name System (DNS) or other similar name resolution mechanisms. In general, an address is suitable for publication if it is an address this machine will be reached at for an indeterminate amount of time, though it need not be permanent. For example, addresses obtained via DHCP are often eligible, but cryptographically-generated temporary IPv6 addresses are not.
@@ -18,8 +21,6 @@ mod ffi {
     }
 
     extern "C++" {
-        include!("cxx-qt-lib/qstring.h");
-        type QString = cxx_qt_lib::QString;
         include!("cxx-qt-io/qdeadlinetimer.h");
         type QDeadlineTimer = crate::QDeadlineTimer;
         include!("cxx-qt-io/qhostaddress.h");
@@ -34,9 +35,8 @@ mod ffi {
     unsafe extern "C++" {
         type QNetworkAddressEntry = super::QNetworkAddressEntry;
 
-        /// Returns the broadcast address associated with the IPv4 address and netmask. It can usually be derived from those two by setting to 1 the bits of the IP address where the netmask contains a 0. (In other words, by bitwise-OR'ing the IP address with the inverse of the netmask)
-        ///
-        /// This member is always empty for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address `FF02::1`).
+        #[doc(hidden)]
+        #[rust_name = "broadcast_or_null"]
         fn broadcast(&self) -> QHostAddress;
 
         /// Resets both the preferred and valid lifetimes for this address. After this call, [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known) will return `false`.
@@ -51,7 +51,8 @@ mod ffi {
         #[rust_name = "dns_eligibility"]
         fn dnsEligibility(&self) -> QNetworkAddressEntryDnsEligibilityStatus;
 
-        /// This function returns one IPv4 or IPv6 address found, that was found in a network interface.
+        #[doc(hidden)]
+        #[rust_name = "ip_or_null"]
         fn ip(&self) -> QHostAddress;
 
         /// Returns `true` if the address lifetime is known, `false` if not. If the lifetime is not known, both [`preferred_lifetime`](QNetworkAddressEntry::preferred_lifetime) and [`validity_lifetime`](QNetworkAddressEntry::validity_lifetime) will return [`QDeadlineTimer::forever()`](crate::QDeadlineTimer::forever).
@@ -70,9 +71,8 @@ mod ffi {
         #[rust_name = "is_temporary"]
         fn isTemporary(&self) -> bool;
 
-        /// Returns the netmask associated with the IP address. The netmask is expressed in the form of an IP address, such as `255.255.0.0`.
-        ///
-        /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a `QHostAddress` holding the address `FFFF:FFFF:FFFF:FFFF::`.
+        #[doc(hidden)]
+        #[rust_name = "netmask_or_null"]
         fn netmask(&self) -> QHostAddress;
 
         /// Returns the deadline when this address becomes deprecated (no longer preferred), if known. If the address lifetime is not known (see [`is_lifetime_known`](QNetworkAddressEntry::is_lifetime_known)), this function always returns [`QDeadlineTimer::forever()`](crate::QDeadlineTimer::forever).
@@ -126,9 +126,6 @@ mod ffi {
 
         #[rust_name = "qnetworkaddressentry_eq"]
         fn operatorEq(a: &QNetworkAddressEntry, b: &QNetworkAddressEntry) -> bool;
-
-        #[rust_name = "qnetworkaddressentry_to_debug_qstring"]
-        fn toDebugQString(value: &QNetworkAddressEntry) -> QString;
     }
 }
 
@@ -170,11 +167,34 @@ impl Eq for QNetworkAddressEntry {}
 
 impl fmt::Debug for QNetworkAddressEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qnetworkaddressentry_to_debug_qstring(self).fmt(f)
+        f.debug_struct("QNetworkAddressEntry")
+            .field("address", &self.ip())
+            .field("netmask", &self.netmask())
+            .field("broadcast", &self.broadcast())
+            .finish()
     }
 }
 
 impl QNetworkAddressEntry {
+    /// Returns the broadcast address associated with the IPv4 address and netmask. It can usually be derived from those two by setting to 1 the bits of the IP address where the netmask contains a 0. (In other words, by bitwise-OR'ing the IP address with the inverse of the netmask)
+    ///
+    /// This member is always empty for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address `FF02::1`).
+    pub fn broadcast(&self) -> Option<QHostAddress> {
+        self.broadcast_or_null().nonnull()
+    }
+
+    /// This function returns one IPv4 or IPv6 address found, that was found in a network interface.
+    pub fn ip(&self) -> Option<QHostAddress> {
+        self.ip_or_null().nonnull()
+    }
+
+    /// Returns the netmask associated with the IP address. The netmask is expressed in the form of an IP address, such as `255.255.0.0`.
+    ///
+    /// For IPv6 addresses, the prefix length is converted to an address where the number of bits set to 1 is equal to the prefix length. For a prefix length of 64 bits (the most common value), the netmask will be expressed as a `QHostAddress` holding the address `FFFF:FFFF:FFFF:FFFF::`.
+    pub fn netmask(&self) -> Option<QHostAddress> {
+        self.netmask_or_null().nonnull()
+    }
+
     /// Returns the prefix length of this IP address. The prefix length matches the number of bits set to 1 in the netmask (see [`netmask`](QNetworkAddressEntry::netmask)). For IPv4 addresses, the value is between 0 and 32. For IPv6 addresses, it's contained between 0 and 128 and is the preferred form of representing addresses.
     ///
     /// This function returns `None` if the prefix length could not be determined (i.e., [`self.netmask()`](QNetworkAddressEntry::netmask) returns a null [`QHostAddress`](crate::QHostAddress)).
@@ -243,10 +263,10 @@ mod tests {
         entry.set_netmask(&props.netmask);
 
         let actual_props = QNetworkAddressEntryProps {
-            broadcast: entry.broadcast(),
+            broadcast: entry.broadcast_or_null(),
             dns_eligibility: entry.dns_eligibility(),
-            ip: entry.ip(),
-            netmask: entry.netmask(),
+            ip: entry.ip_or_null(),
+            netmask: entry.netmask_or_null(),
         };
 
         assert_eq!(actual_props, props);

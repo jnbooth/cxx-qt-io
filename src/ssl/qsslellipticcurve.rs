@@ -54,12 +54,6 @@ mod ffi {
     }
 }
 
-impl IsNonNull for QSslEllipticCurve {
-    fn is_nonnull(value: &Self) -> bool {
-        value.is_valid()
-    }
-}
-
 /// Represents an elliptic curve for use by elliptic-curve cipher algorithms.
 ///
 /// Qt Documentation: [QSslEllipticCurve](https://doc.qt.io/qt-6/qsslellipticcurve.html#details)
@@ -76,9 +70,20 @@ impl Default for QSslEllipticCurve {
     }
 }
 
+impl IsNonNull for QSslEllipticCurve {
+    fn is_nonnull(value: &Self) -> bool {
+        value.is_valid()
+    }
+}
+
 impl fmt::Debug for QSslEllipticCurve {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        self.short_name_or_empty().fmt(f)
+        f.debug_struct("QSslEllipticCurve")
+            .field("is_tls_named_curve", &self.is_tls_named_curve())
+            .field("is_valid", &self.is_valid())
+            .field("long_name", &self.long_name())
+            .field("short_name", &self.short_name())
+            .finish()
     }
 }
 

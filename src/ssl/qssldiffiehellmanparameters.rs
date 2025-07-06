@@ -150,7 +150,9 @@ impl Eq for QSslDiffieHellmanParameters {}
 
 impl fmt::Debug for QSslDiffieHellmanParameters {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qssldiffiehellmanparameters_to_debug_qstring(self).fmt(f)
+        const START_INDEX: usize = "QSslDiffieHellmanParameters(".len();
+        let s = String::from(&ffi::qssldiffiehellmanparameters_to_debug_qstring(self));
+        f.pad(&s[START_INDEX..s.len() - 1])
     }
 }
 

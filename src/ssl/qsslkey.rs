@@ -1,3 +1,4 @@
+use std::any::Any;
 use std::fmt;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
@@ -14,8 +15,6 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
-        include!("cxx-qt-lib/qstring.h");
-        type QString = cxx_qt_lib::QString;
 
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
@@ -92,9 +91,6 @@ mod ffi {
 
         #[rust_name = "qsslkey_eq"]
         fn operatorEq(a: &QSslKey, b: &QSslKey) -> bool;
-
-        #[rust_name = "qsslkey_to_debug_qstring"]
-        fn toDebugQString(value: &QSslKey) -> QString;
     }
 }
 
@@ -135,7 +131,11 @@ impl Eq for QSslKey {}
 
 impl fmt::Debug for QSslKey {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qsslkey_to_debug_qstring(self).fmt(f)
+        f.debug_struct("QSslKey")
+            .field("type", &self.type_id())
+            .field("algorithm", &self.algorithm())
+            .field("len", &self.len_or_negative())
+            .finish()
     }
 }
 

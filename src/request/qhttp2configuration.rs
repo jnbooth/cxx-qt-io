@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -131,7 +132,32 @@ impl PartialEq for QHttp2Configuration {
 
 impl Eq for QHttp2Configuration {}
 
-impl QHttp2Configuration {}
+impl fmt::Debug for QHttp2Configuration {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut debug = f.debug_struct("QHttp2Configuration");
+
+        debug.field(
+            "huffman_compression_enabled",
+            &self.huffman_compression_enabled(),
+        );
+
+        #[cfg(cxxqt_qt_version_at_least_6_9)]
+        debug.field("max_concurrent_streams", &self.max_concurrent_streams());
+
+        debug
+            .field("max_frame_size", &self.max_frame_size())
+            .field("server_push_enabled", &self.server_push_enabled())
+            .field(
+                "session_receive_window_size",
+                &self.session_receive_window_size(),
+            )
+            .field(
+                "stream_receive_window_size",
+                &self.stream_receive_window_size(),
+            )
+            .finish()
+    }
+}
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QHttp2Configuration {

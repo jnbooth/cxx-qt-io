@@ -18,6 +18,8 @@ pub use qmap::QMapPair_QByteArray_QVariant;
 mod qpair;
 pub(crate) use qpair::QPair;
 
+pub(crate) mod qobject;
+
 mod qset;
 
 mod qt;

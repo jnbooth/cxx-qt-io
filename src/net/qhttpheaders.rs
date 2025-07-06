@@ -199,8 +199,6 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qlist.h");
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
-        include!("cxx-qt-lib/qstring.h");
-        type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qtypes.h");
         type qsizetype = cxx_qt_lib::qsizetype;
     }
@@ -347,8 +345,6 @@ mod ffi {
         fn construct() -> QHttpHeaders;
         #[rust_name = "qhttpheaders_clone"]
         fn construct(other: &QHttpHeaders) -> QHttpHeaders;
-        #[rust_name = "qhttpheaders_to_debug_qstring"]
-        fn toDebugQString(value: &QHttpHeaders) -> QString;
     }
 }
 
@@ -418,7 +414,7 @@ impl Eq for QHttpHeaders {}
 
 impl fmt::Debug for QHttpHeaders {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qhttpheaders_to_debug_qstring(self).fmt(f)
+        f.debug_map().entries(&self.to_list_of_pairs()).finish()
     }
 }
 

@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::Deref;
 
 use cxx::UniquePtr;
@@ -61,6 +62,14 @@ mod ffi {
 }
 
 pub use ffi::{QHttpMultiPart, QHttpMultiPartContentType};
+
+use crate::qobject::debug_qobject;
+
+impl fmt::Debug for QHttpMultiPart {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QHttpMultiPart {
     /// Constructs a `QHttpMultiPart` with content type `content_type`.

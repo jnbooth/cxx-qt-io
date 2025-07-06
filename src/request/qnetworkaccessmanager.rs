@@ -7,7 +7,9 @@ use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QByteArray, QString};
 
-use crate::util::{in_same_thread, unpin_for_qt, upcast_mut};
+use crate::core::qobject::in_same_thread;
+use crate::qobject::debug_qobject;
+use crate::util::{unpin_for_qt, upcast_mut};
 use crate::{
     QAbstractNetworkCache, QHttpMultiPart, QIODevice, QNetworkCookieJar, QNetworkReply,
     QNetworkRequest,
@@ -446,6 +448,12 @@ mod ffi {
 }
 
 pub use ffi::{QNetworkAccessManager, QNetworkAccessManagerOperation};
+
+impl fmt::Debug for QNetworkAccessManager {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        debug_qobject(f, self)
+    }
+}
 
 impl QNetworkAccessManager {
     /// Constructs a `QNetworkAccessManager` object that is the center of the Network Access API.

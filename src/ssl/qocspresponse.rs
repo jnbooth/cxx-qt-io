@@ -1,3 +1,4 @@
+use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -102,6 +103,17 @@ impl Default for QOcspResponse {
     /// Creates a new response with status [`QOcspCertificateStatus::Unknown`] and revocation reason [`QOcspRevocationReason::None`].
     fn default() -> Self {
         ffi::qocspresponse_init_default()
+    }
+}
+
+impl fmt::Debug for QOcspResponse {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("QOcspResponse")
+            .field("certificate_status", &self.certificate_status())
+            .field("responder", &self.responder())
+            .field("revocation_reason", &self.revocation_reason())
+            .field("subject", &self.subject())
+            .finish()
     }
 }
 

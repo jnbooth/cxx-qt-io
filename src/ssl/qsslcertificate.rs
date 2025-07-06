@@ -8,7 +8,10 @@ use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
 use crate::util::{unpin_for_qt, upcast_mut, IsNonNull};
-use crate::{DecodeSslKeyError, QIODevice, QSslEncodingFormat, QSslError, QSslKey};
+use crate::{
+    DecodeSslKeyError, QCryptographicHashAlgorithm, QIODevice, QSslEncodingFormat, QSslError,
+    QSslKey,
+};
 
 #[cxx::bridge]
 mod ffi {
@@ -209,6 +212,14 @@ mod ffi {
         ) -> QList_QSslError;
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-io/qbytearray.h");
+
+        #[rust_name = "qbytearray_to_base64"]
+        fn qbytearrayToBase64(bytes: &QByteArray) -> QByteArray;
+    }
+
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -225,9 +236,6 @@ mod ffi {
 
         #[rust_name = "qsslcertificate_eq"]
         fn operatorEq(a: &QSslCertificate, b: &QSslCertificate) -> bool;
-
-        #[rust_name = "qsslcertificate_to_debug_qstring"]
-        fn toDebugQString(value: &QSslCertificate) -> QString;
     }
 }
 
@@ -286,7 +294,16 @@ impl Eq for QSslCertificate {}
 
 impl fmt::Debug for QSslCertificate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qsslcertificate_to_debug_qstring(self).fmt(f)
+        f.debug_struct("QSslCertificate")
+            .field("version", &self.version())
+            .field("serial_number", &self.serial_number())
+            .field(
+                "digest",
+                &ffi::qbytearray_to_base64(&self.digest(QCryptographicHashAlgorithm::Md5)),
+            )
+            .field("issuer", &self.issuer_display_name())
+            .field("subject", &self.subject_display_name())
+            .finish()
     }
 }
 
