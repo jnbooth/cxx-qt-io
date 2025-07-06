@@ -1,4 +1,3 @@
-use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
@@ -13,8 +12,6 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
-        include!("cxx-qt-lib/qstring.h");
-        type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
 
@@ -65,9 +62,6 @@ mod ffi {
 
         #[rust_name = "qhttppart_eq"]
         fn operatorEq(a: &QHttpPart, b: &QHttpPart) -> bool;
-
-        #[rust_name = "qhttppart_to_debug_qstring"]
-        fn toDebugQString(value: &QHttpPart) -> QString;
     }
 }
 
@@ -104,12 +98,6 @@ impl PartialEq for QHttpPart {
 }
 
 impl Eq for QHttpPart {}
-
-impl fmt::Debug for QHttpPart {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qhttppart_to_debug_qstring(self).fmt(f)
-    }
-}
 
 impl QHttpPart {
     /// Sets the device to read the content from to `device`. For large amounts of data this method should be preferred over [`set_body`](QHttpPart::set_body), because the content is not copied when using this method, but read directly from the device. device must be open and readable. `QHttpPart` does not take ownership of `device`, i.e. the device must be closed and destroyed if necessary. if device is sequential (e.g. sockets, but not files), [`QNetworkAccessManager::post`](crate::QNetworkAccessManager::post) should be called after `device` has emitted [`finished`](crate::QNetworkAccessManager::finished). For unsetting the device and using data set via [`set_body`](QHttpPart::set_body), call this method with a null pointer.
