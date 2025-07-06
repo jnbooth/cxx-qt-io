@@ -47,6 +47,8 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
     }
 
     extern "C++" {
@@ -69,13 +71,13 @@ mod ffi {
         #[rust_name = "at_end"]
         fn atEnd(self: &QIODevice) -> bool;
 
-        /// Returns the number of bytes that are available for reading. This function is commonly used with sequential devices to determine the number of bytes to allocate in a buffer before reading.
-        #[rust_name = "bytes_available"]
-        fn bytesAvailable(self: &QIODevice) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "bytes_available_qint64"]
+        fn bytesAvailable(self: &QIODevice) -> qint64;
 
-        /// For buffered devices, this function returns the number of bytes waiting to be written. For devices with no buffer, this function returns 0.
-        #[rust_name = "bytes_to_write"]
-        fn bytesToWrite(self: &QIODevice) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "bytes_to_write_qint64"]
+        fn bytesToWrite(self: &QIODevice) -> qint64;
 
         /// Returns `true` if a complete line of data can be read from the device; otherwise returns `false`.
         ///
@@ -115,51 +117,29 @@ mod ffi {
         #[rust_name = "open_mode"]
         fn openMode(self: &QIODevice) -> QIODeviceOpenMode;
 
-        /// Reads at most `max_size` bytes from the device into `data`, without side effects (i.e., if you call [`read_unsafe`](QIODevice::read_unsafe) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
-        ///
-        /// 0 is returned when no more data is available for reading.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid and `max_size` must be no greater than the maximum length of
-        /// the value stored at `data`.
-        #[rust_name = "peek_unsafe"]
-        unsafe fn peek(self: Pin<&mut QIODevice>, data: *mut c_char, max_size: i64) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "peek_unsafe_qint64"]
+        unsafe fn peek(self: Pin<&mut QIODevice>, data: *mut c_char, max_size: qint64) -> qint64;
 
-        /// Peeks at most `max_size` bytes from the device, returning the data peeked as a `QByteArray`.
-        ///
-        /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for peeking, or that an error occurred.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid and `max_size` must be no greater than the maximum length of
-        /// the value stored at `data`.
-        #[rust_name = "peek_to_array"]
-        fn peek(self: Pin<&mut QIODevice>, max_size: i64) -> QByteArray;
+        #[doc(hidden)]
+        #[rust_name = "peek_to_array_qint64"]
+        fn peek(self: Pin<&mut QIODevice>, max_size: qint64) -> QByteArray;
 
-        /// For random-access devices, this function returns the position that data is written to or read from. For sequential devices or closed devices, where there is no concept of a "current position", 0 is returned.
-        fn pos(self: &QIODevice) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "pos_qint64"]
+        fn pos(self: &QIODevice) -> qint64;
 
         /// Writes the character `c` to the device. Returns `true` on success; otherwise returns `false`.
         #[rust_name = "put_char"]
         fn putChar(self: Pin<&mut QIODevice>, c: c_char) -> bool;
 
-        /// Reads at most `max_size` bytes from the device into `data`, and returns the number of bytes read. If an error occurs, such as when attempting to read from a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
-        ///
-        /// 0 is returned when no more data is available for reading. However, reading past the end of the stream is considered an error, so this function returns -1 in those cases (that is, reading on a closed socket or after a process has died).
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid and `max_size` must be no greater than the maximum length of
-        /// the value stored at `data`.
-        #[rust_name = "read_unsafe"]
-        unsafe fn read(self: Pin<&mut QIODevice>, data: *mut c_char, max_size: i64) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "read_unsafe_qint64"]
+        unsafe fn read(self: Pin<&mut QIODevice>, data: *mut c_char, max_size: qint64) -> qint64;
 
-        /// Reads at most `max_size` bytes from the device, and returns the data read as a `QByteArray`.
-        ///
-        /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for reading, or that an error occurred.
-        #[rust_name = "read_to_array"]
-        fn read(self: Pin<&mut QIODevice>, max_size: i64) -> QByteArray;
+        #[doc(hidden)]
+        #[rust_name = "read_to_array_qint64"]
+        fn read(self: Pin<&mut QIODevice>, max_size: qint64) -> QByteArray;
 
         /// Reads all remaining data from the device, and returns it as a byte array.
         ///
@@ -171,33 +151,17 @@ mod ffi {
         #[rust_name = "read_channel_count"]
         fn readChannelCount(self: &QIODevice) -> i32;
 
-        /// This function reads a line of ASCII characters from the device, up to a maximum of `max_size` - 1 bytes, stores the characters in `data`, and returns the number of bytes read. If a line could not be read but no error occurred, this function returns 0. If an error occurs, this function returns the length of what could be read, or -1 if nothing was read.
-        ///
-        /// A terminating `'\0'` byte is always appended to `data`, so `max_size` must be larger than 1.
-        ///
-        /// Data is read until either of the following conditions are met:
-        ///
-        /// * The first `'\n'` character is read.
-        /// * `max_size - 1` bytes are read.
-        /// * The end of the device data is detected.
-        ///
-        /// The newline character (`'\n'`) is included in the buffer. If a newline is not encountered before maxSize - 1 bytes are read, a newline will not be inserted into the buffer. On windows newline characters are replaced with `'\n'`.
-        ///
-        /// Note that on sequential devices, data may not be immediately available, which may result in a partial line being returned. By calling [`can_read_line`](QIODevice::can_read_line) before reading, you can check whether a complete line (including the newline character) can be read.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid for reads for `max_size` many bytes.
-        #[rust_name = "read_line_unsafe"]
-        unsafe fn readLine(self: Pin<&mut QIODevice>, data: *mut c_char, max_size: i64) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "read_line_unsafe_qint64"]
+        unsafe fn readLine(
+            self: Pin<&mut QIODevice>,
+            data: *mut c_char,
+            max_size: qint64,
+        ) -> qint64;
 
-        /// Reads a line from the device, but no more than `max_size` characters, and returns the result as a byte array.
-        ///
-        /// The resulting line can have trailing end-of-line characters (`"\n"` or `"\r\n"`), so calling [`QByteArray::trimmed`] may be necessary.
-        ///
-        /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for reading, or that an error occurred.
-        #[rust_name = "read_line_to_array"]
-        fn readLine(self: Pin<&mut QIODevice>, max_size: i64) -> QByteArray;
+        #[doc(hidden)]
+        #[rust_name = "read_line_to_array_qint64"]
+        fn readLine(self: Pin<&mut QIODevice>, max_size: qint64) -> QByteArray;
 
         /// Seeks to the start of input for random-access devices. Returns `true` on success; otherwise returns `false` (for example, if the device is not open).
         fn reset(self: Pin<&mut QIODevice>) -> bool;
@@ -208,8 +172,9 @@ mod ffi {
         #[rust_name = "rollback_transaction"]
         fn rollbackTransaction(self: Pin<&mut QIODevice>);
 
-        /// For random-access devices, this function sets the current position to `pos`, returning `true` on success, or `false` if an error occurred. For sequential devices, the default behavior is to produce a warning and return `false`.
-        fn seek(self: Pin<&mut QIODevice>, pos: i64) -> bool;
+        #[doc(hidden)]
+        #[rust_name = "seek_qint64"]
+        fn seek(self: Pin<&mut QIODevice>, pos: qint64) -> bool;
 
         /// Sets the current read channel of the device to the given channel. The current input channel is used by the functions [`read`](QIODevice::read), [`read_all`](QIODevice::read_all), [`read_line`](QIODevice::read_line), and [`get_char`](QIODevice::get_char). It also determines which channel triggers the device to emit [`ready_read`](QIODevice::ready_read).
         #[rust_name = "set_current_read_channel"]
@@ -225,21 +190,13 @@ mod ffi {
         #[rust_name = "set_text_mode_enabled"]
         fn setTextModeEnabled(self: Pin<&mut QIODevice>, enabled: bool);
 
-        /// For open random-access devices, this function returns the size of the device. For open sequential devices, [`self.bytes_available()`](QIODevice::bytes_available) is returned.
-        ///
-        /// If the device is closed, the size returned will not reflect the actual size of the device.
-        fn size(self: &QIODevice) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "size_qint64"]
+        fn size(self: &QIODevice) -> qint64;
 
-        /// Skips up to `max_size` bytes from the device. Returns the number of bytes actually skipped, or -1 on error.
-        ///
-        /// This function does not wait and only discards the data that is already available for reading.
-        ///
-        /// If the device is opened in text mode, end-of-line terminators are translated to `'\n'` symbols and count as a single byte identically to the [`read`](QIODevice::read) and [`peek`](QIODevice::peek) behavior.
-        ///
-        /// This function works for all devices, including sequential ones that cannot [`seek`](QIODevice::seek). It is optimized to skip unwanted data after a [`peek`](QIODevice::peek) call.
-        ///
-        /// For random-access devices, this function can be used to seek forward from the current position. Negative `max_size` values are not allowed.
-        fn skip(self: Pin<&mut QIODevice>, max_size: i64) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "skip_qint64"]
+        fn skip(self: Pin<&mut QIODevice>, max_size: qint64) -> qint64;
 
         /// Starts a new read transaction on the device.
         ///
@@ -264,25 +221,18 @@ mod ffi {
         #[rust_name = "wait_for_ready_read_msecs"]
         fn waitForReadyRead(self: Pin<&mut QIODevice>, msecs: i32) -> bool;
 
-        /// Writes at most `max_size` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid for reads for `max_size` many bytes.
-        #[rust_name = "write_unsafe"]
-        unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char, max_size: i64) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "write_unsafe_qint64"]
+        unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char, max_size: qint64)
+            -> qint64;
 
-        /// Writes the content of `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
-        #[rust_name = "write_array"]
-        fn write(self: Pin<&mut QIODevice>, data: &QByteArray) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "write_array_qint64"]
+        fn write(self: Pin<&mut QIODevice>, data: &QByteArray) -> qint64;
 
-        /// Writes data from a zero-terminated string of 8-bit characters to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be a zero-terminated string of 8-bit characters.
-        #[rust_name = "write_cstr_unsafe"]
-        unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "write_cstr_unsafe_qint64"]
+        unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char) -> qint64;
 
         /// Returns the number of available write channels if the device is open; otherwise returns 0.
         #[rust_name = "write_channel_count"]
@@ -298,14 +248,14 @@ mod ffi {
         /// This signal is not emitted recursively; if you reenter the event loop or call [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) inside a slot connected to this signal, the signal will not be reemitted (although [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) may still return true).
         #[qsignal]
         #[rust_name = "bytes_written"]
-        fn bytesWritten(self: Pin<&mut QIODevice>, bytes: i64);
+        fn bytesWritten(self: Pin<&mut QIODevice>, bytes: qint64);
 
         /// This signal is emitted every time a payload of data has been written to the device. The bytes argument is set to the number of bytes that were written in this payload, while channel is the channel they were written to. Unlike [`bytes_written`](QIODevice::bytes_written), it is emitted regardless of the current write channel.
         ///
         /// This signal can be emitted recursively - even for the same channel.
         #[qsignal]
         #[rust_name = "channel_bytes_written"]
-        fn channelBytesWritten(self: Pin<&mut QIODevice>, channel: i32, bytes: i64);
+        fn channelBytesWritten(self: Pin<&mut QIODevice>, channel: i32, bytes: qint64);
 
         /// This signal is emitted when new data is available for reading from the device. The `channel` argument is set to the index of the read channel on which the data has arrived. Unlike [`ready_read`](QIODevice::ready_read), it is emitted regardless of the current read channel.
         ///
@@ -325,7 +275,6 @@ mod ffi {
         #[qsignal]
         #[rust_name = "ready_read"]
         fn readyRead(self: Pin<&mut QIODevice>);
-
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -378,6 +327,16 @@ impl QIODevice {
 
 #[allow(clippy::cast_possible_wrap)]
 impl QIODevice {
+    /// Returns the number of bytes that are available for reading. This function is commonly used with sequential devices to determine the number of bytes to allocate in a buffer before reading.
+    pub fn bytes_available(&self) -> i64 {
+        self.bytes_available_qint64().into()
+    }
+
+    /// For buffered devices, this function returns the number of bytes waiting to be written. For devices with no buffer, this function returns 0.
+    pub fn bytes_to_write(&self) -> i64 {
+        self.bytes_to_write_qint64().into()
+    }
+
     /// Reads one byte from the device and discards it. Returns `true` on success; otherwise returns `false`.
     pub fn discard_byte(self: Pin<&mut Self>) -> bool {
         // SAFETY: `ptr::null_mut()` is null.
@@ -462,6 +421,35 @@ impl QIODevice {
         unsafe { self.peek_unsafe(data.as_mut_ptr(), data.len() as i64) }
     }
 
+    /// Peeks at most `max_size` bytes from the device, returning the data peeked as a `QByteArray`.
+    ///
+    /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for peeking, or that an error occurred.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid and `max_size` must be no greater than the maximum length of
+    /// the value stored at `data`.
+    pub fn peek_to_array(self: Pin<&mut Self>, max_size: i64) -> QByteArray {
+        self.peek_to_array_qint64(max_size.into())
+    }
+
+    /// Reads at most `max_size` bytes from the device into `data`, without side effects (i.e., if you call [`read_unsafe`](QIODevice::read_unsafe) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
+    ///
+    /// 0 is returned when no more data is available for reading.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid and `max_size` must be no greater than the maximum length of
+    /// the value stored at `data`.
+    pub unsafe fn peek_unsafe(self: Pin<&mut Self>, data: *mut c_char, max_size: i64) -> i64 {
+        unsafe { self.peek_unsafe_qint64(data, max_size.into()).into() }
+    }
+
+    /// For random-access devices, this function returns the position that data is written to or read from. For sequential devices or closed devices, where there is no concept of a "current position", 0 is returned.
+    pub fn pos(&self) -> i64 {
+        self.pos_qint64().into()
+    }
+
     /// Writes the byte `c` to the device. Returns `true` on success; otherwise returns `false`.
     pub fn put_byte(self: Pin<&mut Self>, c: u8) -> bool {
         self.put_char(c as c_char)
@@ -535,6 +523,15 @@ impl QIODevice {
         unsafe { self.read_line_unsafe(data.as_mut_ptr(), data.len() as i64) }
     }
 
+    /// Reads a line from the device, but no more than `max_size` characters, and returns the result as a byte array.
+    ///
+    /// The resulting line can have trailing end-of-line characters (`"\n"` or `"\r\n"`), so calling [`QByteArray::trimmed`] may be necessary.
+    ///
+    /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for reading, or that an error occurred.
+    pub fn read_line_to_array(self: Pin<&mut Self>, max_size: i64) -> QByteArray {
+        self.read_line_to_array_qint64(max_size.into())
+    }
+
     /// Reads a line from the device and returns the result as a byte array.
     ///
     /// The resulting line can have trailing end-of-line characters (`"\n"` or `"\r\n"`), so calling [`QByteArray::trimmed`] may be necessary.
@@ -542,6 +539,71 @@ impl QIODevice {
     /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for reading, or that an error occurred.
     pub fn read_line_to_end(self: Pin<&mut Self>) -> QByteArray {
         self.read_line_to_array(0)
+    }
+
+    /// This function reads a line of ASCII characters from the device, up to a maximum of `max_size` - 1 bytes, stores the characters in `data`, and returns the number of bytes read. If a line could not be read but no error occurred, this function returns 0. If an error occurs, this function returns the length of what could be read, or -1 if nothing was read.
+    ///
+    /// A terminating `'\0'` byte is always appended to `data`, so `max_size` must be larger than 1.
+    ///
+    /// Data is read until either of the following conditions are met:
+    ///
+    /// * The first `'\n'` character is read.
+    /// * `max_size - 1` bytes are read.
+    /// * The end of the device data is detected.
+    ///
+    /// The newline character (`'\n'`) is included in the buffer. If a newline is not encountered before maxSize - 1 bytes are read, a newline will not be inserted into the buffer. On windows newline characters are replaced with `'\n'`.
+    ///
+    /// Note that on sequential devices, data may not be immediately available, which may result in a partial line being returned. By calling [`can_read_line`](QIODevice::can_read_line) before reading, you can check whether a complete line (including the newline character) can be read.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid for reads for `max_size` many bytes.
+    pub unsafe fn read_line_unsafe(self: Pin<&mut Self>, data: *mut c_char, max_size: i64) -> i64 {
+        unsafe { self.read_line_unsafe_qint64(data, max_size.into()).into() }
+    }
+
+    /// Reads at most `max_size` bytes from the device, and returns the data read as a `QByteArray`.
+    ///
+    /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for reading, or that an error occurred.
+    pub fn read_to_array(self: Pin<&mut Self>, max_size: i64) -> QByteArray {
+        self.read_to_array_qint64(max_size.into())
+    }
+
+    /// Reads at most `max_size` bytes from the device into `data`, and returns the number of bytes read. If an error occurs, such as when attempting to read from a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns -1.
+    ///
+    /// 0 is returned when no more data is available for reading. However, reading past the end of the stream is considered an error, so this function returns -1 in those cases (that is, reading on a closed socket or after a process has died).
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid and `max_size` must be no greater than the maximum length of
+    /// the value stored at `data`.
+    pub unsafe fn read_unsafe(self: Pin<&mut Self>, data: *mut c_char, max_size: i64) -> i64 {
+        unsafe { self.read_unsafe_qint64(data, max_size.into()).into() }
+    }
+
+    /// For random-access devices, this function sets the current position to `pos`, returning `true` on success, or `false` if an error occurred. For sequential devices, the default behavior is to produce a warning and return `false`.
+    pub fn seek(self: Pin<&mut Self>, pos: i64) -> bool {
+        self.seek_qint64(pos.into())
+    }
+
+    /// For open random-access devices, this function returns the size of the device. For open sequential devices, [`self.bytes_available()`](QIODevice::bytes_available) is returned.
+    ///
+    /// If the device is closed, the size returned will not reflect the actual size of the device.
+    pub fn size(&self) -> i64 {
+        self.size_qint64().into()
+    }
+
+    /// Skips up to `max_size` bytes from the device. Returns the number of bytes actually skipped, or -1 on error.
+    ///
+    /// This function does not wait and only discards the data that is already available for reading.
+    ///
+    /// If the device is opened in text mode, end-of-line terminators are translated to `'\n'` symbols and count as a single byte identically to the [`read`](QIODevice::read) and [`peek`](QIODevice::peek) behavior.
+    ///
+    /// This function works for all devices, including sequential ones that cannot [`seek`](QIODevice::seek). It is optimized to skip unwanted data after a [`peek`](QIODevice::peek) call.
+    ///
+    /// For random-access devices, this function can be used to seek forward from the current position. Negative `max_size` values are not allowed.
+    pub fn skip(self: Pin<&mut Self>, max_size: i64) -> i64 {
+        self.skip_qint64(max_size.into()).into()
     }
 
     /// For buffered devices, this function waits until a payload of buffered written data has been written to the device and the [`bytes_written`](QIODevice::bytes_written) signal has been emitted, or until `duration` has passed. If `duration` is `None`, this function will not time out. For unbuffered devices, it returns immediately.
@@ -577,6 +639,11 @@ impl QIODevice {
         Err(self.get_error())
     }
 
+    /// Writes the content of `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
+    pub fn write_array(self: Pin<&mut Self>, data: &QByteArray) -> i64 {
+        self.write_array_qint64(data).into()
+    }
+
     /// Writes at most `data.len()` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
     pub fn write_chars(self: Pin<&mut Self>, data: &[c_char]) -> i64 {
         // SAFETY: `data.ptr()` is valid up to `data.len()`.
@@ -587,6 +654,24 @@ impl QIODevice {
     pub fn write_cstr(self: Pin<&mut Self>, data: &CStr) -> i64 {
         // SAFETY: `data` is a zero-terminated string of 8-bit characters.
         unsafe { self.write_cstr_unsafe(data.as_ptr()) }
+    }
+
+    /// Writes data from a zero-terminated string of 8-bit characters to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be a zero-terminated string of 8-bit characters.
+    pub unsafe fn write_cstr_unsafe(self: Pin<&mut Self>, data: *const c_char) -> i64 {
+        unsafe { self.write_cstr_unsafe_qint64(data).into() }
+    }
+
+    /// Writes at most `max_size` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid for reads for `max_size` many bytes.
+    pub unsafe fn write_unsafe(self: Pin<&mut Self>, data: *const c_char, max_size: i64) -> i64 {
+        unsafe { self.write_unsafe_qint64(data, max_size.into()).into() }
     }
 
     #[cold]

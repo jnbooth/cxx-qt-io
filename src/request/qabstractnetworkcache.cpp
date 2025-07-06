@@ -8,7 +8,7 @@ qabstractnetworkcacheClear(QAbstractNetworkCache& cache)
   cache.clear();
 }
 
-::std::int64_t
+qint64
 qabstractnetworkcacheCacheSize(const QAbstractNetworkCache& cache)
 {
   return cache.cacheSize();

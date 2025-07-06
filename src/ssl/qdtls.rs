@@ -54,6 +54,8 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
 
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
@@ -250,7 +252,7 @@ mod ffi {
             self: Pin<&mut QDtls>,
             socket: *mut QUdpSocket,
             dgram: &QByteArray,
-        ) -> i64;
+        ) -> qint64;
 
         /// Packet loss can result in timeouts during the handshake phase. In this case `QDtls` emits this signal. Call [`handle_timeout`](QDtls::handle_timeout) to retransmit the handshake messages.
         #[qsignal]
@@ -358,7 +360,10 @@ impl QDtls {
         dgram: &QByteArray,
     ) -> i64 {
         // SAFETY: `unpin_for_qt(socket)` is passed directly to Qt.
-        unsafe { self.write_datagram_encrypted_raw(unpin_for_qt(socket), dgram) }
+        unsafe {
+            self.write_datagram_encrypted_raw(unpin_for_qt(socket), dgram)
+                .into()
+        }
     }
 }
 

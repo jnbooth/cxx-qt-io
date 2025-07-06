@@ -14,6 +14,9 @@ use crate::{QAbstractSocket, QHostAddress, QIODevice, QNetworkDatagram, QNetwork
 #[cxx_qt::bridge]
 mod ffi {
     extern "C++" {
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
+
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
         include!("cxx-qt-io/qnetworkdatagram.h");
@@ -68,62 +71,39 @@ mod ffi {
 
         #[doc(hidden)]
         #[rust_name = "pending_datagram_size_or_negative"]
-        fn pendingDatagramSize(self: &QUdpSocket) -> i64;
+        fn pendingDatagramSize(self: &QUdpSocket) -> qint64;
 
-        ///Receives a datagram no larger than `max_size` bytes and stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
-        ///
-        /// Returns the size of the datagram on success; otherwise returns -1.
-        ///
-        /// If `max_size` is too small, the rest of the datagram will be lost. To avoid loss of data, call [`pending_datagram_size`](QUdpSocket::pending_datagram_size) to determine the size of the pending datagram before attempting to read it. If `max_size` is 0, the datagram will be discarded.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid for reads for `max_size` many bytes.
-        /// `address` and `port` must be valid or null.
-        #[rust_name = "read_datagram_unsafe"]
+        #[doc(hidden)]
+        #[rust_name = "read_datagram_unsafe_qint64"]
         unsafe fn readDatagram(
             self: Pin<&mut QUdpSocket>,
             data: *mut c_char,
-            max_size: i64,
+            max_size: qint64,
             address: *mut QHostAddress,
             port: *mut u16,
-        ) -> i64;
+        ) -> qint64;
 
         #[doc(hidden)]
         #[rust_name = "receive_datagram_or_invalid"]
-        fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: i64) -> QNetworkDatagram;
+        fn receiveDatagram(self: Pin<&mut QUdpSocket>, max_size: qint64) -> QNetworkDatagram;
 
         /// Sets the outgoing interface for multicast datagrams to the interface `iface`. This corresponds to the `IP_MULTICAST_IF` socket option for IPv4 sockets and the `IPV6_MULTICAST_IF` socket option for IPv6 sockets. The socket must be in [`QAbstractSocketSocketState::BoundState`](crate::QAbstractSocketSocketState::BoundState), otherwise this function does nothing.
         #[rust_name = "set_multicast_interface"]
         pub fn setMulticastInterface(self: Pin<&mut QUdpSocket>, iface: &QNetworkInterface);
 
-        /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
-        ///
-        /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return -1 and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLarge).
-        ///
-        /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
-        ///
-        /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use [`write`](QIODevice::write) to send datagrams.
-        ///
-        /// # Safety
-        ///
-        /// `data` must be valid for reads for `size` many bytes.
-        #[rust_name = "write_datagram_unsafe"]
+        #[doc(hidden)]
+        #[rust_name = "write_datagram_unsafe_qint64"]
         unsafe fn writeDatagram(
             self: Pin<&mut QUdpSocket>,
             data: *const c_char,
-            size: i64,
+            size: qint64,
             address: &QHostAddress,
             port: u16,
-        ) -> i64;
+        ) -> qint64;
 
-        /// Sends the datagram `datagram` to the host address and port numbers contained in `datagram`, using the network interface and hop count limits also set there. If the destination address and port numbers are unset, this function will send to the address that was passed to [`connect_to_host`](QAbstractSocket::connect_to_host).
-        ///
-        /// If the destination address is IPv6 with a non-empty scope id but differs from the interface index in datagram, it is undefined which interface the operating system will choose to send on.
-        ///
-        /// The function returns the number of bytes sent if it succeeded or -1 if it encountered an error.
-        #[rust_name = "send_datagram"]
-        fn writeDatagram(self: Pin<&mut QUdpSocket>, datagram: &QNetworkDatagram) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "send_datagram_qint64"]
+        fn writeDatagram(self: Pin<&mut QUdpSocket>, datagram: &QNetworkDatagram) -> qint64;
 
     }
 
@@ -201,7 +181,7 @@ impl QUdpSocket {
 
     /// Returns the size of the first pending UDP datagram. If there is no datagram available, this function returns `None`.
     pub fn pending_datagram_size(&self) -> Option<i64> {
-        let size = self.pending_datagram_size_or_negative();
+        let size = self.pending_datagram_size_or_negative().into();
         if size == -1 {
             None
         } else {
@@ -264,6 +244,29 @@ impl QUdpSocket {
         }
     }
 
+    ///Receives a datagram no larger than `max_size` bytes and stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
+    ///
+    /// Returns the size of the datagram on success; otherwise returns -1.
+    ///
+    /// If `max_size` is too small, the rest of the datagram will be lost. To avoid loss of data, call [`pending_datagram_size`](QUdpSocket::pending_datagram_size) to determine the size of the pending datagram before attempting to read it. If `max_size` is 0, the datagram will be discarded.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid for reads for `max_size` many bytes.
+    /// `address` and `port` must be valid or null.
+    pub unsafe fn read_datagram_unsafe(
+        self: Pin<&mut Self>,
+        data: *mut c_char,
+        max_size: i64,
+        address: *mut QHostAddress,
+        port: *mut u16,
+    ) -> i64 {
+        unsafe {
+            self.read_datagram_unsafe_qint64(data, max_size.into(), address, port)
+                .into()
+        }
+    }
+
     /// Receives a datagram no larger than `max_size` bytes and returns it in the `QNetworkDatagram` object, along with the sender's host address and port. If possible, this function will also try to determine the datagram's destination address, port, and the number of hop counts at reception time.
     ///
     /// On failure, returns `None`.
@@ -273,8 +276,17 @@ impl QUdpSocket {
         self: Pin<&mut Self>,
         max_size: Option<i64>,
     ) -> Option<QNetworkDatagram> {
-        self.receive_datagram_or_invalid(max_size.unwrap_or(-1))
+        self.receive_datagram_or_invalid(max_size.unwrap_or(-1).into())
             .nonnull()
+    }
+
+    /// Sends the datagram `datagram` to the host address and port numbers contained in `datagram`, using the network interface and hop count limits also set there. If the destination address and port numbers are unset, this function will send to the address that was passed to [`connect_to_host`](QAbstractSocket::connect_to_host).
+    ///
+    /// If the destination address is IPv6 with a non-empty scope id but differs from the interface index in datagram, it is undefined which interface the operating system will choose to send on.
+    ///
+    /// The function returns the number of bytes sent if it succeeded or -1 if it encountered an error.
+    pub fn send_datagram(self: Pin<&mut Self>, datagram: &QNetworkDatagram) -> i64 {
+        self.send_datagram_qint64(datagram).into()
     }
 
     /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns an error.
@@ -300,6 +312,30 @@ impl QUdpSocket {
             return Ok(n);
         }
         Err(self.get_error())
+    }
+
+    /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.
+    ///
+    /// Datagrams are always written as one block. The maximum size of a datagram is highly platform-dependent, but can be as low as 8192 bytes. If the datagram is too large, this function will return -1 and [`error`](QAbstractSocket::error) will return [`QAbstractSocketSocketError::DatagramTooLargeError`](crate::QAbstractSocketSocketError::DatagramTooLarge).
+    ///
+    /// Sending datagrams larger than 512 bytes is in general disadvised, as even if they are sent successfully, they are likely to be fragmented by the IP layer before arriving at their final destination.
+    ///
+    /// **Warning:** Calling this function on a connected UDP socket may result in an error and no packet being sent. If you are using a connected socket, use [`write`](QIODevice::write) to send datagrams.
+    ///
+    /// # Safety
+    ///
+    /// `data` must be valid for reads for `size` many bytes.
+    pub unsafe fn write_datagram_unsafe(
+        self: Pin<&mut Self>,
+        data: *const c_char,
+        size: i64,
+        address: &QHostAddress,
+        port: u16,
+    ) -> i64 {
+        unsafe {
+            self.write_datagram_unsafe_qint64(data, size.into(), address, port)
+                .into()
+        }
     }
 
     /// Sends the datagram at data of size size to the host address address at port port. Returns the number of bytes sent on success; otherwise returns -1.

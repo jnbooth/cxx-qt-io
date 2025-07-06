@@ -49,6 +49,9 @@ mod ffi {
         type QByteArray = cxx_qt_lib::QByteArray;
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
+
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
@@ -125,13 +128,13 @@ mod ffi {
         #[rust_name = "continue_interrupted_handshake"]
         fn continueInterruptedHandshake(self: Pin<&mut QSslSocket>);
 
-        /// Returns the number of encrypted bytes that are awaiting decryption. Normally, this function will return 0 because `QSslSocket` decrypts its incoming data as soon as it can.
-        #[rust_name = "encrypted_bytes_available"]
-        fn encryptedBytesAvailable(self: &QSslSocket) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "encrypted_bytes_available_qint64"]
+        fn encryptedBytesAvailable(self: &QSslSocket) -> qint64;
 
-        /// Returns the number of encrypted bytes that are waiting to be written to the network.
-        #[rust_name = "encrypted_bytes_to_write"]
-        fn encryptedBytesToWrite(self: &QSslSocket) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "encrypted_bytes_to_write_qint64"]
+        fn encryptedBytesToWrite(self: &QSslSocket) -> qint64;
 
         /// This slot tells `QSslSocket` to ignore errors during `QSslSocket`'s handshake phase and continue connecting. If you want to continue with the connection even if errors occur during the handshake phase, then you must call this slot, either from a slot connected to [`ssl_errors`](QSslSocket::ssl_errors), or before the handshake phase. If you don't call this slot, either in response to errors or before the handshake, the connection will be dropped after the [`ssl_errors`](QSslSocket::ssl_errors) signal has been emitted.
         ///
@@ -355,7 +358,7 @@ mod ffi {
         /// This signal is emitted when `QSslSocket` writes its encrypted data to the network. The written parameter contains the number of bytes that were successfully written.
         #[qsignal]
         #[rust_name = "encrypted_bytes_written"]
-        fn encryptedBytesWritten(self: Pin<&mut QSslSocket>, written: i64);
+        fn encryptedBytesWritten(self: Pin<&mut QSslSocket>, written: qint64);
 
         /// `QSslSocket` emits this signal if a certificate verification error was found and if early error reporting was enabled in [`QSslConfiguration`](crate::QSslConfiguration). An application is expected to inspect the error and decide if it wants to continue the handshake, or abort it and send an alert message to the peer. The signal-slot connection must be direct.
         #[qsignal]
@@ -480,6 +483,11 @@ mod ffi {
 pub use ffi::{QSslSocket, QSslSocketPeerVerifyMode, QSslSocketSslMode};
 
 impl QSslSocket {
+    /// Constructs a `QSslSocket` object. The new socket's cipher suite is set to be the one returned by [`QSslConfiguration::default_configuration()`](crate::QSslConfiguration::default_configuration)`.`[`ciphers()`](crate::QSslConfiguration::ciphers).
+    pub fn new() -> UniquePtr<Self> {
+        ffi::qsslsocket_init_default()
+    }
+
     /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the open mode. This is equivalent to calling [`connect_to_host`](QAbstractSocket::connect_to_host) to establish the connection, followed by a call to [`start_client_encryption`](QSslSocket::start_client_encryption).
     ///
     /// `QSslSocket` first enters the [`QAbstractSocketSocketState::HostLookupState`](crate::QAbstractSocketSocketState::HostLookupState). Then, after entering either the event loop or one of the `wait_for...()` functions, it enters the [`QAbstractSocketSocketState::ConnectingState`](crate::QAbstractSocketSocketState::ConnectingState), emits [`connected`](QAbstractSocket::connected), and then initiates the SSL client handshake. At each state change, `QSslSocket` emits signal [`state_changed`](QAbstractSocket::state_changed).
@@ -502,9 +510,14 @@ impl QSslSocket {
         );
     }
 
-    /// Constructs a `QSslSocket` object. The new socket's cipher suite is set to be the one returned by [`QSslConfiguration::default_configuration()`](crate::QSslConfiguration::default_configuration)`.`[`ciphers()`](crate::QSslConfiguration::ciphers).
-    pub fn new() -> UniquePtr<Self> {
-        ffi::qsslsocket_init_default()
+    /// Returns the number of encrypted bytes that are awaiting decryption. Normally, this function will return 0 because `QSslSocket` decrypts its incoming data as soon as it can.
+    pub fn encrypted_bytes_available(&self) -> i64 {
+        self.encrypted_bytes_available_qint64().into()
+    }
+
+    /// Returns the number of encrypted bytes that are waiting to be written to the network.
+    pub fn encrypted_bytes_to_write(&self) -> i64 {
+        self.encrypted_bytes_to_write_qint64().into()
     }
 
     /// Returns the socket's local certificate, or `None` if no local certificate has been assigned.

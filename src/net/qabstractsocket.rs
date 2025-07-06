@@ -176,6 +176,8 @@ mod ffi {
         type QVariant = cxx_qt_lib::QVariant;
         include!("cxx-qt-lib/qtypes.h");
         type qintptr = cxx_qt_lib::qintptr;
+        type qint64 = cxx_qt_lib::qint64;
+
         include!("cxx-qt-io/qauthenticator.h");
         type QAuthenticator = crate::QAuthenticator;
         include!("cxx-qt-io/qiodevice.h");
@@ -293,11 +295,9 @@ mod ffi {
         /// Returns the network proxy for this socket. By default [`QNetworkProxyProxyType::DefaultProxy`](crate::QNetworkProxyProxyType::DefaultProxy) is used, which means this socket will query the default proxy settings for the application.
         fn proxy(self: &QAbstractSocket) -> QNetworkProxy;
 
-        /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all).
-        ///
-        /// A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
-        #[rust_name = "read_buffer_size"]
-        fn readBufferSize(self: &QAbstractSocket) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "read_buffer_size_qint64"]
+        fn readBufferSize(self: &QAbstractSocket) -> qint64;
 
         /// Continues data transfer on the socket. This method should only be used after the socket has been set to pause upon notifications and a notification has been received. The only notification currently supported is [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors).
         ///
@@ -327,15 +327,9 @@ mod ffi {
         #[rust_name = "set_proxy"]
         fn setProxy(self: Pin<&mut QAbstractSocket>, network_proxy: &QNetworkProxy);
 
-        /// Sets the size of `QAbstractSocket`'s internal read buffer to be size bytes.
-        ///
-        /// If the buffer size is limited to a certain size, `QAbstractSocket` won't buffer more than this size of data. Exceptionally, a buffer size of 0 means that the read buffer is unlimited and all incoming data is buffered. This is the default.
-        ///
-        /// This option is useful if you only read the data at certain points in time (e.g., in a real-time streaming application) or if you want to protect your socket against receiving too much data, which may eventually cause your application to run out of memory.
-        ///
-        /// Only [`QTcpSocket`](crate::QTcpSocket) uses `QAbstractSocket`'s internal buffer; [`QUdpSocket`](crate::QUdpSocket) does not use any buffering at all, but rather relies on the implicit buffering provided by the operating system. Because of this, calling this function on [`QUdpSocket`](crate::QUdpSocket) has no effect.
-        #[rust_name = "set_read_buffer_size"]
-        fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: i64);
+        #[doc(hidden)]
+        #[rust_name = "set_read_buffer_size_qint64"]
+        fn setReadBufferSize(self: Pin<&mut QAbstractSocket>, size: qint64);
 
         #[doc(hidden)]
         #[rust_name = "set_socket_descriptor_qintptr"]
@@ -479,6 +473,24 @@ impl QAbstractSocket {
     /// Returns the name of the peer as specified by [`connect_to_host`](QAbstractSocket::connect_to_host), or `None` if [`connect_to_host`](QAbstractSocket::connect_to_host) has not been called.
     pub fn peer_name(&self) -> Option<QString> {
         self.peer_name_or_empty().nonnull()
+    }
+
+    /// Returns the size of the internal read buffer. This limits the amount of data that the client can receive before you call [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all).
+    ///
+    /// A read buffer size of 0 (the default) means that the buffer has no size limit, ensuring that no data is lost.
+    pub fn read_buffer_size(&self) -> i64 {
+        self.read_buffer_size_qint64().into()
+    }
+
+    /// Sets the size of `QAbstractSocket`'s internal read buffer to be size bytes.
+    ///
+    /// If the buffer size is limited to a certain size, `QAbstractSocket` won't buffer more than this size of data. Exceptionally, a buffer size of 0 means that the read buffer is unlimited and all incoming data is buffered. This is the default.
+    ///
+    /// This option is useful if you only read the data at certain points in time (e.g., in a real-time streaming application) or if you want to protect your socket against receiving too much data, which may eventually cause your application to run out of memory.
+    ///
+    /// Only [`QTcpSocket`](crate::QTcpSocket) uses `QAbstractSocket`'s internal buffer; [`QUdpSocket`](crate::QUdpSocket) does not use any buffering at all, but rather relies on the implicit buffering provided by the operating system. Because of this, calling this function on [`QUdpSocket`](crate::QUdpSocket) has no effect.
+    pub fn set_read_buffer_size(self: Pin<&mut Self>, size: i64) {
+        self.set_read_buffer_size_qint64(size.into());
     }
 
     /// Initializes `QAbstractSocket` with the native socket descriptor `socket_descriptor`. Returns `true` if `socket_descriptor` is accepted as a valid socket descriptor; otherwise returns `false`. The socket is opened in the mode specified by `open_mode`, and enters the socket state specified by `socket_state`. Read and write buffers are cleared, discarding any pending data.

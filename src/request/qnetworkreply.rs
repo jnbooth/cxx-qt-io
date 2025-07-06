@@ -101,6 +101,8 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
         include!("cxx-qt-lib/qurl.h");
         type QUrl = cxx_qt_lib::QUrl;
         include!("cxx-qt-lib/qvariant.h");
@@ -238,20 +240,16 @@ mod ffi {
         #[rust_name = "raw_header_pairs"]
         fn rawHeaderPairs(self: &QNetworkReply) -> &QList_QPair_QByteArray_QByteArray;
 
-        /// Returns the size of the read buffer, in bytes.
-        #[rust_name = "read_buffer_size"]
-        fn readBufferSize(self: &QNetworkReply) -> i64;
+        #[doc(hidden)]
+        #[rust_name = "read_buffer_size_qint64"]
+        fn readBufferSize(self: &QNetworkReply) -> qint64;
 
         /// Returns the request that was posted for this reply. In special, note that the URL for the request may be different than that of the reply.
         fn request(self: &QNetworkReply) -> QNetworkRequest;
 
-        /// Sets the size of the read buffer to be `size` bytes. The read buffer is the buffer that holds data that is being downloaded off the network, before it is read with [`read`](QIODevice::read). Setting the buffer size to 0 will make the buffer unlimited in size.
-        ///
-        /// `QNetworkReply` will try to stop reading from the network once this buffer is full (i.e., [`self.bytes_available()`](QIODevice::bytes_available) returns `size` or more), thus causing the download to throttle down as well. If the buffer is not limited in size, `QNetworkReply` will try to download as fast as possible from the network.
-        ///
-        /// Unlike [`QAbstractSocket::set_read_buffer_size`](crate::QAbstractSocket::set_read_buffer_size), `QNetworkReply` cannot guarantee precision in the read buffer size. That is, [`self.bytes_available()`](QIODevice::bytes_available) can return more than `size`.
-        #[rust_name = "set_read_buffer_size"]
-        fn setReadBufferSize(self: Pin<&mut QNetworkReply>, size: i64);
+        #[doc(hidden)]
+        #[rust_name = "set_read_buffer_size_qint64"]
+        fn setReadBufferSize(self: Pin<&mut QNetworkReply>, size: qint64);
 
         /// Sets the SSL configuration for the network connection associated with this request, if possible, to be that of `config`.
         #[cfg(feature = "ssl")]
@@ -275,7 +273,11 @@ mod ffi {
         /// Note that the values of both `bytes_received` and `bytes_total` may be different from [`self.size()`](QIODevice::size), the total number of bytes obtained through [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all), or the value of the ContentLengthHeader header. The reason for that is that there may be protocol overhead or the data may be compressed during the download.
         #[qsignal]
         #[rust_name = "download_progress"]
-        fn downloadProgress(self: Pin<&mut QNetworkReply>, bytes_received: i64, bytes_total: i64);
+        fn downloadProgress(
+            self: Pin<&mut QNetworkReply>,
+            bytes_received: qint64,
+            bytes_total: qint64,
+        );
 
         /// This signal is emitted when an SSL/TLS session has successfully completed the initial handshake. At this point, no user data has been transmitted. The signal can be used to perform additional checks on the certificate chain, for example to notify users when the certificate for a website has changed. If the reply does not match the expected criteria then it should be aborted by calling [`abort`](QNetworkReply::abort) by a slot connected to this signal. The SSL configuration in use can be inspected using [`ssl_configuration`](QNetworkReply::ssl_configuration).
         ///
@@ -365,7 +367,7 @@ mod ffi {
         /// The upload is finished when `bytes_sent` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
         #[qsignal]
         #[rust_name = "upload_progress"]
-        fn uploadProgress(self: Pin<&mut QNetworkReply>, bytes_sent: i64, bytes_total: i64);
+        fn uploadProgress(self: Pin<&mut QNetworkReply>, bytes_sent: qint64, bytes_total: qint64);
     }
 
     #[namespace = "rust::cxxqt1"]
@@ -416,6 +418,20 @@ impl QNetworkReply {
         T: Into<QAnyStringView<'a>>,
     {
         self.raw_header_view(header_name.into())
+    }
+
+    /// Returns the size of the read buffer, in bytes.
+    pub fn read_buffer_size(&self) -> i64 {
+        self.read_buffer_size_qint64().into()
+    }
+
+    /// Sets the size of the read buffer to be `size` bytes. The read buffer is the buffer that holds data that is being downloaded off the network, before it is read with [`read`](QIODevice::read). Setting the buffer size to 0 will make the buffer unlimited in size.
+    ///
+    /// `QNetworkReply` will try to stop reading from the network once this buffer is full (i.e., [`self.bytes_available()`](QIODevice::bytes_available) returns `size` or more), thus causing the download to throttle down as well. If the buffer is not limited in size, `QNetworkReply` will try to download as fast as possible from the network.
+    ///
+    /// Unlike [`QAbstractSocket::set_read_buffer_size`](crate::QAbstractSocket::set_read_buffer_size), `QNetworkReply` cannot guarantee precision in the read buffer size. That is, [`self.bytes_available()`](QIODevice::bytes_available) can return more than `size`.
+    pub fn set_read_buffer_size(self: Pin<&mut Self>, size: i64) {
+        self.set_read_buffer_size_qint64(size.into());
     }
 
     /// Returns the SSL configuration and state associated with this reply, if SSL was used. It will contain the remote server's certificate, its certificate chain leading to the Certificate Authority as well as the encryption ciphers in use.

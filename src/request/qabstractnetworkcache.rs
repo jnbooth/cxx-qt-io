@@ -12,6 +12,8 @@ use crate::{QIODevice, QNetworkCacheMetaData};
 #[cxx_qt::bridge]
 mod ffi {
     extern "C++" {
+        include!("cxx-qt-lib/qtypes.h");
+        type qint64 = cxx_qt_lib::qint64;
         include!("cxx-qt-lib/qurl.h");
         type QUrl = cxx_qt_lib::QUrl;
 
@@ -40,7 +42,7 @@ mod ffi {
         fn qabstractnetworkcacheClear(cache: Pin<&mut QAbstractNetworkCache>);
 
         #[rust_name = "qabstractnetworkcache_cache_size"]
-        fn qabstractnetworkcacheCacheSize(cache: &QAbstractNetworkCache) -> i64;
+        fn qabstractnetworkcacheCacheSize(cache: &QAbstractNetworkCache) -> qint64;
 
         #[rust_name = "qabstractnetworkcache_data"]
         fn qabstractnetworkcacheData(
@@ -82,7 +84,7 @@ pub use ffi::QAbstractNetworkCache;
 impl QAbstractNetworkCache {
     /// Returns the current size taken up by the cache. Depending upon the cache implementation this might be disk or memory size.
     pub fn cache_size(&self) -> i64 {
-        ffi::qabstractnetworkcache_cache_size(self)
+        ffi::qabstractnetworkcache_cache_size(self).into()
     }
 
     /// Removes all items from the cache. Unless there was failures clearing the cache [`cache_size`](QAbstractNetworkCache::cache_size) should return 0 after a call to clear.
