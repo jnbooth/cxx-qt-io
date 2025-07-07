@@ -6,7 +6,7 @@ mod ffi {
     ///
     /// In QtNetwork, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QSslImplementedClass {
         /// Class [`QSslKey`](crate::QSslKey).
         Key,
@@ -28,7 +28,7 @@ mod ffi {
     ///
     /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from this enum indicate that a particular feature is supported.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QSslSupportedFeature {
         /// Indicates that [`QSslCertificate::verify`](crate::QSslCertificate::verify) is implemented by the backend.
         CertificateVerification,

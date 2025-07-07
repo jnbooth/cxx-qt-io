@@ -10,7 +10,7 @@ use crate::QSslCertificate;
 mod ffi {
     /// Describes all recognized errors that can occur during an SSL handshake.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QSslErrorSslError {
         NoError,
         UnableToGetIssuerCertificate,

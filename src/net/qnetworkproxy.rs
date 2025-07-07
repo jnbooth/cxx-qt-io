@@ -13,6 +13,7 @@ mod ffi {
     ///
     /// [`QNetworkProxy`] sets different capabilities by default when the object is created (see [`QNetworkProxyProxyType`] for a list of the defaults). However, it is possible to change the capabilities after the object has been created with [`QNetworkProxy::set_capabilities`].
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QNetworkProxyCapability {
         /// Ability to open transparent, tunneled TCP connections to a remote host. The proxy server relays the transmission verbatim from one side to the other and does no caching.
         TunnelingCapability = 0x0001,
@@ -34,7 +35,7 @@ mod ffi {
     ///
     /// There are two types of proxies that Qt understands: transparent proxies and caching proxies. The first group consists of proxies that can handle any arbitrary data transfer, while the second can only handle specific requests. The caching proxies only make sense for the specific classes where they can be used.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkProxyProxyType {
         /// Proxy is determined based on the application proxy set using [`QNetworkProxy::set_application_proxy`].
         DefaultProxy,

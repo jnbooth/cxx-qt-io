@@ -19,7 +19,7 @@ use crate::{
 #[cxx_qt::bridge]
 mod ffi {
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QLocalSocketLocalSocketError {
         /// The connection was refused by the peer (or timed out).
         ConnectionRefusedError,
@@ -46,7 +46,7 @@ mod ffi {
     }
 
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QLocalSocketLocalSocketState {
         /// The socket is not connected.
         UnconnectedState = 0,
@@ -59,6 +59,7 @@ mod ffi {
     }
 
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QLocalSocketSocketOption {
         /// No options have been set.
         NoOptions = 0x0,

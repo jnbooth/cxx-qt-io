@@ -14,6 +14,7 @@ mod ffi {
     ///
     /// Note that one network interface cannot be both broadcast-based and point-to-point.
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QNetworkInterfaceInterfaceFlag {
         /// The network interface is "up" - enabled by administrative action
         IsUp = 0x1,
@@ -31,7 +32,7 @@ mod ffi {
 
     /// Specifies the type of hardware (PHY layer, OSI level 1) this interface is, if it could be determined. Interface types that are not among those listed below will generally be listed as Unknown, though future versions of Qt may add new enumeration values.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkInterfaceInterfaceType {
         /// The interface type could not be determined or is not one of the other listed types.
         Unknown,

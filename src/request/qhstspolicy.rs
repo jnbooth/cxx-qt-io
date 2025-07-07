@@ -7,6 +7,7 @@ use cxx_qt_lib::{QDateTime, QFlags, QString};
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QHstsPolicyPolicyFlag {
         /// Indicates whether a policy must include subdomains.
         IncludeSubDomains = 1,

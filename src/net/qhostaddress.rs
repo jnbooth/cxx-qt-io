@@ -12,6 +12,7 @@ use crate::QAbstractSocketNetworkLayerProtocol;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QHostAddressConversionModeFlag {
         /// Convert IPv4-mapped IPv6 addresses ([RFC 4291 sect. 2.5.5.2](https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.2)) when comparing. Therefore a [`QHostAddress`] with address `::ffff:192.168.1.1`` will compare equal to one with `192.168.1.1`.
         ConvertV4MappedToIPv4 = 1,
@@ -28,6 +29,7 @@ mod ffi {
     }
 
     #[repr(i32)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QHostAddressSpecialAddress {
         /// The null address object. Equivalent to [`QHostAddress::default()`]. See also [`QHostAddress::is_null`].
         Null,

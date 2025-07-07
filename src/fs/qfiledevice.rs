@@ -15,7 +15,7 @@ use crate::{FileDescriptor, QIODevice};
 mod ffi {
     /// This enum describes the errors that may be returned by [`QFileDevice::error`].
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QFileDeviceFileError {
         /// No error occurred.
         NoError,
@@ -51,6 +51,7 @@ mod ffi {
 
     /// This enum is used when opening a file to specify additional options which only apply to files and not to a generic `QIODevice`.
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QFileDeviceFileHandleFlag {
         /// The file handle passed into [`QIODevice::open`] should be closed by [`QIODevice::close`], the default behavior is that [`QIODevice::close`] just flushes the file and the application is responsible for closing the file handle. When opening a file by name, this flag is ignored as Qt always owns the file handle and must close it.
         AutoCloseHandle = 0x0001,
@@ -64,6 +65,7 @@ mod ffi {
     ///
     /// [Qt Documentation: QFile::Permission](https://doc.qt.io/qt-6/qfiledevice.html#Permission-enum)
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QFileDevicePermission {
         /// The file is readable by the owner of the file.
         ReadOwner = 0x4000,
@@ -93,6 +95,7 @@ mod ffi {
 
     /// This enum is used by [`QFileDevice::file_time`] and [`QFileDevice::set_file_time`].
     #[repr(i32)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QFileDeviceFileTime {
         /// When the file was most recently accessed (e.g. read or written to).
         FileAccessTime,
@@ -106,6 +109,7 @@ mod ffi {
 
     /// This enum describes special options that may be used by [`QFileDevice::map`].
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QFileDeviceMemoryMapFlag {
         /// No options.
         NoOptions = 0,

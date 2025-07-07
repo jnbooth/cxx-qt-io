@@ -21,6 +21,7 @@ mod ffi {
     ///
     /// Certain flags, such as [`Unbuffered`](QIODeviceOpenModeFlag::Unbufferred) and [`Truncate`](QIODeviceOpenModeFlag::Truncate), are meaningless when used with some subclasses. Some of these restrictions are implied by the type of device that is represented by a subclass. In other cases, the restriction may be due to the implementation, or may be imposed by the underlying platform; for example, [`QTcpSocket`](crate::QTcpSocket) does not support [`Unbuffered`](QIODeviceOpenModeFlag::Unbufferred) mode, and limitations in the native API prevent [`QFile`](crate::QFile) from supporting [`Unbuffered`](QIODeviceOpenModeFlag::Unbufferred) on Windows.
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QIODeviceOpenModeFlag {
         /// The device is not open.
         NotOpen = 0x0000,

@@ -19,7 +19,7 @@ use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
 mod ffi {
     /// Indicates all possible error conditions found during the processing of the request.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkReplyNetworkError {
         NoError = 0,
 

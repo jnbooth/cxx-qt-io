@@ -12,7 +12,7 @@ use crate::{QIODevice, QSslEncodingFormat};
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QSslDiffieHellmanParametersError {
         /// No error occurred.
         NoError,

@@ -16,6 +16,7 @@ mod ffi {
     ///
     /// Note that only the [`Full`](QNetworkCookieRawForm::Full) form of the cookie can be parsed back into its original contents.
     #[repr(i32)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkCookieRawForm {
         /// Makes [`QNetworkCookie::to_raw_form`] return only the `"NAME=VALUE"` part of the cookie, as suitable for sending back to a server in a client request's `Cookie` header. Multiple cookies are separated by a semi-colon in the `Cookie` header field.
         NameAndValueOnly,

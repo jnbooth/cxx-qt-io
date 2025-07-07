@@ -15,7 +15,7 @@ use crate::QNetworkRequestKnownHeaders;
 mod ffi {
     /// Controls the caching mechanism of [`QNetworkAccessManager`](crate::QNetworkAccessManager).
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkRequestCacheLoadControl {
         /// Always load from network and do not check if the cache has a valid entry (similar to the "Reload" feature in browsers); in addition, force intermediate caches to re-validate.
         AlwaysNetwork,
@@ -29,7 +29,7 @@ mod ffi {
 
     /// Indicates if an aspect of the request's loading mechanism has been manually overridden, e.g. by Qt WebKit.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkRequestLoadControl {
         /// Default value: indicates default behaviour.
         Automatic,
@@ -39,7 +39,7 @@ mod ffi {
 
     /// This enum lists the possible network request priorities.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkRequestPriority {
         /// High priority.
         HighPriority = 1,
@@ -53,7 +53,7 @@ mod ffi {
     ///
     ///  Note: When Qt handles redirects it will, for legacy and compatibility reasons, issue the redirected request using GET when the server returns a 301 or 302 response, regardless of the original method used, unless it was HEAD.
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkRequestRedirectPolicy {
         /// Not following any redirects.
         ManualRedirectPolicy,

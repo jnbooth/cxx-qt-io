@@ -1,7 +1,7 @@
 #[cxx::bridge(namespace = "Qt")]
 mod ffi {
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum TimerType {
         /// Precise timers try to keep millisecond accuracy
         PreciseTimer,

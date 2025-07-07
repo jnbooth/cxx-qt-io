@@ -3,7 +3,7 @@ use std::fmt;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq, Eq)]
     enum QNetworkCookieSameSite {
         /// The `SameSite` attribute is not set. Can be interpreted as [`None`](QNetworkCookieSameSite::None) or [`Lax`](QNetworkCookieSameSite::Lax) by the browser.
         Default,

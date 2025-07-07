@@ -10,6 +10,7 @@ use crate::RawHeaderList;
 mod ffi {
     /// List of well known headers as per [IANA registry](https://www.iana.org/assignments/http-fields).
     #[repr(i32)]
+    #[derive(PartialEq, Eq)]
     enum QHttpHeadersWellKnownHeader {
         // IANA Permanent status:
         AIM,
