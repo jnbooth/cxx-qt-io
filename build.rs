@@ -168,6 +168,7 @@ fn main() {
         include_header!("include/core/qmap/qmap_private.h"),
         include_header!("include/core/qmap/qmap_qbytearray_qvariant.h"),
         include_header!("include/core/qmap/qmap.h"),
+        include_header!("include/core/qmultimap.h"),
         include_header!("include/core/qobject.h"),
         include_header!("include/core/qpair/qpair_private.h"),
         include_header!("include/core/qpair/qpair_qbytearray_qbytearray.h"),

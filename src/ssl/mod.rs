@@ -25,7 +25,8 @@ pub use qssl::{QSslImplementedClass, QSslSupportedFeature};
 mod qsslcertificate;
 pub use qsslcertificate::{
     QSslCertificate, QSslCertificatePatternSyntax, QSslCertificateSubjectInfo,
-    SslCertificateSubjectInfoOrAttribute,
+    SslCertificateSubjectInfoOrAttribute, SubjectAlternativeNamesIter, SubjectAlternativeNamesKeys,
+    SubjectAlternativeNamesMap, SubjectAlternativeNamesValues,
 };
 
 mod qsslcertificateextension;

@@ -1,4 +1,5 @@
 use std::fmt;
+use std::iter::FusedIterator;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 use std::ptr;
@@ -9,8 +10,8 @@ use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
 
 use crate::util::{unpin_for_qt, upcast_mut, IsNonNull};
 use crate::{
-    DecodeSslKeyError, QCryptographicHashAlgorithm, QIODevice, QSslEncodingFormat, QSslError,
-    QSslKey,
+    DecodeSslKeyError, QCryptographicHashAlgorithm, QIODevice, QSslAlternativeNameEntryType,
+    QSslEncodingFormat, QSslError, QSslKey,
 };
 
 #[cxx::bridge]
@@ -58,6 +59,8 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qstringlist.h");
         type QStringList = cxx_qt_lib::QStringList;
+        include!("cxx-qt-lib/qtypes.h");
+        type qsizetype = cxx_qt_lib::qsizetype;
         include!("cxx-qt-lib/qlist.h");
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
 
@@ -79,6 +82,71 @@ mod ffi {
         include!("cxx-qt-io/qsslcertificate.h");
         type QSslCertificatePatternSyntax;
         type QSslCertificateSubjectInfo;
+        type QSslAlternativeNameEntryType = crate::QSslAlternativeNameEntryType;
+    }
+
+    unsafe extern "C++" {
+        type SubjectAlternativeNamesKeys = super::SubjectAlternativeNamesKeys;
+
+        #[doc(hidden)]
+        fn advance(&mut self) -> bool;
+        /// # Safety
+        ///
+        /// You must first call [advance](Self::advance) and ensure it returns `true`.
+        #[doc(hidden)]
+        unsafe fn key(&self) -> &QSslAlternativeNameEntryType;
+    }
+
+    unsafe extern "C++" {
+        type SubjectAlternativeNamesIter = super::SubjectAlternativeNamesIter;
+
+        #[doc(hidden)]
+        fn advance(&mut self) -> bool;
+        /// # Safety
+        ///
+        /// You must first call [advance](Self::advance) and ensure it returns `true`.
+        #[doc(hidden)]
+        unsafe fn key(&self) -> &QSslAlternativeNameEntryType;
+        /// # Safety
+        ///
+        /// You must first call [advance](Self::advance) and ensure it returns `true`.
+        #[doc(hidden)]
+        unsafe fn value(&self) -> &QString;
+    }
+
+    unsafe extern "C++" {
+        type SubjectAlternativeNamesValues = super::SubjectAlternativeNamesValues;
+
+        #[doc(hidden)]
+        fn advance(&mut self) -> bool;
+        /// # Safety
+        ///
+        /// You must first call [advance](Self::advance) and ensure it returns `true`.
+        #[doc(hidden)]
+        unsafe fn value(&self) -> &QString;
+    }
+
+    unsafe extern "C++" {
+        type SubjectAlternativeNamesMap = super::SubjectAlternativeNamesMap;
+
+        /// Returns `true` if the multi map contains an item with key `key`; otherwise returns `false`.
+        fn contains(&self, key: &QSslAlternativeNameEntryType) -> bool;
+
+        #[doc(hidden)]
+        #[rust_name = "count_entries_qsizetype"]
+        fn count(&self, key: &QSslAlternativeNameEntryType, value: &QString) -> qsizetype;
+
+        #[doc(hidden)]
+        #[rust_name = "count_values_qsizetype"]
+        fn count(&self, key: &QSslAlternativeNameEntryType) -> qsizetype;
+
+        /// Returns `true` if the multi map contains no items; otherwise returns `false`.
+        #[rust_name = "is_empty"]
+        fn isEmpty(&self) -> bool;
+
+        #[doc(hidden)]
+        #[rust_name = "len_qsizetype"]
+        fn size(&self) -> qsizetype;
     }
 
     unsafe extern "C++" {
@@ -138,6 +206,12 @@ mod ffi {
         #[rust_name = "serial_number"]
         fn serialNumber(&self) -> QByteArray;
 
+        /// Returns the list of alternative subject names for this certificate. The alternative names typically contain host names, optionally with wildcards, that are valid for this certificate.
+        ///
+        /// These names are tested against the connected peer's host name, if either the subject information for [`QSslCertificateSubjectInfo::CommonName`] doesn't define a valid host name, or the subject info name doesn't match the peer's host name.
+        #[rust_name = "subject_alternative_names"]
+        fn subjectAlternativeNames(&self) -> SubjectAlternativeNamesMap;
+
         /// Returns a name that describes the subject. It returns the `CommonName` if available, otherwise falls back to the first `Organization` or the first `OrganizationalUnitName`.
         #[rust_name = "subject_display_name"]
         fn subjectDisplayName(&self) -> QString;
@@ -171,6 +245,18 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
+        #[rust_name = "subjectalternativenamesmap_find"]
+        fn qmultimapFind(
+            map: &SubjectAlternativeNamesMap,
+            key: &QSslAlternativeNameEntryType,
+        ) -> SubjectAlternativeNamesValues;
+
+        #[rust_name = "subjectalternativenamesmap_keys"]
+        fn qmultimapKeys(map: &SubjectAlternativeNamesMap) -> SubjectAlternativeNamesKeys;
+
+        #[rust_name = "subjectalternativenamesmap_iter"]
+        fn qmultimapIter(map: &SubjectAlternativeNamesMap) -> SubjectAlternativeNamesIter;
+
         #[rust_name = "qsslcertificate_from_data"]
         fn qsslcertificateFromData(
             data: &QByteArray,
@@ -303,6 +389,12 @@ impl fmt::Debug for QSslCertificate {
             )
             .field("issuer", &self.issuer_display_name())
             .field("subject", &self.subject_display_name())
+            .field(
+                "subject_alternative_names",
+                &self.subject_alternative_names(),
+            )
+            .field("effective_date", &self.effective_date_or_null())
+            .field("expiry_date", &self.expiry_date_or_null())
             .finish()
     }
 }
@@ -476,5 +568,137 @@ impl TryFrom<&QByteArray> for QSslCertificate {
 
 unsafe impl ExternType for QSslCertificate {
     type Id = type_id!("QSslCertificate");
+    type Kind = cxx::kind::Trivial;
+}
+
+impl SubjectAlternativeNamesMap {
+    /// Returns the number of items with key `key` and value `value`.
+    pub fn count_entries(&self, key: QSslAlternativeNameEntryType, value: &QString) -> isize {
+        self.count_entries_qsizetype(&key, value).into()
+    }
+
+    /// Returns the number of items with key `key`.
+    pub fn count_values(&self, key: QSslAlternativeNameEntryType) -> isize {
+        self.count_values_qsizetype(&key).into()
+    }
+
+    pub fn find(&self, key: QSslAlternativeNameEntryType) -> SubjectAlternativeNamesValues {
+        ffi::subjectalternativenamesmap_find(self, &key)
+    }
+
+    /// Returns the number of items.
+    pub fn len(&self) -> isize {
+        self.len_qsizetype().into()
+    }
+
+    /// Returns an iterator containing all the keys in the multi map in ascending order. Keys that occur multiple times in the multi map also occur multiple times in the list.
+    pub fn keys(&self) -> SubjectAlternativeNamesKeys {
+        ffi::subjectalternativenamesmap_keys(self)
+    }
+}
+
+impl IntoIterator for &SubjectAlternativeNamesMap {
+    type Item = (QSslAlternativeNameEntryType, QString);
+
+    type IntoIter = SubjectAlternativeNamesIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        ffi::subjectalternativenamesmap_iter(self)
+    }
+}
+
+#[repr(C)]
+pub struct SubjectAlternativeNamesKeys {
+    _iter: MaybeUninit<usize>,
+    _end: MaybeUninit<usize>,
+}
+
+unsafe impl ExternType for SubjectAlternativeNamesKeys {
+    type Id = type_id!("SubjectAlternativeNamesKeys");
+    type Kind = cxx::kind::Trivial;
+}
+
+impl Iterator for SubjectAlternativeNamesKeys {
+    type Item = QSslAlternativeNameEntryType;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.advance() {
+            // SAFETY: self.advance() return true, so the iterator is valid.
+            Some(unsafe { *self.key() })
+        } else {
+            None
+        }
+    }
+}
+
+#[repr(C)]
+pub struct SubjectAlternativeNamesIter {
+    _iter: MaybeUninit<usize>,
+    _end: MaybeUninit<usize>,
+}
+
+unsafe impl ExternType for SubjectAlternativeNamesIter {
+    type Id = type_id!("SubjectAlternativeNamesIter");
+    type Kind = cxx::kind::Trivial;
+}
+
+impl Iterator for SubjectAlternativeNamesIter {
+    type Item = (QSslAlternativeNameEntryType, QString);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.advance() {
+            // SAFETY: self.advance() return true, so the iterator is valid.
+            Some(unsafe { (*self.key(), self.value().clone()) })
+        } else {
+            None
+        }
+    }
+}
+
+#[repr(C)]
+pub struct SubjectAlternativeNamesValues {
+    _iter: MaybeUninit<usize>,
+    _end: MaybeUninit<usize>,
+}
+
+unsafe impl ExternType for SubjectAlternativeNamesValues {
+    type Id = type_id!("SubjectAlternativeNamesValues");
+    type Kind = cxx::kind::Trivial;
+}
+
+impl Iterator for SubjectAlternativeNamesValues {
+    type Item = QString;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.advance() {
+            // SAFETY: self.advance() return true, so the iterator is valid.
+            Some(unsafe { self.value().clone() })
+        } else {
+            None
+        }
+    }
+}
+
+impl FusedIterator for SubjectAlternativeNamesValues {}
+
+#[repr(C)]
+pub struct SubjectAlternativeNamesMap {
+    _space: MaybeUninit<usize>,
+}
+
+impl SubjectAlternativeNamesMap {
+    pub fn iter(&self) -> SubjectAlternativeNamesIter {
+        ffi::subjectalternativenamesmap_iter(self)
+    }
+}
+
+impl fmt::Debug for SubjectAlternativeNamesMap {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_map().entries(self.iter()).finish()
+    }
+}
+
+unsafe impl ExternType for SubjectAlternativeNamesMap {
+    type Id = type_id!("SubjectAlternativeNamesMap");
     type Kind = cxx::kind::Trivial;
 }
