@@ -1,0 +1,409 @@
+# SPDX-FileCopyrightText: 2022 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+# SPDX-FileContributor: Andrew Hayzen <andrew.hayzen@kdab.com>
+# SPDX-FileContributor: Be <be.0@gmx.com>\
+# SPDX-FileContributor: Joshua Booth <joshua.n.booth@gmail.com>
+#
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+name: cxx-qt-io tests
+on:
+  pull_request:
+
+# Cancel any previous runs for the same pull request
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  check_cpp:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install --user --break-system-packages clang-format==18.1.8
+      - run: shopt -s globstar && clang-format --dry-run -Werror include/**/*.h src/**/*.cpp
+
+  check_rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default nightly
+      - run: rustup component add rustfmt
+      - run: cargo fmt --all --check --verbose
+
+  check_scripts:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y shellcheck
+      - run: shopt -s globstar && shellcheck scripts/*.sh src/**/*.sh
+
+  build:
+    # Run after pre checks
+    needs: [check_cpp, check_rust, check_scripts]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Qt 6.9 (MacOS)
+            os: macos-14
+            qt_version: 6
+            aqt_version: "6.9.0"
+            aqt_arch: "clang_64"
+            aqt_host: "mac"
+            dyld_framework_path: /Users/runner/work/cxx-qt/Qt/6.9.0/macos/lib
+            macosx_deployment_target: "13.0"
+            cores: 3
+            qt_qpa_platform: cocoa
+            compiler_cache_path: /Users/runner/Library/Caches/Mozilla.sccache
+            sccache_log_path: /Users/runner/Library/Caches/Mozilla.sccache.log.txt
+            clang_format_path: /Users/runner/Library/Python/3.13/bin/clang-format
+            cargo_dir: ~/.cargo
+            cc: clang
+            cxx: clang++
+            rustc_wrapper: sccache
+            build_type: Release
+
+          - name: Qt 6.7 (Windows MSVC)
+            os: windows-2022
+            qt_version: 6
+            aqt_version: "6.7.3"
+            aqt_arch: "win64_msvc2019_64"
+            aqt_host: "windows"
+            cores: 4
+            exe_suffix: .exe
+            qt_qpa_platform: windows
+            compiler_cache_path: C:\Users\runneradmin\AppData\Local\Mozilla\sccache\cache
+            sccache_log_path: C:\Users\runneradmin\AppData\Local\Mozilla\sccache\log.txt
+            clang_format_path: C:\Users\runneradmin\AppData\Roaming\Python\Python39\Scripts\clang-format.exe
+            cargo_dir: C:\Users\runneradmin\.cargo
+            cc: cl
+            cxx: cl
+            rustc_wrapper: sccache
+            build_type: Release
+
+          - name: Ubuntu Qt 6.9
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.9.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.8
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.8.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.7
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.7.0"
+            aqt_arch: "linux_gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.6
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.6.0"
+            aqt_arch: "gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.5
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.5.0"
+            aqt_arch: "gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.4
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.4.0"
+            aqt_arch: "gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.3
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.3.0"
+            aqt_arch: "gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.2
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.2.0"
+            aqt_arch: "gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+          - name: Ubuntu Qt 6.1
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.1.0"
+            aqt_arch: "gcc_64"
+            aqt_host: "linux"
+            cores: 4
+            qt_qpa_platform: offscreen
+            compiler_cache_path: /home/runner/.cache/sccache
+            sccache_log_path: /home/runner/.cache/sccache_log.txt
+            clang_format_path: /home/runner/.local/bin/clang-format
+            cargo_dir: ~/.cargo
+            rustc_wrapper: sccache
+            build_type: Release
+            packages-extra: >-
+              libgl1-mesa-dev
+              libvulkan-dev
+              libxkbcommon-dev
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.name }}
+    env:
+      # ld: warning: object file (LIB) was built for newer macOS version (12.7) than being linked (12.0)
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macosx_deployment_target }}
+      # sccache is around 180-300M in size for a normal build
+      # With GitHub caches we have a 10 GB limit / 6 conditions = 1666 MB
+      # Allow a larger cache size so that code in branches can be cached
+      # but still leave room for the tools cache
+      SCCACHE_CACHE_SIZE: 600M
+      SCCACHE_ERROR_LOG: ${{ matrix.sccache_log_path }}
+
+    steps:
+      - name: "Clone Git repository"
+        uses: actions/checkout@v4
+      - name: "Install Rust toolchain"
+        run: |
+          rustup default stable
+          rustup component add clippy
+          rustup component add rustfmt
+
+      - name: "Rust tools cache"
+        uses: actions/cache@v4
+        id: rust-tools-cache
+        with:
+          path: |
+            ${{ matrix.cargo_dir }}/bin/sccache${{ matrix.exe_suffix }}
+            ${{ matrix.cargo_dir }}/bin/mdbook${{ matrix.exe_suffix }}
+            ${{ matrix.cargo_dir }}/bin/mdbook-linkcheck${{ matrix.exe_suffix }}
+          key: ${{ matrix.os }}_sccache-0.9.1-patched_mdbook-0.4.36_mdbook-linkcheck-0.7.7
+      - name: "Build Rust tools"
+        if: steps.rust-tools-cache.outputs.cache-hit != 'true'
+        run: cargo install --locked --no-default-features sccache
+
+      # We want our compiler cache to always update to the newest state.
+      # The best way for us to achieve this is to **always** update the cache after every landed commit.
+      # That way it will closely follow our development.
+      # And if a PR diverges a lot with its cache that's not a big deal, as it will be merged eventually.
+      #
+      # This is a workaround for the fact that GH doesn't support updating existing caches.
+      # See: https://github.com/azu/github-actions-overwrite-cache-example
+      #
+      # Ideally we'd like to use this:
+      # - name: "Compiler cache"
+      #   uses: actions/cache@v4
+      #   with:
+      #     update: true <------- THIS DOESN'T EXIST YET
+      #     path: ${{ matrix.compiler_cache_path }}
+      #     key: ${{ matrix.name }}_compiler_cache
+      - name: "Restore Compiler Cache"
+        id: compiler-cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ matrix.compiler_cache_path }}
+          key: ${{ matrix.name }}_compiler_cache
+
+      - name: "[Windows] Start sccache server"
+        # If the compiler cache couldn't be restored, we have to create the cache path,
+        # as otherwise the server startup fails.
+        if: runner.os == 'Windows'
+        run: |
+          md ${{ matrix.compiler_cache_path }} -ea 0
+          sccache --start-server
+
+      - name: "[Other] Start sccache server"
+        # If the compiler cache couldn't be restored, we have to create the cache path,
+        # as otherwise the server startup fails.
+        if: runner.os != 'Windows'
+        run: |
+          mkdir -p ${{ matrix.compiler_cache_path }}
+          sccache --start-server
+
+      # Version info found using https://ddalcino.github.io/aqt-list-server/
+      - name: "Install Qt"
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ matrix.aqt_version }}
+          host: ${{ matrix.aqt_host }}
+          target: "desktop"
+          arch: ${{ matrix.aqt_arch }}
+          tools: "tools_cmake"
+          cache: true
+
+      - name: "[Ubuntu] Install dependencies"
+        if: runner.os == 'Linux'
+        run: >-
+          sudo apt-get update &&
+          sudo apt-get install -y
+          ninja-build
+          libssl-dev
+          pkg-config
+          valgrind
+          ${{ matrix.packages-extra }}
+
+      # hack around https://bugs.launchpad.net/ubuntu/+source/qtchooser/+bug/1964763
+      - name: "[Ubuntu] Add Qt6 tools to PATH"
+        if: runner.os == 'Linux' && matrix.qt_version == 6
+        run: echo "PATH=/usr/lib/qt6/bin:${PATH}" >> "${GITHUB_ENV}"
+
+      - name: "[macOS] Install dependencies"
+        if: runner.os == 'macOS'
+        # automake is needed for building libicu which is a dependency of Qt
+        run: brew install automake autoconf-archive ninja
+
+      # Required for CMake to find Ninja
+      - name: "[Windows] Set up MSVC Developer Command Prompt"
+        if: runner.os == 'Windows'
+        uses: seanmiddleditch/gha-setup-vsdevenv@v5
+
+      # Ninja is required on Windows for CMAKE_CXX_COMPILER_LAUNCHER to work for using sccache.
+      - name: "Configure"
+        run: >-
+          cmake ${{ matrix.cmake_args }}
+          -D CMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -G Ninja
+          -S . -B build
+        env:
+          RUSTC_WRAPPER: ${{ matrix.rustc_wrapper }}
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+      - name: "Build"
+        run: cmake --build build --config ${{ matrix.build_type }} --parallel ${{ matrix.cores }}
+        env:
+          RUSTC_WRAPPER: ${{ matrix.rustc_wrapper }}
+
+      - name: "Test"
+        run: ctest ${{ matrix.ctest_args }} -C ${{ matrix.build_type }} -T test --output-on-failure --parallel ${{ matrix.cores }}
+        working-directory: ./build
+        env:
+          # Use the version of clang-format from pip
+          CLANG_FORMAT_BINARY: ${{ matrix.clang_format_path }}
+          RUSTC_WRAPPER: ${{ matrix.rustc_wrapper }}
+          QT_QPA_PLATFORM: ${{ matrix.qt_qpa_platform }}
+          QT_SELECT: qt${{ matrix.qt_version }}
+          DYLD_FRAMEWORK_PATH: ${{ matrix.dyld_framework_path }}
+
+      - name: "Print compiler cache statistics"
+        run: sccache --show-stats
+
+      - name: "Save Compiler Cache"
+        # Updating the cache doesn't work from forks
+        # So update it once it's merged into the repo
+        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ matrix.compiler_cache_path }}
+          key: ${{ matrix.name }}_compiler_cache
+
+      - name: Upload GitHub Actions artifacts of sccache debug log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sccache_log_${{ matrix.name }}
+          path: ${{ matrix.sccache_log_path }}
+          if-no-files-found: ignore
