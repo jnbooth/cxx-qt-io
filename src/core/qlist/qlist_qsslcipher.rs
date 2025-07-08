@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QSslCipher"]
+        #[rust_name = "qlist_clear_QSslCipher"]
         fn qlistClear(list: &mut QList_QSslCipher);
-        #[rust_name = "cxx_qlist_contains_QSslCipher"]
+        #[rust_name = "qlist_contains_QSslCipher"]
         fn qlistContains(list: &QList_QSslCipher, _: &QSslCipher) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslCipher"]
+        #[rust_name = "qlist_reserve_QSslCipher"]
         fn qlistReserve(_: &mut QList_QSslCipher, size: isize);
-        #[rust_name = "append_QSslCipher"]
+        #[rust_name = "qlist_append_QSslCipher"]
         fn qlistAppend(_: &mut QList_QSslCipher, _: &QSslCipher);
-        #[rust_name = "get_unchecked_QSslCipher"]
+        #[rust_name = "qlist_get_unchecked_QSslCipher"]
         unsafe fn qlistGetUnchecked(set: &QList_QSslCipher, pos: isize) -> &QSslCipher;
-        #[rust_name = "index_of_QSslCipher"]
+        #[rust_name = "qlist_index_of_QSslCipher"]
         fn qlistIndexOf(_: &QList_QSslCipher, _: &QSslCipher) -> isize;
-        #[rust_name = "insert_QSslCipher"]
+        #[rust_name = "qlist_insert_QSslCipher"]
         fn qlistInsert(_: &mut QList_QSslCipher, _: isize, _: &QSslCipher);
-        #[rust_name = "remove_QSslCipher"]
+        #[rust_name = "qlist_remove_QSslCipher"]
         fn qlistRemove(_: &mut QList_QSslCipher, _: isize);
-        #[rust_name = "len_QSslCipher"]
+        #[rust_name = "qlist_len_QSslCipher"]
         fn qlistLen(_: &QList_QSslCipher) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslCipher) {
-    ffi::cxx_qlist_clear_QSslCipher(v);
+    ffi::qlist_clear_QSslCipher(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslCipher, item: &ffi::QSslCipher) -> bool {
-    ffi::cxx_qlist_contains_QSslCipher(v, item)
+    ffi::qlist_contains_QSslCipher(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslCipher, size: isize) {
-    ffi::reserve_QSslCipher(v, size);
+    ffi::qlist_reserve_QSslCipher(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QSslCipher, value: &ffi::QSslCipher) {
-    ffi::append_QSslCipher(v, value);
+    ffi::qlist_append_QSslCipher(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QSslCipher) -> ffi::QList_QSslCipher {
@@ -80,21 +80,21 @@ pub(crate) fn drop(s: &mut ffi::QList_QSslCipher) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QSslCipher, pos: isize) -> &ffi::QSslCipher {
-    ffi::get_unchecked_QSslCipher(s, pos)
+    ffi::qlist_get_unchecked_QSslCipher(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslCipher, value: &ffi::QSslCipher) -> isize {
-    ffi::index_of_QSslCipher(v, value)
+    ffi::qlist_index_of_QSslCipher(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QSslCipher, pos: isize, value: &ffi::QSslCipher) {
-    ffi::insert_QSslCipher(s, pos, value);
+    ffi::qlist_insert_QSslCipher(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslCipher) -> isize {
-    ffi::len_QSslCipher(s)
+    ffi::qlist_len_QSslCipher(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslCipher, pos: isize) {
-    ffi::remove_QSslCipher(s, pos);
+    ffi::qlist_remove_QSslCipher(s, pos);
 }

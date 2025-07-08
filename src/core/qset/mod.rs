@@ -57,7 +57,7 @@ macro_rules! impl_qset_element {
     };
 }
 
-#[cfg(feature = "request")]
+#[cfg(all(feature = "request", cxxqt_qt_version_at_least_6_5))]
 impl_qset_element!(
     QHttp1Configuration,
     qset_qhttp1configuration,

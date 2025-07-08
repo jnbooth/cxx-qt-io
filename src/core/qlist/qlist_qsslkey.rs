@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QSslKey"]
+        #[rust_name = "qlist_clear_QSslKey"]
         fn qlistClear(list: &mut QList_QSslKey);
-        #[rust_name = "cxx_qlist_contains_QSslKey"]
+        #[rust_name = "qlist_contains_QSslKey"]
         fn qlistContains(list: &QList_QSslKey, _: &QSslKey) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslKey"]
+        #[rust_name = "qlist_reserve_QSslKey"]
         fn qlistReserve(_: &mut QList_QSslKey, size: isize);
-        #[rust_name = "append_QSslKey"]
+        #[rust_name = "qlist_append_QSslKey"]
         fn qlistAppend(_: &mut QList_QSslKey, _: &QSslKey);
-        #[rust_name = "get_unchecked_QSslKey"]
+        #[rust_name = "qlist_get_unchecked_QSslKey"]
         unsafe fn qlistGetUnchecked(set: &QList_QSslKey, pos: isize) -> &QSslKey;
-        #[rust_name = "index_of_QSslKey"]
+        #[rust_name = "qlist_index_of_QSslKey"]
         fn qlistIndexOf(_: &QList_QSslKey, _: &QSslKey) -> isize;
-        #[rust_name = "insert_QSslKey"]
+        #[rust_name = "qlist_insert_QSslKey"]
         fn qlistInsert(_: &mut QList_QSslKey, _: isize, _: &QSslKey);
-        #[rust_name = "remove_QSslKey"]
+        #[rust_name = "qlist_remove_QSslKey"]
         fn qlistRemove(_: &mut QList_QSslKey, _: isize);
-        #[rust_name = "len_QSslKey"]
+        #[rust_name = "qlist_len_QSslKey"]
         fn qlistLen(_: &QList_QSslKey) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslKey) {
-    ffi::cxx_qlist_clear_QSslKey(v);
+    ffi::qlist_clear_QSslKey(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslKey, item: &ffi::QSslKey) -> bool {
-    ffi::cxx_qlist_contains_QSslKey(v, item)
+    ffi::qlist_contains_QSslKey(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslKey, size: isize) {
-    ffi::reserve_QSslKey(v, size);
+    ffi::qlist_reserve_QSslKey(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QSslKey, value: &ffi::QSslKey) {
-    ffi::append_QSslKey(v, value);
+    ffi::qlist_append_QSslKey(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QSslKey) -> ffi::QList_QSslKey {
@@ -80,21 +80,21 @@ pub(crate) fn drop(s: &mut ffi::QList_QSslKey) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QSslKey, pos: isize) -> &ffi::QSslKey {
-    ffi::get_unchecked_QSslKey(s, pos)
+    ffi::qlist_get_unchecked_QSslKey(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslKey, value: &ffi::QSslKey) -> isize {
-    ffi::index_of_QSslKey(v, value)
+    ffi::qlist_index_of_QSslKey(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QSslKey, pos: isize, value: &ffi::QSslKey) {
-    ffi::insert_QSslKey(s, pos, value);
+    ffi::qlist_insert_QSslKey(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslKey) -> isize {
-    ffi::len_QSslKey(s)
+    ffi::qlist_len_QSslKey(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslKey, pos: isize) {
-    ffi::remove_QSslKey(s, pos);
+    ffi::qlist_remove_QSslKey(s, pos);
 }

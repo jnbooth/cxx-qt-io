@@ -18,6 +18,7 @@ function generate_bridge() {
 
 using QSet_$1 = QSet<$1>;
 EOF
+    clang-format -i "$SCRIPTPATH/../../../include/core/qset/qset_$LOWER.h"
 
     tee "$SCRIPTPATH/qset_$LOWER.rs" <<EOF
 //! This is an auto-generated file. Do not edit.
@@ -36,14 +37,14 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qset_clear_$1"]
+        #[rust_name = "qset_clear_$1"]
         fn qsetClear(set: &mut QSet_$1);
-        #[rust_name = "cxx_qset_contains_$1"]
+        #[rust_name = "qset_contains_$1"]
         fn qsetContains(
             set: &QSet_$1,
             _: &$1,
         ) -> bool;
-        #[rust_name = "cxx_qset_remove_$1"]
+        #[rust_name = "qset_remove_$1"]
         fn qsetRemove(
             set: &mut QSet_$1,
             _: &$1,
@@ -64,33 +65,33 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "get_unchecked_$1"]
+        #[rust_name = "qset_get_unchecked_$1"]
         unsafe fn qsetGetUnchecked(set: &QSet_$1, pos: isize) -> &$1;
-        #[rust_name = "insert_$1"]
+        #[rust_name = "qset_insert_$1"]
         fn qsetInsert(_: &mut QSet_$1, _: &$1);
-        #[rust_name = "len_$1"]
+        #[rust_name = "qset_len_$1"]
         fn qsetLen(_: &QSet_$1) -> isize;
-        #[rust_name = "reserve_$1"]
+        #[rust_name = "qset_reserve_$1"]
         fn qsetReserve(_: &mut QSet_$1, size: isize);
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QSet_$1) {
-    ffi::cxx_qset_clear_$1(v);
+    ffi::qset_clear_$1(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QSet_$1,
     item: &ffi::$1,
 ) -> bool {
-    ffi::cxx_qset_contains_$1(v, item)
+    ffi::qset_contains_$1(v, item)
 }
 
 pub(crate) fn remove(
     v: &mut ffi::QSet_$1,
     item: &ffi::$1,
 ) -> bool {
-    ffi::cxx_qset_remove_$1(v, item)
+    ffi::qset_remove_$1(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_$1) -> ffi::QSet_$1 {
@@ -106,19 +107,19 @@ pub(crate) fn drop(s: &mut ffi::QSet_$1) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_$1, pos: isize) -> &ffi::$1 {
-    ffi::get_unchecked_$1(s, pos)
+    ffi::qset_get_unchecked_$1(s, pos)
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_$1, value: &ffi::$1) {
-    ffi::insert_$1(s, value);
+    ffi::qset_insert_$1(s, value);
 }
 
 pub(crate) fn len(s: &ffi::QSet_$1) -> isize {
-    ffi::len_$1(s)
+    ffi::qset_len_$1(s)
 }
 
 pub(crate) fn reserve(s: &mut ffi::QSet_$1, size: isize) {
-  ffi::reserve_$1(s, size);
+  ffi::qset_reserve_$1(s, size);
 }
 EOF
     rustfmt +nightly "$SCRIPTPATH/qset_$LOWER.rs"

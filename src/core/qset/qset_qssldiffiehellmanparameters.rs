@@ -14,14 +14,14 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qset_clear_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_clear_QSslDiffieHellmanParameters"]
         fn qsetClear(set: &mut QSet_QSslDiffieHellmanParameters);
-        #[rust_name = "cxx_qset_contains_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_contains_QSslDiffieHellmanParameters"]
         fn qsetContains(
             set: &QSet_QSslDiffieHellmanParameters,
             _: &QSslDiffieHellmanParameters,
         ) -> bool;
-        #[rust_name = "cxx_qset_remove_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_remove_QSslDiffieHellmanParameters"]
         fn qsetRemove(
             set: &mut QSet_QSslDiffieHellmanParameters,
             _: &QSslDiffieHellmanParameters,
@@ -42,36 +42,36 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "get_unchecked_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_get_unchecked_QSslDiffieHellmanParameters"]
         unsafe fn qsetGetUnchecked(
             set: &QSet_QSslDiffieHellmanParameters,
             pos: isize,
         ) -> &QSslDiffieHellmanParameters;
-        #[rust_name = "insert_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_insert_QSslDiffieHellmanParameters"]
         fn qsetInsert(_: &mut QSet_QSslDiffieHellmanParameters, _: &QSslDiffieHellmanParameters);
-        #[rust_name = "len_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_len_QSslDiffieHellmanParameters"]
         fn qsetLen(_: &QSet_QSslDiffieHellmanParameters) -> isize;
-        #[rust_name = "reserve_QSslDiffieHellmanParameters"]
+        #[rust_name = "qset_reserve_QSslDiffieHellmanParameters"]
         fn qsetReserve(_: &mut QSet_QSslDiffieHellmanParameters, size: isize);
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QSet_QSslDiffieHellmanParameters) {
-    ffi::cxx_qset_clear_QSslDiffieHellmanParameters(v);
+    ffi::qset_clear_QSslDiffieHellmanParameters(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QSet_QSslDiffieHellmanParameters,
     item: &ffi::QSslDiffieHellmanParameters,
 ) -> bool {
-    ffi::cxx_qset_contains_QSslDiffieHellmanParameters(v, item)
+    ffi::qset_contains_QSslDiffieHellmanParameters(v, item)
 }
 
 pub(crate) fn remove(
     v: &mut ffi::QSet_QSslDiffieHellmanParameters,
     item: &ffi::QSslDiffieHellmanParameters,
 ) -> bool {
-    ffi::cxx_qset_remove_QSslDiffieHellmanParameters(v, item)
+    ffi::qset_remove_QSslDiffieHellmanParameters(v, item)
 }
 
 pub(crate) fn clone(
@@ -92,20 +92,20 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QSet_QSslDiffieHellmanParameters,
     pos: isize,
 ) -> &ffi::QSslDiffieHellmanParameters {
-    ffi::get_unchecked_QSslDiffieHellmanParameters(s, pos)
+    ffi::qset_get_unchecked_QSslDiffieHellmanParameters(s, pos)
 }
 
 pub(crate) fn insert(
     s: &mut ffi::QSet_QSslDiffieHellmanParameters,
     value: &ffi::QSslDiffieHellmanParameters,
 ) {
-    ffi::insert_QSslDiffieHellmanParameters(s, value);
+    ffi::qset_insert_QSslDiffieHellmanParameters(s, value);
 }
 
 pub(crate) fn len(s: &ffi::QSet_QSslDiffieHellmanParameters) -> isize {
-    ffi::len_QSslDiffieHellmanParameters(s)
+    ffi::qset_len_QSslDiffieHellmanParameters(s)
 }
 
 pub(crate) fn reserve(s: &mut ffi::QSet_QSslDiffieHellmanParameters, size: isize) {
-    ffi::reserve_QSslDiffieHellmanParameters(s, size);
+    ffi::qset_reserve_QSslDiffieHellmanParameters(s, size);
 }

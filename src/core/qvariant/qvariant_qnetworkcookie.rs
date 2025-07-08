@@ -13,23 +13,23 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qvariant"]
     unsafe extern "C++" {
-        #[rust_name = "can_convert_QNetworkCookie"]
+        #[rust_name = "qvariant_can_convert_QNetworkCookie"]
         fn qvariantCanConvertQNetworkCookie(variant: &QVariant) -> bool;
-        #[rust_name = "construct_QNetworkCookie"]
+        #[rust_name = "qvariant_construct_QNetworkCookie"]
         fn qvariantConstruct(value: &QNetworkCookie) -> QVariant;
-        #[rust_name = "value_or_default_QNetworkCookie"]
+        #[rust_name = "qvariant_value_or_default_QNetworkCookie"]
         fn qvariantValueOrDefault(variant: &QVariant) -> QNetworkCookie;
     }
 }
 
 pub(crate) fn can_convert(variant: &ffi::QVariant) -> bool {
-    ffi::can_convert_QNetworkCookie(variant)
+    ffi::qvariant_can_convert_QNetworkCookie(variant)
 }
 
 pub(crate) fn construct(value: &ffi::QNetworkCookie) -> ffi::QVariant {
-    ffi::construct_QNetworkCookie(value)
+    ffi::qvariant_construct_QNetworkCookie(value)
 }
 
 pub(crate) fn value_or_default(variant: &ffi::QVariant) -> ffi::QNetworkCookie {
-    ffi::value_or_default_QNetworkCookie(variant)
+    ffi::qvariant_value_or_default_QNetworkCookie(variant)
 }

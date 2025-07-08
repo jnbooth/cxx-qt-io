@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QNetworkProxy"]
+        #[rust_name = "qlist_clear_QNetworkProxy"]
         fn qlistClear(list: &mut QList_QNetworkProxy);
-        #[rust_name = "cxx_qlist_contains_QNetworkProxy"]
+        #[rust_name = "qlist_contains_QNetworkProxy"]
         fn qlistContains(list: &QList_QNetworkProxy, _: &QNetworkProxy) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkProxy"]
+        #[rust_name = "qlist_reserve_QNetworkProxy"]
         fn qlistReserve(_: &mut QList_QNetworkProxy, size: isize);
-        #[rust_name = "append_QNetworkProxy"]
+        #[rust_name = "qlist_append_QNetworkProxy"]
         fn qlistAppend(_: &mut QList_QNetworkProxy, _: &QNetworkProxy);
-        #[rust_name = "get_unchecked_QNetworkProxy"]
+        #[rust_name = "qlist_get_unchecked_QNetworkProxy"]
         unsafe fn qlistGetUnchecked(set: &QList_QNetworkProxy, pos: isize) -> &QNetworkProxy;
-        #[rust_name = "index_of_QNetworkProxy"]
+        #[rust_name = "qlist_index_of_QNetworkProxy"]
         fn qlistIndexOf(_: &QList_QNetworkProxy, _: &QNetworkProxy) -> isize;
-        #[rust_name = "insert_QNetworkProxy"]
+        #[rust_name = "qlist_insert_QNetworkProxy"]
         fn qlistInsert(_: &mut QList_QNetworkProxy, _: isize, _: &QNetworkProxy);
-        #[rust_name = "remove_QNetworkProxy"]
+        #[rust_name = "qlist_remove_QNetworkProxy"]
         fn qlistRemove(_: &mut QList_QNetworkProxy, _: isize);
-        #[rust_name = "len_QNetworkProxy"]
+        #[rust_name = "qlist_len_QNetworkProxy"]
         fn qlistLen(_: &QList_QNetworkProxy) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkProxy) {
-    ffi::cxx_qlist_clear_QNetworkProxy(v);
+    ffi::qlist_clear_QNetworkProxy(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QNetworkProxy, item: &ffi::QNetworkProxy) -> bool {
-    ffi::cxx_qlist_contains_QNetworkProxy(v, item)
+    ffi::qlist_contains_QNetworkProxy(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkProxy, size: isize) {
-    ffi::reserve_QNetworkProxy(v, size);
+    ffi::qlist_reserve_QNetworkProxy(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkProxy, value: &ffi::QNetworkProxy) {
-    ffi::append_QNetworkProxy(v, value);
+    ffi::qlist_append_QNetworkProxy(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkProxy) -> ffi::QList_QNetworkProxy {
@@ -83,21 +83,21 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkProxy,
     pos: isize,
 ) -> &ffi::QNetworkProxy {
-    ffi::get_unchecked_QNetworkProxy(s, pos)
+    ffi::qlist_get_unchecked_QNetworkProxy(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QNetworkProxy, value: &ffi::QNetworkProxy) -> isize {
-    ffi::index_of_QNetworkProxy(v, value)
+    ffi::qlist_index_of_QNetworkProxy(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QNetworkProxy, pos: isize, value: &ffi::QNetworkProxy) {
-    ffi::insert_QNetworkProxy(s, pos, value);
+    ffi::qlist_insert_QNetworkProxy(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkProxy) -> isize {
-    ffi::len_QNetworkProxy(s)
+    ffi::qlist_len_QNetworkProxy(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkProxy, pos: isize) {
-    ffi::remove_QNetworkProxy(s, pos);
+    ffi::qlist_remove_QNetworkProxy(s, pos);
 }

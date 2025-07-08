@@ -13,7 +13,7 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QHttpHeaders"]
+        #[rust_name = "qlist_clear_QHttpHeaders"]
         fn qlistClear(list: &mut QList_QHttpHeaders);
     }
 
@@ -31,23 +31,23 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QHttpHeaders"]
+        #[rust_name = "qlist_reserve_QHttpHeaders"]
         fn qlistReserve(_: &mut QList_QHttpHeaders, size: isize);
-        #[rust_name = "append_QHttpHeaders"]
+        #[rust_name = "qlist_append_QHttpHeaders"]
         fn qlistAppend(_: &mut QList_QHttpHeaders, _: &QHttpHeaders);
-        #[rust_name = "get_unchecked_QHttpHeaders"]
+        #[rust_name = "qlist_get_unchecked_QHttpHeaders"]
         unsafe fn qlistGetUnchecked(set: &QList_QHttpHeaders, pos: isize) -> &QHttpHeaders;
-        #[rust_name = "insert_QHttpHeaders"]
+        #[rust_name = "qlist_insert_QHttpHeaders"]
         fn qlistInsert(_: &mut QList_QHttpHeaders, _: isize, _: &QHttpHeaders);
-        #[rust_name = "remove_QHttpHeaders"]
+        #[rust_name = "qlist_remove_QHttpHeaders"]
         fn qlistRemove(_: &mut QList_QHttpHeaders, _: isize);
-        #[rust_name = "len_QHttpHeaders"]
+        #[rust_name = "qlist_len_QHttpHeaders"]
         fn qlistLen(_: &QList_QHttpHeaders) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QHttpHeaders) {
-    ffi::cxx_clear_qlist_QHttpHeaders(v);
+    ffi::qlist_clear_QHttpHeaders(v);
 }
 
 pub(crate) fn contains(_: &ffi::QList_QHttpHeaders, _: &ffi::QHttpHeaders) -> bool {
@@ -55,11 +55,11 @@ pub(crate) fn contains(_: &ffi::QList_QHttpHeaders, _: &ffi::QHttpHeaders) -> bo
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QHttpHeaders, size: isize) {
-    ffi::reserve_QHttpHeaders(v, size);
+    ffi::qlist_reserve_QHttpHeaders(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QHttpHeaders, value: &ffi::QHttpHeaders) {
-    ffi::append_QHttpHeaders(v, value);
+    ffi::qlist_append_QHttpHeaders(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QHttpHeaders) -> ffi::QList_QHttpHeaders {
@@ -75,7 +75,7 @@ pub(crate) fn drop(s: &mut ffi::QList_QHttpHeaders) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QHttpHeaders, pos: isize) -> &ffi::QHttpHeaders {
-    ffi::get_unchecked_QHttpHeaders(s, pos)
+    ffi::qlist_get_unchecked_QHttpHeaders(s, pos)
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QHttpHeaders, _: &ffi::QHttpHeaders) -> isize {
@@ -83,13 +83,13 @@ pub(crate) fn index_of(_: &ffi::QList_QHttpHeaders, _: &ffi::QHttpHeaders) -> is
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QHttpHeaders, pos: isize, value: &ffi::QHttpHeaders) {
-    ffi::insert_QHttpHeaders(s, pos, value);
+    ffi::qlist_insert_QHttpHeaders(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QHttpHeaders) -> isize {
-    ffi::len_QHttpHeaders(s)
+    ffi::qlist_len_QHttpHeaders(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QHttpHeaders, pos: isize) {
-    ffi::remove_QHttpHeaders(s, pos);
+    ffi::qlist_remove_QHttpHeaders(s, pos);
 }

@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QSslEllipticCurve"]
+        #[rust_name = "qlist_clear_QSslEllipticCurve"]
         fn qlistClear(list: &mut QList_QSslEllipticCurve);
-        #[rust_name = "cxx_qlist_contains_QSslEllipticCurve"]
+        #[rust_name = "qlist_contains_QSslEllipticCurve"]
         fn qlistContains(list: &QList_QSslEllipticCurve, _: &QSslEllipticCurve) -> bool;
     }
 
@@ -34,40 +34,40 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslEllipticCurve"]
+        #[rust_name = "qlist_reserve_QSslEllipticCurve"]
         fn qlistReserve(_: &mut QList_QSslEllipticCurve, size: isize);
-        #[rust_name = "append_QSslEllipticCurve"]
+        #[rust_name = "qlist_append_QSslEllipticCurve"]
         fn qlistAppend(_: &mut QList_QSslEllipticCurve, _: &QSslEllipticCurve);
-        #[rust_name = "get_unchecked_QSslEllipticCurve"]
+        #[rust_name = "qlist_get_unchecked_QSslEllipticCurve"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QSslEllipticCurve,
             pos: isize,
         ) -> &QSslEllipticCurve;
-        #[rust_name = "index_of_QSslEllipticCurve"]
+        #[rust_name = "qlist_index_of_QSslEllipticCurve"]
         fn qlistIndexOf(_: &QList_QSslEllipticCurve, _: &QSslEllipticCurve) -> isize;
-        #[rust_name = "insert_QSslEllipticCurve"]
+        #[rust_name = "qlist_insert_QSslEllipticCurve"]
         fn qlistInsert(_: &mut QList_QSslEllipticCurve, _: isize, _: &QSslEllipticCurve);
-        #[rust_name = "remove_QSslEllipticCurve"]
+        #[rust_name = "qlist_remove_QSslEllipticCurve"]
         fn qlistRemove(_: &mut QList_QSslEllipticCurve, _: isize);
-        #[rust_name = "len_QSslEllipticCurve"]
+        #[rust_name = "qlist_len_QSslEllipticCurve"]
         fn qlistLen(_: &QList_QSslEllipticCurve) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslEllipticCurve) {
-    ffi::cxx_qlist_clear_QSslEllipticCurve(v);
+    ffi::qlist_clear_QSslEllipticCurve(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslEllipticCurve, item: &ffi::QSslEllipticCurve) -> bool {
-    ffi::cxx_qlist_contains_QSslEllipticCurve(v, item)
+    ffi::qlist_contains_QSslEllipticCurve(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslEllipticCurve, size: isize) {
-    ffi::reserve_QSslEllipticCurve(v, size);
+    ffi::qlist_reserve_QSslEllipticCurve(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QSslEllipticCurve, value: &ffi::QSslEllipticCurve) {
-    ffi::append_QSslEllipticCurve(v, value);
+    ffi::qlist_append_QSslEllipticCurve(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QSslEllipticCurve) -> ffi::QList_QSslEllipticCurve {
@@ -86,11 +86,11 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslEllipticCurve,
     pos: isize,
 ) -> &ffi::QSslEllipticCurve {
-    ffi::get_unchecked_QSslEllipticCurve(s, pos)
+    ffi::qlist_get_unchecked_QSslEllipticCurve(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslEllipticCurve, value: &ffi::QSslEllipticCurve) -> isize {
-    ffi::index_of_QSslEllipticCurve(v, value)
+    ffi::qlist_index_of_QSslEllipticCurve(v, value)
 }
 
 pub(crate) fn insert(
@@ -98,13 +98,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QSslEllipticCurve,
 ) {
-    ffi::insert_QSslEllipticCurve(s, pos, value);
+    ffi::qlist_insert_QSslEllipticCurve(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslEllipticCurve) -> isize {
-    ffi::len_QSslEllipticCurve(s)
+    ffi::qlist_len_QSslEllipticCurve(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslEllipticCurve, pos: isize) {
-    ffi::remove_QSslEllipticCurve(s, pos);
+    ffi::qlist_remove_QSslEllipticCurve(s, pos);
 }

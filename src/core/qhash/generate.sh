@@ -29,6 +29,7 @@ $INCLUDE_1
 $INCLUDE_2
 using QHash_$1 = QHash<$2, $3>;
 EOF
+  clang-format -i "$SCRIPTPATH/../../../include/core/qhash/qhash_$LOWER.h"
 }
 
 function generate_bridge() {
@@ -71,9 +72,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qhash"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qhash_clear_$SUFFIX"]
+        #[rust_name = "qhash_clear_$SUFFIX"]
         fn qhashClear(hash: &mut $QHASH);
-        #[rust_name = "cxx_qhash_contains_$SUFFIX"]
+        #[rust_name = "qhash_contains_$SUFFIX"]
         fn qhashContains(
             hash: &$QHASH,
             _: &$K,
@@ -94,31 +95,31 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qhash"]
     unsafe extern "C++" {
-        #[rust_name = "get_or_default_$SUFFIX"]
+        #[rust_name = "qhash_get_or_default_$SUFFIX"]
         fn qhashGetOrDefault(_: &$QHASH, key: &$K) -> $V;
-        #[rust_name = "get_unchecked_key_$SUFFIX"]
+        #[rust_name = "qhash_get_unchecked_key_$SUFFIX"]
         #[allow(clippy::needless_lifetimes)]
         unsafe fn qhashGetUncheckedKey<'a>(_: &'a $QHASH, pos: isize) -> &'a $K;
-        #[rust_name = "get_unchecked_value_$SUFFIX"]
+        #[rust_name = "qhash_get_unchecked_value_$SUFFIX"]
         unsafe fn qhashGetUncheckedValue(_: &$QHASH, pos: isize) -> &$V;
-        #[rust_name = "insert_$SUFFIX"]
+        #[rust_name = "qhash_insert_$SUFFIX"]
         fn qhashInsert(_: &mut $QHASH, key: &$K, value: &$V);
-        #[rust_name = "len_$SUFFIX"]
+        #[rust_name = "qhash_len_$SUFFIX"]
         fn qhashLen(_: &$QHASH) -> isize;
-        #[rust_name = "remove_$SUFFIX"]
+        #[rust_name = "qhash_remove_$SUFFIX"]
         fn qhashRemove(_: &mut $QHASH, key: &$K) -> bool;
     }
 }
 
 pub(crate) fn clear(hash: &mut ffi::$QHASH) {
-    ffi::cxx_qhash_clear_$SUFFIX(hash);
+    ffi::qhash_clear_$SUFFIX(hash);
 }
 
 pub(crate) fn contains(
     hash: &ffi::$QHASH,
     k: &$FK,
 ) -> bool {
-    ffi::cxx_qhash_contains_$SUFFIX(hash, k)
+    ffi::qhash_contains_$SUFFIX(hash, k)
 }
 
 pub(crate) fn clone(hash: &ffi::$QHASH) -> ffi::$QHASH {
@@ -134,30 +135,30 @@ pub(crate) fn drop(hash: &mut ffi::$QHASH) {
 }
 
 pub(crate) fn get_or_default(hash: &ffi::$QHASH, key: &$FK) -> $FV {
-    ffi::get_or_default_$SUFFIX(hash, key)
+    ffi::qhash_get_or_default_$SUFFIX(hash, key)
 }
 
 pub(crate) unsafe fn get_unchecked_key(hash: &ffi::$QHASH, pos: isize) -> &$FK {
-    ffi::get_unchecked_key_$SUFFIX(hash, pos)
+    ffi::qhash_get_unchecked_key_$SUFFIX(hash, pos)
 }
 
 pub(crate) unsafe fn get_unchecked_value(
     hash: &ffi::$QHASH,
     pos: isize,
 ) -> &$FV {
-    ffi::get_unchecked_value_$SUFFIX(hash, pos)
+    ffi::qhash_get_unchecked_value_$SUFFIX(hash, pos)
 }
 
 pub(crate) fn insert(hash: &mut ffi::$QHASH, key: &$FK, value: &$FV) {
-    ffi::insert_$SUFFIX(hash, key, value);
+    ffi::qhash_insert_$SUFFIX(hash, key, value);
 }
 
 pub(crate) fn len(hash: &ffi::$QHASH) -> isize {
-    ffi::len_$SUFFIX(hash)
+    ffi::qhash_len_$SUFFIX(hash)
 }
 
 pub(crate) fn remove(hash: &mut ffi::$QHASH, key: &$FK) -> bool {
-    ffi::remove_$SUFFIX(hash, key)
+    ffi::qhash_remove_$SUFFIX(hash, key)
 }
 
 #[allow(non_camel_case_types)]

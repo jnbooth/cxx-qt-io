@@ -13,7 +13,7 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QOcspResponse"]
+        #[rust_name = "qlist_clear_QOcspResponse"]
         fn qlistClear(list: &mut QList_QOcspResponse);
     }
 
@@ -31,23 +31,23 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QOcspResponse"]
+        #[rust_name = "qlist_reserve_QOcspResponse"]
         fn qlistReserve(_: &mut QList_QOcspResponse, size: isize);
-        #[rust_name = "append_QOcspResponse"]
+        #[rust_name = "qlist_append_QOcspResponse"]
         fn qlistAppend(_: &mut QList_QOcspResponse, _: &QOcspResponse);
-        #[rust_name = "get_unchecked_QOcspResponse"]
+        #[rust_name = "qlist_get_unchecked_QOcspResponse"]
         unsafe fn qlistGetUnchecked(set: &QList_QOcspResponse, pos: isize) -> &QOcspResponse;
-        #[rust_name = "insert_QOcspResponse"]
+        #[rust_name = "qlist_insert_QOcspResponse"]
         fn qlistInsert(_: &mut QList_QOcspResponse, _: isize, _: &QOcspResponse);
-        #[rust_name = "remove_QOcspResponse"]
+        #[rust_name = "qlist_remove_QOcspResponse"]
         fn qlistRemove(_: &mut QList_QOcspResponse, _: isize);
-        #[rust_name = "len_QOcspResponse"]
+        #[rust_name = "qlist_len_QOcspResponse"]
         fn qlistLen(_: &QList_QOcspResponse) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QOcspResponse) {
-    ffi::cxx_clear_qlist_QOcspResponse(v);
+    ffi::qlist_clear_QOcspResponse(v);
 }
 
 pub(crate) fn contains(_: &ffi::QList_QOcspResponse, _: &ffi::QOcspResponse) -> bool {
@@ -55,11 +55,11 @@ pub(crate) fn contains(_: &ffi::QList_QOcspResponse, _: &ffi::QOcspResponse) -> 
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QOcspResponse, size: isize) {
-    ffi::reserve_QOcspResponse(v, size);
+    ffi::qlist_reserve_QOcspResponse(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QOcspResponse, value: &ffi::QOcspResponse) {
-    ffi::append_QOcspResponse(v, value);
+    ffi::qlist_append_QOcspResponse(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QOcspResponse) -> ffi::QList_QOcspResponse {
@@ -78,7 +78,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QOcspResponse,
     pos: isize,
 ) -> &ffi::QOcspResponse {
-    ffi::get_unchecked_QOcspResponse(s, pos)
+    ffi::qlist_get_unchecked_QOcspResponse(s, pos)
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QOcspResponse, _: &ffi::QOcspResponse) -> isize {
@@ -86,13 +86,13 @@ pub(crate) fn index_of(_: &ffi::QList_QOcspResponse, _: &ffi::QOcspResponse) -> 
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QOcspResponse, pos: isize, value: &ffi::QOcspResponse) {
-    ffi::insert_QOcspResponse(s, pos, value);
+    ffi::qlist_insert_QOcspResponse(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QOcspResponse) -> isize {
-    ffi::len_QOcspResponse(s)
+    ffi::qlist_len_QOcspResponse(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QOcspResponse, pos: isize) {
-    ffi::remove_QOcspResponse(s, pos);
+    ffi::qlist_remove_QOcspResponse(s, pos);
 }

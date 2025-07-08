@@ -13,7 +13,7 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QNetworkInterface"]
+        #[rust_name = "qlist_clear_QNetworkInterface"]
         fn qlistClear(list: &mut QList_QNetworkInterface);
     }
 
@@ -31,26 +31,26 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkInterface"]
+        #[rust_name = "qlist_reserve_QNetworkInterface"]
         fn qlistReserve(_: &mut QList_QNetworkInterface, size: isize);
-        #[rust_name = "append_QNetworkInterface"]
+        #[rust_name = "qlist_append_QNetworkInterface"]
         fn qlistAppend(_: &mut QList_QNetworkInterface, _: &QNetworkInterface);
-        #[rust_name = "get_unchecked_QNetworkInterface"]
+        #[rust_name = "qlist_get_unchecked_QNetworkInterface"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QNetworkInterface,
             pos: isize,
         ) -> &QNetworkInterface;
-        #[rust_name = "insert_QNetworkInterface"]
+        #[rust_name = "qlist_insert_QNetworkInterface"]
         fn qlistInsert(_: &mut QList_QNetworkInterface, _: isize, _: &QNetworkInterface);
-        #[rust_name = "remove_QNetworkInterface"]
+        #[rust_name = "qlist_remove_QNetworkInterface"]
         fn qlistRemove(_: &mut QList_QNetworkInterface, _: isize);
-        #[rust_name = "len_QNetworkInterface"]
+        #[rust_name = "qlist_len_QNetworkInterface"]
         fn qlistLen(_: &QList_QNetworkInterface) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkInterface) {
-    ffi::cxx_clear_qlist_QNetworkInterface(v);
+    ffi::qlist_clear_QNetworkInterface(v);
 }
 
 pub(crate) fn contains(_: &ffi::QList_QNetworkInterface, _: &ffi::QNetworkInterface) -> bool {
@@ -58,11 +58,11 @@ pub(crate) fn contains(_: &ffi::QList_QNetworkInterface, _: &ffi::QNetworkInterf
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkInterface, size: isize) {
-    ffi::reserve_QNetworkInterface(v, size);
+    ffi::qlist_reserve_QNetworkInterface(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkInterface, value: &ffi::QNetworkInterface) {
-    ffi::append_QNetworkInterface(v, value);
+    ffi::qlist_append_QNetworkInterface(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkInterface) -> ffi::QList_QNetworkInterface {
@@ -81,7 +81,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkInterface,
     pos: isize,
 ) -> &ffi::QNetworkInterface {
-    ffi::get_unchecked_QNetworkInterface(s, pos)
+    ffi::qlist_get_unchecked_QNetworkInterface(s, pos)
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QNetworkInterface, _: &ffi::QNetworkInterface) -> isize {
@@ -93,13 +93,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QNetworkInterface,
 ) {
-    ffi::insert_QNetworkInterface(s, pos, value);
+    ffi::qlist_insert_QNetworkInterface(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkInterface) -> isize {
-    ffi::len_QNetworkInterface(s)
+    ffi::qlist_len_QNetworkInterface(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkInterface, pos: isize) {
-    ffi::remove_QNetworkInterface(s, pos);
+    ffi::qlist_remove_QNetworkInterface(s, pos);
 }

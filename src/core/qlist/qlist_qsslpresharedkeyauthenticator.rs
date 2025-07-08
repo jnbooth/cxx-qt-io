@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_clear_QSslPreSharedKeyAuthenticator"]
         fn qlistClear(list: &mut QList_QSslPreSharedKeyAuthenticator);
-        #[rust_name = "cxx_qlist_contains_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_contains_QSslPreSharedKeyAuthenticator"]
         fn qlistContains(
             list: &QList_QSslPreSharedKeyAuthenticator,
             _: &QSslPreSharedKeyAuthenticator,
@@ -39,56 +39,56 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_reserve_QSslPreSharedKeyAuthenticator"]
         fn qlistReserve(_: &mut QList_QSslPreSharedKeyAuthenticator, size: isize);
-        #[rust_name = "append_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_append_QSslPreSharedKeyAuthenticator"]
         fn qlistAppend(
             _: &mut QList_QSslPreSharedKeyAuthenticator,
             _: &QSslPreSharedKeyAuthenticator,
         );
-        #[rust_name = "get_unchecked_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_get_unchecked_QSslPreSharedKeyAuthenticator"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QSslPreSharedKeyAuthenticator,
             pos: isize,
         ) -> &QSslPreSharedKeyAuthenticator;
-        #[rust_name = "index_of_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_index_of_QSslPreSharedKeyAuthenticator"]
         fn qlistIndexOf(
             _: &QList_QSslPreSharedKeyAuthenticator,
             _: &QSslPreSharedKeyAuthenticator,
         ) -> isize;
-        #[rust_name = "insert_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_insert_QSslPreSharedKeyAuthenticator"]
         fn qlistInsert(
             _: &mut QList_QSslPreSharedKeyAuthenticator,
             _: isize,
             _: &QSslPreSharedKeyAuthenticator,
         );
-        #[rust_name = "remove_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_remove_QSslPreSharedKeyAuthenticator"]
         fn qlistRemove(_: &mut QList_QSslPreSharedKeyAuthenticator, _: isize);
-        #[rust_name = "len_QSslPreSharedKeyAuthenticator"]
+        #[rust_name = "qlist_len_QSslPreSharedKeyAuthenticator"]
         fn qlistLen(_: &QList_QSslPreSharedKeyAuthenticator) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslPreSharedKeyAuthenticator) {
-    ffi::cxx_qlist_clear_QSslPreSharedKeyAuthenticator(v);
+    ffi::qlist_clear_QSslPreSharedKeyAuthenticator(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_QSslPreSharedKeyAuthenticator,
     item: &ffi::QSslPreSharedKeyAuthenticator,
 ) -> bool {
-    ffi::cxx_qlist_contains_QSslPreSharedKeyAuthenticator(v, item)
+    ffi::qlist_contains_QSslPreSharedKeyAuthenticator(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslPreSharedKeyAuthenticator, size: isize) {
-    ffi::reserve_QSslPreSharedKeyAuthenticator(v, size);
+    ffi::qlist_reserve_QSslPreSharedKeyAuthenticator(v, size);
 }
 
 pub(crate) fn append(
     v: &mut ffi::QList_QSslPreSharedKeyAuthenticator,
     value: &ffi::QSslPreSharedKeyAuthenticator,
 ) {
-    ffi::append_QSslPreSharedKeyAuthenticator(v, value);
+    ffi::qlist_append_QSslPreSharedKeyAuthenticator(v, value);
 }
 
 pub(crate) fn clone(
@@ -109,14 +109,14 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslPreSharedKeyAuthenticator,
     pos: isize,
 ) -> &ffi::QSslPreSharedKeyAuthenticator {
-    ffi::get_unchecked_QSslPreSharedKeyAuthenticator(s, pos)
+    ffi::qlist_get_unchecked_QSslPreSharedKeyAuthenticator(s, pos)
 }
 
 pub(crate) fn index_of(
     v: &ffi::QList_QSslPreSharedKeyAuthenticator,
     value: &ffi::QSslPreSharedKeyAuthenticator,
 ) -> isize {
-    ffi::index_of_QSslPreSharedKeyAuthenticator(v, value)
+    ffi::qlist_index_of_QSslPreSharedKeyAuthenticator(v, value)
 }
 
 pub(crate) fn insert(
@@ -124,13 +124,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QSslPreSharedKeyAuthenticator,
 ) {
-    ffi::insert_QSslPreSharedKeyAuthenticator(s, pos, value);
+    ffi::qlist_insert_QSslPreSharedKeyAuthenticator(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslPreSharedKeyAuthenticator) -> isize {
-    ffi::len_QSslPreSharedKeyAuthenticator(s)
+    ffi::qlist_len_QSslPreSharedKeyAuthenticator(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslPreSharedKeyAuthenticator, pos: isize) {
-    ffi::remove_QSslPreSharedKeyAuthenticator(s, pos);
+    ffi::qlist_remove_QSslPreSharedKeyAuthenticator(s, pos);
 }

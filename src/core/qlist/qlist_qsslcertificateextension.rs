@@ -13,7 +13,7 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QSslCertificateExtension"]
+        #[rust_name = "qlist_clear_QSslCertificateExtension"]
         fn qlistClear(list: &mut QList_QSslCertificateExtension);
     }
 
@@ -31,30 +31,30 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslCertificateExtension"]
+        #[rust_name = "qlist_reserve_QSslCertificateExtension"]
         fn qlistReserve(_: &mut QList_QSslCertificateExtension, size: isize);
-        #[rust_name = "append_QSslCertificateExtension"]
+        #[rust_name = "qlist_append_QSslCertificateExtension"]
         fn qlistAppend(_: &mut QList_QSslCertificateExtension, _: &QSslCertificateExtension);
-        #[rust_name = "get_unchecked_QSslCertificateExtension"]
+        #[rust_name = "qlist_get_unchecked_QSslCertificateExtension"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QSslCertificateExtension,
             pos: isize,
         ) -> &QSslCertificateExtension;
-        #[rust_name = "insert_QSslCertificateExtension"]
+        #[rust_name = "qlist_insert_QSslCertificateExtension"]
         fn qlistInsert(
             _: &mut QList_QSslCertificateExtension,
             _: isize,
             _: &QSslCertificateExtension,
         );
-        #[rust_name = "remove_QSslCertificateExtension"]
+        #[rust_name = "qlist_remove_QSslCertificateExtension"]
         fn qlistRemove(_: &mut QList_QSslCertificateExtension, _: isize);
-        #[rust_name = "len_QSslCertificateExtension"]
+        #[rust_name = "qlist_len_QSslCertificateExtension"]
         fn qlistLen(_: &QList_QSslCertificateExtension) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslCertificateExtension) {
-    ffi::cxx_clear_qlist_QSslCertificateExtension(v);
+    ffi::qlist_clear_QSslCertificateExtension(v);
 }
 
 pub(crate) fn contains(
@@ -65,14 +65,14 @@ pub(crate) fn contains(
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslCertificateExtension, size: isize) {
-    ffi::reserve_QSslCertificateExtension(v, size);
+    ffi::qlist_reserve_QSslCertificateExtension(v, size);
 }
 
 pub(crate) fn append(
     v: &mut ffi::QList_QSslCertificateExtension,
     value: &ffi::QSslCertificateExtension,
 ) {
-    ffi::append_QSslCertificateExtension(v, value);
+    ffi::qlist_append_QSslCertificateExtension(v, value);
 }
 
 pub(crate) fn clone(
@@ -93,7 +93,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslCertificateExtension,
     pos: isize,
 ) -> &ffi::QSslCertificateExtension {
-    ffi::get_unchecked_QSslCertificateExtension(s, pos)
+    ffi::qlist_get_unchecked_QSslCertificateExtension(s, pos)
 }
 
 pub(crate) fn index_of(
@@ -108,13 +108,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QSslCertificateExtension,
 ) {
-    ffi::insert_QSslCertificateExtension(s, pos, value);
+    ffi::qlist_insert_QSslCertificateExtension(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslCertificateExtension) -> isize {
-    ffi::len_QSslCertificateExtension(s)
+    ffi::qlist_len_QSslCertificateExtension(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslCertificateExtension, pos: isize) {
-    ffi::remove_QSslCertificateExtension(s, pos);
+    ffi::qlist_remove_QSslCertificateExtension(s, pos);
 }

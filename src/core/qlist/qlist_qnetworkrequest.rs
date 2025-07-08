@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QNetworkRequest"]
+        #[rust_name = "qlist_clear_QNetworkRequest"]
         fn qlistClear(list: &mut QList_QNetworkRequest);
-        #[rust_name = "cxx_qlist_contains_QNetworkRequest"]
+        #[rust_name = "qlist_contains_QNetworkRequest"]
         fn qlistContains(list: &QList_QNetworkRequest, _: &QNetworkRequest) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkRequest"]
+        #[rust_name = "qlist_reserve_QNetworkRequest"]
         fn qlistReserve(_: &mut QList_QNetworkRequest, size: isize);
-        #[rust_name = "append_QNetworkRequest"]
+        #[rust_name = "qlist_append_QNetworkRequest"]
         fn qlistAppend(_: &mut QList_QNetworkRequest, _: &QNetworkRequest);
-        #[rust_name = "get_unchecked_QNetworkRequest"]
+        #[rust_name = "qlist_get_unchecked_QNetworkRequest"]
         unsafe fn qlistGetUnchecked(set: &QList_QNetworkRequest, pos: isize) -> &QNetworkRequest;
-        #[rust_name = "index_of_QNetworkRequest"]
+        #[rust_name = "qlist_index_of_QNetworkRequest"]
         fn qlistIndexOf(_: &QList_QNetworkRequest, _: &QNetworkRequest) -> isize;
-        #[rust_name = "insert_QNetworkRequest"]
+        #[rust_name = "qlist_insert_QNetworkRequest"]
         fn qlistInsert(_: &mut QList_QNetworkRequest, _: isize, _: &QNetworkRequest);
-        #[rust_name = "remove_QNetworkRequest"]
+        #[rust_name = "qlist_remove_QNetworkRequest"]
         fn qlistRemove(_: &mut QList_QNetworkRequest, _: isize);
-        #[rust_name = "len_QNetworkRequest"]
+        #[rust_name = "qlist_len_QNetworkRequest"]
         fn qlistLen(_: &QList_QNetworkRequest) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkRequest) {
-    ffi::cxx_qlist_clear_QNetworkRequest(v);
+    ffi::qlist_clear_QNetworkRequest(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QNetworkRequest, item: &ffi::QNetworkRequest) -> bool {
-    ffi::cxx_qlist_contains_QNetworkRequest(v, item)
+    ffi::qlist_contains_QNetworkRequest(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkRequest, size: isize) {
-    ffi::reserve_QNetworkRequest(v, size);
+    ffi::qlist_reserve_QNetworkRequest(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkRequest, value: &ffi::QNetworkRequest) {
-    ffi::append_QNetworkRequest(v, value);
+    ffi::qlist_append_QNetworkRequest(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkRequest) -> ffi::QList_QNetworkRequest {
@@ -83,21 +83,21 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkRequest,
     pos: isize,
 ) -> &ffi::QNetworkRequest {
-    ffi::get_unchecked_QNetworkRequest(s, pos)
+    ffi::qlist_get_unchecked_QNetworkRequest(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QNetworkRequest, value: &ffi::QNetworkRequest) -> isize {
-    ffi::index_of_QNetworkRequest(v, value)
+    ffi::qlist_index_of_QNetworkRequest(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QNetworkRequest, pos: isize, value: &ffi::QNetworkRequest) {
-    ffi::insert_QNetworkRequest(s, pos, value);
+    ffi::qlist_insert_QNetworkRequest(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkRequest) -> isize {
-    ffi::len_QNetworkRequest(s)
+    ffi::qlist_len_QNetworkRequest(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkRequest, pos: isize) {
-    ffi::remove_QNetworkRequest(s, pos);
+    ffi::qlist_remove_QNetworkRequest(s, pos);
 }

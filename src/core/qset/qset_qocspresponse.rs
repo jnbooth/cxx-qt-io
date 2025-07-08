@@ -14,11 +14,11 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qset_clear_QOcspResponse"]
+        #[rust_name = "qset_clear_QOcspResponse"]
         fn qsetClear(set: &mut QSet_QOcspResponse);
-        #[rust_name = "cxx_qset_contains_QOcspResponse"]
+        #[rust_name = "qset_contains_QOcspResponse"]
         fn qsetContains(set: &QSet_QOcspResponse, _: &QOcspResponse) -> bool;
-        #[rust_name = "cxx_qset_remove_QOcspResponse"]
+        #[rust_name = "qset_remove_QOcspResponse"]
         fn qsetRemove(set: &mut QSet_QOcspResponse, _: &QOcspResponse) -> bool;
     }
 
@@ -36,27 +36,27 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "get_unchecked_QOcspResponse"]
+        #[rust_name = "qset_get_unchecked_QOcspResponse"]
         unsafe fn qsetGetUnchecked(set: &QSet_QOcspResponse, pos: isize) -> &QOcspResponse;
-        #[rust_name = "insert_QOcspResponse"]
+        #[rust_name = "qset_insert_QOcspResponse"]
         fn qsetInsert(_: &mut QSet_QOcspResponse, _: &QOcspResponse);
-        #[rust_name = "len_QOcspResponse"]
+        #[rust_name = "qset_len_QOcspResponse"]
         fn qsetLen(_: &QSet_QOcspResponse) -> isize;
-        #[rust_name = "reserve_QOcspResponse"]
+        #[rust_name = "qset_reserve_QOcspResponse"]
         fn qsetReserve(_: &mut QSet_QOcspResponse, size: isize);
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QSet_QOcspResponse) {
-    ffi::cxx_qset_clear_QOcspResponse(v);
+    ffi::qset_clear_QOcspResponse(v);
 }
 
 pub(crate) fn contains(v: &ffi::QSet_QOcspResponse, item: &ffi::QOcspResponse) -> bool {
-    ffi::cxx_qset_contains_QOcspResponse(v, item)
+    ffi::qset_contains_QOcspResponse(v, item)
 }
 
 pub(crate) fn remove(v: &mut ffi::QSet_QOcspResponse, item: &ffi::QOcspResponse) -> bool {
-    ffi::cxx_qset_remove_QOcspResponse(v, item)
+    ffi::qset_remove_QOcspResponse(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_QOcspResponse) -> ffi::QSet_QOcspResponse {
@@ -72,17 +72,17 @@ pub(crate) fn drop(s: &mut ffi::QSet_QOcspResponse) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_QOcspResponse, pos: isize) -> &ffi::QOcspResponse {
-    ffi::get_unchecked_QOcspResponse(s, pos)
+    ffi::qset_get_unchecked_QOcspResponse(s, pos)
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QOcspResponse, value: &ffi::QOcspResponse) {
-    ffi::insert_QOcspResponse(s, value);
+    ffi::qset_insert_QOcspResponse(s, value);
 }
 
 pub(crate) fn len(s: &ffi::QSet_QOcspResponse) -> isize {
-    ffi::len_QOcspResponse(s)
+    ffi::qset_len_QOcspResponse(s)
 }
 
 pub(crate) fn reserve(s: &mut ffi::QSet_QOcspResponse, size: isize) {
-    ffi::reserve_QOcspResponse(s, size);
+    ffi::qset_reserve_QOcspResponse(s, size);
 }

@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_clear_QSslDiffieHellmanParameters"]
         fn qlistClear(list: &mut QList_QSslDiffieHellmanParameters);
-        #[rust_name = "cxx_qlist_contains_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_contains_QSslDiffieHellmanParameters"]
         fn qlistContains(
             list: &QList_QSslDiffieHellmanParameters,
             _: &QSslDiffieHellmanParameters,
@@ -37,53 +37,53 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_reserve_QSslDiffieHellmanParameters"]
         fn qlistReserve(_: &mut QList_QSslDiffieHellmanParameters, size: isize);
-        #[rust_name = "append_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_append_QSslDiffieHellmanParameters"]
         fn qlistAppend(_: &mut QList_QSslDiffieHellmanParameters, _: &QSslDiffieHellmanParameters);
-        #[rust_name = "get_unchecked_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_get_unchecked_QSslDiffieHellmanParameters"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QSslDiffieHellmanParameters,
             pos: isize,
         ) -> &QSslDiffieHellmanParameters;
-        #[rust_name = "index_of_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_index_of_QSslDiffieHellmanParameters"]
         fn qlistIndexOf(
             _: &QList_QSslDiffieHellmanParameters,
             _: &QSslDiffieHellmanParameters,
         ) -> isize;
-        #[rust_name = "insert_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_insert_QSslDiffieHellmanParameters"]
         fn qlistInsert(
             _: &mut QList_QSslDiffieHellmanParameters,
             _: isize,
             _: &QSslDiffieHellmanParameters,
         );
-        #[rust_name = "remove_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_remove_QSslDiffieHellmanParameters"]
         fn qlistRemove(_: &mut QList_QSslDiffieHellmanParameters, _: isize);
-        #[rust_name = "len_QSslDiffieHellmanParameters"]
+        #[rust_name = "qlist_len_QSslDiffieHellmanParameters"]
         fn qlistLen(_: &QList_QSslDiffieHellmanParameters) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslDiffieHellmanParameters) {
-    ffi::cxx_qlist_clear_QSslDiffieHellmanParameters(v);
+    ffi::qlist_clear_QSslDiffieHellmanParameters(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_QSslDiffieHellmanParameters,
     item: &ffi::QSslDiffieHellmanParameters,
 ) -> bool {
-    ffi::cxx_qlist_contains_QSslDiffieHellmanParameters(v, item)
+    ffi::qlist_contains_QSslDiffieHellmanParameters(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslDiffieHellmanParameters, size: isize) {
-    ffi::reserve_QSslDiffieHellmanParameters(v, size);
+    ffi::qlist_reserve_QSslDiffieHellmanParameters(v, size);
 }
 
 pub(crate) fn append(
     v: &mut ffi::QList_QSslDiffieHellmanParameters,
     value: &ffi::QSslDiffieHellmanParameters,
 ) {
-    ffi::append_QSslDiffieHellmanParameters(v, value);
+    ffi::qlist_append_QSslDiffieHellmanParameters(v, value);
 }
 
 pub(crate) fn clone(
@@ -104,14 +104,14 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslDiffieHellmanParameters,
     pos: isize,
 ) -> &ffi::QSslDiffieHellmanParameters {
-    ffi::get_unchecked_QSslDiffieHellmanParameters(s, pos)
+    ffi::qlist_get_unchecked_QSslDiffieHellmanParameters(s, pos)
 }
 
 pub(crate) fn index_of(
     v: &ffi::QList_QSslDiffieHellmanParameters,
     value: &ffi::QSslDiffieHellmanParameters,
 ) -> isize {
-    ffi::index_of_QSslDiffieHellmanParameters(v, value)
+    ffi::qlist_index_of_QSslDiffieHellmanParameters(v, value)
 }
 
 pub(crate) fn insert(
@@ -119,13 +119,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QSslDiffieHellmanParameters,
 ) {
-    ffi::insert_QSslDiffieHellmanParameters(s, pos, value);
+    ffi::qlist_insert_QSslDiffieHellmanParameters(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslDiffieHellmanParameters) -> isize {
-    ffi::len_QSslDiffieHellmanParameters(s)
+    ffi::qlist_len_QSslDiffieHellmanParameters(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslDiffieHellmanParameters, pos: isize) {
-    ffi::remove_QSslDiffieHellmanParameters(s, pos);
+    ffi::qlist_remove_QSslDiffieHellmanParameters(s, pos);
 }

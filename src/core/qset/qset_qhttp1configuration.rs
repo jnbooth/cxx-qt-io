@@ -14,11 +14,11 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qset_clear_QHttp1Configuration"]
+        #[rust_name = "qset_clear_QHttp1Configuration"]
         fn qsetClear(set: &mut QSet_QHttp1Configuration);
-        #[rust_name = "cxx_qset_contains_QHttp1Configuration"]
+        #[rust_name = "qset_contains_QHttp1Configuration"]
         fn qsetContains(set: &QSet_QHttp1Configuration, _: &QHttp1Configuration) -> bool;
-        #[rust_name = "cxx_qset_remove_QHttp1Configuration"]
+        #[rust_name = "qset_remove_QHttp1Configuration"]
         fn qsetRemove(set: &mut QSet_QHttp1Configuration, _: &QHttp1Configuration) -> bool;
     }
 
@@ -36,33 +36,33 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "get_unchecked_QHttp1Configuration"]
+        #[rust_name = "qset_get_unchecked_QHttp1Configuration"]
         unsafe fn qsetGetUnchecked(
             set: &QSet_QHttp1Configuration,
             pos: isize,
         ) -> &QHttp1Configuration;
-        #[rust_name = "insert_QHttp1Configuration"]
+        #[rust_name = "qset_insert_QHttp1Configuration"]
         fn qsetInsert(_: &mut QSet_QHttp1Configuration, _: &QHttp1Configuration);
-        #[rust_name = "len_QHttp1Configuration"]
+        #[rust_name = "qset_len_QHttp1Configuration"]
         fn qsetLen(_: &QSet_QHttp1Configuration) -> isize;
-        #[rust_name = "reserve_QHttp1Configuration"]
+        #[rust_name = "qset_reserve_QHttp1Configuration"]
         fn qsetReserve(_: &mut QSet_QHttp1Configuration, size: isize);
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QSet_QHttp1Configuration) {
-    ffi::cxx_qset_clear_QHttp1Configuration(v);
+    ffi::qset_clear_QHttp1Configuration(v);
 }
 
 pub(crate) fn contains(v: &ffi::QSet_QHttp1Configuration, item: &ffi::QHttp1Configuration) -> bool {
-    ffi::cxx_qset_contains_QHttp1Configuration(v, item)
+    ffi::qset_contains_QHttp1Configuration(v, item)
 }
 
 pub(crate) fn remove(
     v: &mut ffi::QSet_QHttp1Configuration,
     item: &ffi::QHttp1Configuration,
 ) -> bool {
-    ffi::cxx_qset_remove_QHttp1Configuration(v, item)
+    ffi::qset_remove_QHttp1Configuration(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_QHttp1Configuration) -> ffi::QSet_QHttp1Configuration {
@@ -81,17 +81,17 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QSet_QHttp1Configuration,
     pos: isize,
 ) -> &ffi::QHttp1Configuration {
-    ffi::get_unchecked_QHttp1Configuration(s, pos)
+    ffi::qset_get_unchecked_QHttp1Configuration(s, pos)
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QHttp1Configuration, value: &ffi::QHttp1Configuration) {
-    ffi::insert_QHttp1Configuration(s, value);
+    ffi::qset_insert_QHttp1Configuration(s, value);
 }
 
 pub(crate) fn len(s: &ffi::QSet_QHttp1Configuration) -> isize {
-    ffi::len_QHttp1Configuration(s)
+    ffi::qset_len_QHttp1Configuration(s)
 }
 
 pub(crate) fn reserve(s: &mut ffi::QSet_QHttp1Configuration, size: isize) {
-    ffi::reserve_QHttp1Configuration(s, size);
+    ffi::qset_reserve_QHttp1Configuration(s, size);
 }

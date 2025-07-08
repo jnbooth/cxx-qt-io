@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QSslError"]
+        #[rust_name = "qlist_clear_QSslError"]
         fn qlistClear(list: &mut QList_QSslError);
-        #[rust_name = "cxx_qlist_contains_QSslError"]
+        #[rust_name = "qlist_contains_QSslError"]
         fn qlistContains(list: &QList_QSslError, _: &QSslError) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QSslError"]
+        #[rust_name = "qlist_reserve_QSslError"]
         fn qlistReserve(_: &mut QList_QSslError, size: isize);
-        #[rust_name = "append_QSslError"]
+        #[rust_name = "qlist_append_QSslError"]
         fn qlistAppend(_: &mut QList_QSslError, _: &QSslError);
-        #[rust_name = "get_unchecked_QSslError"]
+        #[rust_name = "qlist_get_unchecked_QSslError"]
         unsafe fn qlistGetUnchecked(set: &QList_QSslError, pos: isize) -> &QSslError;
-        #[rust_name = "index_of_QSslError"]
+        #[rust_name = "qlist_index_of_QSslError"]
         fn qlistIndexOf(_: &QList_QSslError, _: &QSslError) -> isize;
-        #[rust_name = "insert_QSslError"]
+        #[rust_name = "qlist_insert_QSslError"]
         fn qlistInsert(_: &mut QList_QSslError, _: isize, _: &QSslError);
-        #[rust_name = "remove_QSslError"]
+        #[rust_name = "qlist_remove_QSslError"]
         fn qlistRemove(_: &mut QList_QSslError, _: isize);
-        #[rust_name = "len_QSslError"]
+        #[rust_name = "qlist_len_QSslError"]
         fn qlistLen(_: &QList_QSslError) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QSslError) {
-    ffi::cxx_qlist_clear_QSslError(v);
+    ffi::qlist_clear_QSslError(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QSslError, item: &ffi::QSslError) -> bool {
-    ffi::cxx_qlist_contains_QSslError(v, item)
+    ffi::qlist_contains_QSslError(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QSslError, size: isize) {
-    ffi::reserve_QSslError(v, size);
+    ffi::qlist_reserve_QSslError(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QSslError, value: &ffi::QSslError) {
-    ffi::append_QSslError(v, value);
+    ffi::qlist_append_QSslError(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QSslError) -> ffi::QList_QSslError {
@@ -80,21 +80,21 @@ pub(crate) fn drop(s: &mut ffi::QList_QSslError) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QSslError, pos: isize) -> &ffi::QSslError {
-    ffi::get_unchecked_QSslError(s, pos)
+    ffi::qlist_get_unchecked_QSslError(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslError, value: &ffi::QSslError) -> isize {
-    ffi::index_of_QSslError(v, value)
+    ffi::qlist_index_of_QSslError(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QSslError, pos: isize, value: &ffi::QSslError) {
-    ffi::insert_QSslError(s, pos, value);
+    ffi::qlist_insert_QSslError(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QSslError) -> isize {
-    ffi::len_QSslError(s)
+    ffi::qlist_len_QSslError(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QSslError, pos: isize) {
-    ffi::remove_QSslError(s, pos);
+    ffi::qlist_remove_QSslError(s, pos);
 }

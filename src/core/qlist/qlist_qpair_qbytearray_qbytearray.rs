@@ -15,9 +15,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_clear_QPair_QByteArray_QByteArray"]
         fn qlistClear(list: &mut QList_QPair_QByteArray_QByteArray);
-        #[rust_name = "cxx_qlist_contains_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_contains_QPair_QByteArray_QByteArray"]
         fn qlistContains(
             list: &QList_QPair_QByteArray_QByteArray,
             _: &QPair_QByteArray_QByteArray,
@@ -38,53 +38,53 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_reserve_QPair_QByteArray_QByteArray"]
         fn qlistReserve(_: &mut QList_QPair_QByteArray_QByteArray, size: isize);
-        #[rust_name = "append_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_append_QPair_QByteArray_QByteArray"]
         fn qlistAppend(_: &mut QList_QPair_QByteArray_QByteArray, _: &QPair_QByteArray_QByteArray);
-        #[rust_name = "get_unchecked_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_get_unchecked_QPair_QByteArray_QByteArray"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QPair_QByteArray_QByteArray,
             pos: isize,
         ) -> &QPair_QByteArray_QByteArray;
-        #[rust_name = "index_of_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_index_of_QPair_QByteArray_QByteArray"]
         fn qlistIndexOf(
             _: &QList_QPair_QByteArray_QByteArray,
             _: &QPair_QByteArray_QByteArray,
         ) -> isize;
-        #[rust_name = "insert_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_insert_QPair_QByteArray_QByteArray"]
         fn qlistInsert(
             _: &mut QList_QPair_QByteArray_QByteArray,
             _: isize,
             _: &QPair_QByteArray_QByteArray,
         );
-        #[rust_name = "remove_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_remove_QPair_QByteArray_QByteArray"]
         fn qlistRemove(_: &mut QList_QPair_QByteArray_QByteArray, _: isize);
-        #[rust_name = "len_QPair_QByteArray_QByteArray"]
+        #[rust_name = "qlist_len_QPair_QByteArray_QByteArray"]
         fn qlistLen(_: &QList_QPair_QByteArray_QByteArray) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QPair_QByteArray_QByteArray) {
-    ffi::cxx_qlist_clear_QPair_QByteArray_QByteArray(v);
+    ffi::qlist_clear_QPair_QByteArray_QByteArray(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_QPair_QByteArray_QByteArray,
     item: &ffi::QPair_QByteArray_QByteArray,
 ) -> bool {
-    ffi::cxx_qlist_contains_QPair_QByteArray_QByteArray(v, item)
+    ffi::qlist_contains_QPair_QByteArray_QByteArray(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QPair_QByteArray_QByteArray, size: isize) {
-    ffi::reserve_QPair_QByteArray_QByteArray(v, size);
+    ffi::qlist_reserve_QPair_QByteArray_QByteArray(v, size);
 }
 
 pub(crate) fn append(
     v: &mut ffi::QList_QPair_QByteArray_QByteArray,
     value: &ffi::QPair_QByteArray_QByteArray,
 ) {
-    ffi::append_QPair_QByteArray_QByteArray(v, value);
+    ffi::qlist_append_QPair_QByteArray_QByteArray(v, value);
 }
 
 pub(crate) fn clone(
@@ -105,14 +105,14 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QPair_QByteArray_QByteArray,
     pos: isize,
 ) -> &ffi::QPair_QByteArray_QByteArray {
-    ffi::get_unchecked_QPair_QByteArray_QByteArray(s, pos)
+    ffi::qlist_get_unchecked_QPair_QByteArray_QByteArray(s, pos)
 }
 
 pub(crate) fn index_of(
     v: &ffi::QList_QPair_QByteArray_QByteArray,
     value: &ffi::QPair_QByteArray_QByteArray,
 ) -> isize {
-    ffi::index_of_QPair_QByteArray_QByteArray(v, value)
+    ffi::qlist_index_of_QPair_QByteArray_QByteArray(v, value)
 }
 
 pub(crate) fn insert(
@@ -120,13 +120,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QPair_QByteArray_QByteArray,
 ) {
-    ffi::insert_QPair_QByteArray_QByteArray(s, pos, value);
+    ffi::qlist_insert_QPair_QByteArray_QByteArray(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QPair_QByteArray_QByteArray) -> isize {
-    ffi::len_QPair_QByteArray_QByteArray(s)
+    ffi::qlist_len_QPair_QByteArray_QByteArray(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QPair_QByteArray_QByteArray, pos: isize) {
-    ffi::remove_QPair_QByteArray_QByteArray(s, pos);
+    ffi::qlist_remove_QPair_QByteArray_QByteArray(s, pos);
 }

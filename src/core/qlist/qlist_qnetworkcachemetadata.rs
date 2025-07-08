@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_clear_QNetworkCacheMetaData"]
         fn qlistClear(list: &mut QList_QNetworkCacheMetaData);
-        #[rust_name = "cxx_qlist_contains_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_contains_QNetworkCacheMetaData"]
         fn qlistContains(list: &QList_QNetworkCacheMetaData, _: &QNetworkCacheMetaData) -> bool;
     }
 
@@ -34,43 +34,43 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_reserve_QNetworkCacheMetaData"]
         fn qlistReserve(_: &mut QList_QNetworkCacheMetaData, size: isize);
-        #[rust_name = "append_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_append_QNetworkCacheMetaData"]
         fn qlistAppend(_: &mut QList_QNetworkCacheMetaData, _: &QNetworkCacheMetaData);
-        #[rust_name = "get_unchecked_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_get_unchecked_QNetworkCacheMetaData"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QNetworkCacheMetaData,
             pos: isize,
         ) -> &QNetworkCacheMetaData;
-        #[rust_name = "index_of_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_index_of_QNetworkCacheMetaData"]
         fn qlistIndexOf(_: &QList_QNetworkCacheMetaData, _: &QNetworkCacheMetaData) -> isize;
-        #[rust_name = "insert_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_insert_QNetworkCacheMetaData"]
         fn qlistInsert(_: &mut QList_QNetworkCacheMetaData, _: isize, _: &QNetworkCacheMetaData);
-        #[rust_name = "remove_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_remove_QNetworkCacheMetaData"]
         fn qlistRemove(_: &mut QList_QNetworkCacheMetaData, _: isize);
-        #[rust_name = "len_QNetworkCacheMetaData"]
+        #[rust_name = "qlist_len_QNetworkCacheMetaData"]
         fn qlistLen(_: &QList_QNetworkCacheMetaData) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkCacheMetaData) {
-    ffi::cxx_qlist_clear_QNetworkCacheMetaData(v);
+    ffi::qlist_clear_QNetworkCacheMetaData(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_QNetworkCacheMetaData,
     item: &ffi::QNetworkCacheMetaData,
 ) -> bool {
-    ffi::cxx_qlist_contains_QNetworkCacheMetaData(v, item)
+    ffi::qlist_contains_QNetworkCacheMetaData(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkCacheMetaData, size: isize) {
-    ffi::reserve_QNetworkCacheMetaData(v, size);
+    ffi::qlist_reserve_QNetworkCacheMetaData(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkCacheMetaData, value: &ffi::QNetworkCacheMetaData) {
-    ffi::append_QNetworkCacheMetaData(v, value);
+    ffi::qlist_append_QNetworkCacheMetaData(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkCacheMetaData) -> ffi::QList_QNetworkCacheMetaData {
@@ -89,14 +89,14 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkCacheMetaData,
     pos: isize,
 ) -> &ffi::QNetworkCacheMetaData {
-    ffi::get_unchecked_QNetworkCacheMetaData(s, pos)
+    ffi::qlist_get_unchecked_QNetworkCacheMetaData(s, pos)
 }
 
 pub(crate) fn index_of(
     v: &ffi::QList_QNetworkCacheMetaData,
     value: &ffi::QNetworkCacheMetaData,
 ) -> isize {
-    ffi::index_of_QNetworkCacheMetaData(v, value)
+    ffi::qlist_index_of_QNetworkCacheMetaData(v, value)
 }
 
 pub(crate) fn insert(
@@ -104,13 +104,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QNetworkCacheMetaData,
 ) {
-    ffi::insert_QNetworkCacheMetaData(s, pos, value);
+    ffi::qlist_insert_QNetworkCacheMetaData(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkCacheMetaData) -> isize {
-    ffi::len_QNetworkCacheMetaData(s)
+    ffi::qlist_len_QNetworkCacheMetaData(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkCacheMetaData, pos: isize) {
-    ffi::remove_QNetworkCacheMetaData(s, pos);
+    ffi::qlist_remove_QNetworkCacheMetaData(s, pos);
 }

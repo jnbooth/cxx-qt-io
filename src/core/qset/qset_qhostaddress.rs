@@ -14,11 +14,11 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qset_clear_QHostAddress"]
+        #[rust_name = "qset_clear_QHostAddress"]
         fn qsetClear(set: &mut QSet_QHostAddress);
-        #[rust_name = "cxx_qset_contains_QHostAddress"]
+        #[rust_name = "qset_contains_QHostAddress"]
         fn qsetContains(set: &QSet_QHostAddress, _: &QHostAddress) -> bool;
-        #[rust_name = "cxx_qset_remove_QHostAddress"]
+        #[rust_name = "qset_remove_QHostAddress"]
         fn qsetRemove(set: &mut QSet_QHostAddress, _: &QHostAddress) -> bool;
     }
 
@@ -36,27 +36,27 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qset"]
     unsafe extern "C++" {
-        #[rust_name = "get_unchecked_QHostAddress"]
+        #[rust_name = "qset_get_unchecked_QHostAddress"]
         unsafe fn qsetGetUnchecked(set: &QSet_QHostAddress, pos: isize) -> &QHostAddress;
-        #[rust_name = "insert_QHostAddress"]
+        #[rust_name = "qset_insert_QHostAddress"]
         fn qsetInsert(_: &mut QSet_QHostAddress, _: &QHostAddress);
-        #[rust_name = "len_QHostAddress"]
+        #[rust_name = "qset_len_QHostAddress"]
         fn qsetLen(_: &QSet_QHostAddress) -> isize;
-        #[rust_name = "reserve_QHostAddress"]
+        #[rust_name = "qset_reserve_QHostAddress"]
         fn qsetReserve(_: &mut QSet_QHostAddress, size: isize);
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QSet_QHostAddress) {
-    ffi::cxx_qset_clear_QHostAddress(v);
+    ffi::qset_clear_QHostAddress(v);
 }
 
 pub(crate) fn contains(v: &ffi::QSet_QHostAddress, item: &ffi::QHostAddress) -> bool {
-    ffi::cxx_qset_contains_QHostAddress(v, item)
+    ffi::qset_contains_QHostAddress(v, item)
 }
 
 pub(crate) fn remove(v: &mut ffi::QSet_QHostAddress, item: &ffi::QHostAddress) -> bool {
-    ffi::cxx_qset_remove_QHostAddress(v, item)
+    ffi::qset_remove_QHostAddress(v, item)
 }
 
 pub(crate) fn clone(s: &ffi::QSet_QHostAddress) -> ffi::QSet_QHostAddress {
@@ -72,17 +72,17 @@ pub(crate) fn drop(s: &mut ffi::QSet_QHostAddress) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_QHostAddress, pos: isize) -> &ffi::QHostAddress {
-    ffi::get_unchecked_QHostAddress(s, pos)
+    ffi::qset_get_unchecked_QHostAddress(s, pos)
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QHostAddress, value: &ffi::QHostAddress) {
-    ffi::insert_QHostAddress(s, value);
+    ffi::qset_insert_QHostAddress(s, value);
 }
 
 pub(crate) fn len(s: &ffi::QSet_QHostAddress) -> isize {
-    ffi::len_QHostAddress(s)
+    ffi::qset_len_QHostAddress(s)
 }
 
 pub(crate) fn reserve(s: &mut ffi::QSet_QHostAddress, size: isize) {
-    ffi::reserve_QHostAddress(s, size);
+    ffi::qset_reserve_QHostAddress(s, size);
 }

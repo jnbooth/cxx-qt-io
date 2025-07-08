@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QNetworkAddressEntry"]
+        #[rust_name = "qlist_clear_QNetworkAddressEntry"]
         fn qlistClear(list: &mut QList_QNetworkAddressEntry);
-        #[rust_name = "cxx_qlist_contains_QNetworkAddressEntry"]
+        #[rust_name = "qlist_contains_QNetworkAddressEntry"]
         fn qlistContains(list: &QList_QNetworkAddressEntry, _: &QNetworkAddressEntry) -> bool;
     }
 
@@ -34,43 +34,43 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkAddressEntry"]
+        #[rust_name = "qlist_reserve_QNetworkAddressEntry"]
         fn qlistReserve(_: &mut QList_QNetworkAddressEntry, size: isize);
-        #[rust_name = "append_QNetworkAddressEntry"]
+        #[rust_name = "qlist_append_QNetworkAddressEntry"]
         fn qlistAppend(_: &mut QList_QNetworkAddressEntry, _: &QNetworkAddressEntry);
-        #[rust_name = "get_unchecked_QNetworkAddressEntry"]
+        #[rust_name = "qlist_get_unchecked_QNetworkAddressEntry"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QNetworkAddressEntry,
             pos: isize,
         ) -> &QNetworkAddressEntry;
-        #[rust_name = "index_of_QNetworkAddressEntry"]
+        #[rust_name = "qlist_index_of_QNetworkAddressEntry"]
         fn qlistIndexOf(_: &QList_QNetworkAddressEntry, _: &QNetworkAddressEntry) -> isize;
-        #[rust_name = "insert_QNetworkAddressEntry"]
+        #[rust_name = "qlist_insert_QNetworkAddressEntry"]
         fn qlistInsert(_: &mut QList_QNetworkAddressEntry, _: isize, _: &QNetworkAddressEntry);
-        #[rust_name = "remove_QNetworkAddressEntry"]
+        #[rust_name = "qlist_remove_QNetworkAddressEntry"]
         fn qlistRemove(_: &mut QList_QNetworkAddressEntry, _: isize);
-        #[rust_name = "len_QNetworkAddressEntry"]
+        #[rust_name = "qlist_len_QNetworkAddressEntry"]
         fn qlistLen(_: &QList_QNetworkAddressEntry) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkAddressEntry) {
-    ffi::cxx_qlist_clear_QNetworkAddressEntry(v);
+    ffi::qlist_clear_QNetworkAddressEntry(v);
 }
 
 pub(crate) fn contains(
     v: &ffi::QList_QNetworkAddressEntry,
     item: &ffi::QNetworkAddressEntry,
 ) -> bool {
-    ffi::cxx_qlist_contains_QNetworkAddressEntry(v, item)
+    ffi::qlist_contains_QNetworkAddressEntry(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkAddressEntry, size: isize) {
-    ffi::reserve_QNetworkAddressEntry(v, size);
+    ffi::qlist_reserve_QNetworkAddressEntry(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkAddressEntry, value: &ffi::QNetworkAddressEntry) {
-    ffi::append_QNetworkAddressEntry(v, value);
+    ffi::qlist_append_QNetworkAddressEntry(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkAddressEntry) -> ffi::QList_QNetworkAddressEntry {
@@ -89,14 +89,14 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkAddressEntry,
     pos: isize,
 ) -> &ffi::QNetworkAddressEntry {
-    ffi::get_unchecked_QNetworkAddressEntry(s, pos)
+    ffi::qlist_get_unchecked_QNetworkAddressEntry(s, pos)
 }
 
 pub(crate) fn index_of(
     v: &ffi::QList_QNetworkAddressEntry,
     value: &ffi::QNetworkAddressEntry,
 ) -> isize {
-    ffi::index_of_QNetworkAddressEntry(v, value)
+    ffi::qlist_index_of_QNetworkAddressEntry(v, value)
 }
 
 pub(crate) fn insert(
@@ -104,13 +104,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QNetworkAddressEntry,
 ) {
-    ffi::insert_QNetworkAddressEntry(s, pos, value);
+    ffi::qlist_insert_QNetworkAddressEntry(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkAddressEntry) -> isize {
-    ffi::len_QNetworkAddressEntry(s)
+    ffi::qlist_len_QNetworkAddressEntry(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkAddressEntry, pos: isize) {
-    ffi::remove_QNetworkAddressEntry(s, pos);
+    ffi::qlist_remove_QNetworkAddressEntry(s, pos);
 }

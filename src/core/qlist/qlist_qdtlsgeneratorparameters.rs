@@ -13,7 +13,7 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_clear_QDtlsGeneratorParameters"]
         fn qlistClear(list: &mut QList_QDtlsGeneratorParameters);
     }
 
@@ -31,30 +31,30 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_reserve_QDtlsGeneratorParameters"]
         fn qlistReserve(_: &mut QList_QDtlsGeneratorParameters, size: isize);
-        #[rust_name = "append_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_append_QDtlsGeneratorParameters"]
         fn qlistAppend(_: &mut QList_QDtlsGeneratorParameters, _: &QDtlsGeneratorParameters);
-        #[rust_name = "get_unchecked_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_get_unchecked_QDtlsGeneratorParameters"]
         unsafe fn qlistGetUnchecked(
             set: &QList_QDtlsGeneratorParameters,
             pos: isize,
         ) -> &QDtlsGeneratorParameters;
-        #[rust_name = "insert_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_insert_QDtlsGeneratorParameters"]
         fn qlistInsert(
             _: &mut QList_QDtlsGeneratorParameters,
             _: isize,
             _: &QDtlsGeneratorParameters,
         );
-        #[rust_name = "remove_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_remove_QDtlsGeneratorParameters"]
         fn qlistRemove(_: &mut QList_QDtlsGeneratorParameters, _: isize);
-        #[rust_name = "len_QDtlsGeneratorParameters"]
+        #[rust_name = "qlist_len_QDtlsGeneratorParameters"]
         fn qlistLen(_: &QList_QDtlsGeneratorParameters) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QDtlsGeneratorParameters) {
-    ffi::cxx_clear_qlist_QDtlsGeneratorParameters(v);
+    ffi::qlist_clear_QDtlsGeneratorParameters(v);
 }
 
 pub(crate) fn contains(
@@ -65,14 +65,14 @@ pub(crate) fn contains(
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QDtlsGeneratorParameters, size: isize) {
-    ffi::reserve_QDtlsGeneratorParameters(v, size);
+    ffi::qlist_reserve_QDtlsGeneratorParameters(v, size);
 }
 
 pub(crate) fn append(
     v: &mut ffi::QList_QDtlsGeneratorParameters,
     value: &ffi::QDtlsGeneratorParameters,
 ) {
-    ffi::append_QDtlsGeneratorParameters(v, value);
+    ffi::qlist_append_QDtlsGeneratorParameters(v, value);
 }
 
 pub(crate) fn clone(
@@ -93,7 +93,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QDtlsGeneratorParameters,
     pos: isize,
 ) -> &ffi::QDtlsGeneratorParameters {
-    ffi::get_unchecked_QDtlsGeneratorParameters(s, pos)
+    ffi::qlist_get_unchecked_QDtlsGeneratorParameters(s, pos)
 }
 
 pub(crate) fn index_of(
@@ -108,13 +108,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QDtlsGeneratorParameters,
 ) {
-    ffi::insert_QDtlsGeneratorParameters(s, pos, value);
+    ffi::qlist_insert_QDtlsGeneratorParameters(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QDtlsGeneratorParameters) -> isize {
-    ffi::len_QDtlsGeneratorParameters(s)
+    ffi::qlist_len_QDtlsGeneratorParameters(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QDtlsGeneratorParameters, pos: isize) {
-    ffi::remove_QDtlsGeneratorParameters(s, pos);
+    ffi::qlist_remove_QDtlsGeneratorParameters(s, pos);
 }

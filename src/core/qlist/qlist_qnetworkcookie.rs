@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QNetworkCookie"]
+        #[rust_name = "qlist_clear_QNetworkCookie"]
         fn qlistClear(list: &mut QList_QNetworkCookie);
-        #[rust_name = "cxx_qlist_contains_QNetworkCookie"]
+        #[rust_name = "qlist_contains_QNetworkCookie"]
         fn qlistContains(list: &QList_QNetworkCookie, _: &QNetworkCookie) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkCookie"]
+        #[rust_name = "qlist_reserve_QNetworkCookie"]
         fn qlistReserve(_: &mut QList_QNetworkCookie, size: isize);
-        #[rust_name = "append_QNetworkCookie"]
+        #[rust_name = "qlist_append_QNetworkCookie"]
         fn qlistAppend(_: &mut QList_QNetworkCookie, _: &QNetworkCookie);
-        #[rust_name = "get_unchecked_QNetworkCookie"]
+        #[rust_name = "qlist_get_unchecked_QNetworkCookie"]
         unsafe fn qlistGetUnchecked(set: &QList_QNetworkCookie, pos: isize) -> &QNetworkCookie;
-        #[rust_name = "index_of_QNetworkCookie"]
+        #[rust_name = "qlist_index_of_QNetworkCookie"]
         fn qlistIndexOf(_: &QList_QNetworkCookie, _: &QNetworkCookie) -> isize;
-        #[rust_name = "insert_QNetworkCookie"]
+        #[rust_name = "qlist_insert_QNetworkCookie"]
         fn qlistInsert(_: &mut QList_QNetworkCookie, _: isize, _: &QNetworkCookie);
-        #[rust_name = "remove_QNetworkCookie"]
+        #[rust_name = "qlist_remove_QNetworkCookie"]
         fn qlistRemove(_: &mut QList_QNetworkCookie, _: isize);
-        #[rust_name = "len_QNetworkCookie"]
+        #[rust_name = "qlist_len_QNetworkCookie"]
         fn qlistLen(_: &QList_QNetworkCookie) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkCookie) {
-    ffi::cxx_qlist_clear_QNetworkCookie(v);
+    ffi::qlist_clear_QNetworkCookie(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QNetworkCookie, item: &ffi::QNetworkCookie) -> bool {
-    ffi::cxx_qlist_contains_QNetworkCookie(v, item)
+    ffi::qlist_contains_QNetworkCookie(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkCookie, size: isize) {
-    ffi::reserve_QNetworkCookie(v, size);
+    ffi::qlist_reserve_QNetworkCookie(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkCookie, value: &ffi::QNetworkCookie) {
-    ffi::append_QNetworkCookie(v, value);
+    ffi::qlist_append_QNetworkCookie(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkCookie) -> ffi::QList_QNetworkCookie {
@@ -83,21 +83,21 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkCookie,
     pos: isize,
 ) -> &ffi::QNetworkCookie {
-    ffi::get_unchecked_QNetworkCookie(s, pos)
+    ffi::qlist_get_unchecked_QNetworkCookie(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QNetworkCookie, value: &ffi::QNetworkCookie) -> isize {
-    ffi::index_of_QNetworkCookie(v, value)
+    ffi::qlist_index_of_QNetworkCookie(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QNetworkCookie, pos: isize, value: &ffi::QNetworkCookie) {
-    ffi::insert_QNetworkCookie(s, pos, value);
+    ffi::qlist_insert_QNetworkCookie(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkCookie) -> isize {
-    ffi::len_QNetworkCookie(s)
+    ffi::qlist_len_QNetworkCookie(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkCookie, pos: isize) {
-    ffi::remove_QNetworkCookie(s, pos);
+    ffi::qlist_remove_QNetworkCookie(s, pos);
 }

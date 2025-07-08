@@ -13,7 +13,7 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_clear_qlist_QNetworkDatagram"]
+        #[rust_name = "qlist_clear_QNetworkDatagram"]
         fn qlistClear(list: &mut QList_QNetworkDatagram);
     }
 
@@ -31,23 +31,23 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QNetworkDatagram"]
+        #[rust_name = "qlist_reserve_QNetworkDatagram"]
         fn qlistReserve(_: &mut QList_QNetworkDatagram, size: isize);
-        #[rust_name = "append_QNetworkDatagram"]
+        #[rust_name = "qlist_append_QNetworkDatagram"]
         fn qlistAppend(_: &mut QList_QNetworkDatagram, _: &QNetworkDatagram);
-        #[rust_name = "get_unchecked_QNetworkDatagram"]
+        #[rust_name = "qlist_get_unchecked_QNetworkDatagram"]
         unsafe fn qlistGetUnchecked(set: &QList_QNetworkDatagram, pos: isize) -> &QNetworkDatagram;
-        #[rust_name = "insert_QNetworkDatagram"]
+        #[rust_name = "qlist_insert_QNetworkDatagram"]
         fn qlistInsert(_: &mut QList_QNetworkDatagram, _: isize, _: &QNetworkDatagram);
-        #[rust_name = "remove_QNetworkDatagram"]
+        #[rust_name = "qlist_remove_QNetworkDatagram"]
         fn qlistRemove(_: &mut QList_QNetworkDatagram, _: isize);
-        #[rust_name = "len_QNetworkDatagram"]
+        #[rust_name = "qlist_len_QNetworkDatagram"]
         fn qlistLen(_: &QList_QNetworkDatagram) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QNetworkDatagram) {
-    ffi::cxx_clear_qlist_QNetworkDatagram(v);
+    ffi::qlist_clear_QNetworkDatagram(v);
 }
 
 pub(crate) fn contains(_: &ffi::QList_QNetworkDatagram, _: &ffi::QNetworkDatagram) -> bool {
@@ -55,11 +55,11 @@ pub(crate) fn contains(_: &ffi::QList_QNetworkDatagram, _: &ffi::QNetworkDatagra
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QNetworkDatagram, size: isize) {
-    ffi::reserve_QNetworkDatagram(v, size);
+    ffi::qlist_reserve_QNetworkDatagram(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QNetworkDatagram, value: &ffi::QNetworkDatagram) {
-    ffi::append_QNetworkDatagram(v, value);
+    ffi::qlist_append_QNetworkDatagram(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QNetworkDatagram) -> ffi::QList_QNetworkDatagram {
@@ -78,7 +78,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkDatagram,
     pos: isize,
 ) -> &ffi::QNetworkDatagram {
-    ffi::get_unchecked_QNetworkDatagram(s, pos)
+    ffi::qlist_get_unchecked_QNetworkDatagram(s, pos)
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QNetworkDatagram, _: &ffi::QNetworkDatagram) -> isize {
@@ -90,13 +90,13 @@ pub(crate) fn insert(
     pos: isize,
     value: &ffi::QNetworkDatagram,
 ) {
-    ffi::insert_QNetworkDatagram(s, pos, value);
+    ffi::qlist_insert_QNetworkDatagram(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QNetworkDatagram) -> isize {
-    ffi::len_QNetworkDatagram(s)
+    ffi::qlist_len_QNetworkDatagram(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkDatagram, pos: isize) {
-    ffi::remove_QNetworkDatagram(s, pos);
+    ffi::qlist_remove_QNetworkDatagram(s, pos);
 }

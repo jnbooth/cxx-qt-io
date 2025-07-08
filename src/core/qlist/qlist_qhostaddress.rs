@@ -14,9 +14,9 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtio1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "cxx_qlist_clear_QHostAddress"]
+        #[rust_name = "qlist_clear_QHostAddress"]
         fn qlistClear(list: &mut QList_QHostAddress);
-        #[rust_name = "cxx_qlist_contains_QHostAddress"]
+        #[rust_name = "qlist_contains_QHostAddress"]
         fn qlistContains(list: &QList_QHostAddress, _: &QHostAddress) -> bool;
     }
 
@@ -34,37 +34,37 @@ pub mod ffi {
 
     #[namespace = "rust::cxxqtlib1::qlist"]
     unsafe extern "C++" {
-        #[rust_name = "reserve_QHostAddress"]
+        #[rust_name = "qlist_reserve_QHostAddress"]
         fn qlistReserve(_: &mut QList_QHostAddress, size: isize);
-        #[rust_name = "append_QHostAddress"]
+        #[rust_name = "qlist_append_QHostAddress"]
         fn qlistAppend(_: &mut QList_QHostAddress, _: &QHostAddress);
-        #[rust_name = "get_unchecked_QHostAddress"]
+        #[rust_name = "qlist_get_unchecked_QHostAddress"]
         unsafe fn qlistGetUnchecked(set: &QList_QHostAddress, pos: isize) -> &QHostAddress;
-        #[rust_name = "index_of_QHostAddress"]
+        #[rust_name = "qlist_index_of_QHostAddress"]
         fn qlistIndexOf(_: &QList_QHostAddress, _: &QHostAddress) -> isize;
-        #[rust_name = "insert_QHostAddress"]
+        #[rust_name = "qlist_insert_QHostAddress"]
         fn qlistInsert(_: &mut QList_QHostAddress, _: isize, _: &QHostAddress);
-        #[rust_name = "remove_QHostAddress"]
+        #[rust_name = "qlist_remove_QHostAddress"]
         fn qlistRemove(_: &mut QList_QHostAddress, _: isize);
-        #[rust_name = "len_QHostAddress"]
+        #[rust_name = "qlist_len_QHostAddress"]
         fn qlistLen(_: &QList_QHostAddress) -> isize;
     }
 }
 
 pub(crate) fn clear(v: &mut ffi::QList_QHostAddress) {
-    ffi::cxx_qlist_clear_QHostAddress(v);
+    ffi::qlist_clear_QHostAddress(v);
 }
 
 pub(crate) fn contains(v: &ffi::QList_QHostAddress, item: &ffi::QHostAddress) -> bool {
-    ffi::cxx_qlist_contains_QHostAddress(v, item)
+    ffi::qlist_contains_QHostAddress(v, item)
 }
 
 pub(crate) fn reserve(v: &mut ffi::QList_QHostAddress, size: isize) {
-    ffi::reserve_QHostAddress(v, size);
+    ffi::qlist_reserve_QHostAddress(v, size);
 }
 
 pub(crate) fn append(v: &mut ffi::QList_QHostAddress, value: &ffi::QHostAddress) {
-    ffi::append_QHostAddress(v, value);
+    ffi::qlist_append_QHostAddress(v, value);
 }
 
 pub(crate) fn clone(s: &ffi::QList_QHostAddress) -> ffi::QList_QHostAddress {
@@ -80,21 +80,21 @@ pub(crate) fn drop(s: &mut ffi::QList_QHostAddress) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QHostAddress, pos: isize) -> &ffi::QHostAddress {
-    ffi::get_unchecked_QHostAddress(s, pos)
+    ffi::qlist_get_unchecked_QHostAddress(s, pos)
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QHostAddress, value: &ffi::QHostAddress) -> isize {
-    ffi::index_of_QHostAddress(v, value)
+    ffi::qlist_index_of_QHostAddress(v, value)
 }
 
 pub(crate) fn insert(s: &mut ffi::QList_QHostAddress, pos: isize, value: &ffi::QHostAddress) {
-    ffi::insert_QHostAddress(s, pos, value);
+    ffi::qlist_insert_QHostAddress(s, pos, value);
 }
 
 pub(crate) fn len(s: &ffi::QList_QHostAddress) -> isize {
-    ffi::len_QHostAddress(s)
+    ffi::qlist_len_QHostAddress(s)
 }
 
 pub(crate) fn remove(s: &mut ffi::QList_QHostAddress, pos: isize) {
-    ffi::remove_QHostAddress(s, pos);
+    ffi::qlist_remove_QHostAddress(s, pos);
 }
