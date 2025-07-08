@@ -266,15 +266,9 @@ mod ffi {
         /// Returns the URL of the content downloaded or uploaded. Note that the URL may be different from that of the original request. If redirections were enabled in the request, then this function returns the current url that the network API is accessing, i.e the url of the resource the request got redirected to.
         fn url(self: &QNetworkReply) -> QUrl;
 
-        /// This signal is emitted to indicate the progress of the download part of this network request, if there's any. If there's no download associated with this request, this signal will be emitted once with 0 as the value of both `bytes_received` and `bytes_total`.
-        ///
-        /// The `bytes_received` parameter indicates the number of bytes received, while `bytes_total` indicates the total number of bytes expected to be downloaded. If the number of bytes to be downloaded is not known, `bytes_total` will be -1.
-        ///
-        /// The download is finished when `bytes_received` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
-        ///
-        /// Note that the values of both `bytes_received` and `bytes_total` may be different from [`self.size()`](QIODevice::size), the total number of bytes obtained through [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all), or the value of the ContentLengthHeader header. The reason for that is that there may be protocol overhead or the data may be compressed during the download.
+        #[doc(hidden)]
         #[qsignal]
-        #[rust_name = "download_progress"]
+        #[rust_name = "download_progress_qint64"]
         fn downloadProgress(
             self: Pin<&mut QNetworkReply>,
             bytes_received: qint64,
@@ -362,13 +356,9 @@ mod ffi {
         #[rust_name = "ssl_errors"]
         fn sslErrors(self: Pin<&mut QNetworkReply>, errors: &QList_QSslError);
 
-        /// This signal is emitted to indicate the progress of the upload part of this network request, if there's any. If there's no upload associated with this request, this signal will not be emitted.
-        ///
-        /// The `bytes_sent` parameter indicates the number of bytes uploaded, while `bytes_total` indicates the total number of bytes to be uploaded. If the number of bytes to be uploaded could not be determined, `bytes_total` will be -1.
-        ///
-        /// The upload is finished when `bytes_sent` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
+        #[doc(hidden)]
         #[qsignal]
-        #[rust_name = "upload_progress"]
+        #[rust_name = "upload_progress_qint64"]
         fn uploadProgress(self: Pin<&mut QNetworkReply>, bytes_sent: qint64, bytes_total: qint64);
     }
 
@@ -448,6 +438,32 @@ impl QNetworkReply {
     #[cfg(feature = "ssl")]
     pub fn ssl_configuration(&self) -> Option<QSslConfiguration> {
         self.ssl_configuration_or_invalid().nonnull()
+    }
+
+    wrap_qsignal! {
+        /// This signal is emitted to indicate the progress of the download part of this network request, if there's any. If there's no download associated with this request, this signal will be emitted once with 0 as the value of both `bytes_received` and `bytes_total`.
+        ///
+        /// The `bytes_received` parameter indicates the number of bytes received, while `bytes_total` indicates the total number of bytes expected to be downloaded. If the number of bytes to be downloaded is not known, `bytes_total` will be -1.
+        ///
+        /// The download is finished when `bytes_received` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
+        ///
+        /// Note that the values of both `bytes_received` and `bytes_total` may be different from [`self.size()`](QIODevice::size), the total number of bytes obtained through [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all), or the value of the ContentLengthHeader header. The reason for that is that there may be protocol overhead or the data may be compressed during the download.
+        download_progress(bytes_received: i64, bytes_total: i64)(download_progress_qint64);
+        connect_download_progress(connect_download_progress_qint64);
+        on_download_progress(on_download_progress_qint64);
+        "downloadProgress"
+    }
+
+    wrap_qsignal! {
+        /// This signal is emitted to indicate the progress of the upload part of this network request, if there's any. If there's no upload associated with this request, this signal will not be emitted.
+        ///
+        /// The `bytes_sent` parameter indicates the number of bytes uploaded, while `bytes_total` indicates the total number of bytes to be uploaded. If the number of bytes to be uploaded could not be determined, `bytes_total` will be -1.
+        ///
+        /// The upload is finished when `bytes_sent` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
+        upload_progress(bytes_sent: i64, bytes_total: i64)(upload_progress_qint64);
+        connect_upload_progress(connect_upload_progress_qint64);
+        on_upload_progress(on_upload_progress_qint64);
+        "uploadProgress"
     }
 
     /// Casts this object to `QIODevice`.

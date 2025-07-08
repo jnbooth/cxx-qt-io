@@ -246,18 +246,14 @@ mod ffi {
         #[rust_name = "about_to_close"]
         fn aboutToClose(self: Pin<&mut QIODevice>);
 
-        /// This signal is emitted every time a payload of data has been written to the device's current write channel. The bytes argument is set to the number of bytes that were written in this payload.
-        ///
-        /// This signal is not emitted recursively; if you reenter the event loop or call [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) inside a slot connected to this signal, the signal will not be reemitted (although [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) may still return true).
+        #[doc(hidden)]
         #[qsignal]
-        #[rust_name = "bytes_written"]
+        #[rust_name = "bytes_written_qint64"]
         fn bytesWritten(self: Pin<&mut QIODevice>, bytes: qint64);
 
-        /// This signal is emitted every time a payload of data has been written to the device. The bytes argument is set to the number of bytes that were written in this payload, while channel is the channel they were written to. Unlike [`bytes_written`](QIODevice::bytes_written), it is emitted regardless of the current write channel.
-        ///
-        /// This signal can be emitted recursively - even for the same channel.
+        #[doc(hidden)]
         #[qsignal]
-        #[rust_name = "channel_bytes_written"]
+        #[rust_name = "channel_bytes_written_qint64"]
         fn channelBytesWritten(self: Pin<&mut QIODevice>, channel: i32, bytes: qint64);
 
         /// This signal is emitted when new data is available for reading from the device. The `channel` argument is set to the index of the read channel on which the data has arrived. Unlike [`ready_read`](QIODevice::ready_read), it is emitted regardless of the current read channel.
@@ -681,6 +677,26 @@ impl QIODevice {
     /// `data` must be valid for reads for `max_size` many bytes.
     pub unsafe fn write_unsafe(self: Pin<&mut Self>, data: *const c_char, max_size: i64) -> i64 {
         unsafe { self.write_unsafe_qint64(data, max_size.into()).into() }
+    }
+
+    wrap_qsignal! {
+        /// This signal is emitted every time a payload of data has been written to the device's current write channel. The bytes argument is set to the number of bytes that were written in this payload.
+        ///
+        /// This signal is not emitted recursively; if you reenter the event loop or call [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) inside a slot connected to this signal, the signal will not be reemitted (although [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) may still return true).
+        bytes_written(bytes: i64)(bytes_written_qint64);
+        connect_bytes_written(connect_bytes_written_qint64);
+        on_bytes_written(on_bytes_written_qint64);
+        "bytesWritten"
+    }
+
+    wrap_qsignal! {
+        /// This signal is emitted every time a payload of data has been written to the device. The bytes argument is set to the number of bytes that were written in this payload, while channel is the channel they were written to. Unlike [`bytes_written`](QIODevice::bytes_written), it is emitted regardless of the current write channel.
+        ///
+        /// This signal can be emitted recursively - even for the same channel.
+        channel_bytes_written(channel: i32, bytes: i64)(channel_bytes_written_qint64);
+        connect_channel_bytes_written(connect_channel_bytes_written_qint64);
+        on_channel_bytes_written(on_channel_bytes_written_qint64);
+        "channelBytesWritten"
     }
 
     #[cold]

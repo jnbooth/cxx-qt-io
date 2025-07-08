@@ -351,9 +351,9 @@ mod ffi {
         #[qsignal]
         fn encrypted(self: Pin<&mut QSslSocket>);
 
-        /// This signal is emitted when `QSslSocket` writes its encrypted data to the network. The written parameter contains the number of bytes that were successfully written.
+        #[doc(hidden)]
         #[qsignal]
-        #[rust_name = "encrypted_bytes_written"]
+        #[rust_name = "encrypted_bytes_written_qint64"]
         fn encryptedBytesWritten(self: Pin<&mut QSslSocket>, written: qint64);
 
         /// `QSslSocket` emits this signal if a certificate verification error was found and if early error reporting was enabled in [`QSslConfiguration`](crate::QSslConfiguration). An application is expected to inspect the error and decide if it wants to continue the handshake, or abort it and send an alert message to the peer. The signal-slot connection must be direct.
@@ -654,6 +654,14 @@ impl QSslSocket {
     /// Returns the version string of the SSL library in use. If no SSL support is available then this will return `None`.
     pub fn ssl_library_version_string() -> Option<QString> {
         ffi::qsslsocket_ssl_library_version_string().nonnull()
+    }
+
+    wrap_qsignal! {
+        /// This signal is emitted when `QSslSocket` writes its encrypted data to the network. The written parameter contains the number of bytes that were successfully written.
+        encrypted_bytes_written(written: i64)(encrypted_bytes_written_qint64);
+        connect_encrypted_bytes_written(connect_encrypted_bytes_written_qint64);
+        on_encrypted_bytes_written(on_encrypted_bytes_written_qint64);
+        "bytesWritten"
     }
 
     /// Casts this object to `QIODevice`.
