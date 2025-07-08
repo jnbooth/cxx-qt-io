@@ -168,9 +168,9 @@ impl Eq for QNetworkAddressEntry {}
 impl fmt::Debug for QNetworkAddressEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("QNetworkAddressEntry")
-            .field("address", &self.ip())
-            .field("netmask", &self.netmask())
-            .field("broadcast", &self.broadcast())
+            .field("ip", &self.ip_or_null())
+            .field("netmask", &self.netmask_or_null())
+            .field("broadcast", &self.broadcast_or_null())
             .finish()
     }
 }
@@ -178,7 +178,7 @@ impl fmt::Debug for QNetworkAddressEntry {
 impl QNetworkAddressEntry {
     /// Returns the broadcast address associated with the IPv4 address and netmask. It can usually be derived from those two by setting to 1 the bits of the IP address where the netmask contains a 0. (In other words, by bitwise-OR'ing the IP address with the inverse of the netmask)
     ///
-    /// This member is always empty for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address `FF02::1`).
+    /// This member is always `None` for IPv6 addresses, since the concept of broadcast has been abandoned in that system in favor of multicast. In particular, the group of hosts corresponding to all the nodes in the local network can be reached by the "all-nodes" special multicast group (address `FF02::1`).
     pub fn broadcast(&self) -> Option<QHostAddress> {
         self.broadcast_or_null().nonnull()
     }
