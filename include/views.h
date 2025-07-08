@@ -1,7 +1,10 @@
 #pragma once
 
+#include <QtCore/QByteArray>
 #include <QtCore/QByteArrayView>
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
 #include <QtCore/QLatin1StringView>
+#endif
 
 #include "rust/cxx.h"
 
@@ -21,11 +24,18 @@ qbytearrayviewFromSlice(::rust::Slice<const ::std::uint8_t> slice)
                         slice.size());
 }
 
+inline QByteArray
+qbytearrayFromRawData(::rust::Slice<const ::std::uint8_t> slice)
+{
+  return QByteArray(reinterpret_cast<const char*>(slice.data()), slice.size());
+}
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
 inline ::rust::Str
 qlatin1stringviewAsStr(QLatin1StringView view)
 {
   return ::rust::Str(view.data(), view.size());
 }
-
+#endif
 }
 }

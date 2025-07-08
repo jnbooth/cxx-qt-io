@@ -8,7 +8,9 @@
 #endif
 
 #ifdef CXX_QT_IO_REQUEST_FEATURE
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
 #include "qset_qhttp1configuration.h"
+#endif
 #endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE

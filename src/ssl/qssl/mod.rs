@@ -1,10 +1,8 @@
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-mod v6_1;
+mod implemented_class;
 use std::fmt;
 
 use cxx_qt_lib::QFlags;
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use v6_1::{QSslImplementedClass, QSslSupportedFeature};
+pub use implemented_class::QSslImplementedClass;
 
 #[cxx::bridge]
 mod ffi {
@@ -160,12 +158,35 @@ mod ffi {
         UnknownAlertMessage = 255,
     }
 
+    /// Enumerates possible features that a TLS backend supports.
+    ///
+    /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from this enum indicate that a particular feature is supported.
+    #[repr(i32)]
+    #[derive(Debug)]
+    enum QSslSupportedFeature {
+        /// Indicates that [`QSslCertificate::verify`](crate::QSslCertificate::verify) is implemented by the backend.
+        CertificateVerification,
+        /// Client-side ALPN (Application Layer Protocol Negotiation).
+        ClientSideAlpn,
+        /// Server-side ALPN.
+        ServerSideAlpn,
+        /// OCSP stapling (Online Certificate Status Protocol).
+        Ocsp,
+        /// Pre-shared keys.
+        Psk,
+        /// Session tickets.
+        SessionTicket,
+        /// Information about alert messages sent and received.
+        Alerts,
+    }
+
     extern "C++" {
         include!("cxx-qt-io/qssl.h");
         type QSslAlternativeNameEntryType;
         type QSslKeyType;
         type QSslEncodingFormat;
         type QSslKeyAlgorithm;
+        type QSslSupportedFeature;
         type QSslSslOption;
         type QSslSslProtocol;
         type QSslAlertLevel;
@@ -175,7 +196,7 @@ mod ffi {
 
 pub use ffi::{
     QSslAlertLevel, QSslAlertType, QSslAlternativeNameEntryType, QSslEncodingFormat,
-    QSslKeyAlgorithm, QSslKeyType, QSslSslOption, QSslSslProtocol,
+    QSslKeyAlgorithm, QSslKeyType, QSslSslOption, QSslSslProtocol, QSslSupportedFeature,
 };
 
 /// [`QFlags`] of [`QSslSslOption`].
@@ -211,6 +232,37 @@ impl fmt::Display for QSslKeyAlgorithm {
             Self::Dsa => "DSA",
             Self::Ec => "elliptic-curve",
             Self::Dh => "Diffie-Hellman",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QSslImplementedClass {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Key => "QSslKey",
+            Self::Certificate => "QSslCertificate",
+            Self::Socket => "QSslSocket",
+            Self::DiffieHellman => "QSslDiffieHellmanParameters",
+            Self::EllipticCurve => "QSslEllipticCurve",
+            Self::Dtls => "QDtls",
+            #[cfg(cxxqt_qt_version_at_least_6_2)]
+            Self::DtlsCookie => "QDtlsClientVerifier",
+            _ => "unknown",
+        })
+    }
+}
+
+impl fmt::Display for QSslSupportedFeature {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::CertificateVerification => "certificate verification",
+            Self::ClientSideAlpn => "client-side ALPN",
+            Self::ServerSideAlpn => "server-side ALPN",
+            Self::Ocsp => "OCSP stapling",
+            Self::Psk => "pre-shared keys",
+            Self::SessionTicket => "session tickets",
+            Self::Alerts => "alert messages",
             _ => "unknown",
         })
     }

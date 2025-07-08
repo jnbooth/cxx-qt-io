@@ -1,12 +1,8 @@
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-mod v6_1;
 use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{type_id, ExternType};
 use cxx_qt_lib::{QByteArray, QDateTime, QList};
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use v6_1::QNetworkCookieSameSite;
 
 use crate::util::IsNonNull;
 
@@ -22,6 +18,19 @@ mod ffi {
         NameAndValueOnly,
         /// Makes [`QNetworkCookie::to_raw_form`] return the full cookie contents, as suitable for sending to a client in a server's `Set-Cookie` header.
         Full,
+    }
+
+    #[repr(i32)]
+    #[derive(Debug)]
+    enum QNetworkCookieSameSite {
+        /// The `SameSite` attribute is not set. Can be interpreted as [`None`](QNetworkCookieSameSite::None) or [`Lax`](QNetworkCookieSameSite::Lax) by the browser.
+        Default,
+        /// Cookies can be sent in all contexts. This used to be default, but recent browsers made [`Lax`](QNetworkCookieSameSite::Lax) default, and will now require the cookie to be both secure and to set `SameSite=None`.
+        None,
+        /// Cookies are sent on first party requests and GET requests initiated by third party website. This is the default in modern browsers (since mid 2020).
+        Lax,
+        /// Cookies will only be sent in a first-party context.
+        Strict,
     }
 
     extern "C++" {
@@ -41,8 +50,7 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-io/qnetworkcookie.h");
         type QNetworkCookieRawForm;
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
-        type QNetworkCookieSameSite = super::QNetworkCookieSameSite;
+        type QNetworkCookieSameSite;
     }
 
     unsafe extern "C++" {
@@ -87,9 +95,6 @@ mod ffi {
         fn path(&self) -> QString;
 
         /// Returns the `SameSite` option if specified in the cookie string, [`QNetworkCookieSameSite::Default`] if not present.
-        ///
-        /// Introduced in Qt 6.1.
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "same_site_policy"]
         fn sameSitePolicy(&self) -> QNetworkCookieSameSite;
 
@@ -114,9 +119,6 @@ mod ffi {
         fn setPath(&mut self, path: &QString);
 
         /// Sets the `SameSite` option of this cookie to `same_site`.
-        ///
-        /// Introduced in Qt 6.1.
-        #[cfg(cxxqt_qt_version_at_least_6_1)]
         #[rust_name = "set_same_site_policy"]
         fn setSameSitePolicy(&mut self, policy: QNetworkCookieSameSite);
 
@@ -166,7 +168,7 @@ mod ffi {
     }
 }
 
-pub use ffi::QNetworkCookieRawForm;
+pub use ffi::{QNetworkCookieRawForm, QNetworkCookieSameSite};
 
 /// The `QNetworkCookie` class holds one network cookie.
 ///
@@ -250,6 +252,18 @@ impl QNetworkCookie {
 unsafe impl ExternType for QNetworkCookie {
     type Id = type_id!("QNetworkCookie");
     type Kind = cxx::kind::Trivial;
+}
+
+impl fmt::Display for QNetworkCookieSameSite {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.pad(match *self {
+            Self::Default => "Default",
+            Self::None => "None",
+            Self::Lax => "Lax",
+            Self::Strict => "Strict",
+            _ => "unknown",
+        })
+    }
 }
 
 #[cfg(test)]

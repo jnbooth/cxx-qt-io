@@ -5,10 +5,7 @@
 #include "rust/cxx.h"
 
 using QNetworkCookieRawForm = QNetworkCookie::RawForm;
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QNetworkCookieSameSite = QNetworkCookie::SameSite;
-#endif
 
 namespace rust {
 template<>

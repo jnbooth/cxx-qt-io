@@ -58,6 +58,7 @@ mod ffi {
         ClosingState = 6,
     }
 
+    #[allow(unused)]
     #[repr(i32)]
     #[derive(PartialEq, Eq)]
     enum QLocalSocketSocketOption {
@@ -170,9 +171,23 @@ mod ffi {
             open_mode: QIODeviceOpenMode,
         ) -> bool;
 
+        /// Options must be set while the socket is in [`QLocalSocketLocalSocketState::UnconnectedState`] state.
+        ///
+        /// Introduced in Qt 6.2.
+        #[cfg(cxxqt_qt_version_at_least_6_2)]
+        #[rust_name = "set_socket_options"]
+        fn setSocketOptions(self: Pin<&mut QLocalSocket>, options: QLocalSocketSocketOptions);
+
         #[doc(hidden)]
         #[rust_name = "socket_descriptor_or_negative"]
         fn socketDescriptor(self: &QLocalSocket) -> qintptr;
+
+        /// Socket options.
+        ///
+        /// Introduced in Qt 6.2.
+        #[cfg(cxxqt_qt_version_at_least_6_2)]
+        #[rust_name = "socket_options"]
+        fn socketOptions(self: &QLocalSocket) -> QLocalSocketSocketOptions;
 
         /// Returns the state of the socket.
         fn state(self: &QLocalSocket) -> QLocalSocketLocalSocketState;
@@ -222,12 +237,12 @@ mod ffi {
     }
 }
 
-pub use ffi::{
-    QLocalSocket, QLocalSocketLocalSocketError, QLocalSocketLocalSocketState,
-    QLocalSocketSocketOption,
-};
+#[allow(unused)]
+pub use ffi::QLocalSocketSocketOption;
+pub use ffi::{QLocalSocket, QLocalSocketLocalSocketError, QLocalSocketLocalSocketState};
 
 /// [`QFlags`] of [`QLocalSocketSocketOption`].
+#[allow(unused)]
 pub type QLocalSocketSocketOptions = QFlags<QLocalSocketSocketOption>;
 
 unsafe_impl_qflag!(QLocalSocketSocketOption, "QLocalSocketSocketOptions");

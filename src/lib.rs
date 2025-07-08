@@ -24,8 +24,11 @@
 //! - `link_qt_object_files`: Sets the `link_qt_object_files` feature flag for `cxx-qt-build`.
 //!   This is required for static linking.
 
-#[cfg(not(cxxqt_qt_version_major = "6"))]
-compile_error!("cxxqt_qt_version_major must be \"6\"");
+#[cfg(any(not(cxxqt_qt_version_major = "6"), not(cxxqt_qt_version_at_least_6_1)))]
+compile_error!("cxx-qt-io only supports Qt 6.1 and above");
+
+#[cfg(all(doc, not(cxxqt_qt_version_at_least_6_4)))]
+pub struct QSslServer;
 
 macro_rules! unsafe_impl_qflag {
     ( $typeName:ty, $typeId:literal ) => {

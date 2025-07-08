@@ -5,9 +5,9 @@ use std::pin::Pin;
 
 use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt_lib::QVariant;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
-use cxx_qt_lib::QAnyStringView;
-use cxx_qt_lib::{QByteArray, QVariant};
+use cxx_qt_lib::{QAnyStringView, QByteArray};
 
 use crate::qobject::debug_qobject;
 use crate::util::IsNonNull;
@@ -232,7 +232,7 @@ mod ffi {
         /// Returns the raw contents of the header `header_name` as sent by the remote server. If there is no such header, returns an empty byte array, which may be indistinguishable from an empty header. Use [`has_raw_header`](QNetworkReply::has_raw_header) to verify if the server sent such header field.
         #[cfg(not(cxxqt_qt_version_at_least_6_7))]
         #[rust_name = "raw_header"]
-        fn rawHeader(self: &QNetworkReply, header_name: &QByteArray) -> bool;
+        fn rawHeader(self: &QNetworkReply, header_name: &QByteArray) -> QByteArray;
 
         /// Returns a list of headers fields that were sent by the remote server, in the order that they were sent. Duplicate headers are merged together and take place of the latter duplicate.
         #[rust_name = "raw_header_list"]

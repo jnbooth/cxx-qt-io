@@ -17,7 +17,6 @@ inline QString (*qsslsocketSslLibraryVersionString)() =
   QSslSocket::sslLibraryVersionString;
 inline bool (*qsslsocketSupportsSsl)() = QSslSocket::supportsSsl;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 inline QString (*qsslsocketActiveBackend)() = QSslSocket::activeBackend;
 inline QList<QString> (*qsslsocketAvailableBackends)() =
   QSslSocket::availableBackends;
@@ -38,7 +37,5 @@ inline QList<QSsl::SupportedFeature> (*qsslsocketSupportedFeatures)(
   const QString&) = QSslSocket::supportedFeatures;
 inline QList<QSsl::SslProtocol> (*qsslsocketSupportedProtocols)(
   const QString&) = QSslSocket::supportedProtocols;
-#endif
-
 }
 }

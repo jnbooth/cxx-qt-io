@@ -14,6 +14,6 @@ mod v6_3;
 pub use v6_3::QNetworkRequestAttribute;
 
 #[cfg(not(cxxqt_qt_version_at_least_6_3))]
-mod v6_0;
+mod v6_1;
 #[cfg(not(cxxqt_qt_version_at_least_6_3))]
-pub use v6_0::QNetworkRequestAttribute;
+pub use v6_1::QNetworkRequestAttribute;

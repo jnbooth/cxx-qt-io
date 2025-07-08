@@ -157,6 +157,7 @@ mod network {
         crate::QLocalSocketLocalSocketState,
         "QList_QLocalSocketLocalSocketState"
     );
+    #[cfg(cxxqt_qt_version_at_least_6_2)]
     impl_qlist_element!(
         crate::QLocalSocketSocketOption,
         "QList_QLocalSocketSocketOption"
@@ -200,7 +201,6 @@ mod request {
         "QList_QNetworkAccessManagerOperation"
     );
     impl_qlist_element!(crate::QNetworkCookieRawForm, "QList_QNetworkCookieRawForm");
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
     impl_qlist_element!(
         crate::QNetworkCookieSameSite,
         "QList_QNetworkCookieSameSite"
@@ -274,8 +274,6 @@ mod ssl {
 
     impl_qlist_element!(crate::QSslAlertLevel, "QList_QSslAlertLevel");
     impl_qlist_element!(crate::QSslAlertType, "QList_QSslAlertType");
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
     impl_qlist_element!(crate::QSslImplementedClass, "QList_QSslImplementedClass");
-    #[cfg(cxxqt_qt_version_at_least_6_1)]
     impl_qlist_element!(crate::QSslSupportedFeature, "QList_QSslSupportedFeature");
 }

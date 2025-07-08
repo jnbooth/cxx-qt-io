@@ -94,10 +94,7 @@ using QList_QHttpHeadersWellKnownHeader = QList<QHttpHeaders::WellKnownHeader>;
 
 #ifdef CXX_QT_IO_REQUEST_FEATURE
 using QList_QNetworkCookieRawForm = QList<QNetworkCookieRawForm>;
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QList_QNetworkCookieSameSite = QList<QNetworkCookie::SameSite>;
-#endif
 #endif
 
 #ifdef CXX_QT_IO_SSL_FEATURE
@@ -126,8 +123,6 @@ using QList_QSslSocketSslMode = QList<QSslSocket::SslMode>;
 using QList_QSslAlertLevel = QList<QSsl::AlertLevel>;
 using QList_QSslAlertType = QList<QSsl::AlertType>;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
 using QList_QSslImplementedClass = QList<QSsl::ImplementedClass>;
 using QList_QSslSupportedFeature = QList<QSsl::SupportedFeature>;
-#endif
 #endif

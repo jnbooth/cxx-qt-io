@@ -123,7 +123,7 @@ trait AtLeast {
                 return format!("{name}/v{major}_{minor}");
             }
         }
-        format!("{name}/v6_0")
+        format!("{name}/v6_1")
     }
 }
 
@@ -301,7 +301,6 @@ fn main() {
             include_header!("include/core/qlist/qlist_qnetworkcachemetadata.h"),
             include_header!("include/core/qlist/qlist_qnetworkcookie.h"),
             include_header!("include/core/qlist/qlist_qnetworkrequest.h"),
-            include_header!("include/core/qset/qset_qhttp1configuration.h"),
             include_header!("include/core/qvariant/qvariant_qnetworkcookie.h"),
             include_header!("include/network/qabstractnetworkcache.h"),
             include_header!("include/network/qhstspolicy.h"),
@@ -325,7 +324,7 @@ fn main() {
                 "request/qhttp2configuration",
                 "request/qhttppart",
                 "request/qnetworkcachemetadata",
-                "request/qnetworkcookie/qnetworkcookie",
+                "request/qnetworkcookie",
                 "request/qnetworkrequest/qnetworkrequest",
             ])
             .build_rust(&[
@@ -343,7 +342,7 @@ fn main() {
                 "request/qhttppart",
                 "request/qnetworkaccessmanager",
                 "request/qnetworkcachemetadata",
-                "request/qnetworkcookie/mod",
+                "request/qnetworkcookie",
                 "request/qnetworkcookiejar",
                 "request/qnetworkdiskcache",
                 "request/qnetworkrequest/mod",
@@ -354,13 +353,10 @@ fn main() {
                 "request/qnetworkreply",
             ]);
 
-        if version.at_least(6, 1) {
-            builder = builder.build_rust(&["request/qnetworkcookie/v6_1"]);
-        }
-
         if version.at_least(6, 5) {
             header_dir.write_headers(&[
                 include_header!("include/core/qlist/qlist_qhttp1configuration.h"),
+                include_header!("include/core/qset/qset_qhttp1configuration.h"),
                 include_header!("include/network/qhttp1configuration.h"),
             ]);
             builder = builder
@@ -405,7 +401,7 @@ fn main() {
             include_header!("include/network/qsslerror.h"),
             include_header!("include/network/qsslkey.h"),
             include_header!("include/network/qsslpresharedkeyauthenticator.h"),
-            include_header!("include/network/qsslserver.h"),
+            include_header!("include/network/qsslsocket.h"),
         ]);
 
         builder = builder
@@ -440,6 +436,7 @@ fn main() {
                 "ssl/qdtlsgeneratorparameters",
                 "ssl/qocspresponse",
                 "ssl/qssl/mod",
+                &version.find("ssl/qssl/implemented_class", &[(6, 2)]),
                 "ssl/qsslcertificate",
                 "ssl/qsslcertificateextension",
                 "ssl/qsslcipher",
@@ -452,12 +449,8 @@ fn main() {
                 "ssl/qsslsocket",
             ]);
 
-        if version.at_least(6, 1) {
-            builder = builder.build_rust(&["ssl/qssl/v6_1"]);
-        }
-
         if version.at_least(6, 4) {
-            header_dir.write_headers(&[include_header!("include/network/qsslsocket.h")]);
+            header_dir.write_headers(&[include_header!("include/network/qsslserver.h")]);
             builder = builder.build_rust(&["ssl/qsslserver"]);
         }
     }

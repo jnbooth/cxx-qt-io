@@ -5,8 +5,8 @@ use std::time::Duration;
 pub use attribute::QNetworkRequestAttribute;
 use cxx::{type_id, ExternType};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
-use cxx_qt_lib::QAnyStringView;
-use cxx_qt_lib::{QByteArray, QUrl, QVariant};
+use cxx_qt_lib::{QAnyStringView, QByteArray};
+use cxx_qt_lib::{QUrl, QVariant};
 
 use crate::util::IsNonNull;
 use crate::QNetworkRequestKnownHeaders;
@@ -73,6 +73,7 @@ mod ffi {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qtypes.h");
+        #[allow(unused)]
         type qint64 = cxx_qt_lib::qint64;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
@@ -177,7 +178,7 @@ mod ffi {
         /// Raw headers can be set with [`set_raw_header`](QNetworkRequest::set_raw_header) or with [`set_header`](QNetworkRequest::set_header).
         #[cfg(not(cxxqt_qt_version_at_least_6_7))]
         #[rust_name = "raw_header"]
-        fn rawHeader(&self, header_name: &QByteArray) -> bool;
+        fn rawHeader(&self, header_name: &QByteArray) -> QByteArray;
 
         /// Returns a list of all raw headers that are set in this network request. The list is in the order that the headers were set.
         #[rust_name = "raw_header_list"]
@@ -452,9 +453,11 @@ mod tests {
     use cxx_qt_lib::QString;
 
     use super::*;
+    #[cfg(cxxqt_qt_version_at_least_6_5)]
+    use crate::QHttp1Configuration;
+    use crate::QHttp2Configuration;
     #[cfg(cxxqt_qt_version_at_least_6_8)]
     use crate::QHttpHeaders;
-    use crate::{QHttp1Configuration, QHttp2Configuration};
 
     #[test]
     fn transfer_timeout_some() {
@@ -475,9 +478,11 @@ mod tests {
     fn props() {
         #[derive(PartialEq, Eq)]
         struct QNetworkRequestProps {
+            #[cfg(cxxqt_qt_version_at_least_6_2)]
             decompressed_safety_check_threshold: Option<i64>,
             #[cfg(cxxqt_qt_version_at_least_6_8)]
             headers: QHttpHeaders,
+            #[cfg(cxxqt_qt_version_at_least_6_5)]
             http1_configuration: QHttp1Configuration,
             http2_configuration: QHttp2Configuration,
             maximum_redirects_allowed: i32,
@@ -489,6 +494,8 @@ mod tests {
         impl fmt::Debug for QNetworkRequestProps {
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
                 let mut debug = f.debug_struct("QNetworkRequestProps");
+
+                #[cfg(cxxqt_qt_version_at_least_6_2)]
                 debug.field(
                     "decompressed_safety_check_threshold",
                     &self.decompressed_safety_check_threshold,
@@ -497,8 +504,10 @@ mod tests {
                 #[cfg(cxxqt_qt_version_at_least_6_8)]
                 debug.field("headers", &self.headers);
 
+                #[cfg(cxxqt_qt_version_at_least_6_5)]
+                debug.field("http1_configuration", &"<QHttp1Configuration>");
+
                 debug
-                    .field("http1_configuration", &"<QHttp1Configuration>")
                     .field("http2_configuration", &"<QHttp2Configuration>")
                     .field("maximum_redirects_allowed", &self.maximum_redirects_allowed)
                     .field("peer_verify_name", &self.peer_verify_name)
@@ -508,17 +517,21 @@ mod tests {
             }
         }
 
+        #[cfg(cxxqt_qt_version_at_least_6_5)]
         let mut http1_configuration = QHttp1Configuration::default();
+        #[cfg(cxxqt_qt_version_at_least_6_5)]
         http1_configuration.set_number_of_connections_per_host(30);
         let mut http2_configuration = QHttp2Configuration::default();
         http2_configuration.set_max_frame_size(16385);
 
         let props = QNetworkRequestProps {
+            #[cfg(cxxqt_qt_version_at_least_6_2)]
             decompressed_safety_check_threshold: Some(17),
             #[cfg(cxxqt_qt_version_at_least_6_8)]
             headers: [(&QByteArray::from("name"), &QByteArray::from("value"))]
                 .iter()
                 .collect(),
+            #[cfg(cxxqt_qt_version_at_least_6_5)]
             http1_configuration,
             http2_configuration,
             maximum_redirects_allowed: 20,
@@ -529,9 +542,11 @@ mod tests {
 
         let mut request = QNetworkRequest::default();
 
+        #[cfg(cxxqt_qt_version_at_least_6_2)]
         request.set_decompressed_safety_check_threshold(props.decompressed_safety_check_threshold);
         #[cfg(cxxqt_qt_version_at_least_6_8)]
         request.set_headers(&props.headers);
+        #[cfg(cxxqt_qt_version_at_least_6_5)]
         request.set_http1_configuration(&props.http1_configuration);
         request.set_http2_configuration(&props.http2_configuration);
         request.set_maximum_redirects_allowed(props.maximum_redirects_allowed);
@@ -540,9 +555,11 @@ mod tests {
         request.set_url(&props.url);
 
         let actual_props = QNetworkRequestProps {
+            #[cfg(cxxqt_qt_version_at_least_6_2)]
             decompressed_safety_check_threshold: request.decompressed_safety_check_threshold(),
             #[cfg(cxxqt_qt_version_at_least_6_8)]
             headers: request.headers(),
+            #[cfg(cxxqt_qt_version_at_least_6_5)]
             http1_configuration: request.http1_configuration(),
             http2_configuration: request.http2_configuration(),
             maximum_redirects_allowed: request.maximum_redirects_allowed(),

@@ -9,9 +9,9 @@ mod v6_4;
 pub use v6_4::QStandardPaths;
 
 #[cfg(not(cxxqt_qt_version_at_least_6_4))]
-mod v6_0;
+mod v6_1;
 #[cfg(not(cxxqt_qt_version_at_least_6_4))]
-pub use v6_0::QStandardPaths;
+pub use v6_1::QStandardPaths;
 
 pub type QStandardPathsStandardLocation = QStandardPaths;
 

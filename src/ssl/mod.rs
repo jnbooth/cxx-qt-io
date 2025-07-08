@@ -16,11 +16,9 @@ pub use qocspresponse::{QOcspCertificateStatus, QOcspResponse, QOcspRevocationRe
 mod qssl;
 pub use qssl::{QSslAlertLevel, QSslAlertType};
 pub use qssl::{
-    QSslAlternativeNameEntryType, QSslEncodingFormat, QSslKeyAlgorithm, QSslKeyType, QSslSslOption,
-    QSslSslOptions, QSslSslProtocol,
+    QSslAlternativeNameEntryType, QSslEncodingFormat, QSslImplementedClass, QSslKeyAlgorithm,
+    QSslKeyType, QSslSslOption, QSslSslOptions, QSslSslProtocol, QSslSupportedFeature,
 };
-#[cfg(cxxqt_qt_version_at_least_6_1)]
-pub use qssl::{QSslImplementedClass, QSslSupportedFeature};
 
 mod qsslcertificate;
 pub use qsslcertificate::{
