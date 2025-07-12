@@ -36,7 +36,7 @@ pub fn debug_qobject<T>(f: &mut fmt::Formatter, obj: &T) -> fmt::Result
 where
     T: Upcast<QObject>,
 {
-    #[inline(never)]
+    // Reduce monomorphization
     fn inner(f: &mut fmt::Formatter, obj: &QObject) -> fmt::Result {
         // Should always be valid UTF-8, but just in case.
         f.debug_tuple(&qobject_class_name(obj).to_string_lossy())

@@ -427,28 +427,45 @@ impl QSslCertificate {
     where
         T: Upcast<QIODevice>,
     {
-        // SAFETY: Qt knows what it's doing.
-        unsafe {
-            let device_mut = upcast_mut(unpin_for_qt(device));
+        // Reduce monomorphization
+        unsafe fn inner(
+            device: *mut QIODevice,
+            key: &QSslKey,
+            certificate: &QSslCertificate,
+            ca_certificates: &QList<QSslCertificate>,
+            pass_phrase: Option<&QByteArray>,
+        ) -> bool {
             let key_mut = ptr::from_ref(key).cast_mut();
             let certificate_mut = ptr::from_ref(certificate).cast_mut();
             let ca_certificates_mut = ptr::from_ref(ca_certificates).cast_mut();
-            match pass_phrase {
-                Some(pass_phrase) => ffi::qsslcertificate_import_pkcs_12(
-                    device_mut,
-                    key_mut,
-                    certificate_mut,
-                    ca_certificates_mut,
-                    pass_phrase,
-                ),
-                None => ffi::qsslcertificate_import_pkcs_12(
-                    device_mut,
-                    key_mut,
-                    certificate_mut,
-                    ca_certificates_mut,
-                    &QByteArray::default(),
-                ),
+            unsafe {
+                match pass_phrase {
+                    Some(pass_phrase) => ffi::qsslcertificate_import_pkcs_12(
+                        device,
+                        key_mut,
+                        certificate_mut,
+                        ca_certificates_mut,
+                        pass_phrase,
+                    ),
+                    None => ffi::qsslcertificate_import_pkcs_12(
+                        device,
+                        key_mut,
+                        certificate_mut,
+                        ca_certificates_mut,
+                        &QByteArray::default(),
+                    ),
+                }
             }
+        }
+        // SAFETY: Qt knows what it's doing.
+        unsafe {
+            inner(
+                upcast_mut(unpin_for_qt(device)),
+                key,
+                certificate,
+                ca_certificates,
+                pass_phrase,
+            )
         }
     }
 

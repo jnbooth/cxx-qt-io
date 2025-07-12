@@ -1,6 +1,6 @@
+use std::fmt;
 use std::pin::Pin;
 use std::time::Duration;
-use std::{fmt, ptr};
 
 use cxx::memory::UniquePtrTarget;
 use cxx::UniquePtr;
@@ -676,18 +676,16 @@ impl QNetworkAccessManager {
     where
         T: Upcast<QNetworkCookieJar> + UniquePtrTarget,
     {
-        if cookie_jar.is_null() {
-            // SAFETY: Using a null pointer
-            unsafe { self.set_cookie_jar_raw(ptr::null_mut()) };
-            return;
+        // Reduce monomorphization
+        fn inner(this: Pin<&mut QNetworkAccessManager>, cookie_jar: *mut QNetworkCookieJar) {
+            // SAFETY: cookie_jar is valid.
+            if !cookie_jar.is_null() && !in_same_thread(&*this, unsafe { &*cookie_jar }) {
+                panic!("set_cookie_jar: cookie_jar must be in the same thread as self");
+            }
+            // SAFETY: QNetworkAccessManager takes ownership of the cookie jar.
+            unsafe { this.set_cookie_jar_raw(cookie_jar) };
         }
-        let cookie_jar = upcast_mut(cookie_jar.into_raw());
-        // SAFETY: cookie_jar is valid.
-        if !in_same_thread(&*self, unsafe { &*cookie_jar }) {
-            panic!("set_cookie_jar: cookie_jar must be in the same thread as self");
-        }
-        // SAFETY: QNetworkAccessManager takes ownership of the cookie jar.
-        unsafe { self.set_cookie_jar_raw(cookie_jar) }
+        inner(self, upcast_mut(cookie_jar.into_raw()));
     }
 
     /// Sets `timeout` as the transfer timeout.
