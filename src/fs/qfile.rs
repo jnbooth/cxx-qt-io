@@ -74,6 +74,7 @@ mod ffi {
         #[rust_name = "move_to_trash"]
         fn moveToTrash(self: Pin<&mut QFile>) -> bool;
 
+        #[doc(hidden)]
         #[rust_name = "open_int"]
         fn open(
             self: Pin<&mut QFile>,

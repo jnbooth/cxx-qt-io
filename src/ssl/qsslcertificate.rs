@@ -500,7 +500,7 @@ impl QSslCertificate {
     where
         T: Upcast<QIODevice>,
     {
-        // SAFETY: `unpin_for_qt(device.upcast_pin())` is passed directly to Qt.
+        // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
         unsafe { ffi::qsslcertificate_from_device(upcast_mut(unpin_for_qt(device)), format) }
     }
 
@@ -625,7 +625,7 @@ impl Iterator for SubjectAlternativeNamesKeys {
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.advance() {
-            // SAFETY: self.advance() return true, so the iterator is valid.
+            // SAFETY: `self.advance()` returned true, so the iterator is valid.
             Some(unsafe { *self.key() })
         } else {
             None
@@ -649,7 +649,7 @@ impl Iterator for SubjectAlternativeNamesIter {
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.advance() {
-            // SAFETY: self.advance() return true, so the iterator is valid.
+            // SAFETY: `self.advance()` returned true, so the iterator is valid.
             Some(unsafe { (*self.key(), self.value().clone()) })
         } else {
             None
@@ -673,7 +673,7 @@ impl Iterator for SubjectAlternativeNamesValues {
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.advance() {
-            // SAFETY: self.advance() return true, so the iterator is valid.
+            // SAFETY: `self.advance()` returned true, so the iterator is valid.
             Some(unsafe { self.value().clone() })
         } else {
             None

@@ -342,13 +342,15 @@ impl QIODevice {
         self.bytes_to_write_qint64().into()
     }
 
-    /// Reads one byte from the device and discards it. Returns `true` on success; otherwise returns `false`.
+    /// Reads one byte character from the device and discards it. Returns `true` on success; otherwise returns `false`.
     pub fn discard_byte(self: Pin<&mut Self>) -> bool {
         // SAFETY: `ptr::null_mut()` is null.
         unsafe { self.get_char_unsafe(ptr::null_mut()) }
     }
 
-    /// Reads one byte from the device and discards it. Returns `true` on success; otherwise returns `false`.
+    /// Reads one byte character from the device and discards it. Returns `true` on success; otherwise returns `false`.
+    ///
+    /// This is the same as [`discard_byte`](Self::discard_byte).
     pub fn discard_char(self: Pin<&mut Self>) -> bool {
         // SAFETY: `ptr::null_mut()` is null.
         unsafe { self.get_char_unsafe(ptr::null_mut()) }
@@ -360,7 +362,7 @@ impl QIODevice {
         unsafe { self.get_char_unsafe(ptr::from_mut(c).cast::<c_char>()) }
     }
 
-    /// Reads one character from the device and stores it in `c`. Returns `true` on success; otherwise returns `false`.
+    /// Reads one byte character from the device and stores it in `c`. Returns `true` on success; otherwise returns `false`.
     pub fn get_char(self: Pin<&mut Self>, c: &mut c_char) -> bool {
         // SAFETY: `c` is valid.
         unsafe { self.get_char_unsafe(c) }
@@ -409,9 +411,11 @@ impl QIODevice {
     ///
     /// `Ok(0)` is returned when no more data is available for reading.
     pub fn peek(mut self: Pin<&mut Self>, data: &mut [u8]) -> io::Result<usize> {
-        let data_ptr = data.as_mut_ptr().cast::<c_char>();
-        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
-        let result = unsafe { self.as_mut().peek_unsafe(data_ptr, data.len() as i64) };
+        // SAFETY: `data.as_mut_ptr()` is valid and its size is not greater than `data.len()`.
+        let result = unsafe {
+            self.as_mut()
+                .peek_unsafe(data.as_mut_ptr().cast::<c_char>(), data.len() as i64)
+        };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
@@ -447,6 +451,7 @@ impl QIODevice {
     /// `data` must be valid and `max_size` must be no greater than the maximum length of
     /// the value stored at `data`.
     pub unsafe fn peek_unsafe(self: Pin<&mut Self>, data: *mut c_char, max_size: i64) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe { self.peek_unsafe_qint64(data, max_size.into()).into() }
     }
 
@@ -464,9 +469,11 @@ impl QIODevice {
     ///
     /// `Ok(0)` is returned when no more data is available for reading. However, reading past the end of the stream is considered an error, so this function returns an error in those cases (that is, reading on a closed socket or after a process has died).
     pub fn read(mut self: Pin<&mut Self>, data: &mut [u8]) -> io::Result<usize> {
-        let data_ptr = data.as_mut_ptr().cast::<c_char>();
-        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
-        let result = unsafe { self.as_mut().read_unsafe(data_ptr, data.len() as i64) };
+        // SAFETY: `data.as_mut_ptr()` is valid and its size is not greater than `data.len()`.
+        let result = unsafe {
+            self.as_mut()
+                .read_unsafe(data.as_mut_ptr().cast::<c_char>(), data.len() as i64)
+        };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
@@ -498,9 +505,11 @@ impl QIODevice {
         if data.len() < 2 {
             return Ok(0);
         }
-        let data_ptr = data.as_mut_ptr().cast::<c_char>();
-        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
-        let result = unsafe { self.as_mut().read_line_unsafe(data_ptr, data.len() as i64) };
+        // SAFETY: `data.as_mut_ptr()` is valid and its size is not greater than `data.len()`.
+        let result = unsafe {
+            self.as_mut()
+                .read_line_unsafe(data.as_mut_ptr().cast::<c_char>(), data.len() as i64)
+        };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
@@ -564,6 +573,7 @@ impl QIODevice {
     ///
     /// `data` must be valid for reads for `max_size` many bytes.
     pub unsafe fn read_line_unsafe(self: Pin<&mut Self>, data: *mut c_char, max_size: i64) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe { self.read_line_unsafe_qint64(data, max_size.into()).into() }
     }
 
@@ -583,6 +593,7 @@ impl QIODevice {
     /// `data` must be valid and `max_size` must be no greater than the maximum length of
     /// the value stored at `data`.
     pub unsafe fn read_unsafe(self: Pin<&mut Self>, data: *mut c_char, max_size: i64) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe { self.read_unsafe_qint64(data, max_size.into()).into() }
     }
 
@@ -635,9 +646,11 @@ impl QIODevice {
 
     /// Writes bytes of data from `data` to the device. Returns the number of bytes that were actually written, or an error if an error occurred.
     pub fn write(mut self: Pin<&mut Self>, data: &[u8]) -> io::Result<usize> {
-        let data_ptr = data.as_ptr().cast::<c_char>();
-        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
-        let result = unsafe { self.as_mut().write_unsafe(data_ptr, data.len() as i64) };
+        // SAFETY: `data.as_ptr()` is valid and its size is not greater than `data.len()`.
+        let result = unsafe {
+            self.as_mut()
+                .write_unsafe(data.as_ptr().cast::<c_char>(), data.len() as i64)
+        };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
         }
@@ -651,7 +664,7 @@ impl QIODevice {
 
     /// Writes at most `data.len()` bytes of data from `data` to the device. Returns the number of bytes that were actually written, or -1 if an error occurred.
     pub fn write_chars(self: Pin<&mut Self>, data: &[c_char]) -> i64 {
-        // SAFETY: `data.ptr()` is valid up to `data.len()`.
+        // SAFETY: `data.as_ptr()` is valid up to `data.len()`.
         unsafe { self.write_unsafe(data.as_ptr(), data.len() as i64) }
     }
 
@@ -667,6 +680,7 @@ impl QIODevice {
     ///
     /// `data` must be a zero-terminated string of 8-bit characters.
     pub unsafe fn write_cstr_unsafe(self: Pin<&mut Self>, data: *const c_char) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe { self.write_cstr_unsafe_qint64(data).into() }
     }
 
@@ -676,6 +690,7 @@ impl QIODevice {
     ///
     /// `data` must be valid for reads for `max_size` many bytes.
     pub unsafe fn write_unsafe(self: Pin<&mut Self>, data: *const c_char, max_size: i64) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe { self.write_unsafe_qint64(data, max_size.into()).into() }
     }
 

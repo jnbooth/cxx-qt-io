@@ -33,6 +33,7 @@ where
 /// *For more information, see the [`pin` module docs][std::pin]*
 #[inline(always)]
 pub(crate) unsafe fn unpin_for_qt<T>(pin: Pin<&mut T>) -> *mut T {
+    // SAFETY: Upheld by contract.
     unsafe { ptr::from_mut(Pin::into_inner_unchecked(pin)) }
 }
 

@@ -28,6 +28,7 @@ where
     T: Upcast<QObject>,
 {
     let name = ffi::qobject_class_name(obj.upcast());
+    // SAFETY: Qt guarantees zero-termination and obj's meta-object lives at least as long as obj.
     unsafe { CStr::from_ptr(name) }
 }
 
@@ -37,6 +38,7 @@ where
 {
     #[inline(never)]
     fn inner(f: &mut fmt::Formatter, obj: &QObject) -> fmt::Result {
+        // Should always be valid UTF-8, but just in case.
         f.debug_tuple(&qobject_class_name(obj).to_string_lossy())
             .field(&ptr::from_ref(obj))
             .finish()

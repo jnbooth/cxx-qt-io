@@ -1,7 +1,7 @@
-use std::fmt;
 use std::ops::Deref;
 use std::pin::Pin;
 use std::time::Duration;
+use std::{fmt, ptr};
 
 use cxx::UniquePtr;
 use cxx_qt::casting::Upcast;
@@ -214,7 +214,7 @@ impl QTcpServer {
     /// If `duration` is `None`, this function will not time out.
     pub fn wait_for_new_connection(self: Pin<&mut Self>, duration: Option<Duration>) -> bool {
         // SAFETY: Qt ignores the null pointer.
-        unsafe { self.wait_for_new_connection_msec(duration.msecs(), std::ptr::null_mut()) }
+        unsafe { self.wait_for_new_connection_msec(duration.msecs(), ptr::null_mut()) }
     }
 }
 

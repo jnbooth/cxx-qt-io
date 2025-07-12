@@ -109,8 +109,9 @@ impl QBuffer {
     ///
     /// # Safety
     ///
-    /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until [`set_buffer`](Self::set_buffer) is called to change the buffer.
+    /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until [`set_buffer_mut`](Self::set_buffer_mut) is called to change the buffer.
     pub unsafe fn for_array(byte_array: *mut QByteArray) -> UniquePtr<Self> {
+        // SAFETY: Upheld by contract.
         unsafe { ffi::qbuffer_new(byte_array) }
     }
 

@@ -150,6 +150,7 @@ impl QAbstractNetworkCache {
     /// # Safety
     /// `device` must be a pointer returned by [`prepare`](QAbstractNetworkCache::prepare), along with all the usual pointer safety requirements.
     pub unsafe fn insert_unsafe(self: Pin<&mut Self>, device: *mut QIODevice) {
+        // SAFETY: Upheld by contract.
         unsafe { ffi::qabstractnetworkcache_insert(self, device) };
     }
 
@@ -160,12 +161,13 @@ impl QAbstractNetworkCache {
         mut self: Pin<&mut Self>,
         meta_data: &QNetworkCacheMetaData,
     ) -> Option<QAbstractNetworkCacheWriter> {
+        // SAFETY: `QAbstractNetworkCacheWriter` will ensure the device is handled.
         let device = unsafe { self.as_mut().prepare_unsafe(meta_data) };
         if device.is_null() {
             return None;
         }
         Some(QAbstractNetworkCacheWriter {
-            device: unsafe { self.as_mut().prepare_unsafe(meta_data) },
+            device,
             cache: self,
             inserted: false,
             url: meta_data.url(),
@@ -239,10 +241,6 @@ impl QAbstractNetworkCacheWriter<'_> {
     pub fn remove(self) {
         drop(self);
     }
-
-    fn pin_mut(&mut self) -> Pin<&mut QIODevice> {
-        unsafe { Pin::new_unchecked(&mut *self.device) }
-    }
 }
 
 impl Drop for QAbstractNetworkCacheWriter<'_> {
@@ -256,10 +254,12 @@ impl Drop for QAbstractNetworkCacheWriter<'_> {
 
 impl Write for QAbstractNetworkCacheWriter<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.pin_mut().write(buf)
+        // SAFETY: Transient pin of immovable device.
+        unsafe { Pin::new_unchecked(&mut *self.device) }.write(buf)
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        self.pin_mut().flush()
+        // SAFETY: Transient pin of immovable device.
+        unsafe { Pin::new_unchecked(&mut *self.device) }.flush()
     }
 }

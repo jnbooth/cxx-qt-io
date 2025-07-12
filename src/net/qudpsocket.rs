@@ -202,17 +202,17 @@ impl QUdpSocket {
     ) -> io::Result<(usize, QHostAddress, u16)> {
         let mut address: MaybeUninit<QHostAddress> = MaybeUninit::uninit();
         let mut port = 0;
-        let data_ptr = data.as_mut_ptr().cast::<c_char>();
         unsafe {
             // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`, and `address.as_mut_ptr()`
-            // and `&mut port` are valid.
+            // and `&raw mut port` are valid.
             let result = self.as_mut().read_datagram_unsafe(
-                data_ptr,
+                data.as_mut_ptr().cast::<c_char>(),
                 data.len() as i64,
                 address.as_mut_ptr(),
                 &raw mut port,
             );
             if let Ok(n) = usize::try_from(result) {
+                // SAFETY: `address` has been initialized.
                 return Ok((n, address.assume_init(), port));
             }
             Err(self.get_error())
@@ -242,6 +242,7 @@ impl QUdpSocket {
             if n == -1 {
                 return None;
             }
+            // SAFETY: `address` has been initialized.
             Some((n, address.assume_init(), port))
         }
     }
@@ -263,6 +264,7 @@ impl QUdpSocket {
         address: *mut QHostAddress,
         port: *mut u16,
     ) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe {
             self.read_datagram_unsafe_qint64(data, max_size.into(), address, port)
                 .into()
@@ -304,11 +306,14 @@ impl QUdpSocket {
         address: &QHostAddress,
         port: u16,
     ) -> io::Result<usize> {
-        let data_ptr = data.as_ptr().cast::<c_char>();
-        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        // SAFETY: `data.as_ptr()` is valid and its size is not greater than `data.len()`.
         let result = unsafe {
-            self.as_mut()
-                .write_datagram_unsafe(data_ptr, data.len() as i64, address, port)
+            self.as_mut().write_datagram_unsafe(
+                data.as_ptr().cast::<c_char>(),
+                data.len() as i64,
+                address,
+                port,
+            )
         };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
@@ -334,6 +339,7 @@ impl QUdpSocket {
         address: &QHostAddress,
         port: u16,
     ) -> i64 {
+        // SAFETY: Upheld by contract.
         unsafe {
             self.write_datagram_unsafe_qint64(data, size.into(), address, port)
                 .into()
@@ -353,7 +359,7 @@ impl QUdpSocket {
         address: &QHostAddress,
         port: u16,
     ) -> i64 {
-        // SAFETY: `data_ptr` is valid and its size is not greater than `data.len()`.
+        // SAFETY: `data.as_ptr()` is valid and its size is not greater than `data.len()`.
         unsafe { self.write_datagram_unsafe(data.as_ptr(), data.len() as i64, address, port) }
     }
 

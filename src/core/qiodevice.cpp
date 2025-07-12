@@ -43,18 +43,10 @@ qiodeviceIsWritable(const QIODevice& device)
   return device.isWritable();
 }
 
-const QIODeviceOpenMode qFileOnlyFlags =
-  QIODevice::NewOnly | QIODevice::ExistingOnly;
-
 bool
 qiodeviceOpen(QIODevice& device, QIODeviceOpenMode mode)
 {
-  if ((mode & qFileOnlyFlags) &&
-      !device.metaObject()->inherits(&QFile::staticMetaObject)) {
-    return device.open(mode & ~qFileOnlyFlags);
-  }
   return device.open(mode);
 }
-
 }
 }
