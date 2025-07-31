@@ -1,6 +1,6 @@
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QVariant;
 
@@ -110,7 +110,10 @@ impl QHttpPart {
     where
         T: Upcast<QIODevice>,
     {
-        self.set_body_device_raw(upcast_mut(device));
+        // SAFETY: device is a valid pointer and will not be mutated.
+        unsafe {
+            self.set_body_device_raw(upcast_mut(device));
+        }
     }
 
     // Sets the value of the known header `header` to be `value`, overriding any previously set headers.

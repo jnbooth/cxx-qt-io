@@ -137,14 +137,14 @@ pub(crate) fn get_or_default(hash: &ffi::$QHASH, key: &$FK) -> $FV {
 }
 
 pub(crate) unsafe fn get_unchecked_key(hash: &ffi::$QHASH, pos: isize) -> &$FK {
-    ffi::qhash_get_unchecked_key_$SUFFIX(hash, pos)
+    unsafe { ffi::qhash_get_unchecked_key_$SUFFIX(hash, pos) }
 }
 
 pub(crate) unsafe fn get_unchecked_value(
     hash: &ffi::$QHASH,
     pos: isize,
 ) -> &$FV {
-    ffi::qhash_get_unchecked_value_$SUFFIX(hash, pos)
+    unsafe { ffi::qhash_get_unchecked_value_$SUFFIX(hash, pos) }
 }
 
 pub(crate) fn insert(hash: &mut ffi::$QHASH, key: &$FK, value: &$FV) {

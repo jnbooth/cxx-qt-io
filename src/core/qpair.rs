@@ -1,6 +1,6 @@
 use std::hash::Hash;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::QByteArray;
 
 /// Typedef for `std::pair<T1, T1>`.

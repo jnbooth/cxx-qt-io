@@ -78,7 +78,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkDatagram,
     pos: isize,
 ) -> &ffi::QNetworkDatagram {
-    ffi::qlist_get_unchecked_QNetworkDatagram(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QNetworkDatagram(s, pos) }
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QNetworkDatagram, _: &ffi::QNetworkDatagram) -> isize {

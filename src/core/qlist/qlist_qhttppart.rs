@@ -79,7 +79,7 @@ pub(crate) fn drop(s: &mut ffi::QList_QHttpPart) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QHttpPart, pos: isize) -> &ffi::QHttpPart {
-    ffi::qlist_get_unchecked_QHttpPart(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QHttpPart(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QHttpPart, value: &ffi::QHttpPart) -> isize {

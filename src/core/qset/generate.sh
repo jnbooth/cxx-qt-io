@@ -106,7 +106,7 @@ pub(crate) fn drop(s: &mut ffi::QSet_$1) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_$1, pos: isize) -> &ffi::$1 {
-    ffi::qset_get_unchecked_$1(s, pos)
+    unsafe { ffi::qset_get_unchecked_$1(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_$1, value: &ffi::$1) {

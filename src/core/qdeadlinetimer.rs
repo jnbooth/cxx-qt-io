@@ -2,10 +2,10 @@ use std::cmp::Ordering;
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 use std::time::Duration;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 
-use crate::util::MSecs;
 use crate::TimerType;
+use crate::util::MSecs;
 
 #[cxx::bridge]
 mod ffi {

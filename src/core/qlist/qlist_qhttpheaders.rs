@@ -75,7 +75,7 @@ pub(crate) fn drop(s: &mut ffi::QList_QHttpHeaders) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QHttpHeaders, pos: isize) -> &ffi::QHttpHeaders {
-    ffi::qlist_get_unchecked_QHttpHeaders(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QHttpHeaders(s, pos) }
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QHttpHeaders, _: &ffi::QHttpHeaders) -> isize {

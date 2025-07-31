@@ -1,7 +1,7 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 
 #[cxx::bridge]
 mod ffi {
@@ -68,7 +68,7 @@ mod ffi {
 
         #[rust_name = "qsslpresharedkeyauthenticator_eq"]
         fn operatorEq(a: &QSslPreSharedKeyAuthenticator, b: &QSslPreSharedKeyAuthenticator)
-            -> bool;
+        -> bool;
     }
 }
 

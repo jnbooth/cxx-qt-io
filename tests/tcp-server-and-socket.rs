@@ -3,7 +3,7 @@ mod common;
 use std::io::{Read, Write};
 use std::time::Duration;
 
-use common::{run_inside_app, ConnectErrors};
+use common::{ConnectErrors, run_inside_app};
 use cxx_qt_io::{QHostAddressSpecialAddress, QIODevice, QTcpServer, QTcpSocket};
 
 const PORT: u16 = 8012;

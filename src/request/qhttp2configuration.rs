@@ -1,7 +1,7 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 
 #[cxx::bridge]
 mod ffi {

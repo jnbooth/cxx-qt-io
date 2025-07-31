@@ -4,8 +4,8 @@ use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QString;
 
 use crate::qobject::debug_qobject;
@@ -196,33 +196,39 @@ impl Deref for QTemporaryFile {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QFileDevice> for QTemporaryFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QFileDevice {
-        ffi::upcast_qtemporaryfile_qfiledevice(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qtemporaryfile_qfiledevice(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QFileDevice) -> *const Self {
-        ffi::downcast_qfiledevice_qtemporaryfile(base)
+        // SAFETY: downcast_qobject
+        unsafe { ffi::downcast_qfiledevice_qtemporaryfile(base) }
     }
 }
 
 // SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QTemporaryFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
-        ffi::upcast_qtemporaryfile_qiodevice(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qtemporaryfile_qiodevice(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
-        ffi::downcast_qiodevice_qtemporaryfile(base)
+        // SAFETY: downcast_qobject
+        unsafe { ffi::downcast_qiodevice_qtemporaryfile(base) }
     }
 }
 
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QTemporaryFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qtemporaryfile_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qtemporaryfile_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qtemporaryfile(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qtemporaryfile(base) }
     }
 }
 

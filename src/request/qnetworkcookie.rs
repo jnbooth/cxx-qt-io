@@ -1,7 +1,7 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::{QByteArray, QDateTime, QList};
 
 use crate::util::IsNonNull;

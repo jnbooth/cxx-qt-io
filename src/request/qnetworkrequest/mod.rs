@@ -3,13 +3,13 @@ use std::mem::MaybeUninit;
 use std::time::Duration;
 
 pub use attribute::QNetworkRequestAttribute;
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::{QAnyStringView, QByteArray};
 use cxx_qt_lib::{QUrl, QVariant};
 
-use crate::util::IsNonNull;
 use crate::QNetworkRequestKnownHeaders;
+use crate::util::IsNonNull;
 
 #[cxx::bridge]
 mod ffi {
@@ -348,11 +348,7 @@ impl QNetworkRequest {
         let threshold = self
             .decompressed_safety_check_threshold_or_negative()
             .into();
-        if threshold < 0 {
-            None
-        } else {
-            Some(threshold)
-        }
+        if threshold < 0 { None } else { Some(threshold) }
     }
 
     /// Returns `true` if the raw header `header_name` is present in this network request.

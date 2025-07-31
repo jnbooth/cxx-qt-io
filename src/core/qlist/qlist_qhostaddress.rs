@@ -79,7 +79,7 @@ pub(crate) fn drop(s: &mut ffi::QList_QHostAddress) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QHostAddress, pos: isize) -> &ffi::QHostAddress {
-    ffi::qlist_get_unchecked_QHostAddress(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QHostAddress(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QHostAddress, value: &ffi::QHostAddress) -> isize {

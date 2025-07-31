@@ -71,7 +71,7 @@ pub(crate) fn drop(s: &mut ffi::QSet_QSslError) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_QSslError, pos: isize) -> &ffi::QSslError {
-    ffi::qset_get_unchecked_QSslError(s, pos)
+    unsafe { ffi::qset_get_unchecked_QSslError(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QSslError, value: &ffi::QSslError) {

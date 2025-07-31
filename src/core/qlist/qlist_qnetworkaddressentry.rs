@@ -88,7 +88,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkAddressEntry,
     pos: isize,
 ) -> &ffi::QNetworkAddressEntry {
-    ffi::qlist_get_unchecked_QNetworkAddressEntry(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QNetworkAddressEntry(s, pos) }
 }
 
 pub(crate) fn index_of(

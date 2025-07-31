@@ -85,7 +85,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslEllipticCurve,
     pos: isize,
 ) -> &ffi::QSslEllipticCurve {
-    ffi::qlist_get_unchecked_QSslEllipticCurve(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QSslEllipticCurve(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslEllipticCurve, value: &ffi::QSslEllipticCurve) -> isize {

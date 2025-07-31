@@ -1,4 +1,4 @@
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 
 #[cxx::bridge]
 pub mod ffi {
@@ -83,14 +83,14 @@ pub(crate) unsafe fn get_unchecked_key(
     map: &ffi::QMap_QByteArray_QVariant,
     pos: isize,
 ) -> &ffi::QByteArray {
-    ffi::qmap_get_unchecked_key_QByteArray_QVariant(map, pos)
+    unsafe { ffi::qmap_get_unchecked_key_QByteArray_QVariant(map, pos) }
 }
 
 pub(crate) unsafe fn get_unchecked_value(
     map: &ffi::QMap_QByteArray_QVariant,
     pos: isize,
 ) -> &ffi::QVariant {
-    ffi::qmap_get_unchecked_value_QByteArray_QVariant(map, pos)
+    unsafe { ffi::qmap_get_unchecked_value_QByteArray_QVariant(map, pos) }
 }
 
 pub(crate) fn insert(

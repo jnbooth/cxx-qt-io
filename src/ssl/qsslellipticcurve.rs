@@ -1,6 +1,6 @@
 use std::fmt;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::QString;
 
 use crate::util::IsNonNull;

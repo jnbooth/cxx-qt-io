@@ -4,8 +4,8 @@ use std::time::Duration;
 use std::{fmt, ptr};
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 
 use crate::qobject::debug_qobject;
 use crate::util::{IsNonNull, MSecs};

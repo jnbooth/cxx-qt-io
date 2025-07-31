@@ -1,5 +1,6 @@
 #![allow(unused)]
 #![allow(clippy::trivially_copy_pass_by_ref)]
+#![allow(clippy::undocumented_unsafe_blocks)]
 use cxx::type_id;
 use cxx_qt_lib::{QSet, QSetElement};
 
@@ -31,7 +32,7 @@ macro_rules! impl_qset_element {
             }
 
             unsafe fn get_unchecked(set: &QSet<Self>, pos: isize) -> &Self {
-                $module::get_unchecked(set, pos)
+                unsafe { $module::get_unchecked(set, pos) }
             }
 
             fn insert(set: &mut QSet<Self>, value: Self) {

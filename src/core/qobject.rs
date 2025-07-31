@@ -3,8 +3,8 @@ use std::ffi::CStr;
 use std::fmt;
 use std::ptr;
 
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 
 #[cxx::bridge]
 mod ffi {

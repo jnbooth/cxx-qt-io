@@ -88,7 +88,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QHttp1Configuration,
     pos: isize,
 ) -> &ffi::QHttp1Configuration {
-    ffi::qlist_get_unchecked_QHttp1Configuration(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QHttp1Configuration(s, pos) }
 }
 
 pub(crate) fn index_of(

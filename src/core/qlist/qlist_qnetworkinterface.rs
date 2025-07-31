@@ -81,7 +81,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkInterface,
     pos: isize,
 ) -> &ffi::QNetworkInterface {
-    ffi::qlist_get_unchecked_QNetworkInterface(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QNetworkInterface(s, pos) }
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QNetworkInterface, _: &ffi::QNetworkInterface) -> isize {

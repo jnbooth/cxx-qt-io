@@ -71,7 +71,7 @@ pub(crate) fn drop(s: &mut ffi::QSet_QHostAddress) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_QHostAddress, pos: isize) -> &ffi::QHostAddress {
-    ffi::qset_get_unchecked_QHostAddress(s, pos)
+    unsafe { ffi::qset_get_unchecked_QHostAddress(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QHostAddress, value: &ffi::QHostAddress) {

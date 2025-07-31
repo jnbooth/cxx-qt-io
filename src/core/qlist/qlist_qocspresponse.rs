@@ -78,7 +78,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QOcspResponse,
     pos: isize,
 ) -> &ffi::QOcspResponse {
-    ffi::qlist_get_unchecked_QOcspResponse(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QOcspResponse(s, pos) }
 }
 
 pub(crate) fn index_of(_: &ffi::QList_QOcspResponse, _: &ffi::QOcspResponse) -> isize {

@@ -1,6 +1,6 @@
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::{QByteArray, QList, QVariant};
 
 use crate::util::IsNonNull;
@@ -528,11 +528,7 @@ impl QSslConfiguration {
     /// If [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) was turned off, this function returns the session ticket life time hint sent by the server (which might be 0). If the server did not send a session ticket (e.g. when resuming a session or when the server does not support it) or [`QSslSslOption::SslOptionDisableSessionPersistence`](crate::QSslSslOption::SslOptionDisableSessionPersistence) was not turned off, this function returns `None`.
     pub fn session_ticket_life_time_hint(&self) -> Option<i32> {
         let hint = self.session_ticket_life_time_hint_or_negative();
-        if hint == -1 {
-            None
-        } else {
-            Some(hint)
-        }
+        if hint == -1 { None } else { Some(hint) }
     }
 
     /// Sets the option name in the backend-specific configuration to `value`.

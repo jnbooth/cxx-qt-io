@@ -1,4 +1,4 @@
-use std::ffi::{c_char, CStr};
+use std::ffi::{CStr, c_char};
 use std::fmt;
 use std::io::{self, Read, Write};
 use std::ops::Deref;
@@ -6,10 +6,10 @@ use std::pin::Pin;
 use std::ptr;
 use std::time::Duration;
 
+use cxx_qt::QObject;
 #[cfg(any(feature = "fs", feature = "net"))]
 use cxx_qt::casting::Downcast;
 use cxx_qt::casting::Upcast;
-use cxx_qt::QObject;
 use cxx_qt_lib::{QByteArray, QFlags};
 
 use crate::qobject::debug_qobject;
@@ -227,7 +227,7 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "write_unsafe_qint64"]
         unsafe fn write(self: Pin<&mut QIODevice>, data: *const c_char, max_size: qint64)
-            -> qint64;
+        -> qint64;
 
         #[doc(hidden)]
         #[rust_name = "write_array_qint64"]

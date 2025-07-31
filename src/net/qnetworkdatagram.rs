@@ -1,11 +1,11 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::QByteArray;
 
-use crate::util::IsNonNull;
 use crate::QHostAddress;
+use crate::util::IsNonNull;
 
 #[cxx::bridge]
 mod ffi {
@@ -201,11 +201,7 @@ impl QNetworkDatagram {
     /// If this is an outgoing datagram, this is the value to be set in the IP header upon sending. A value of `None` indicates the operating system should choose the value.
     pub fn hop_limit(&self) -> Option<i32> {
         let limit = self.hop_limit_or_negative();
-        if limit == -1 {
-            None
-        } else {
-            Some(limit)
-        }
+        if limit == -1 { None } else { Some(limit) }
     }
 
     /// Returns the interface index this datagram is associated with. The interface index is a positive number that uniquely identifies the network interface in the operating system. This number matches the value returned by [`QNetworkInterface::index`](crate::QNetworkInterface::index) for the interface.
@@ -215,11 +211,7 @@ impl QNetworkDatagram {
     /// A value of `None` indicates that the interface index is unknown.
     pub fn interface_index(&self) -> Option<u32> {
         let index = self.interface_index_or_zero();
-        if index == 0 {
-            None
-        } else {
-            Some(index)
-        }
+        if index == 0 { None } else { Some(index) }
     }
 
     /// Creates a new `QNetworkDatagram` representing a reply to this incoming datagram and sets the payload data to payload. This function is a very convenient way of responding to a datagram back to the original sender.

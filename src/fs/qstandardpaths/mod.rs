@@ -71,7 +71,7 @@ mod ffi {
 
         #[rust_name = "qstandardpaths_writable_location"]
         fn qstandardpathsWritableLocation(location_type: QStandardPathsStandardLocation)
-            -> QString;
+        -> QString;
     }
 }
 

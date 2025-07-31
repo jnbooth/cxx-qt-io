@@ -3,12 +3,12 @@ use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QByteArray;
 
 use crate::qobject::debug_qobject;
-use crate::util::{unpin_for_qt, IsNonNull};
+use crate::util::{IsNonNull, unpin_for_qt};
 use crate::{QHostAddress, QSslCipher, QSslSocketSslMode, QUdpSocket};
 
 #[cxx_qt::bridge]

@@ -3,16 +3,16 @@ use std::io::{self, Read};
 use std::ops::Deref;
 use std::pin::Pin;
 
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QVariant;
 #[cfg(cxxqt_qt_version_at_least_6_7)]
 use cxx_qt_lib::{QAnyStringView, QByteArray};
 
-use crate::qobject::debug_qobject;
-use crate::util::IsNonNull;
 #[cfg(feature = "ssl")]
 use crate::QSslConfiguration;
+use crate::qobject::debug_qobject;
+use crate::util::IsNonNull;
 use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
 
 #[cxx_qt::bridge]
@@ -488,11 +488,13 @@ impl Deref for QNetworkReply {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QNetworkReply {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qnetworkreply_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qnetworkreply_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qnetworkreply(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qnetworkreply(base) }
     }
 }
 

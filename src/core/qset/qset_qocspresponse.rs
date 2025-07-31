@@ -71,7 +71,7 @@ pub(crate) fn drop(s: &mut ffi::QSet_QOcspResponse) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QSet_QOcspResponse, pos: isize) -> &ffi::QOcspResponse {
-    ffi::qset_get_unchecked_QOcspResponse(s, pos)
+    unsafe { ffi::qset_get_unchecked_QOcspResponse(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QOcspResponse, value: &ffi::QOcspResponse) {

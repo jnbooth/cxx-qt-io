@@ -82,7 +82,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QDeadlineTimer,
     pos: isize,
 ) -> &ffi::QDeadlineTimer {
-    ffi::qlist_get_unchecked_QDeadlineTimer(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QDeadlineTimer(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QDeadlineTimer, value: &ffi::QDeadlineTimer) -> isize {

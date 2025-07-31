@@ -6,8 +6,8 @@ use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 
 use crate::qobject::debug_qobject;
 use crate::util::IsNonNull;
@@ -184,11 +184,7 @@ impl QUdpSocket {
     /// Returns the size of the first pending UDP datagram. If there is no datagram available, this function returns `None`.
     pub fn pending_datagram_size(&self) -> Option<i64> {
         let size = self.pending_datagram_size_or_negative().into();
-        if size == -1 {
-            None
-        } else {
-            Some(size)
-        }
+        if size == -1 { None } else { Some(size) }
     }
 
     ///Receives a datagram stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
@@ -403,22 +399,26 @@ impl Deref for QUdpSocket {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
-        ffi::upcast_qudpsocket_qiodevice(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qudpsocket_qiodevice(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
-        ffi::downcast_qiodevice_qudpsocket(base)
+        // SAFETY: downcast_qobject
+        unsafe { ffi::downcast_qiodevice_qudpsocket(base) }
     }
 }
 
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qudpsocket_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qudpsocket_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qudpsocket(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qudpsocket(base) }
     }
 }
 

@@ -79,7 +79,7 @@ pub(crate) fn drop(s: &mut ffi::QList_QHstsPolicy) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QHstsPolicy, pos: isize) -> &ffi::QHstsPolicy {
-    ffi::qlist_get_unchecked_QHstsPolicy(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QHstsPolicy(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QHstsPolicy, value: &ffi::QHstsPolicy) -> isize {

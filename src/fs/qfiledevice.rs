@@ -3,8 +3,8 @@ use std::io::{self, Read, Write};
 use std::ops::Deref;
 use std::pin::Pin;
 
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QDateTime, QFlags};
 
 use crate::qobject::debug_qobject;
@@ -196,7 +196,7 @@ mod ffi {
         /// **Warning:** This function does not manipulate ACLs, which may limit its effectiveness.
         #[rust_name = "set_permissions"]
         fn setPermissions(self: Pin<&mut QFileDevice>, permissions: QFileDevicePermissions)
-            -> bool;
+        -> bool;
 
         /// Unmaps the memory address.
         ///
@@ -306,11 +306,13 @@ impl Deref for QFileDevice {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QFileDevice {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qfiledevice_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qfiledevice_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qfiledevice(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qfiledevice(base) }
     }
 }
 

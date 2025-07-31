@@ -68,7 +68,7 @@ macro_rules! impl_qhash_pair {
             }
 
             unsafe fn get_unchecked_value(hash: &QHash<Self>, pos: isize) -> &Self::Value {
-                <$r as QHashPair>::get_unchecked_value(unsafe { cast(hash) }, pos)
+                unsafe { <$r as QHashPair>::get_unchecked_value(cast(hash), pos) }
             }
 
             fn insert(hash: &mut QHash<Self>, key: Self::Key, value: Self::Value) {

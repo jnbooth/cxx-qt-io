@@ -1,4 +1,5 @@
 #![allow(clippy::trivially_copy_pass_by_ref)]
+#![allow(clippy::undocumented_unsafe_blocks)]
 mod enums;
 
 use cxx::type_id;
@@ -40,7 +41,7 @@ macro_rules! impl_qlist_element {
             }
 
             unsafe fn get_unchecked(list: &QList<Self>, pos: isize) -> &Self {
-                $module::get_unchecked(list, pos)
+                unsafe { $module::get_unchecked(list, pos) }
             }
 
             fn index_of(list: &QList<Self>, value: &Self) -> isize {

@@ -80,7 +80,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QSet_QHttp1Configuration,
     pos: isize,
 ) -> &ffi::QHttp1Configuration {
-    ffi::qset_get_unchecked_QHttp1Configuration(s, pos)
+    unsafe { ffi::qset_get_unchecked_QHttp1Configuration(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QHttp1Configuration, value: &ffi::QHttp1Configuration) {

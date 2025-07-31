@@ -88,7 +88,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkCacheMetaData,
     pos: isize,
 ) -> &ffi::QNetworkCacheMetaData {
-    ffi::qlist_get_unchecked_QNetworkCacheMetaData(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QNetworkCacheMetaData(s, pos) }
 }
 
 pub(crate) fn index_of(

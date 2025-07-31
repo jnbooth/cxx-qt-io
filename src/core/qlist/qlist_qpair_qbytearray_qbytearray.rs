@@ -104,7 +104,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QPair_QByteArray_QByteArray,
     pos: isize,
 ) -> &ffi::QPair_QByteArray_QByteArray {
-    ffi::qlist_get_unchecked_QPair_QByteArray_QByteArray(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QPair_QByteArray_QByteArray(s, pos) }
 }
 
 pub(crate) fn index_of(

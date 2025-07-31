@@ -4,8 +4,8 @@ use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QByteArray, QString};
 
 use crate::qobject::debug_qobject;
@@ -238,22 +238,26 @@ impl Deref for QFile {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
-        ffi::upcast_qfile_qiodevice(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qfile_qiodevice(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
-        ffi::downcast_qiodevice_qfile(base)
+        // SAFETY: downcast_qobject
+        unsafe { ffi::downcast_qiodevice_qfile(base) }
     }
 }
 
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qfile_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qfile_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qfile(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qfile(base) }
     }
 }
 

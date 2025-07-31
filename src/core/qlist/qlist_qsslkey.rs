@@ -79,7 +79,7 @@ pub(crate) fn drop(s: &mut ffi::QList_QSslKey) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_QSslKey, pos: isize) -> &ffi::QSslKey {
-    ffi::qlist_get_unchecked_QSslKey(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QSslKey(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslKey, value: &ffi::QSslKey) -> isize {

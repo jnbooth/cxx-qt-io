@@ -91,7 +91,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QSet_QSslDiffieHellmanParameters,
     pos: isize,
 ) -> &ffi::QSslDiffieHellmanParameters {
-    ffi::qset_get_unchecked_QSslDiffieHellmanParameters(s, pos)
+    unsafe { ffi::qset_get_unchecked_QSslDiffieHellmanParameters(s, pos) }
 }
 
 pub(crate) fn insert(

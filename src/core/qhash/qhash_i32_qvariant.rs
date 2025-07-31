@@ -73,14 +73,14 @@ pub(crate) fn get_or_default(hash: &ffi::QHash_i32_QVariant, key: &i32) -> ffi::
 }
 
 pub(crate) unsafe fn get_unchecked_key(hash: &ffi::QHash_i32_QVariant, pos: isize) -> &i32 {
-    ffi::qhash_get_unchecked_key_i32_QVariant(hash, pos)
+    unsafe { ffi::qhash_get_unchecked_key_i32_QVariant(hash, pos) }
 }
 
 pub(crate) unsafe fn get_unchecked_value(
     hash: &ffi::QHash_i32_QVariant,
     pos: isize,
 ) -> &ffi::QVariant {
-    ffi::qhash_get_unchecked_value_i32_QVariant(hash, pos)
+    unsafe { ffi::qhash_get_unchecked_value_i32_QVariant(hash, pos) }
 }
 
 pub(crate) fn insert(hash: &mut ffi::QHash_i32_QVariant, key: &i32, value: &ffi::QVariant) {

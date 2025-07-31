@@ -2,9 +2,9 @@ use std::fmt;
 
 use cxx_qt_lib::qintptr;
 
-use crate::util::IsNonNull;
 #[cfg(all(unix, feature = "fs"))]
 use crate::FileDescriptor;
+use crate::util::IsNonNull;
 
 /// A [`qintptr`](https://doc.qt.io/qt-6/qttypes.html#qintptr-typedef) that references a native socket descriptor.
 #[repr(transparent)]

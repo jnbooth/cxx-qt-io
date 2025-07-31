@@ -82,7 +82,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslCertificate,
     pos: isize,
 ) -> &ffi::QSslCertificate {
-    ffi::qlist_get_unchecked_QSslCertificate(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QSslCertificate(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QSslCertificate, value: &ffi::QSslCertificate) -> isize {

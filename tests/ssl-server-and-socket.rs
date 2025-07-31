@@ -2,7 +2,7 @@
 mod common;
 use std::time::{Duration, Instant};
 
-use common::{run_inside_app, ConnectErrors};
+use common::{ConnectErrors, run_inside_app};
 use cxx_qt_io::{
     QAbstractSocketSocketError, QAbstractSocketSocketState, QHostAddressSpecialAddress, QIODevice,
     QSslCertificate, QSslConfiguration, QSslError, QSslErrorSslError, QSslKey, QSslServer,

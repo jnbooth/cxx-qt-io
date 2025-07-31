@@ -5,8 +5,8 @@ use std::pin::Pin;
 use std::time::Duration;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QList, QString};
 
 use crate::qobject::debug_qobject;
@@ -629,11 +629,7 @@ impl QSslSocket {
     /// Returns the version number of the SSL library in use at compile time. If no SSL support is available then this will return `None`.
     pub fn ssl_library_build_version_number() -> Option<i64> {
         let version = ffi::qsslsocket_ssl_library_build_version_number();
-        if version == -1 {
-            None
-        } else {
-            Some(version)
-        }
+        if version == -1 { None } else { Some(version) }
     }
 
     /// Returns the version string of the SSL library in use at compile time. If no SSL support is available then this will return `None`.
@@ -644,11 +640,7 @@ impl QSslSocket {
     /// Returns the version number of the SSL library in use. If no SSL support is available then this will return `None`.
     pub fn ssl_library_version_number() -> Option<i64> {
         let version = ffi::qsslsocket_ssl_library_version_number();
-        if version == -1 {
-            None
-        } else {
-            Some(version)
-        }
+        if version == -1 { None } else { Some(version) }
     }
 
     /// Returns the version string of the SSL library in use. If no SSL support is available then this will return `None`.
@@ -708,33 +700,39 @@ impl Deref for QSslSocket {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QAbstractSocket> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QAbstractSocket {
-        ffi::upcast_qsslsocket_qabstractsocket(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qsslsocket_qabstractsocket(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QAbstractSocket) -> *const Self {
-        ffi::downcast_qabstractsocket_qsslsocket(base)
+        // SAFETY: downcast_qobject
+        unsafe { ffi::downcast_qabstractsocket_qsslsocket(base) }
     }
 }
 
 // SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
-        ffi::upcast_qsslsocket_qiodevice(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qsslsocket_qiodevice(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QIODevice) -> *const Self {
-        ffi::downcast_qiodevice_qsslsocket(base)
+        // SAFETY: downcast_qobject
+        unsafe { ffi::downcast_qiodevice_qsslsocket(base) }
     }
 }
 
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qsslsocket_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qsslsocket_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qsslsocket(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qsslsocket(base) }
     }
 }
 

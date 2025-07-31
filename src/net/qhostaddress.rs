@@ -3,11 +3,11 @@ use std::mem::MaybeUninit;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 use std::ptr;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::{QFlags, QString};
 
-use crate::util::IsNonNull;
 use crate::QAbstractSocketNetworkLayerProtocol;
+use crate::util::IsNonNull;
 
 #[cxx::bridge]
 mod ffi {

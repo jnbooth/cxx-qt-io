@@ -5,8 +5,8 @@ use std::pin::Pin;
 use std::time::Duration;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QFlags, QString};
 
 use crate::qobject::debug_qobject;
@@ -335,11 +335,13 @@ impl Deref for QLocalSocket {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QLocalSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qlocalsocket_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qlocalsocket_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qlocalsocket(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qlocalsocket(base) }
     }
 }
 

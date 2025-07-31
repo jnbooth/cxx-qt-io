@@ -82,7 +82,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QNetworkCookie,
     pos: isize,
 ) -> &ffi::QNetworkCookie {
-    ffi::qlist_get_unchecked_QNetworkCookie(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QNetworkCookie(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_QNetworkCookie, value: &ffi::QNetworkCookie) -> isize {

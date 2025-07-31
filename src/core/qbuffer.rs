@@ -4,12 +4,12 @@ use std::ops::Deref;
 use std::pin::Pin;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QByteArray;
 
-use crate::qobject::debug_qobject;
 use crate::QIODevice;
+use crate::qobject::debug_qobject;
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -151,11 +151,13 @@ impl Deref for QBuffer {
 // SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QBuffer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
-        ffi::upcast_qbuffer_qobject(this)
+        // SAFETY: static_upcast
+        unsafe { ffi::upcast_qbuffer_qobject(this) }
     }
 
     unsafe fn from_base_ptr(base: *const QObject) -> *const Self {
-        ffi::downcast_qobject_qbuffer(base)
+        // SAFETY: qobject_cast
+        unsafe { ffi::downcast_qobject_qbuffer(base) }
     }
 }
 

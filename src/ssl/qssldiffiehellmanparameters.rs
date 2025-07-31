@@ -2,11 +2,11 @@ use std::fmt;
 use std::mem::MaybeUninit;
 use std::pin::Pin;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::QByteArray;
 
-use crate::util::{unpin_for_qt, upcast_mut, IsNonNull};
+use crate::util::{IsNonNull, unpin_for_qt, upcast_mut};
 use crate::{QIODevice, QSslEncodingFormat};
 
 #[cxx::bridge]

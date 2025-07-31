@@ -108,7 +108,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslPreSharedKeyAuthenticator,
     pos: isize,
 ) -> &ffi::QSslPreSharedKeyAuthenticator {
-    ffi::qlist_get_unchecked_QSslPreSharedKeyAuthenticator(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QSslPreSharedKeyAuthenticator(s, pos) }
 }
 
 pub(crate) fn index_of(

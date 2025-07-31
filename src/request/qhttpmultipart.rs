@@ -2,8 +2,8 @@ use std::fmt;
 use std::ops::Deref;
 
 use cxx::UniquePtr;
-use cxx_qt::casting::Upcast;
 use cxx_qt::QObject;
+use cxx_qt::casting::Upcast;
 
 #[cxx_qt::bridge]
 mod ffi {

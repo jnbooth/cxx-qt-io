@@ -1,5 +1,6 @@
 #![allow(non_camel_case_types)]
 #![allow(clippy::needless_lifetimes)]
+#![allow(clippy::undocumented_unsafe_blocks)]
 use cxx::type_id;
 use cxx_qt_lib::{QMap, QMapPair};
 
@@ -38,11 +39,11 @@ macro_rules! impl_qmap_pair {
             }
 
             unsafe fn get_unchecked_key(map: &QMap<Self>, pos: isize) -> &$keyTypeName {
-                $module::get_unchecked_key(map, pos)
+                unsafe { $module::get_unchecked_key(map, pos) }
             }
 
             unsafe fn get_unchecked_value(map: &QMap<Self>, pos: isize) -> &$valueTypeName {
-                $module::get_unchecked_value(map, pos)
+                unsafe { $module::get_unchecked_value(map, pos) }
             }
 
             fn insert(map: &mut QMap<Self>, key: $keyTypeName, value: $valueTypeName) {

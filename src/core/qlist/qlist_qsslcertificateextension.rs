@@ -93,7 +93,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QList_QSslCertificateExtension,
     pos: isize,
 ) -> &ffi::QSslCertificateExtension {
-    ffi::qlist_get_unchecked_QSslCertificateExtension(s, pos)
+    unsafe { ffi::qlist_get_unchecked_QSslCertificateExtension(s, pos) }
 }
 
 pub(crate) fn index_of(

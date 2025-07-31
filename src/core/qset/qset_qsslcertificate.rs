@@ -74,7 +74,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QSet_QSslCertificate,
     pos: isize,
 ) -> &ffi::QSslCertificate {
-    ffi::qset_get_unchecked_QSslCertificate(s, pos)
+    unsafe { ffi::qset_get_unchecked_QSslCertificate(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QSslCertificate, value: &ffi::QSslCertificate) {

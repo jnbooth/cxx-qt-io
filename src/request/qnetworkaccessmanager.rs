@@ -2,8 +2,8 @@ use std::fmt;
 use std::pin::Pin;
 use std::time::Duration;
 
-use cxx::memory::UniquePtrTarget;
 use cxx::UniquePtr;
+use cxx::memory::UniquePtrTarget;
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QByteArray, QString};
 

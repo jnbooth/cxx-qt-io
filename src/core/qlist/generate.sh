@@ -114,7 +114,7 @@ pub(crate) fn drop(s: &mut ffi::QList_$1) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_$1, pos: isize) -> &ffi::$1 {
-    ffi::qlist_get_unchecked_$1(s, pos)
+    unsafe { ffi::qlist_get_unchecked_$1(s, pos) }
 }
 
 pub(crate) fn index_of(v: &ffi::QList_$1, value: &ffi::$1) -> isize {
@@ -238,7 +238,7 @@ pub(crate) fn drop(s: &mut ffi::QList_$1) {
 }
 
 pub(crate) unsafe fn get_unchecked(s: &ffi::QList_$1, pos: isize) -> &ffi::$1 {
-    ffi::qlist_get_unchecked_$1(s, pos)
+    unsafe { ffi::qlist_get_unchecked_$1(s, pos) }
 }
 
 pub(crate) fn index_of(_: &ffi::QList_$1, _: &ffi::$1) -> isize {

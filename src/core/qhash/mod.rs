@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(clippy::needless_lifetimes)]
 #![allow(clippy::trivially_copy_pass_by_ref)]
+#![allow(clippy::undocumented_unsafe_blocks)]
 mod enums;
 use cxx::type_id;
 use cxx_qt_lib::{QHash, QHashPair};
@@ -42,11 +43,11 @@ macro_rules! impl_qhash_pair {
             }
 
             unsafe fn get_unchecked_key(hash: &QHash<Self>, pos: isize) -> &$keyTypeName {
-                $module::get_unchecked_key(hash, pos)
+                unsafe { $module::get_unchecked_key(hash, pos) }
             }
 
             unsafe fn get_unchecked_value(hash: &QHash<Self>, pos: isize) -> &$valueTypeName {
-                $module::get_unchecked_value(hash, pos)
+                unsafe { $module::get_unchecked_value(hash, pos) }
             }
 
             fn insert(hash: &mut QHash<Self>, key: $keyTypeName, value: $valueTypeName) {

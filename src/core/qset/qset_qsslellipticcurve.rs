@@ -74,7 +74,7 @@ pub(crate) unsafe fn get_unchecked(
     s: &ffi::QSet_QSslEllipticCurve,
     pos: isize,
 ) -> &ffi::QSslEllipticCurve {
-    ffi::qset_get_unchecked_QSslEllipticCurve(s, pos)
+    unsafe { ffi::qset_get_unchecked_QSslEllipticCurve(s, pos) }
 }
 
 pub(crate) fn insert(s: &mut ffi::QSet_QSslEllipticCurve, value: &ffi::QSslEllipticCurve) {

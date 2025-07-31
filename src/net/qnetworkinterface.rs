@@ -1,12 +1,12 @@
 use std::fmt;
 use std::mem::MaybeUninit;
 
-use cxx::{type_id, ExternType};
+use cxx::{ExternType, type_id};
 use cxx_qt_lib::QString;
 use cxx_qt_lib::{QFlags, QList};
 
-use crate::util::IsNonNull;
 use crate::QHostAddress;
+use crate::util::IsNonNull;
 
 #[cxx::bridge]
 mod ffi {
@@ -249,11 +249,7 @@ impl QNetworkInterface {
     /// Returns the index of the interface whose name is `name` or `None` if there is no interface with that name.
     pub fn interface_index_from_name(name: &QString) -> Option<i32> {
         let index = ffi::qnetworkinterface_interface_index_from_name(name);
-        if index == 0 {
-            None
-        } else {
-            Some(index)
-        }
+        if index == 0 { None } else { Some(index) }
     }
 
     /// Returns the name of the interface whose index is `index` or `None` if there is no interface with that index.
@@ -266,11 +262,7 @@ impl QNetworkInterface {
     /// If the index isn't known, this function returns `None`.
     pub fn index(&self) -> Option<i32> {
         let index = self.index_or_zero();
-        if index == 0 {
-            None
-        } else {
-            Some(index)
-        }
+        if index == 0 { None } else { Some(index) }
     }
 
     /// Returns the maximum transmission unit on this interface, if known, or `None` otherwise.
@@ -278,11 +270,7 @@ impl QNetworkInterface {
     /// The maximum transmission unit is the largest packet that may be sent on this interface without incurring link-level fragmentation. Applications may use this value to calculate the size of the payload that will fit an unfragmented UDP datagram. Remember to subtract the sizes of headers used in your communication over the interface, e.g. TCP (20 bytes) or UDP (12), IPv4 (20) or IPv6 (40, absent some form of header compression), when computing how big a payload you can transmit. Also note that the MTU along the full path (the Path MTU) to the destination may be smaller than the interface's MTU.
     pub fn maximum_transmission_unit(&self) -> Option<i32> {
         let max = self.maximum_transmission_unit_or_zero();
-        if max == 0 {
-            None
-        } else {
-            Some(max)
-        }
+        if max == 0 { None } else { Some(max) }
     }
 }
 
