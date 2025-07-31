@@ -705,6 +705,7 @@ impl Deref for QSslSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QAbstractSocket> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QAbstractSocket {
         ffi::upcast_qsslsocket_qabstractsocket(this)
@@ -715,6 +716,7 @@ unsafe impl Upcast<QAbstractSocket> for QSslSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qsslsocket_qiodevice(this)
@@ -725,6 +727,7 @@ unsafe impl Upcast<QIODevice> for QSslSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QSslSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsslsocket_qobject(this)

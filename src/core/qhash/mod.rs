@@ -1,3 +1,6 @@
+#![allow(non_camel_case_types)]
+#![allow(clippy::needless_lifetimes)]
+#![allow(clippy::trivially_copy_pass_by_ref)]
 mod enums;
 use cxx::type_id;
 use cxx_qt_lib::{QHash, QHashPair};

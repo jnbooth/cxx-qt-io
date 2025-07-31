@@ -232,6 +232,7 @@ pub struct QAbstractNetworkCacheWriter<'a> {
 impl QAbstractNetworkCacheWriter<'_> {
     /// Insert the written data into the cache.
     pub fn insert(mut self) {
+        // SAFETY: `self.device` is a valid pointer to a device provided by the cache.
         unsafe { self.cache.as_mut().insert_unsafe(self.device) };
         self.inserted = true;
     }

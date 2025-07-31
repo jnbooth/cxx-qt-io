@@ -303,6 +303,7 @@ impl Deref for QFileDevice {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QFileDevice {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qfiledevice_qobject(this)

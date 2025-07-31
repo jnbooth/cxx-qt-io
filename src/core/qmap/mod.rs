@@ -1,3 +1,5 @@
+#![allow(non_camel_case_types)]
+#![allow(clippy::needless_lifetimes)]
 use cxx::type_id;
 use cxx_qt_lib::{QMap, QMapPair};
 

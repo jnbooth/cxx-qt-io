@@ -434,11 +434,9 @@ impl IsNonNull for QSslConfiguration {
 
 impl QSslConfiguration {
     /// This variable holds the value used for negotiating HTTP 2 during the Application-Layer Protocol Negotiation.
-    #[allow(non_upper_case_globals)]
     pub const ALPNProtocolHTTP2: &str = "h2";
 
     /// This variable holds the value used for negotiating HTTP 1.1 during the Next Protocol Negotiation.
-    #[allow(non_upper_case_globals)]
     pub const NextProtocolHttp1_1: &str = "http/1.1";
 
     /// Sets the default SSL configuration to be used in new SSL connections to be `configuration`. Existing connections are not affected by this call.
@@ -548,6 +546,7 @@ impl QSslConfiguration {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslConfiguration {
     type Id = type_id!("QSslConfiguration");
     type Kind = cxx::kind::Trivial;

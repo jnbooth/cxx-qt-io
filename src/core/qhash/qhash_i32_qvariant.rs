@@ -1,6 +1,5 @@
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qhash/generate.sh
-#![allow(clippy::trivially_copy_pass_by_ref)]
 
 #[cxx::bridge]
 pub mod ffi {
@@ -37,7 +36,6 @@ pub mod ffi {
         #[rust_name = "qhash_get_or_default_i32_QVariant"]
         fn qhashGetOrDefault(_: &QHash_i32_QVariant, key: &i32) -> QVariant;
         #[rust_name = "qhash_get_unchecked_key_i32_QVariant"]
-        #[allow(clippy::needless_lifetimes)]
         unsafe fn qhashGetUncheckedKey<'a>(_: &'a QHash_i32_QVariant, pos: isize) -> &'a i32;
         #[rust_name = "qhash_get_unchecked_value_i32_QVariant"]
         unsafe fn qhashGetUncheckedValue(_: &QHash_i32_QVariant, pos: isize) -> &QVariant;
@@ -97,5 +95,4 @@ pub(crate) fn remove(hash: &mut ffi::QHash_i32_QVariant, key: &i32) -> bool {
     ffi::qhash_remove_i32_QVariant(hash, key)
 }
 
-#[allow(non_camel_case_types)]
 pub struct QHashPair_i32_QVariant;

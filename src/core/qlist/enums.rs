@@ -27,6 +27,7 @@ macro_rules! impl_qlist_element {
         // Assert size equivalency.
         const _: [(); std::mem::size_of::<$t>()] = [(); std::mem::size_of::<$r>()];
 
+        #[allow(clippy::undocumented_unsafe_blocks)]
         impl QListElement for $t {
             type TypeId = cxx::type_id!($typeId);
 

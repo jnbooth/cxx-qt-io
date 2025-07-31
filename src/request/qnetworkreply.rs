@@ -485,6 +485,7 @@ impl Deref for QNetworkReply {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QNetworkReply {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qnetworkreply_qobject(this)

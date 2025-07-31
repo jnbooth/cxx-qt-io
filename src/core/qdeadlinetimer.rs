@@ -213,6 +213,7 @@ impl QDeadlineTimer {
         const FOREVER: i64 = i64::MAX;
 
         #[allow(clippy::cast_sign_loss)]
+        #[inline]
         fn construct_duration(
             constructor: fn(u64) -> Duration,
             diff: i64,

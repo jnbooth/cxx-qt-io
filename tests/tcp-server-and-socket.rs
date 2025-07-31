@@ -10,6 +10,8 @@ const PORT: u16 = 8012;
 const TIMEOUT: Option<Duration> = Some(Duration::from_secs(500));
 
 #[test]
+#[allow(clippy::expect_used)]
+#[allow(clippy::unwrap_used)]
 fn tcp_round_trip() {
     init_crates!();
     run_inside_app(|| {
@@ -28,9 +30,10 @@ fn tcp_round_trip() {
             .as_abstract_socket_mut()
             .connect_to_host((addr, PORT), QIODevice::ReadWrite);
 
-        if !server.as_mut().wait_for_new_connection(TIMEOUT) {
-            panic!("failed to acquire connection");
-        }
+        assert!(
+            server.as_mut().wait_for_new_connection(TIMEOUT),
+            "failed to acquire connection"
+        );
 
         let mut server_socket_ptr = server.as_mut().next_pending_connection();
 

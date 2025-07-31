@@ -164,7 +164,6 @@ pub use ffi::{QNetworkInterfaceInterfaceFlag, QNetworkInterfaceInterfaceType};
 
 impl QNetworkInterfaceInterfaceType {
     /// An alias for `Wifi`.
-    #[allow(non_upper_case_globals)]
     pub const Ieee80211: Self = Self {
         repr: Self::Wifi.repr,
     };

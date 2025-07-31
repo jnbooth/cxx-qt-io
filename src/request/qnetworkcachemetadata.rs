@@ -210,8 +210,8 @@ mod tests {
         }
 
         let props = QNetworkCacheMetaDataProps {
-            expiration_date: QDateTime::current_date_time_utc().add_days(2.into()),
-            last_modified: QDateTime::current_date_time_utc().add_days((-2).into()),
+            expiration_date: QDateTime::current_date_time_utc().add_days(2i64),
+            last_modified: QDateTime::current_date_time_utc().add_days(-2i64),
             raw_headers: [
                 (QByteArray::from("a"), QByteArray::from("b")),
                 (QByteArray::from("c"), QByteArray::from("d")),

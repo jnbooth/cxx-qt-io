@@ -159,6 +159,7 @@ impl TryFrom<&QString> for QSslCipher {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslCipher {
     type Id = type_id!("QSslCipher");
     type Kind = cxx::kind::Trivial;

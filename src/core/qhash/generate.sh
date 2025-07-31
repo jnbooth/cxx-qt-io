@@ -59,7 +59,6 @@ function generate_bridge() {
     tee "$SCRIPTPATH/qhash_$LOWER.rs" <<EOF
 //! This is an auto-generated file. Do not edit.
 //! Edit instead: src/core/qhash/generate.sh
-#![allow(clippy::trivially_copy_pass_by_ref)]
 
 #[cxx::bridge]
 pub mod ffi {
@@ -98,7 +97,6 @@ pub mod ffi {
         #[rust_name = "qhash_get_or_default_$SUFFIX"]
         fn qhashGetOrDefault(_: &$QHASH, key: &$K) -> $V;
         #[rust_name = "qhash_get_unchecked_key_$SUFFIX"]
-        #[allow(clippy::needless_lifetimes)]
         unsafe fn qhashGetUncheckedKey<'a>(_: &'a $QHASH, pos: isize) -> &'a $K;
         #[rust_name = "qhash_get_unchecked_value_$SUFFIX"]
         unsafe fn qhashGetUncheckedValue(_: &$QHASH, pos: isize) -> &$V;
@@ -161,7 +159,6 @@ pub(crate) fn remove(hash: &mut ffi::$QHASH, key: &$FK) -> bool {
     ffi::qhash_remove_$SUFFIX(hash, key)
 }
 
-#[allow(non_camel_case_types)]
 pub struct QHashPair_$SUFFIX;
 EOF
     rustfmt +nightly "$SCRIPTPATH/qhash_$LOWER.rs"

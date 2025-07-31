@@ -17,6 +17,8 @@ const PORT: u16 = 8011;
 const TIMEOUT: Duration = Duration::from_secs(500);
 
 #[test]
+#[allow(clippy::expect_used)]
+#[allow(clippy::unwrap_used)]
 fn ssl_round_trip() {
     init_crates!();
     run_inside_app(|| {
@@ -60,9 +62,10 @@ fn ssl_round_trip() {
         client_socket
             .as_abstract_socket_mut()
             .on_error_occurred(|_, error| {
-                if error == QAbstractSocketSocketError::SslHandshakeFailedError {
-                    panic!("handshake failed");
-                }
+                assert!(
+                    !(error == QAbstractSocketSocketError::SslHandshakeFailedError),
+                    "handshake failed"
+                );
             })
             .release();
 
@@ -76,9 +79,10 @@ fn ssl_round_trip() {
             QIODevice::ReadWrite,
         );
 
-        if !wait_for_encrypted(&client_socket, TIMEOUT) {
-            panic!("SSL handshake timed out");
-        }
+        assert!(
+            wait_for_encrypted(&client_socket, TIMEOUT),
+            "SSL handshake timed out"
+        );
 
         assert_eq!(
             client_socket.state(),

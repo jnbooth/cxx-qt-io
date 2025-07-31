@@ -131,6 +131,7 @@ impl Deref for QNetworkDiskCache {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QNetworkDiskCache {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qnetworkdiskcache_qobject(this)

@@ -438,6 +438,7 @@ impl QSslCertificate {
             let key_mut = ptr::from_ref(key).cast_mut();
             let certificate_mut = ptr::from_ref(certificate).cast_mut();
             let ca_certificates_mut = ptr::from_ref(ca_certificates).cast_mut();
+            // SAFETY: from outer
             unsafe {
                 match pass_phrase {
                     Some(pass_phrase) => ffi::qsslcertificate_import_pkcs_12(
@@ -585,6 +586,7 @@ impl TryFrom<&QByteArray> for QSslCertificate {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslCertificate {
     type Id = type_id!("QSslCertificate");
     type Kind = cxx::kind::Trivial;
@@ -632,6 +634,7 @@ pub struct SubjectAlternativeNamesKeys {
     _end: MaybeUninit<usize>,
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesKeys {
     type Id = type_id!("SubjectAlternativeNamesKeys");
     type Kind = cxx::kind::Trivial;
@@ -656,6 +659,7 @@ pub struct SubjectAlternativeNamesIter {
     _end: MaybeUninit<usize>,
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesIter {
     type Id = type_id!("SubjectAlternativeNamesIter");
     type Kind = cxx::kind::Trivial;
@@ -680,6 +684,7 @@ pub struct SubjectAlternativeNamesValues {
     _end: MaybeUninit<usize>,
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesValues {
     type Id = type_id!("SubjectAlternativeNamesValues");
     type Kind = cxx::kind::Trivial;
@@ -717,6 +722,7 @@ impl fmt::Debug for SubjectAlternativeNamesMap {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesMap {
     type Id = type_id!("SubjectAlternativeNamesMap");
     type Kind = cxx::kind::Trivial;

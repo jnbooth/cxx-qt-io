@@ -4,6 +4,7 @@ macro_rules! unsafe_impl_qflag {
         unsafe_impl_qflag!($typeName, $typeId, i32);
     };
     ( $typeName:ty, $typeId:literal, $repr:ident ) => {
+        // SAFETY: Static checks on the C++ side.
         unsafe impl ::cxx_qt_lib::QFlag for $typeName {
             type TypeId = ::cxx::type_id!($typeId);
             type Repr = $repr;

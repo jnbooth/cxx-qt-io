@@ -1,10 +1,6 @@
-#![allow(clippy::wildcard_imports)]
-#![allow(non_camel_case_types)]
-
-#[allow(unused)]
+#![allow(unused)]
 use cxx_qt_lib::{QHash, QHashPair};
 
-#[allow(unused)]
 unsafe fn cast<From, To>(hash: &QHash<From>) -> &QHash<To>
 where
     From: QHashPair,
@@ -14,7 +10,6 @@ where
     unsafe { &*(std::ptr::from_ref(hash).cast()) }
 }
 
-#[allow(unused)]
 unsafe fn cast_mut<From, To>(list: &mut QHash<From>) -> &mut QHash<To>
 where
     From: QHashPair,
@@ -24,7 +19,6 @@ where
     unsafe { &mut *(std::ptr::from_mut(list).cast()) }
 }
 
-#[allow(unused)]
 macro_rules! impl_qhash_pair {
     ($t:ident, $typeId:literal, $k:ty, $r:ty) => {
         // Assert key size equivalency.
@@ -33,6 +27,7 @@ macro_rules! impl_qhash_pair {
 
         pub struct $t;
 
+        #[allow(clippy::undocumented_unsafe_blocks)]
         impl QHashPair for $t {
             type TypeId = cxx::type_id!($typeId);
             type Key = $k;

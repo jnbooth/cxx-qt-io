@@ -519,13 +519,12 @@ impl QNetworkAccessManager {
     where
         T: Upcast<QIODevice>,
     {
-        unsafe {
-            // SAFETY: The lifetime parameter prevents concurrent modification of `data`.
-            let reply =
-                ffi::qnetworkaccessmanager_patch_raw(self, request, upcast_mut(unpin_for_qt(data)));
-            // SAFETY: This object is the parent of the reply, which is valid and non-null.
-            Pin::new_unchecked(&mut *reply)
-        }
+        // SAFETY: The lifetime parameter prevents concurrent modification of `data`.
+        let reply = unsafe {
+            ffi::qnetworkaccessmanager_patch_raw(self, request, upcast_mut(unpin_for_qt(data)))
+        };
+        // SAFETY: This object is the parent of the reply, which is valid and non-null.
+        unsafe { Pin::new_unchecked(&mut *reply) }
     }
 
     /// Sends the contents of the `data` byte array to the destination specified by `request`.
@@ -547,13 +546,12 @@ impl QNetworkAccessManager {
         request: &QNetworkRequest,
         multi_part: Pin<&'a mut QHttpMultiPart>,
     ) -> Pin<&'a mut QNetworkReply> {
-        unsafe {
-            // SAFETY: The lifetime parameter prevents concurrent modification of `multi_part`.
-            let reply =
-                ffi::qnetworkaccessmanager_patch_http_raw(self, request, unpin_for_qt(multi_part));
-            // SAFETY: This object is the parent of the reply, which is valid and non-null.
-            Pin::new_unchecked(&mut *reply)
-        }
+        // SAFETY: The lifetime parameter prevents concurrent modification of `multi_part`.
+        let reply = unsafe {
+            ffi::qnetworkaccessmanager_patch_http_raw(self, request, unpin_for_qt(multi_part))
+        };
+        // SAFETY: This object is the parent of the reply, which is valid and non-null.
+        unsafe { Pin::new_unchecked(&mut *reply) }
     }
     /// Sends an HTTP POST request to the destination specified by request and returns a new `QNetworkReply` object opened for reading that will contain the reply sent by the server. The contents of the `data` device will be uploaded to the server.
     ///
@@ -568,12 +566,10 @@ impl QNetworkAccessManager {
     where
         T: Upcast<QIODevice>,
     {
-        unsafe {
-            // SAFETY: The lifetime parameter prevents concurrent modification of `data`.
-            let reply = self.post_device_raw(request, upcast_mut(unpin_for_qt(data)));
-            // SAFETY: This object is the parent of the reply, which is valid and non-null.
-            Pin::new_unchecked(&mut *reply)
-        }
+        // SAFETY: The lifetime parameter prevents concurrent modification of `data`.
+        let reply = unsafe { self.post_device_raw(request, upcast_mut(unpin_for_qt(data))) };
+        // SAFETY: This object is the parent of the reply, which is valid and non-null.
+        unsafe { Pin::new_unchecked(&mut *reply) }
     }
 
     /// Sends the contents of the `data` byte array to the destination specified by `request`.
@@ -595,12 +591,10 @@ impl QNetworkAccessManager {
         request: &QNetworkRequest,
         multi_part: Pin<&'a mut QHttpMultiPart>,
     ) -> Pin<&'a mut QNetworkReply> {
-        unsafe {
-            // SAFETY: The lifetime parameter prevents concurrent modification of `multi_part`.
-            let reply = self.post_http_raw(request, unpin_for_qt(multi_part));
-            // SAFETY: This object is the parent of the reply, which is valid and non-null.
-            Pin::new_unchecked(&mut *reply)
-        }
+        // SAFETY: The lifetime parameter prevents concurrent modification of `multi_part`.
+        let reply = unsafe { self.post_http_raw(request, unpin_for_qt(multi_part)) };
+        // SAFETY: This object is the parent of the reply, which is valid and non-null.
+        unsafe { Pin::new_unchecked(&mut *reply) }
     }
 
     /// Uploads the contents of data to the destination request and returns a new `QNetworkReply` object that will be open for reply.
@@ -618,12 +612,10 @@ impl QNetworkAccessManager {
     where
         T: Upcast<QIODevice>,
     {
-        unsafe {
-            // SAFETY: The lifetime parameter prevents concurrent modification of `data`.
-            let reply = self.put_device_raw(request, upcast_mut(unpin_for_qt(data)));
-            // SAFETY: This object is the parent of the reply, which is valid and non-null.
-            Pin::new_unchecked(&mut *reply)
-        }
+        // SAFETY: The lifetime parameter prevents concurrent modification of `data`.
+        let reply = unsafe { self.put_device_raw(request, upcast_mut(unpin_for_qt(data))) };
+        // SAFETY: This object is the parent of the reply, which is valid and non-null.
+        unsafe { Pin::new_unchecked(&mut *reply) }
     }
 
     /// Sends the contents of the `data` byte array to the destination specified by `request`.
@@ -645,12 +637,10 @@ impl QNetworkAccessManager {
         request: &QNetworkRequest,
         multi_part: Pin<&'a mut QHttpMultiPart>,
     ) -> Pin<&'a mut QNetworkReply> {
-        unsafe {
-            // SAFETY: The lifetime parameter prevents concurrent modification of `multi_part`.
-            let reply = self.put_http_raw(request, unpin_for_qt(multi_part));
-            // SAFETY: This object is the parent of the reply, which is valid and non-null.
-            Pin::new_unchecked(&mut *reply)
-        }
+        // SAFETY: The lifetime parameter prevents concurrent modification of `multi_part`.
+        let reply = unsafe { self.put_http_raw(request, unpin_for_qt(multi_part)) };
+        // SAFETY: This object is the parent of the reply, which is valid and non-null.
+        unsafe { Pin::new_unchecked(&mut *reply) }
     }
 
     /// Sets the manager's network cache to be the `cache` specified. The cache is used for all requests dispatched by the manager. **The manager takes ownership of `cache`.**
@@ -678,10 +668,11 @@ impl QNetworkAccessManager {
     {
         // Reduce monomorphization
         fn inner(this: Pin<&mut QNetworkAccessManager>, cookie_jar: *mut QNetworkCookieJar) {
-            // SAFETY: cookie_jar is valid.
-            if !cookie_jar.is_null() && !in_same_thread(&*this, unsafe { &*cookie_jar }) {
-                panic!("set_cookie_jar: cookie_jar must be in the same thread as self");
-            }
+            assert!(
+                // SAFETY: cookie_jar is valid.
+                cookie_jar.is_null() || in_same_thread(&*this, unsafe { &*cookie_jar }),
+                "set_cookie_jar: cookie_jar must be in the same thread as self"
+            );
             // SAFETY: QNetworkAccessManager takes ownership of the cookie jar.
             unsafe { this.set_cookie_jar_raw(cookie_jar) };
         }

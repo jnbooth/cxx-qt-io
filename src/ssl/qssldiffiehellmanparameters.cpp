@@ -31,5 +31,6 @@ qssldiffiehellmanparametersDebug(const QSslDiffieHellmanParameters& params)
   serializer << params;
   return res.sliced(startAt, res.length() - 3 - startAt);
 }
+
 }
 }

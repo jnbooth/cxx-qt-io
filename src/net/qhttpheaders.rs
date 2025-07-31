@@ -621,8 +621,8 @@ where
     fn extend<I: IntoIterator<Item = &'a (K, V)>>(&mut self, iter: I) {
         let iter = iter.into_iter();
         self.reserve_usize(iter.size_hint().0);
-        for (name, value) in iter {
-            self.append(*name, *value);
+        for &(name, value) in iter {
+            self.append(name, value);
         }
     }
 }

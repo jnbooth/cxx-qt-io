@@ -117,6 +117,7 @@ impl fmt::Debug for QOcspResponse {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QOcspResponse {
     type Id = type_id!("QOcspResponse");
     type Kind = cxx::kind::Trivial;

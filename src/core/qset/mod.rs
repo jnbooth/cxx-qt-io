@@ -1,5 +1,5 @@
 #![allow(unused)]
-
+#![allow(clippy::trivially_copy_pass_by_ref)]
 use cxx::type_id;
 use cxx_qt_lib::{QSet, QSetElement};
 
@@ -57,6 +57,9 @@ macro_rules! impl_qset_element {
     };
 }
 
+#[cfg(feature = "net")]
+impl_qset_element!(QHostAddress, qset_qhostaddress, "QSet_QHostAddress");
+
 #[cfg(all(feature = "request", cxxqt_qt_version_at_least_6_5))]
 impl_qset_element!(
     QHttp1Configuration,
@@ -72,6 +75,13 @@ impl_qset_element!(
     QSslCertificate,
     qset_qsslcertificate,
     "QSet_QSslCertificate",
+);
+
+#[cfg(feature = "ssl")]
+impl_qset_element!(
+    QSslDiffieHellmanParameters,
+    qset_qssldiffiehellmanparameters,
+    "QSet_QSslDiffieHellmanParameters",
 );
 
 #[cfg(feature = "ssl")]

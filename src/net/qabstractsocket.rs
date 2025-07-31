@@ -576,6 +576,7 @@ impl Deref for QAbstractSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QAbstractSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qabstractsocket_qobject(this)

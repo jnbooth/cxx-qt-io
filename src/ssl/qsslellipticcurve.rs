@@ -123,6 +123,7 @@ impl QSslEllipticCurve {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslEllipticCurve {
     type Id = type_id!("QSslEllipticCurve");
     type Kind = cxx::kind::Trivial;

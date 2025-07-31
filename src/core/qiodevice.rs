@@ -315,7 +315,6 @@ impl fmt::Debug for QIODevice {
     }
 }
 
-#[allow(non_upper_case_globals)]
 impl QIODevice {
     /// Shorthand for [`QIODeviceOpenModeFlag::ReadOnly`]`.into()`.
     pub const ReadOnly: QIODeviceOpenMode =
@@ -433,11 +432,6 @@ impl QIODevice {
     /// Peeks at most `max_size` bytes from the device, returning the data peeked as a `QByteArray`.
     ///
     /// This function has no way of reporting errors; returning an empty `QByteArray` can mean either that no data was currently available for peeking, or that an error occurred.
-    ///
-    /// # Safety
-    ///
-    /// `data` must be valid and `max_size` must be no greater than the maximum length of
-    /// the value stored at `data`.
     pub fn peek_to_array(self: Pin<&mut Self>, max_size: i64) -> QByteArray {
         self.peek_to_array_qint64(max_size.into())
     }
@@ -719,6 +713,7 @@ impl QIODevice {
         io::Error::new(self.get_error_kind(), String::from(&self.error_string()))
     }
 
+    #[allow(clippy::unused_self)]
     fn get_error_kind(&self) -> io::ErrorKind {
         #[cfg(feature = "fs")]
         if let Some(file_device) = self.downcast::<crate::QFileDevice>() {

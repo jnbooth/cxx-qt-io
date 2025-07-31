@@ -37,7 +37,6 @@ pub mod ffi {
         #[rust_name = "qmap_get_or_default_QByteArray_QVariant"]
         fn qmapGetOrDefault(_: &QMap_QByteArray_QVariant, key: &QByteArray) -> QVariant;
         #[rust_name = "qmap_get_unchecked_key_QByteArray_QVariant"]
-        #[allow(clippy::needless_lifetimes)]
         unsafe fn qmapGetUncheckedKey<'a>(
             _: &'a QMap_QByteArray_QVariant,
             pos: isize,
@@ -110,9 +109,9 @@ pub(crate) fn remove(map: &mut ffi::QMap_QByteArray_QVariant, key: &ffi::QByteAr
     ffi::qmap_remove_QByteArray_QVariant(map, key)
 }
 
-#[allow(non_camel_case_types)]
 pub struct QMapPair_QByteArray_QVariant;
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QMapPair_QByteArray_QVariant {
     type Id = type_id!("QMapPair_QByteArray_QVariant");
     type Kind = cxx::kind::Trivial;

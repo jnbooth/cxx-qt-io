@@ -96,6 +96,7 @@ impl Deref for QTcpSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QTcpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qtcpsocket_qiodevice(this)
@@ -106,6 +107,7 @@ unsafe impl Upcast<QIODevice> for QTcpSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QTcpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qtcpsocket_qobject(this)

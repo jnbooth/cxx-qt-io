@@ -399,6 +399,7 @@ struct QIpv6Addr {
     c: [u8; 16],
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QIpv6Addr {
     type Id = type_id!("Q_IPV6ADDR");
     type Kind = cxx::kind::Trivial;

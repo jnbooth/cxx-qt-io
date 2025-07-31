@@ -91,6 +91,7 @@ impl fmt::Debug for QSslCertificateExtension {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslCertificateExtension {
     type Id = type_id!("QSslCertificateExtension");
     type Kind = cxx::kind::Trivial;

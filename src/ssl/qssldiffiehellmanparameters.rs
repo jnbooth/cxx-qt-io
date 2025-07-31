@@ -203,6 +203,7 @@ impl TryFrom<&QByteArray> for QSslDiffieHellmanParameters {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslDiffieHellmanParameters {
     type Id = type_id!("QSslDiffieHellmanParameters");
     type Kind = cxx::kind::Trivial;

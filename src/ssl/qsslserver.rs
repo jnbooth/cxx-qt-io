@@ -233,6 +233,7 @@ impl Deref for QSslServer {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QSslServer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsslserver_qobject(this)

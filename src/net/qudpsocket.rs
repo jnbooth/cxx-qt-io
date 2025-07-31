@@ -202,21 +202,21 @@ impl QUdpSocket {
     ) -> io::Result<(usize, QHostAddress, u16)> {
         let mut address: MaybeUninit<QHostAddress> = MaybeUninit::uninit();
         let mut port = 0;
-        unsafe {
-            // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`, and `address.as_mut_ptr()`
-            // and `&raw mut port` are valid.
-            let result = self.as_mut().read_datagram_unsafe(
+        // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`, and `address.as_mut_ptr()`
+        // and `&raw mut port` are valid.
+        let result = unsafe {
+            self.as_mut().read_datagram_unsafe(
                 data.as_mut_ptr().cast::<c_char>(),
                 data.len() as i64,
                 address.as_mut_ptr(),
                 &raw mut port,
-            );
-            if let Ok(n) = usize::try_from(result) {
-                // SAFETY: `address` has been initialized.
-                return Ok((n, address.assume_init(), port));
-            }
-            Err(self.get_error())
+            )
+        };
+        if let Ok(n) = usize::try_from(result) {
+            // SAFETY: `address` has been initialized.
+            return Ok((n, unsafe { address.assume_init() }, port));
         }
+        Err(self.get_error())
     }
 
     ///Receives a datagram stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
@@ -230,21 +230,21 @@ impl QUdpSocket {
     ) -> Option<(i64, QHostAddress, u16)> {
         let mut address: MaybeUninit<QHostAddress> = MaybeUninit::uninit();
         let mut port = 0;
-        unsafe {
-            // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`, and `address.as_mut_ptr()`
-            // and `&mut port` are valid.
-            let n = self.read_datagram_unsafe(
+        // SAFETY: `data.as_mut_ptr()` is valid up to `data.len()`, and `address.as_mut_ptr()`
+        // and `&mut port` are valid.
+        let n = unsafe {
+            self.read_datagram_unsafe(
                 data.as_mut_ptr(),
                 data.len() as i64,
                 address.as_mut_ptr(),
                 &raw mut port,
-            );
-            if n == -1 {
-                return None;
-            }
-            // SAFETY: `address` has been initialized.
-            Some((n, address.assume_init(), port))
+            )
+        };
+        if n == -1 {
+            return None;
         }
+        // SAFETY: `address` has been initialized.
+        Some((n, unsafe { address.assume_init() }, port))
     }
 
     ///Receives a datagram no larger than `max_size` bytes and stores it in `data`. The sender's host address and port is stored in `address` and `port` (unless the pointers are null).
@@ -400,6 +400,7 @@ impl Deref for QUdpSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qudpsocket_qiodevice(this)
@@ -410,6 +411,7 @@ unsafe impl Upcast<QIODevice> for QUdpSocket {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QUdpSocket {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qudpsocket_qobject(this)

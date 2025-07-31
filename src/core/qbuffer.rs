@@ -148,6 +148,7 @@ impl Deref for QBuffer {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QBuffer {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qbuffer_qobject(this)

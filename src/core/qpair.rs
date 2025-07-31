@@ -13,6 +13,7 @@ pub struct QPair<T1, T2> {
 
 macro_rules! impl_extern {
     ( $firstTypeName:ty, $secondTypeName:ty, $typeId:literal ) => {
+        // SAFETY: Static checks on the C++ side to ensure the size is the same.
         unsafe impl ExternType for QPair<$firstTypeName, $secondTypeName> {
             type Id = type_id!($typeId);
             type Kind = cxx::kind::Trivial;

@@ -280,7 +280,7 @@ impl fmt::Display for QSslSslProtocol {
             Self::TlsV1_3 => "TLS v1.3",
             Self::TlsV1_3OrLater => "TLS v1.3+",
             Self::UnknownProtocol => "unknown protocol",
-            _ => unreachable!(),
+            _ => "unknown",
         })
     }
 }

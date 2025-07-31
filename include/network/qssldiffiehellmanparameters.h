@@ -26,5 +26,6 @@ qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
 
 QString
 qssldiffiehellmanparametersDebug(const QSslDiffieHellmanParameters& params);
+
 }
 }

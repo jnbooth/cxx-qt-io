@@ -170,6 +170,7 @@ impl From<QSslErrorSslError> for QSslError {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslError {
     type Id = type_id!("QSslError");
     type Kind = cxx::kind::Trivial;

@@ -35,12 +35,16 @@ link_qt_object_files = ["cxx-qt-build/link_qt_object_files"]
 [lints.clippy]
 all = { level = "warn", priority = -1 }
 pedantic = { level = "warn", priority = -1 }
+doc_markdown = "allow"
+expect_used = "warn"
 inline_always = "allow"
-manual_assert = "allow"
 missing_errors_doc = "allow"
-missing_panics_doc = "allow"
 missing_safety_doc = "allow"
-module_name_repetitions = "allow"
 must_use_candidate = "allow"
+string_slice = "warn"
 struct_excessive_bools = "allow"
 too_many_lines = "allow"
+undocumented_unsafe_blocks = "warn"
+unnecessary_safety_doc = "warn"
+unreachable = "warn"
+unwrap_used = "warn"

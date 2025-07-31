@@ -116,6 +116,7 @@ impl fmt::Debug for QSslPreSharedKeyAuthenticator {
     }
 }
 
+// SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for QSslPreSharedKeyAuthenticator {
     type Id = type_id!("QSslPreSharedKeyAuthenticator");
     type Kind = cxx::kind::Trivial;

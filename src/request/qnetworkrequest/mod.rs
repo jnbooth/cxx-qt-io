@@ -392,7 +392,6 @@ impl QNetworkRequest {
         self.set_attribute_qvariant(code, &value.into());
     }
 
-    #[allow(clippy::doc_markdown)]
     /// Sets the `threshold` for archive bomb checks.
     ///
     /// Some supported compression algorithms can, in a tiny compressed file, encode a spectacularly huge decompressed file. This is only possible if the decompressed content is extremely monotonous, which is seldom the case for real files being transmitted in good faith: files exercising such insanely high compression ratios are typically payloads of buffer-overrun attacks, or denial-of-service (by using up too much memory) attacks. Consequently, files that decompress to huge sizes, particularly from tiny compressed forms, are best rejected as suspected malware.

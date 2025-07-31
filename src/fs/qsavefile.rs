@@ -143,6 +143,7 @@ impl Deref for QSaveFile {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QIODevice> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QIODevice {
         ffi::upcast_qsavefile_qiodevice(this)
@@ -153,6 +154,7 @@ unsafe impl Upcast<QIODevice> for QSaveFile {
     }
 }
 
+// SAFETY: qobject_cast
 unsafe impl Upcast<QObject> for QSaveFile {
     unsafe fn upcast_ptr(this: *const Self) -> *const QObject {
         ffi::upcast_qsavefile_qobject(this)
