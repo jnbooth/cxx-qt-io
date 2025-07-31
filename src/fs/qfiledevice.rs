@@ -330,6 +330,12 @@ impl Write for Pin<&mut QFileDevice> {
     }
 }
 
+impl fmt::Display for QFileDeviceFileError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}
+
 impl From<QFileDeviceFileError> for io::ErrorKind {
     fn from(value: QFileDeviceFileError) -> Self {
         match value {

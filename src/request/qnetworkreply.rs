@@ -500,3 +500,9 @@ impl Read for Pin<&mut QNetworkReply> {
         self.as_io_device_mut().read(buf)
     }
 }
+
+impl fmt::Display for QNetworkReplyNetworkError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}

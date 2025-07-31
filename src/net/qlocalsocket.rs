@@ -359,6 +359,12 @@ impl Write for Pin<&mut QLocalSocket> {
     }
 }
 
+impl fmt::Display for QLocalSocketLocalSocketError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}
+
 impl From<QLocalSocketLocalSocketError> for QAbstractSocketSocketError {
     fn from(value: QLocalSocketLocalSocketError) -> Self {
         Self { repr: value.repr }

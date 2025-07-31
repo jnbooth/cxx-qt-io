@@ -83,6 +83,8 @@ mod ffi {
             encoding: QSslEncodingFormat,
         ) -> QSslDiffieHellmanParameters;
 
+        #[rust_name = "qssldiffiehellmanparameters_debug"]
+        fn qssldiffiehellmanparametersDebug(params: &QSslDiffieHellmanParameters) -> QString;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -99,9 +101,6 @@ mod ffi {
 
         #[rust_name = "qssldiffiehellmanparameters_eq"]
         fn operatorEq(a: &QSslDiffieHellmanParameters, b: &QSslDiffieHellmanParameters) -> bool;
-
-        #[rust_name = "qssldiffiehellmanparameters_to_debug_qstring"]
-        fn toDebugQString(value: &QSslDiffieHellmanParameters) -> QString;
     }
 }
 
@@ -150,9 +149,7 @@ impl Eq for QSslDiffieHellmanParameters {}
 
 impl fmt::Debug for QSslDiffieHellmanParameters {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        const START_INDEX: usize = "QSslDiffieHellmanParameters(".len();
-        let s = String::from(&ffi::qssldiffiehellmanparameters_to_debug_qstring(self));
-        f.pad(&s[START_INDEX..s.len() - 1])
+        ffi::qssldiffiehellmanparameters_debug(self).fmt(f)
     }
 }
 
@@ -209,4 +206,10 @@ impl TryFrom<&QByteArray> for QSslDiffieHellmanParameters {
 unsafe impl ExternType for QSslDiffieHellmanParameters {
     type Id = type_id!("QSslDiffieHellmanParameters");
     type Kind = cxx::kind::Trivial;
+}
+
+impl fmt::Display for QSslDiffieHellmanParametersError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
 }

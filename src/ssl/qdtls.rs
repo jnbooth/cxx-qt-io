@@ -382,3 +382,9 @@ impl Deref for QDtls {
         self.upcast()
     }
 }
+
+impl fmt::Display for QDtlsError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}

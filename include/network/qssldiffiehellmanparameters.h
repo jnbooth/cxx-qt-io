@@ -23,5 +23,8 @@ qssldiffiehellmanparametersFromEncoded(QIODevice* device,
 QSslDiffieHellmanParameters
 qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
                                        QSsl::EncodingFormat encoding);
+
+QString
+qssldiffiehellmanparametersDebug(const QSslDiffieHellmanParameters& params);
 }
 }

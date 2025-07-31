@@ -1,5 +1,6 @@
 #include "cxx-qt-io/qssldiffiehellmanparameters.h"
 
+#include <QtCore/QDebug>
 #include <cxx-qt-io/assertion_utils.h>
 
 assert_shared_pointer_type(QSslDiffieHellmanParameters);
@@ -20,5 +21,15 @@ qssldiffiehellmanparametersFromEncoded(const QByteArray& encoded,
   return QSslDiffieHellmanParameters::fromEncoded(encoded, encoding);
 }
 
+const int startAt = sizeof("QSslDiffieHellmanParameters(");
+
+QString
+qssldiffiehellmanparametersDebug(const QSslDiffieHellmanParameters& params)
+{
+  QString res;
+  QDebug serializer{ &res };
+  serializer << params;
+  return res.sliced(startAt, res.length() - 3 - startAt);
+}
 }
 }

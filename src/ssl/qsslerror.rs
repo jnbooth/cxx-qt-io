@@ -174,3 +174,9 @@ unsafe impl ExternType for QSslError {
     type Id = type_id!("QSslError");
     type Kind = cxx::kind::Trivial;
 }
+
+impl fmt::Display for QSslErrorSslError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}

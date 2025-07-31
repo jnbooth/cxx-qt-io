@@ -603,6 +603,12 @@ impl Write for Pin<&mut QAbstractSocket> {
     }
 }
 
+impl fmt::Display for QAbstractSocketSocketError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}
+
 impl From<QAbstractSocketSocketError> for io::ErrorKind {
     fn from(value: QAbstractSocketSocketError) -> Self {
         #[allow(clippy::match_same_arms)]
