@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.24)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-option(BUILD_TESTING "Build the tests for CXX-Qt" ON)
+option(BUILD_TESTING "Build the tests for CXX-Qt-IO" ON)
 
 project(cxx_qt)
 
