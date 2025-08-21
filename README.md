@@ -39,7 +39,6 @@ cxx-qt-io currently supports all Qt versions from Qt 6.1 onward.
 
   - [QDeadlineTimer](https://doc.qt.io/qt/qdeadlinetimer.html)
   - [QDir](https://doc.qt.io/qt/qdir.html)
-  - [QFile](https://doc.qt.io/qt/qfile.html)
 
 - QtNetwork:
   - [QAbstractNetworkCache](https://doc.qt.io/qt/qabstractnetworkcache.html)
