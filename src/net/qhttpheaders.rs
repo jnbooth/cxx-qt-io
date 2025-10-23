@@ -670,3 +670,22 @@ unsafe impl ExternType for QHttpHeaders {
     type Id = type_id!("QHttpHeaders");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn eq() {
+        let header1: QHttpHeaders = [("a", "b"), ("c", "d")].iter().collect();
+        let header2: QHttpHeaders = [("a", "b"), ("c", "d")].iter().collect();
+        assert_eq!(header1, header2);
+    }
+
+    #[test]
+    fn neq() {
+        let header1: QHttpHeaders = [("a", "b"), ("c", "d")].iter().collect();
+        let header2: QHttpHeaders = [("a", "b"), ("c", "e")].iter().collect();
+        assert_ne!(header1, header2);
+    }
+}
