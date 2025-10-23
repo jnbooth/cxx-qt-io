@@ -129,6 +129,7 @@ impl QBuffer {
     pub fn set_data<T: AsRef<[u8]>>(self: Pin<&mut Self>, data: T) {
         ffi::qbuffer_set_data(self, data.as_ref());
     }
+
     /// Casts this object to `QIODevice`.
     pub fn as_io_device(&self) -> &QIODevice {
         self.upcast()

@@ -36,7 +36,7 @@ macro_rules! unsafe_impl_qflag {
 macro_rules! wrap_qsignal {
     (
         $(#[$attr:meta])*
-        $signal:ident ( $($i:ident : $t:ty),* ) ( $qsignal:ident );
+        $signal:ident ( $qsignal:ident ) ( $($i:ident : $t:ty),* );
         $connect:ident ( $qconnect:ident );
         $on:ident ( $qon:ident );
         $name:literal

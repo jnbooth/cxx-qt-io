@@ -692,7 +692,7 @@ impl QIODevice {
         /// This signal is emitted every time a payload of data has been written to the device's current write channel. The bytes argument is set to the number of bytes that were written in this payload.
         ///
         /// This signal is not emitted recursively; if you reenter the event loop or call [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) inside a slot connected to this signal, the signal will not be reemitted (although [`wait_for_bytes_written`](QIODevice::wait_for_bytes_written) may still return true).
-        bytes_written(bytes: i64)(bytes_written_qint64);
+        bytes_written(bytes_written_qint64)(bytes: i64);
         connect_bytes_written(connect_bytes_written_qint64);
         on_bytes_written(on_bytes_written_qint64);
         "bytesWritten"
@@ -702,7 +702,7 @@ impl QIODevice {
         /// This signal is emitted every time a payload of data has been written to the device. The bytes argument is set to the number of bytes that were written in this payload, while channel is the channel they were written to. Unlike [`bytes_written`](QIODevice::bytes_written), it is emitted regardless of the current write channel.
         ///
         /// This signal can be emitted recursively - even for the same channel.
-        channel_bytes_written(channel: i32, bytes: i64)(channel_bytes_written_qint64);
+        channel_bytes_written(channel_bytes_written_qint64)(channel: i32, bytes: i64);
         connect_channel_bytes_written(connect_channel_bytes_written_qint64);
         on_channel_bytes_written(on_channel_bytes_written_qint64);
         "channelBytesWritten"

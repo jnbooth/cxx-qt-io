@@ -448,7 +448,7 @@ impl QNetworkReply {
         /// The download is finished when `bytes_received` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
         ///
         /// Note that the values of both `bytes_received` and `bytes_total` may be different from [`self.size()`](QIODevice::size), the total number of bytes obtained through [`read`](QIODevice::read) or [`read_all`](QIODevice::read_all), or the value of the ContentLengthHeader header. The reason for that is that there may be protocol overhead or the data may be compressed during the download.
-        download_progress(bytes_received: i64, bytes_total: i64)(download_progress_qint64);
+        download_progress(download_progress_qint64)(bytes_received: i64, bytes_total: i64);
         connect_download_progress(connect_download_progress_qint64);
         on_download_progress(on_download_progress_qint64);
         "downloadProgress"
@@ -460,7 +460,7 @@ impl QNetworkReply {
         /// The `bytes_sent` parameter indicates the number of bytes uploaded, while `bytes_total` indicates the total number of bytes to be uploaded. If the number of bytes to be uploaded could not be determined, `bytes_total` will be -1.
         ///
         /// The upload is finished when `bytes_sent` is equal to `bytes_total`. At that time, `bytes_total` will not be -1.
-        upload_progress(bytes_sent: i64, bytes_total: i64)(upload_progress_qint64);
+        upload_progress(upload_progress_qint64)(bytes_sent: i64, bytes_total: i64);
         connect_upload_progress(connect_upload_progress_qint64);
         on_upload_progress(on_upload_progress_qint64);
         "uploadProgress"

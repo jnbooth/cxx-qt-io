@@ -650,7 +650,7 @@ impl QSslSocket {
 
     wrap_qsignal! {
         /// This signal is emitted when `QSslSocket` writes its encrypted data to the network. The written parameter contains the number of bytes that were successfully written.
-        encrypted_bytes_written(written: i64)(encrypted_bytes_written_qint64);
+        encrypted_bytes_written(encrypted_bytes_written_qint64)(written: i64);
         connect_encrypted_bytes_written(connect_encrypted_bytes_written_qint64);
         on_encrypted_bytes_written(on_encrypted_bytes_written_qint64);
         "bytesWritten"
