@@ -181,13 +181,12 @@ fn main() {
         include_header!("include/views.h"),
     ]);
 
-    let interface = cxx_qt_build::Interface::default()
-        // Disable exporting the standard include directory, as we are exporting custom headers
-        .export_include_prefixes([])
-        .export_include_directory(&header_dir, "cxx-qt-io")
-        .reexport_dependency("cxx-qt-lib");
-
-    let mut builder = CxxQtBuilder::library(interface)
+    let mut builder = CxxQtBuilder::new()
+        // Use a short name due to the Windows file path limit!
+        // We don't re-export these headers anyway
+        .include_prefix("private")
+        .crate_include_root(Some("include/".to_owned()))
+        .include_dir(&header_dir)
         .build_cpp(&[
             "core/qbuffer",
             "core/qbytearray",
@@ -457,5 +456,6 @@ fn main() {
         }
     }
 
-    builder.build();
+    let interface = builder.build();
+    interface.reexport_dependency("cxx-qt-lib").export();
 }

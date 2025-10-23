@@ -49,11 +49,11 @@ macro_rules! wrap_qsignal {
         #[doc = "Connect the given function pointer to the signal "]
         #[doc = $name]
         #[doc = " so that when the signal is emitted the function pointer is executed."]
-        pub fn $connect<'a, F: FnMut(Pin<&mut Self>, $($t),*) + 'a + Send>(
+        pub fn $connect<F: FnMut(Pin<&mut Self>, $($t),*) + 'static + Send>(
             self: Pin<&mut Self>,
             mut closure: F,
             conn_type: cxx_qt::ConnectionType,
-        ) -> cxx_qt::QScopedMetaObjectConnectionGuard<'a> {
+        ) -> cxx_qt::QMetaObjectConnectionGuard {
             self.$qconnect(move |this, $($i),*| closure(this, $($i.into()),*), conn_type)
         }
 
@@ -63,10 +63,10 @@ macro_rules! wrap_qsignal {
         #[doc = ", so that when the signal is emitted the function pointer is executed."]
         #[doc = ""]
         #[doc = "Note that this method uses a AutoConnection connection type."]
-        pub fn $on<'a, F: FnMut(Pin<&mut Self>, $($t),*) + 'a + Send>(
+        pub fn $on<F: FnMut(Pin<&mut Self>, $($t),*) + 'static + Send>(
             self: Pin<&mut Self>,
             mut closure: F,
-        ) -> cxx_qt::QScopedMetaObjectConnectionGuard<'a> {
+        ) -> cxx_qt::QMetaObjectConnectionGuard {
             self.$qon(move |this, $($i),*| closure(this, $($i.into()),*))
         }
     };

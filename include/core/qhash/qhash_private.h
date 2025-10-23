@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cxx-qt-lib/qhash_private.h>
+#include <cxx-qt-lib/core/qhash/qhash_private.h>
 
 namespace rust {
 namespace cxxqtio1 {

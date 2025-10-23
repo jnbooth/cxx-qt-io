@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cxx-qt-lib/qlist_private.h>
+#include <cxx-qt-lib/core/qlist/qlist_private.h>
 
 namespace rust {
 namespace cxxqtio1 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cxx-qt-lib/qmap.h>
+#include <cxx-qt-lib/core/qmap/qmap_private.h>
 
 namespace rust {
 namespace cxxqtio1 {
