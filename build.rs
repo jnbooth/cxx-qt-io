@@ -429,6 +429,7 @@ fn main() {
                 "core/qlist/qlist_qocspresponse",
                 "core/qlist/qlist_qsslcertificate",
                 "core/qlist/qlist_qsslcertificateextension",
+                "core/qlist/qlist_qsslcipher",
                 "core/qlist/qlist_qsslconfiguration",
                 "core/qlist/qlist_qssldiffiehellmanparameters",
                 "core/qlist/qlist_qsslellipticcurve",
