@@ -136,4 +136,11 @@ mod tests {
 
         assert_eq!(actual_props, props);
     }
+
+    #[test]
+    fn nonnull() {
+        let mut auth = QAuthenticator::new();
+        auth.pin_mut().set_password(&QString::from("password"));
+        assert_nonnull!(auth, QAuthenticator::new());
+    }
 }

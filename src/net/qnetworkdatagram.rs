@@ -336,4 +336,16 @@ mod tests {
 
         assert_eq!(actual_props, props);
     }
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(
+            QNetworkDatagram::new(
+                &QByteArray::from("data"),
+                &QHostAddressSpecialAddress::LocalHost.into(),
+                80
+            ),
+            QNetworkDatagram::default(),
+        );
+    }
 }
