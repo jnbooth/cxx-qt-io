@@ -1,13 +1,10 @@
-//! This is an auto-generated file. Do not edit.
-//! Edit instead: src/core/qhash/generate.sh
-
 #[cxx::bridge]
 pub mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
 
-        include!("cxx-qt-lib/qhash_i32_QVariant.h");
+        include!("cxx-qt-io/qhash_i32_qvariant.h");
         type QHash_i32_QVariant = cxx_qt_lib::QHash<super::QHashPair_i32_QVariant>;
     }
 
@@ -96,3 +93,13 @@ pub(crate) fn remove(hash: &mut ffi::QHash_i32_QVariant, key: &i32) -> bool {
 }
 
 pub struct QHashPair_i32_QVariant;
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

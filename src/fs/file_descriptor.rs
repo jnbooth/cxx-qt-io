@@ -45,3 +45,13 @@ impl IsNonNull for FileDescriptor {
         value.0 != -1
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(FileDescriptor(0), FileDescriptor(-1));
+    }
+}

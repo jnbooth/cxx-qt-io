@@ -58,6 +58,9 @@ inline bool (*qsslcertificateImportPkcs12)(
 inline QList<QSslError> (*qsslcertificateVerify)(const QList<QSslCertificate>&,
                                                  const QString&) =
   QSslCertificate::verify;
+
+QSslCertificate
+qsslcertificateDefault();
 }
 
 }

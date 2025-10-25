@@ -155,10 +155,11 @@ impl fmt::Debug for QSslDiffieHellmanParameters {
 
 impl QSslDiffieHellmanParameters {
     fn into_result(self) -> Result<Self, QSslDiffieHellmanParametersError> {
-        if self.is_valid() {
+        let error = self.error();
+        if error == QSslDiffieHellmanParametersError::NoError {
             Ok(self)
         } else {
-            Err(self.error())
+            Err(error)
         }
     }
 
@@ -212,5 +213,17 @@ unsafe impl ExternType for QSslDiffieHellmanParameters {
 impl fmt::Display for QSslDiffieHellmanParametersError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(self, f)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert!(crate::util::IsNonNull::is_nonnull(
+            &QSslDiffieHellmanParameters::default_parameters()
+        ));
     }
 }

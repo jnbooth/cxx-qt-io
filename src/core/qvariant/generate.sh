@@ -64,6 +64,14 @@ pub(crate) fn construct(value: &ffi::$1) -> ffi::QVariant {
 pub(crate) fn value_or_default(variant: &ffi::QVariant) -> ffi::$1 {
     ffi::qvariant_value_or_default_$1(variant)
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn can_convert() {
+        assert!(!super::can_convert(&cxx_qt_lib::QVariant::default()));
+    }
+}
 EOF
     rustfmt +nightly "$SCRIPTPATH/qvariant_$LOWER.rs"
 }

@@ -240,4 +240,11 @@ mod tests {
 
         assert_eq!(actual_props, props);
     }
+
+    #[test]
+    fn nonnull() {
+        assert!(!crate::util::IsNonNull::is_nonnull(
+            &QNetworkCacheMetaData::default()
+        ));
+    }
 }

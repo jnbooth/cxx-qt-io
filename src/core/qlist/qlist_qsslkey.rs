@@ -97,3 +97,13 @@ pub(crate) fn len(s: &ffi::QList_QSslKey) -> isize {
 pub(crate) fn remove(s: &mut ffi::QList_QSslKey, pos: isize) {
     ffi::qlist_remove_QSslKey(s, pos);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

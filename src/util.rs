@@ -3,6 +3,8 @@ use std::pin::Pin;
 use std::ptr;
 use std::time::Duration;
 
+use cxx::UniquePtr;
+use cxx::memory::UniquePtrTarget;
 use cxx_qt::casting::Upcast;
 use cxx_qt_lib::{QByteArray, QDate, QDateTime, QString, QTime, QVariant};
 
@@ -76,6 +78,21 @@ pub(crate) trait IsNonNull: Sized {
     }
 }
 
+impl<T: IsNonNull> IsNonNull for Pin<&mut T> {
+    fn is_nonnull(value: &Self) -> bool {
+        T::is_nonnull(&**value)
+    }
+}
+
+impl<T: IsNonNull + UniquePtrTarget> IsNonNull for UniquePtr<T> {
+    fn is_nonnull(value: &Self) -> bool {
+        match value.as_ref() {
+            Some(value) => T::is_nonnull(value),
+            None => false,
+        }
+    }
+}
+
 impl IsNonNull for QByteArray {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()
@@ -109,5 +126,40 @@ impl IsNonNull for QTime {
 impl IsNonNull for QVariant {
     fn is_nonnull(value: &Self) -> bool {
         value.is_valid()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn qbytearray_nonnull() {
+        assert_nonnull!(QByteArray::from("a"), QByteArray::default());
+    }
+
+    #[test]
+    fn qdate_nonnull() {
+        assert_nonnull!(QDate::current_date(), QDate::default());
+    }
+
+    #[test]
+    fn qdatetime_nonnull() {
+        assert_nonnull!(QDateTime::current_date_time(), QDateTime::default());
+    }
+
+    #[test]
+    fn qstring_nonnull() {
+        assert_nonnull!(QString::from("a"), QString::default());
+    }
+
+    #[test]
+    fn qtime_nonnull() {
+        assert_nonnull!(QTime::current_time(), QTime::default());
+    }
+
+    #[test]
+    fn qvariant_nonnull() {
+        assert_nonnull!(QVariant::from(&QString::from("a")), QVariant::default());
     }
 }

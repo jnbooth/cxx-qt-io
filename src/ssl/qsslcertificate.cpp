@@ -22,5 +22,10 @@ static_assert(
   ::std::is_move_constructible<SubjectAlternativeNamesValues>::value);
 static_assert(QTypeInfo<SubjectAlternativeNamesValues>::isRelocatable);
 
+QSslCertificate
+qsslcertificateDefault()
+{
+  return QSslCertificate();
+}
 }
 }
