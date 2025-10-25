@@ -69,3 +69,13 @@ impl From<SocketDescriptor> for FileDescriptor {
         Self::from(isize::from(value) as i32)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(SocketDescriptor(0), SocketDescriptor(-1));
+    }
+}

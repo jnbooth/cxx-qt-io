@@ -567,4 +567,12 @@ mod tests {
             ffi::qsslconfiguration_nextprotocolhttp1_1()
         );
     }
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(
+            QSslConfiguration::default_configuration(),
+            QSslConfiguration::default(),
+        );
+    }
 }

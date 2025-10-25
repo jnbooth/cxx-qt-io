@@ -95,7 +95,7 @@ impl RawHeaderList {
 
     /// An iterator visiting all elements in arbitrary order.
     /// The iterator element type is `(&'a QByteArray, &'a QByteArray)`.
-    pub fn iter(&self) -> Iter {
+    pub fn iter(&self) -> Iter<'_> {
         Iter {
             inner: self.inner.iter(),
         }

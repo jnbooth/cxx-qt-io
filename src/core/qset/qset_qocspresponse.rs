@@ -85,3 +85,13 @@ pub(crate) fn len(s: &ffi::QSet_QOcspResponse) -> isize {
 pub(crate) fn reserve(s: &mut ffi::QSet_QOcspResponse, size: isize) {
     ffi::qset_reserve_QOcspResponse(s, size);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

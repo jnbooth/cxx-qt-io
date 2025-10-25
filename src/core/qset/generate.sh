@@ -120,6 +120,16 @@ pub(crate) fn len(s: &ffi::QSet_$1) -> isize {
 pub(crate) fn reserve(s: &mut ffi::QSet_$1, size: isize) {
   ffi::qset_reserve_$1(s, size);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}
 EOF
     rustfmt +nightly "$SCRIPTPATH/qset_$LOWER.rs"
 }

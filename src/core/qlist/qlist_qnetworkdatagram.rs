@@ -100,3 +100,13 @@ pub(crate) fn len(s: &ffi::QList_QNetworkDatagram) -> isize {
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkDatagram, pos: isize) {
     ffi::qlist_remove_QNetworkDatagram(s, pos);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

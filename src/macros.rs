@@ -71,3 +71,18 @@ macro_rules! wrap_qsignal {
         }
     };
 }
+
+#[cfg(test)]
+#[macro_export]
+macro_rules! assert_nonnull {
+    ($a:expr, $b:expr $(,)?) => {
+        use std::borrow::Borrow;
+        assert_eq!(
+            (
+                $crate::util::IsNonNull::is_nonnull($a.borrow()),
+                $crate::util::IsNonNull::is_nonnull($b.borrow())
+            ),
+            (true, false)
+        );
+    };
+}

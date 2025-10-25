@@ -132,6 +132,16 @@ pub(crate) fn len(s: &ffi::QList_$1) -> isize {
 pub(crate) fn remove(s: &mut ffi::QList_$1, pos: isize) {
     ffi::qlist_remove_$1(s, pos);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}
 EOF
     rustfmt "$SCRIPTPATH/qlist_$LOWER.rs"
 }
@@ -255,6 +265,16 @@ pub(crate) fn len(s: &ffi::QList_$1) -> isize {
 
 pub(crate) fn remove(s: &mut ffi::QList_$1, pos: isize) {
     ffi::qlist_remove_$1(s, pos);
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
 }
 EOF
     rustfmt +nightly "$SCRIPTPATH/qlist_$LOWER.rs"
