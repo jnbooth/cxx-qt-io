@@ -259,6 +259,9 @@ mod ffi {
         #[rust_name = "subjectalternativenamesmap_iter"]
         fn qmultimapIter(map: &SubjectAlternativeNamesMap) -> SubjectAlternativeNamesIter;
 
+        #[rust_name = "qsslcertificate_default"]
+        fn qsslcertificateDefault() -> QSslCertificate;
+
         #[rust_name = "qsslcertificate_from_data"]
         fn qsslcertificateFromData(
             data: &QByteArray,
@@ -380,6 +383,13 @@ impl PartialEq for QSslCertificate {
 
 impl Eq for QSslCertificate {}
 
+impl Default for QSslCertificate {
+    /// Constructs a null certificate.
+    fn default() -> Self {
+        ffi::qsslcertificate_default()
+    }
+}
+
 impl fmt::Debug for QSslCertificate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("QSslCertificate")
@@ -414,6 +424,10 @@ impl IsNonNull for QSslCertificate {
 }
 
 impl QSslCertificate {
+    fn into_result(self) -> Result<Self, DecodeSslKeyError> {
+        self.nonnull_or(DecodeSslKeyError(()))
+    }
+
     /// Imports a PKCS#12 (pfx) file from the specified device. A PKCS#12 file is a bundle that can contain a number of certificates and keys. This method reads a single `key`, its `certificate` and any associated `ca_certificates` from the bundle. If a `pass_phrase` is specified then this will be used to decrypt the bundle. Returns `true` if the PKCS#12 file was successfully loaded.
     ///
     /// **Note:** The `device` must be open and ready to be read from.
@@ -490,7 +504,7 @@ impl QSslCertificate {
         data: &QByteArray,
         format: QSslEncodingFormat,
     ) -> Result<Self, DecodeSslKeyError> {
-        ffi::qsslcertificate_init_data(data, format).nonnull_or(DecodeSslKeyError(()))
+        ffi::qsslcertificate_init_data(data, format).into_result()
     }
 
     /// Constructs a `QSslCertificate` by reading `format` encoded data from `device` and using the first certificate found.
@@ -505,7 +519,7 @@ impl QSslCertificate {
     {
         // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
         unsafe { ffi::qsslcertificate_init_device(upcast_mut(unpin_for_qt(device)), format) }
-            .nonnull_or(DecodeSslKeyError(()))
+            .into_result()
     }
 
     /// Searches for and parses all certificates in `data` that are encoded in the specified `format` and returns them in a list of certificates.
