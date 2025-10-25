@@ -94,13 +94,17 @@ impl fmt::Display for QSslEllipticCurve {
 }
 
 impl QSslEllipticCurve {
+    fn into_result(self) -> Result<Self, QSslEllipticCurveError> {
+        self.nonnull_or(QSslEllipticCurveError(()))
+    }
+
     /// Returns a `QSslEllipticCurve` instance representing the named curve `name`. The `name` is a long name for the curve, whose exact spelling depends on the SSL implementation.
     ///
     /// Returns an error if the given `name` is not supported.
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_long_name(name: &QString) -> Result<Self, QSslEllipticCurveError> {
-        ffi::qsslellipticcurve_from_long_name(name).nonnull_or(QSslEllipticCurveError(()))
+        ffi::qsslellipticcurve_from_long_name(name).into_result()
     }
 
     /// Returns a `QSslEllipticCurve` instance representing the named curve `name`. The `name` is the conventional short name for the curve, as represented by RFC 4492 (for instance secp521r1), or as NIST short names (for instance P-256). The actual set of recognized names depends on the SSL implementation.
@@ -109,7 +113,7 @@ impl QSslEllipticCurve {
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_short_name(name: &QString) -> Result<Self, QSslEllipticCurveError> {
-        ffi::qsslellipticcurve_from_short_name(name).nonnull_or(QSslEllipticCurveError(()))
+        ffi::qsslellipticcurve_from_short_name(name).into_result()
     }
 
     /// Returns the conventional long name for this curve. If this curve is invalid, returns `None`.
@@ -135,5 +139,17 @@ pub struct QSslEllipticCurveError(pub(crate) ());
 impl fmt::Display for QSslEllipticCurveError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("the supplied name is not a supported elliptic curve")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert!(!crate::util::IsNonNull::is_nonnull(
+            &QSslEllipticCurve::default()
+        ));
     }
 }
