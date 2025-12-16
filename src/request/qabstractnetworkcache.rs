@@ -160,7 +160,7 @@ impl QAbstractNetworkCache {
     pub fn prepare(
         mut self: Pin<&mut Self>,
         meta_data: &QNetworkCacheMetaData,
-    ) -> Option<QAbstractNetworkCacheWriter> {
+    ) -> Option<QAbstractNetworkCacheWriter<'_>> {
         // SAFETY: `QAbstractNetworkCacheWriter` will ensure the device is handled.
         let device = unsafe { self.as_mut().prepare_unsafe(meta_data) };
         if device.is_null() {

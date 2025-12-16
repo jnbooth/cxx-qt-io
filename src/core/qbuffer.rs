@@ -195,7 +195,7 @@ mod tests {
         buffer
     }
 
-    fn as_str(buffer: &QBuffer) -> Cow<str> {
+    fn as_str(buffer: &QBuffer) -> Cow<'_, str> {
         String::from_utf8_lossy(buffer.as_slice())
     }
 
