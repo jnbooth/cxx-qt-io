@@ -9,7 +9,7 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-cxx = "1.0.192"
+cxx = "1.0.144"
 cxx-qt = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
 cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
 
