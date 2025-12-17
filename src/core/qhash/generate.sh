@@ -65,7 +65,7 @@ pub mod ffi {
     unsafe extern "C++" {
         $INCLUDE_K $INCLUDE_V
 
-        include!("cxx-qt-lib/qhash_$SUFFIX.h");
+        include!("cxx-qt-io/qhash_$LOWER.h");
         type $QHASH = cxx_qt_lib::QHash<super::$QHASHPAIR>;
     }
 

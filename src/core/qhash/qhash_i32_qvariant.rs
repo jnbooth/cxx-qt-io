@@ -7,7 +7,7 @@ pub mod ffi {
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
 
-        include!("cxx-qt-lib/qhash_i32_QVariant.h");
+        include!("cxx-qt-io/qhash_i32_qvariant.h");
         type QHash_i32_QVariant = cxx_qt_lib::QHash<super::QHashPair_i32_QVariant>;
     }
 

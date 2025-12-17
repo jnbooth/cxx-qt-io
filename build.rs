@@ -200,7 +200,9 @@ fn main() {
         .build_rust(&[
             "core/qbuffer",
             "core/qdeadlinetimer",
+            "core/qhash/qhash_i32_qvariant",
             "core/qiodevice",
+            "core/qlist/qlist_qdeadlinetimer",
             "core/qlist/qlist_qpair_qbytearray_qbytearray",
             "core/qmap/qmap_qbytearray_qvariant",
             "core/qobject",
@@ -265,6 +267,7 @@ fn main() {
                 "core/qlist/qlist_qnetworkdatagram",
                 "core/qlist/qlist_qnetworkinterface",
                 "core/qlist/qlist_qnetworkproxy",
+                "core/qset/qset_qhostaddress",
                 "net/raw_header_list",
                 "net/qabstractsocket",
                 "net/qauthenticator",
@@ -361,6 +364,7 @@ fn main() {
                 .build_cpp(&["request/qhttp1configuration"])
                 .build_rust(&[
                     "core/qlist/qlist_qhttp1configuration",
+                    "core/qset/qset_qhttp1configuration",
                     "request/qhttp1configuration",
                 ]);
         }
@@ -421,6 +425,7 @@ fn main() {
                 "core/qlist/qlist_qdtlsgeneratorparameters",
                 "core/qlist/qlist_qocspresponse",
                 "core/qlist/qlist_qsslcertificate",
+                "core/qlist/qlist_qsslcipher",
                 "core/qlist/qlist_qsslcertificateextension",
                 "core/qlist/qlist_qsslconfiguration",
                 "core/qlist/qlist_qssldiffiehellmanparameters",
@@ -428,6 +433,11 @@ fn main() {
                 "core/qlist/qlist_qsslerror",
                 "core/qlist/qlist_qsslkey",
                 "core/qlist/qlist_qsslpresharedkeyauthenticator",
+                "core/qset/qset_qocspresponse",
+                "core/qset/qset_qsslcertificate",
+                "core/qset/qset_qssldiffiehellmanparameters",
+                "core/qset/qset_qsslellipticcurve",
+                "core/qset/qset_qsslerror",
                 "ssl/qcryptographichash",
                 "ssl/qdtls",
                 "ssl/qdtlsclientverifier",
