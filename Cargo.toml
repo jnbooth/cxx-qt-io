@@ -9,17 +9,17 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-cxx = "1.0.192"
-cxx-qt = { git = "https://github.com/jnbooth/cxx-qt", rev = "37ebd3be62fcca469c4ce98b004c4b7ca99f1905" }
-cxx-qt-lib = { git = "https://github.com/jnbooth/cxx-qt", rev = "37ebd3be62fcca469c4ce98b004c4b7ca99f1905" }
+cxx = "1.0.144"
+cxx-qt = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
+cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
 
 [build-dependencies]
-cxx-qt-build = { git = "https://github.com/jnbooth/cxx-qt", rev = "37ebd3be62fcca469c4ce98b004c4b7ca99f1905" }
-qt-build-utils = { git = "https://github.com/jnbooth/cxx-qt", rev = "37ebd3be62fcca469c4ce98b004c4b7ca99f1905" }
+cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
+qt-build-utils = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
 semver = "1.0"
 
 [dev-dependencies]
-cxx-qt-lib-extras = { git = "https://github.com/jnbooth/cxx-qt", rev = "37ebd3be62fcca469c4ce98b004c4b7ca99f1905" }
+cxx-qt-lib-extras = { git = "https://github.com/KDAB/cxx-qt", version = "0.7.2" }
 
 [features]
 default = []
@@ -30,7 +30,10 @@ ssl = ["net"]
 qt_core = ["fs"]
 qt_network = ["net", "request", "ssl"]
 full = ["qt_core", "qt_network"]
-link_qt_object_files = ["cxx-qt-build/link_qt_object_files"]
+link_qt_object_files = [
+  "cxx-qt-build/link_qt_object_files",
+  "cxx-qt-lib/link_qt_object_files",
+]
 
 [lints.clippy]
 all = { level = "warn", priority = -1 }
