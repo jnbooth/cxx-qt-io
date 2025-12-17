@@ -108,11 +108,8 @@ impl BridgeBuilder for CxxQtBuilder {
         })
     }
 
-    fn build_rust(mut self, rust_bridges: &[&str]) -> Self {
-        for rust_source in rust_bridges {
-            self = self.file(format!("src/{rust_source}.rs"));
-        }
-        self
+    fn build_rust(self, rust_bridges: &[&str]) -> Self {
+        self.files(rust_bridges.iter().map(|source| format!("src/{source}.rs")))
     }
 }
 
