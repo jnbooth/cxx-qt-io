@@ -18,7 +18,7 @@ use crate::{
 mod ffi {
     /// The syntax used to interpret the meaning of the pattern.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslCertificatePatternSyntax {
         /// A rich Perl-like pattern matching syntax.
         RegularExpression,
@@ -30,7 +30,7 @@ mod ffi {
 
     /// Describes keys that you can pass to [`QSslCertificate::issuer_info`] or [`QSslCertificate::subject_info`] to get information about the certificate issuer or subject.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslCertificateSubjectInfo {
         /// "O" The name of the organization.
         Organization,

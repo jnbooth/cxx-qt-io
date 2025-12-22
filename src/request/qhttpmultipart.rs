@@ -9,7 +9,7 @@ use cxx_qt::casting::Upcast;
 mod ffi {
     /// List of known content types for a multipart subtype as described in RFC 2046 and others.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QHttpMultiPartContentType {
         /// Corresponds to the "multipart/mixed" subtype, meaning the body parts are independent of each other, as described in RFC 2046.
         MixedType,

@@ -66,7 +66,7 @@ impl RawHeaderList {
         self.inner.clear();
     }
 
-    /// Returns true if the list contains a pair with name `name`; otherwise returns false.
+    /// Returns `true` if the list contains a pair with name `name`; otherwise returns `false`.
     pub fn contains(&self, name: &QByteArray) -> bool {
         ffi::header_list_contains(&self.inner, name)
     }
@@ -88,7 +88,7 @@ impl RawHeaderList {
         ffi::header_list_insert(&mut self.inner, pos.into(), name, value);
     }
 
-    /// Returns true if the list contains no elements; otherwise returns false.
+    /// Returns `true` if the list contains no elements; otherwise returns `false`.
     pub fn is_empty(&self) -> bool {
         self.inner.is_empty()
     }

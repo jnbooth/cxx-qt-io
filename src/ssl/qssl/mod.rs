@@ -8,7 +8,7 @@ pub use implemented_class::QSslImplementedClass;
 mod ffi {
     /// Describes the key types for alternative name entries in [`QSslCertificate`](crate::QSslCertificate).
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslAlternativeNameEntryType {
         /// An email entry; the entry contains an email address that the certificate is valid for.
         EmailEntry,
@@ -20,7 +20,7 @@ mod ffi {
 
     /// Describes the two types of keys [`QSslKey`](crate::QSslKey) supports.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslKeyType {
         /// A private key.
         PrivateKey,
@@ -30,7 +30,7 @@ mod ffi {
 
     /// Describes supported encoding formats for certificates and keys.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslEncodingFormat {
         /// The PEM format.
         Pem,
@@ -40,7 +40,7 @@ mod ffi {
 
     /// Describes the different key algorithms supported by [`QSslKey`](crate::QSslKey).
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslKeyAlgorithm {
         /// A key that should be treated as a 'black box' by [`QSslKey`](crate::QSslKey). Allows applications to add support for facilities such as PKCS#11 that Qt does not currently offer natively.
         Opaque,
@@ -58,7 +58,6 @@ mod ffi {
     ///
     /// By default, [`SslOptionDisableEmptyFragments`](QSslSslOption::SslOptionDisableEmptyFragments) is turned on since this causes problems with a large number of servers. [`SslOptionDisableLegacyRenegotiation`](QSslSslOption::SslOptionDisableLegacyRenegotiation) is also turned on, since it introduces a security risk. [`SslOptionDisableCompression`](QSslSslOption::SslOptionDisableCompression) is turned on to prevent the attack publicised by CRIME. [`SslOptionDisableSessionPersistence`](QSslSslOption::SslOptionDisableSessionPersistence) is turned on to optimize memory usage. The other options are turned off.
     #[repr(i32)]
-    #[derive(PartialEq, Eq)]
     enum QSslSslOption {
         /// Disables the insertion of empty fragments into the data when using block ciphers. When enabled, this prevents some attacks (such as the BEAST attack), however it is incompatible with some servers.
         SslOptionDisableEmptyFragments = 0x01,
@@ -80,7 +79,7 @@ mod ffi {
 
     /// Describes the protocol of the cipher.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslSslProtocol {
         /// TLSv1.2.
         TlsV1_2 = 2,
@@ -108,7 +107,7 @@ mod ffi {
 
     /// Describes the level of an alert message.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslAlertLevel {
         /// Non-fatal alert message.
         Warning,
@@ -120,7 +119,7 @@ mod ffi {
 
     /// See [RFC 8446, section 6](https://datatracker.ietf.org/doc/html/rfc8446#section-6) for the possible values and their meaning.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslAlertType {
         CloseNotify,
         UnexpectedMessage = 10,

@@ -49,7 +49,7 @@ mod ffi {
         ///
         /// Returns `true` if successful; otherwise returns `false`.
         ///
-        /// Note that if a file with the name `new_name` already exists, this function returns false. This means `QFile` will not overwrite it.
+        /// Note that if a file with the name `new_name` already exists, this function returns `false`. This means `QFile` will not overwrite it.
         fn copy(self: Pin<&mut QFile>, new_name: &QString) -> bool;
 
         /// Returns `true` if the file specified by [`self.file_name()`](QFileDevice::file_name) exists; otherwise returns `false`.

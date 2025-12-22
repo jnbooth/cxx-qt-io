@@ -15,7 +15,7 @@ use crate::{QHostAddress, QSslCipher, QSslSocketSslMode, QUdpSocket};
 mod ffi {
     /// This enum describes general and TLS-specific errors that can be encountered by objects of the classes [`QDtlsClientVerifier`](crate::QDtlsClientVerifier) and [`QDtls`].
     #[repr(u8)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QDtlsError {
         /// No error occurred, the last operation was successful.
         NoError,
@@ -39,7 +39,7 @@ mod ffi {
 
     /// This enum describes the current state of DTLS handshake for a [`QDtls`] connection.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QDtlsHandshakeState {
         /// Nothing done yet.
         HandshakeNotStarted,

@@ -22,7 +22,6 @@ use crate::util::IsNonNull;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
-    #[derive(PartialEq, Eq)]
     enum QStandardPathsLocateOption {
         LocateFile,
         LocateDirectory,

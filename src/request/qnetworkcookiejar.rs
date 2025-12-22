@@ -66,7 +66,7 @@ mod ffi {
 
         /// If a cookie with the same identifier as `cookie` exists in this cookie jar it will be updated.
         ///
-        /// Returns true if `cookie` was updated, false if no cookie in the jar matches the identifier of `cookie`.
+        /// Returns `true` if `cookie` was updated, `false` if no cookie in the jar matches the identifier of `cookie`.
         #[rust_name = "update_cookie"]
         fn updateCookie(self: Pin<&mut QNetworkCookieJar>, cookie: &QNetworkCookie) -> bool;
     }

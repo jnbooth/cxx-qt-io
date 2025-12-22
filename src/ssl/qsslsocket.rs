@@ -20,7 +20,7 @@ use crate::{
 mod ffi {
     /// Describes the peer verification modes for [`QSslSocket`]. The default mode is [`AutoVerifyPeer`](QSslSocketPeerVerifyMode::AutoVerifyPeer), which selects an appropriate mode depending on the socket's [`QSslSocketSslMode`].
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslSocketPeerVerifyMode {
         /// [`QSslSocket`] will not request a certificate from the peer. You can set this mode if you are not interested in the identity of the other side of the connection. The connection will still be encrypted, and your socket will still send its local certificate to the peer if it's requested.
         VerifyNone,
@@ -34,7 +34,7 @@ mod ffi {
 
     /// Describes the connection modes available for [`QSslSocket`].
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslSocketSslMode {
         /// The socket is unencrypted. Its behavior is identical to [`QTcpSocket`].
         UnencryptedMode,

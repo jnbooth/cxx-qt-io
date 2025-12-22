@@ -7,7 +7,7 @@ use cxx::{ExternType, type_id};
 mod ffi {
     /// Describes the Online Certificate Status.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QOcspCertificateStatus {
         /// The certificate is not revoked, but this does not necessarily mean that the certificate was ever issued or that the time at which the response was produced is within the certificate's validity interval.
         Good,
@@ -21,7 +21,7 @@ mod ffi {
     ///
     /// This enumeration describes revocation reasons, defined in [RFC 5280, section 5.3.1](https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1).
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QOcspRevocationReason {
         Unspecified,
         KeyCompromise,

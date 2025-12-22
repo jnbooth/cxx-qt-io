@@ -3,7 +3,7 @@ use std::fmt;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QCryptographicHashAlgorithm {
         Md4,
         Md5,

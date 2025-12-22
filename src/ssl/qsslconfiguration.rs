@@ -10,7 +10,7 @@ use crate::{QSslCertificate, QSslCipher, QSslEllipticCurve, QSslKey};
 mod ffi {
     /// Describes the status of the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN).
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslConfigurationNextProtocolNegotiationStatus {
         /// No application protocol has been negotiated (yet).
         NextProtocolNegotiationNone,

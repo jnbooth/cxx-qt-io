@@ -19,7 +19,7 @@ use crate::{
 mod ffi {
     /// Indicates the operation this reply is processing.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QNetworkAccessManagerOperation {
         /// retrieve headers operation (created with [`QNetworkAccessManager::head`])
         HeadOperation = 1,

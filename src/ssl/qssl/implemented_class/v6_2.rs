@@ -5,7 +5,7 @@ mod ffi {
     ///
     /// In QtNetwork, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslImplementedClass {
         /// Class [`QSslKey`](crate::QSslKey).
         Key,

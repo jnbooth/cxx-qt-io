@@ -13,7 +13,7 @@ mod ffi {
     /// Data interchange with other users is out of the scope of [`QStandardPaths`].
     #[cxx_name = "QStandardPathsStandardLocation"]
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QStandardPaths {
         /// Returns the user's desktop directory. This is a generic value. On systems with no concept of a desktop, this is the same as [`HomeLocation`](QStandardPaths::HomeLocation).
         DesktopLocation,

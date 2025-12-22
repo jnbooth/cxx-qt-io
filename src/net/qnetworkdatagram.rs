@@ -48,7 +48,7 @@ mod ffi {
         #[rust_name = "interface_index_or_zero"]
         fn interfaceIndex(&self) -> u32;
 
-        /// Returns true if this `QNetworkDatagram` object is null. This function is the opposite of [`is_valid`](QNetworkDatagram::is_valid).
+        /// Returns `true` if this `QNetworkDatagram` object is null. This function is the opposite of [`is_valid`](QNetworkDatagram::is_valid).
         #[rust_name = "is_null"]
         fn isNull(&self) -> bool;
 

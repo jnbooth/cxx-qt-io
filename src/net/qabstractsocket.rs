@@ -16,7 +16,7 @@ use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescr
 mod ffi {
     /// This enum describes the network layer protocol values used in Qt.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QAbstractSocketNetworkLayerProtocol {
         /// IPv4
         IPv4Protocol,
@@ -30,7 +30,6 @@ mod ffi {
 
     /// This enum describes the different flags you can pass to modify the behavior of [`QAbstractSocket::bind`].
     #[repr(i32)]
-    #[derive(PartialEq, Eq)]
     enum QAbstractSocketBindFlag {
         /// The default option for the current platform. On Unix and macOS, this is equivalent to [`DontShareAddress`](QAbstractSocketBindFlag::DontShareAddress)` + `[`ReuseAddressHint`](QAbstractSocketBindFlag::ReuseAddressHint)), and on Windows, it is equivalent to [`ShareAddress`](QAbstractSocketBindFlag::ShareAddress).
         DefaultForPlatform = 0x0,
@@ -44,7 +43,7 @@ mod ffi {
 
     /// This enum describes the socket errors that can occur.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QAbstractSocketSocketError {
         /// The connection was refused by the peer (or timed out).
         ConnectionRefusedError,
@@ -98,7 +97,7 @@ mod ffi {
 
     /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the [`QAbstractSocket::connected`] signal from the socket or after having received a new socket from a [`QTcpServer`](crate::QTcpServer).
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QAbstractSocketSocketOption {
         /// Try to optimize the socket for low latency. For a [`QTcpSocket`](crate::QTcpSocket) this would set the `TCP_NODELAY` option and disable Nagle's algorithm. Set this to 1 to enable.
         LowDelayOption,
@@ -131,7 +130,7 @@ mod ffi {
 
     /// This enum describes the behavior of when the socket should hold back with continuing data transfer. The only notification currently supported is [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors).
     #[repr(i32)]
-    #[derive(PartialEq, Eq)]
+    #[derive(Debug)]
     enum QAbstractSocketPauseMode {
         /// Do not pause data transfer on the socket. This is the default and matches the behavior of Qt 4.
         PauseNever = 0x0,
@@ -141,7 +140,7 @@ mod ffi {
 
     /// This enum describes the different states in which a socket can be.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QAbstractSocketSocketState {
         /// The socket is not connected.
         UnconnectedState,
@@ -161,7 +160,7 @@ mod ffi {
 
     /// This enum describes the transport layer protocol.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QAbstractSocketSocketType {
         /// TCP
         TcpSocket,

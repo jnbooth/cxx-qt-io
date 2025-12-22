@@ -4,7 +4,6 @@ use std::fmt;
 mod ffi {
     /// List of known header types that [`QNetworkRequest`] parses. Each known header is also represented in raw form with its full HTTP name.
     #[repr(i32)]
-    #[derive(PartialEq, Eq)]
     enum QNetworkRequestKnownHeaders {
         /// Corresponds to the HTTP Content-Type header and contains a string containing the media (MIME) type and any auxiliary data (for instance, charset).
         ContentTypeHeader,

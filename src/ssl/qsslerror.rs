@@ -10,7 +10,7 @@ use crate::util::IsNonNull;
 mod ffi {
     /// Describes all recognized errors that can occur during an SSL handshake.
     #[repr(i32)]
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(Debug)]
     enum QSslErrorSslError {
         NoError,
         UnableToGetIssuerCertificate,
