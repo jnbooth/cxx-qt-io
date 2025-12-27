@@ -12,10 +12,6 @@ struct IsRelocatable<QHttpHeaders> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
-inline QHttpHeaders (*qhttpheadersFromListOfPairs)(
-  const QList<::std::pair<QByteArray, QByteArray>>&) =
-  QHttpHeaders::fromListOfPairs;
-
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersWellKnownHeaderName(QHttpHeaders::WellKnownHeader name);
 
@@ -35,5 +31,4 @@ bool
 qhttpheadersEq(const QHttpHeaders& a, const QHttpHeaders& b);
 
 }
-
 }

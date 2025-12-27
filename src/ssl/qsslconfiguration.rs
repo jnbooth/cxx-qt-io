@@ -1,10 +1,10 @@
 use std::mem::MaybeUninit;
 
 use cxx::{ExternType, type_id};
-use cxx_qt_lib::{QByteArray, QList, QVariant};
+use cxx_qt_lib::{QByteArray, QVariant};
 
 use crate::util::IsNonNull;
-use crate::{QSslCertificate, QSslCipher, QSslEllipticCurve, QSslKey};
+use crate::{QSslCertificate, QSslCipher, QSslKey};
 
 #[cxx::bridge]
 mod ffi {
@@ -58,6 +58,53 @@ mod ffi {
 
     unsafe extern "C++" {
         type QSslConfiguration = super::QSslConfiguration;
+
+        /// Sets the default SSL configuration to be used in new SSL connections to be `configuration`. Existing connections are not affected by this call.
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "set_default_configuration"]
+        fn setDefaultConfiguration(configuration: &QSslConfiguration);
+
+        /// Sets the default DTLS configuration to be used in new DTLS connections to be `configuration`. Existing connections are not affected by this call.
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "set_default_dtls_configuration"]
+        fn setDefaultDtlsConfiguration(configuration: &QSslConfiguration);
+
+        /// Returns the list of cryptographic ciphers supported by this system. This list is set by the system's SSL libraries and may vary from system to system.
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "supported_ciphers"]
+        fn supportedCiphers() -> QList_QSslCipher;
+
+        /// Returns the list of elliptic curves supported by this system. This list is set by the system's SSL libraries and may vary from system to system.
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "supported_elliptic_curves"]
+        fn supportedEllipticCurves() -> QList_QSslEllipticCurve;
+
+        /// This function provides the CA certificate database provided by the operating system. The CA certificate database returned by this function is used to initialize the database returned by [`QSslConfiguration::default_dtls_configuration()`]`.`[`ca_certificates()`](QSslConfiguration::ca_certificates).
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "system_ca_certificates"]
+        fn systemCaCertificates() -> QList_QSslCertificate;
+
+        /// Returns the default SSL configuration to be used in new SSL connections.
+        ///
+        /// The default SSL configuration consists of:
+        /// * no local certificate and no private key
+        /// * protocol [`QSslSslProtocol::SecureProtocols`](crate::QSslSslProtocol::SecureProtocols)
+        /// * the system's default CA certificate list
+        /// * the cipher list equal to the list of the SSL libraries' supported SSL ciphers that are 128 bits or more
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "default_configuration"]
+        fn defaultConfiguration() -> QSslConfiguration;
+
+        /// Returns the default DTLS configuration to be used in new DTLS connections.
+        ///
+        /// The default DTLS configuration consists of:
+        /// * no local certificate and no private key
+        /// * protocol [`QSslSslProtocol::DtlsV1_2OrLater`](crate::QSslSslProtocol::DtlsV1_2OrLater)
+        /// * the system's default CA certificate list
+        /// * the cipher list equal to the list of the SSL libraries' supported TLS 1.2 ciphers that are 128 bits or more
+        #[Self = "QSslConfiguration"]
+        #[rust_name = "default_dtls_configuration"]
+        fn defaultDtlsConfiguration() -> QSslConfiguration;
 
         /// Adds `certificate` to this configuration's CA certificate database. The certificate database must be set prior to the SSL handshake. The CA certificate database is used by the socket during the handshake phase to validate the peer's certificate.
         ///
@@ -335,30 +382,6 @@ mod ffi {
         fn testSslOption(&self, option: QSslSslOption) -> bool;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qsslconfiguration_default_configuration"]
-        fn qsslconfigurationDefaultConfiguration() -> QSslConfiguration;
-
-        #[rust_name = "qsslconfiguration_default_dtls_configuration"]
-        fn qsslconfigurationDefaultDtlsConfiguration() -> QSslConfiguration;
-
-        #[rust_name = "qsslconfiguration_set_default_configuration"]
-        fn qsslconfigurationSetDefaultConfiguration(configuration: &QSslConfiguration);
-
-        #[rust_name = "qsslconfiguration_set_default_dtls_configuration"]
-        fn qsslconfigurationSetDefaultDtlsConfiguration(configuration: &QSslConfiguration);
-
-        #[rust_name = "qsslconfiguration_supported_ciphers"]
-        fn qsslconfigurationSupportedCiphers() -> QList_QSslCipher;
-
-        #[rust_name = "qsslconfiguration_supported_elliptic_curves"]
-        fn qsslconfigurationSupportedEllipticCurves() -> QList_QSslEllipticCurve;
-
-        #[rust_name = "qsslconfiguration_system_ca_certificates"]
-        fn qsslconfigurationSystemCaCertificates() -> QList_QSslCertificate;
-    }
-
     // #[cfg(test)]
     #[allow(unused)]
     #[namespace = "rust::cxxqtio1"]
@@ -438,53 +461,6 @@ impl QSslConfiguration {
 
     /// This variable holds the value used for negotiating HTTP 1.1 during the Next Protocol Negotiation.
     pub const NextProtocolHttp1_1: &str = "http/1.1";
-
-    /// Sets the default SSL configuration to be used in new SSL connections to be `configuration`. Existing connections are not affected by this call.
-    pub fn set_default_configuration(configuration: &QSslConfiguration) {
-        ffi::qsslconfiguration_set_default_configuration(configuration);
-    }
-
-    /// Sets the default DTLS configuration to be used in new DTLS connections to be `configuration`. Existing connections are not affected by this call.
-    pub fn set_default_dtls_configuration(configuration: &QSslConfiguration) {
-        ffi::qsslconfiguration_set_default_dtls_configuration(configuration);
-    }
-
-    /// Returns the list of cryptographic ciphers supported by this system. This list is set by the system's SSL libraries and may vary from system to system.
-    pub fn supported_ciphers() -> QList<QSslCipher> {
-        ffi::qsslconfiguration_supported_ciphers()
-    }
-
-    /// Returns the list of elliptic curves supported by this system. This list is set by the system's SSL libraries and may vary from system to system.
-    pub fn supported_elliptic_curves() -> QList<QSslEllipticCurve> {
-        ffi::qsslconfiguration_supported_elliptic_curves()
-    }
-
-    /// This function provides the CA certificate database provided by the operating system. The CA certificate database returned by this function is used to initialize the database returned by [`QSslConfiguration::default_dtls_configuration()`]`.`[`ca_certificates()`](QSslConfiguration::ca_certificates).
-    pub fn system_ca_certificates() -> QList<QSslCertificate> {
-        ffi::qsslconfiguration_system_ca_certificates()
-    }
-
-    /// Returns the default SSL configuration to be used in new SSL connections.
-    ///
-    /// The default SSL configuration consists of:
-    /// * no local certificate and no private key
-    /// * protocol [`QSslSslProtocol::SecureProtocols`](crate::QSslSslProtocol::SecureProtocols)
-    /// * the system's default CA certificate list
-    /// * the cipher list equal to the list of the SSL libraries' supported SSL ciphers that are 128 bits or more
-    pub fn default_configuration() -> Self {
-        ffi::qsslconfiguration_default_configuration()
-    }
-
-    /// Returns the default DTLS configuration to be used in new DTLS connections.
-    ///
-    /// The default DTLS configuration consists of:
-    /// * no local certificate and no private key
-    /// * protocol [`QSslSslProtocol::DtlsV1_2OrLater`](crate::QSslSslProtocol::DtlsV1_2OrLater)
-    /// * the system's default CA certificate list
-    /// * the cipher list equal to the list of the SSL libraries' supported TLS 1.2 ciphers that are 128 bits or more
-    pub fn default_dtls_configuration() -> Self {
-        ffi::qsslconfiguration_default_dtls_configuration()
-    }
 
     /// This function returns the protocol negotiated with the server if the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN) TLS extension was enabled. In order for the NPN/ALPN extension to be enabled, [`set_allowed_next_protocols`](QSslConfiguration::set_allowed_next_protocols) needs to be called explicitly before connecting to the server.
     ///

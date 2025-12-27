@@ -216,6 +216,11 @@ mod ffi {
         type QHttpHeaders = super::QHttpHeaders;
 
         #[doc(hidden)]
+        #[Self = "QHttpHeaders"]
+        #[rust_name = "from_list_of_pairs"]
+        fn fromListOfPairs(pairs: &QList_QPair_QByteArray_QByteArray) -> QHttpHeaders;
+
+        #[doc(hidden)]
         #[rust_name = "append_by_name"]
         fn append(&mut self, name: QAnyStringView, value: QAnyStringView) -> bool;
         #[doc(hidden)]
@@ -313,9 +318,6 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[rust_name = "qhttpheaders_from_list_of_pairs"]
-        fn qhttpheadersFromListOfPairs(pairs: &QList_QPair_QByteArray_QByteArray) -> QHttpHeaders;
-
         #[rust_name = "qhttpheaders_well_known_header_name"]
         fn qhttpheadersWellKnownHeaderName(name: QHttpHeadersWellKnownHeader) -> &'static [u8];
 
@@ -608,7 +610,7 @@ impl QHttpHeaders {
 
 impl From<&RawHeaderList> for QHttpHeaders {
     fn from(value: &RawHeaderList) -> Self {
-        ffi::qhttpheaders_from_list_of_pairs(&value.inner)
+        Self::from_list_of_pairs(&value.inner)
     }
 }
 

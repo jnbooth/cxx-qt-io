@@ -80,6 +80,22 @@ mod ffi {
     unsafe extern "C++" {
         type QNetworkProxy = super::QNetworkProxy;
 
+        /// Returns the application level network proxying.
+        ///
+        /// If a [`QAbstractSocket`](crate::QAbstractSocket) or [`QTcpSocket`](crate::QTcpSocket) has the [`QNetworkProxyProxyType::DefaultProxy`] type, then the `QNetworkProxy` returned by this function is used.
+        #[Self = "QNetworkProxy"]
+        #[rust_name = "application_proxy"]
+        fn applicationProxy() -> QNetworkProxy;
+
+        /// Sets the application level network proxying to be `network_proxy`.
+        ///
+        /// If a [`QAbstractSocket`](crate::QAbstractSocket) or [`QTcpSocket`](crate::QTcpSocket) has the [`QNetworkProxyProxyType::DefaultProxy`] type, then the `QNetworkProxy` set with this function is used.
+        ///
+        /// Setting a default proxy value with this function will disable the use of a system proxy.
+        #[Self = "QNetworkProxy"]
+        #[rust_name = "set_application_proxy"]
+        fn setApplicationProxy(network_proxy: &QNetworkProxy);
+
         /// Returns the capabilities of this proxy server.
         fn capabilities(&self) -> QNetworkProxyCapabilities;
 
@@ -184,16 +200,6 @@ mod ffi {
 
         /// Returns the user name used for authentication.
         fn user(&self) -> QString;
-
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qnetworkproxy_application_proxy"]
-        fn qnetworkproxyApplicationProxy() -> QNetworkProxy;
-
-        #[rust_name = "qnetworkproxy_set_application_proxy"]
-        fn qnetworkproxySetApplicationProxy(proxy: &QNetworkProxy);
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -269,25 +275,9 @@ impl fmt::Debug for QNetworkProxy {
 }
 
 impl QNetworkProxy {
-    /// Returns the application level network proxying.
-    ///
-    /// If a [`QAbstractSocket`](crate::QAbstractSocket) or [`QTcpSocket`](crate::QTcpSocket) has the [`QNetworkProxyProxyType::DefaultProxy`] type, then the `QNetworkProxy` returned by this function is used.
-    pub fn application_proxy() -> Self {
-        ffi::qnetworkproxy_application_proxy()
-    }
-
     /// Returns the value of the known network header `header` if it is in use for this proxy. If it is not present, returns `None`.
     pub fn header(&self, header: QNetworkRequestKnownHeaders) -> Option<QVariant> {
         self.header_or_invalid(header).nonnull()
-    }
-
-    /// Sets the application level network proxying to be `network_proxy`.
-    ///
-    /// If a [`QAbstractSocket`](crate::QAbstractSocket) or [`QTcpSocket`](crate::QTcpSocket) has the [`QNetworkProxyProxyType::DefaultProxy`] type, then the `QNetworkProxy` set with this function is used.
-    ///
-    /// Setting a default proxy value with this function will disable the use of a system proxy.
-    pub fn set_application_proxy(network_proxy: &Self) {
-        ffi::qnetworkproxy_set_application_proxy(network_proxy);
     }
 
     /// Sets the value of the known header `header` to be `value`, overriding any previously set headers. This operation also sets the equivalent raw HTTP header.

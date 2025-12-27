@@ -2,10 +2,9 @@ use std::fmt;
 use std::mem::MaybeUninit;
 
 use cxx::{ExternType, type_id};
+use cxx_qt_lib::QFlags;
 use cxx_qt_lib::QString;
-use cxx_qt_lib::{QFlags, QList};
 
-use crate::QHostAddress;
 use crate::util::IsNonNull;
 
 #[cxx::bridge]
@@ -83,6 +82,36 @@ mod ffi {
     unsafe extern "C++" {
         type QNetworkInterface = super::QNetworkInterface;
 
+        /// This convenience function returns all IP addresses found on the host machine. It is equivalent to calling [`address_entries`](QNetworkInterface::address_entries) on all the objects returned by [`self.all_interfaces()`](QNetworkInterface::all_interfaces) that are in the [`QNetworkInterfaceInterfaceFlag::IsUp`] state to obtain lists of [`QNetworkAddressEntry`](crate::QNetworkAddressEntry) objects then calling [`QNetworkAddressEntry::ip`](crate::QNetworkAddressEntry::ip) on each of these.
+        #[Self = "QNetworkInterface"]
+        #[rust_name = "all_addresses"]
+        fn allAddresses() -> QList_QHostAddress;
+
+        /// Returns a listing of all the network interfaces found on the host machine. In case of failure it returns a list with zero elements.
+        #[Self = "QNetworkInterface"]
+        #[rust_name = "all_interfaces"]
+        fn allInterfaces() -> QList_QNetworkInterface;
+
+        #[doc(hidden)]
+        #[Self = "QNetworkInterface"]
+        #[rust_name = "interface_from_index_or_null"]
+        fn interfaceFromIndex(index: i32) -> QNetworkInterface;
+
+        #[doc(hidden)]
+        #[Self = "QNetworkInterface"]
+        #[rust_name = "interface_from_name_or_null"]
+        fn interfaceFromName(name: &QString) -> QNetworkInterface;
+
+        #[doc(hidden)]
+        #[Self = "QNetworkInterface"]
+        #[rust_name = "interface_index_from_name_or_zero"]
+        fn interfaceIndexFromName(name: &QString) -> i32;
+
+        #[doc(hidden)]
+        #[Self = "QNetworkInterface"]
+        #[rust_name = "interface_name_from_index_or_empty"]
+        fn interfaceNameFromIndex(index: i32) -> QString;
+
         /// Returns the list of IP addresses that this interface possesses along with their associated netmasks and broadcast addresses.
         ///
         /// If the netmask or broadcast address or other information is not necessary, you can call the [`all_addresses`](QNetworkInterface::all_addresses) function to obtain just the IP addresses of the active interfaces.
@@ -122,27 +151,6 @@ mod ffi {
         /// Returns the type of this interface, if it could be determined. If it could not be determined, this function returns [`QNetworkInterfaceInterfaceType::Unknown`].
         #[cxx_name = "type"]
         fn interface_type(&self) -> QNetworkInterfaceInterfaceType;
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qnetworkinterface_all_addresses"]
-        fn qnetworkinterfaceAllAddresses() -> QList_QHostAddress;
-
-        #[rust_name = "qnetworkinterface_all_interfaces"]
-        fn qnetworkinterfaceAllInterfaces() -> QList_QNetworkInterface;
-
-        #[rust_name = "qnetworkinterface_interface_from_index"]
-        fn qnetworkinterfaceInterfaceFromIndex(index: i32) -> QNetworkInterface;
-
-        #[rust_name = "qnetworkinterface_interface_from_name"]
-        fn qnetworkinterfaceInterfaceFromName(name: &QString) -> QNetworkInterface;
-
-        #[rust_name = "qnetworkinterface_interface_index_from_name"]
-        fn qnetworkinterfaceInterfaceIndexFromName(name: &QString) -> i32;
-
-        #[rust_name = "qnetworkinterface_interface_name_from_index"]
-        fn qnetworkinterfaceInterfaceNameFromIndex(index: i32) -> QString;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -221,39 +229,29 @@ impl IsNonNull for QNetworkInterface {
 }
 
 impl QNetworkInterface {
-    /// This convenience function returns all IP addresses found on the host machine. It is equivalent to calling [`address_entries`](QNetworkInterface::address_entries) on all the objects returned by [`self.all_interfaces()`](QNetworkInterface::all_interfaces) that are in the [`QNetworkInterfaceInterfaceFlag::IsUp`] state to obtain lists of [`QNetworkAddressEntry`](crate::QNetworkAddressEntry) objects then calling [`QNetworkAddressEntry::ip`](crate::QNetworkAddressEntry::ip) on each of these.
-    pub fn all_addresses() -> QList<QHostAddress> {
-        ffi::qnetworkinterface_all_addresses()
-    }
-
-    /// Returns a listing of all the network interfaces found on the host machine. In case of failure it returns a list with zero elements.
-    pub fn all_interfaces() -> QList<QNetworkInterface> {
-        ffi::qnetworkinterface_all_interfaces()
-    }
-
     /// Returns a `QNetworkInterface` object for the interface whose internal ID is index. Network interfaces have a unique identifier called the "interface index" to distinguish it from other interfaces on the system. Often, this value is assigned progressively and interfaces being removed and then added again get a different value every time.
     ///
     /// This index is also found in the IPv6 address' scope ID field.
     pub fn interface_from_index(index: i32) -> Option<Self> {
-        ffi::qnetworkinterface_interface_from_index(index).nonnull()
+        Self::interface_from_index_or_null(index).nonnull()
     }
 
     /// Returns a `QNetworkInterface` object for the interface named `name`. If no such interface exists, this function returns `None`.
     ///
     /// The string `name` may be either an actual interface name (such as `"eth0"` or `"en1"`) or an interface index in string form (`"1"`, `"2"`, etc.).
     pub fn interface_from_name(name: &QString) -> Option<Self> {
-        ffi::qnetworkinterface_interface_from_name(name).nonnull()
+        Self::interface_from_name_or_null(name).nonnull()
     }
 
     /// Returns the index of the interface whose name is `name` or `None` if there is no interface with that name.
     pub fn interface_index_from_name(name: &QString) -> Option<i32> {
-        let index = ffi::qnetworkinterface_interface_index_from_name(name);
+        let index = Self::interface_index_from_name_or_zero(name);
         if index == 0 { None } else { Some(index) }
     }
 
     /// Returns the name of the interface whose index is `index` or `None` if there is no interface with that index.
     pub fn interface_name_from_index(index: i32) -> Option<QString> {
-        ffi::qnetworkinterface_interface_name_from_index(index).nonnull()
+        Self::interface_name_from_index_or_empty(index).nonnull()
     }
 
     /// Returns the interface system index, if known. This is an integer assigned by the operating system to identify this interface and it generally doesn't change. It matches the scope ID field in IPv6 addresses.

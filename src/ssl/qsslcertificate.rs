@@ -154,6 +154,47 @@ mod ffi {
     unsafe extern "C++" {
         type QSslCertificate = super::QSslCertificate;
 
+        /// Searches for and parses all certificates in `data` that are encoded in the specified `format` and returns them in a list of certificates.
+        #[Self = "QSslCertificate"]
+        #[rust_name = "from_data"]
+        fn fromData(data: &QByteArray, format: QSslEncodingFormat) -> QList_QSslCertificate;
+
+        #[doc(hidden)]
+        #[Self = "QSslCertificate"]
+        #[rust_name = "from_device_ptr"]
+        unsafe fn fromDevice(
+            device: *mut QIODevice,
+            format: QSslEncodingFormat,
+        ) -> QList_QSslCertificate;
+
+        /// Searches all files in the `path` for certificates encoded in the specified `format` and returns them in a list. `path` must be a file or a pattern matching one or more files, as specified by `syntax`.
+        #[Self = "QSslCertificate"]
+        #[rust_name = "from_path"]
+        fn fromPath(
+            path: &QString,
+            format: QSslEncodingFormat,
+            syntax: QSslCertificatePatternSyntax,
+        ) -> QList_QSslCertificate;
+
+        #[doc(hidden)]
+        #[Self = "QSslCertificate"]
+        #[rust_name = "import_pkcs_12_unsafe"]
+        unsafe fn importPkcs12(
+            device: *mut QIODevice,
+            key: *mut QSslKey,
+            certificate: *mut QSslCertificate,
+            ca_certificates: *mut QList_QSslCertificate,
+            pass_phrase: &QByteArray,
+        ) -> bool;
+
+        #[doc(hidden)]
+        #[Self = "QSslCertificate"]
+        #[rust_name = "verify_opt"]
+        fn verify(
+            certificate_chain: &QList_QSslCertificate,
+            host_name: &QString,
+        ) -> QList_QSslError;
+
         /// Clears the contents of this certificate, making it a null certificate.
         fn clear(&mut self);
 
@@ -258,46 +299,6 @@ mod ffi {
 
         #[rust_name = "subjectalternativenamesmap_iter"]
         fn qmultimapIter(map: &SubjectAlternativeNamesMap) -> SubjectAlternativeNamesIter;
-
-        #[rust_name = "qsslcertificate_from_data"]
-        fn qsslcertificateFromData(
-            data: &QByteArray,
-            format: QSslEncodingFormat,
-        ) -> QList_QSslCertificate;
-
-        /// # Safety
-        ///
-        /// `device` must be valid.
-        #[rust_name = "qsslcertificate_from_device"]
-        unsafe fn qsslcertificateFromDevice(
-            device: *mut QIODevice,
-            format: QSslEncodingFormat,
-        ) -> QList_QSslCertificate;
-
-        #[rust_name = "qsslcertificate_from_path"]
-        fn qsslcertificateFromPath(
-            path: &QString,
-            format: QSslEncodingFormat,
-            syntax: QSslCertificatePatternSyntax,
-        ) -> QList_QSslCertificate;
-
-        /// # Safety
-        ///
-        /// All pointers must be valid.
-        #[rust_name = "qsslcertificate_import_pkcs_12"]
-        unsafe fn qsslcertificateImportPkcs12(
-            device: *mut QIODevice,
-            key: *mut QSslKey,
-            certificate: *mut QSslCertificate,
-            ca_certificates: *mut QList_QSslCertificate,
-            pass_phrase: &QByteArray,
-        ) -> bool;
-
-        #[rust_name = "qsslcertificate_verify"]
-        fn qsslcertificateVerify(
-            certificates: &QList_QSslCertificate,
-            host_name: &QString,
-        ) -> QList_QSslError;
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -441,14 +442,14 @@ impl QSslCertificate {
             // SAFETY: from outer
             unsafe {
                 match pass_phrase {
-                    Some(pass_phrase) => ffi::qsslcertificate_import_pkcs_12(
+                    Some(pass_phrase) => QSslCertificate::import_pkcs_12_unsafe(
                         device,
                         key_mut,
                         certificate_mut,
                         ca_certificates_mut,
                         pass_phrase,
                     ),
-                    None => ffi::qsslcertificate_import_pkcs_12(
+                    None => QSslCertificate::import_pkcs_12_unsafe(
                         device,
                         key_mut,
                         certificate_mut,
@@ -478,8 +479,8 @@ impl QSslCertificate {
         host_name: Option<&QString>,
     ) -> QList<QSslError> {
         match host_name {
-            Some(host_name) => ffi::qsslcertificate_verify(certificate_chain, host_name),
-            None => ffi::qsslcertificate_verify(certificate_chain, &QString::default()),
+            Some(host_name) => Self::verify_opt(certificate_chain, host_name),
+            None => Self::verify_opt(certificate_chain, &QString::default()),
         }
     }
 
@@ -508,30 +509,13 @@ impl QSslCertificate {
             .nonnull_or(DecodeSslKeyError(()))
     }
 
-    /// Searches for and parses all certificates in `data` that are encoded in the specified `format` and returns them in a list of certificates.
-    pub fn from_data(data: &QByteArray, format: QSslEncodingFormat) -> QList<Self> {
-        ffi::qsslcertificate_from_data(data, format)
-    }
-
     /// Searches for and parses all certificates in `device` that are encoded in the specified `format` and returns them in a list of certificates.
     pub fn from_device<T>(device: Pin<&mut T>, format: QSslEncodingFormat) -> QList<Self>
     where
         T: Upcast<QIODevice>,
     {
         // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
-        unsafe { ffi::qsslcertificate_from_device(upcast_mut(unpin_for_qt(device)), format) }
-    }
-
-    /// Searches all files in the `path` for certificates encoded in the specified `format` and returns them in a list. `path` must be a file or a pattern matching one or more files, as specified by `syntax`.
-    pub fn from_path<T>(
-        path: &QString,
-        format: QSslEncodingFormat,
-        syntax: QSslCertificatePatternSyntax,
-    ) -> QList<Self>
-    where
-        T: Upcast<QIODevice>,
-    {
-        ffi::qsslcertificate_from_path(path, format, syntax)
+        unsafe { Self::from_device_ptr(upcast_mut(unpin_for_qt(device)), format) }
     }
 
     /// Returns the date-time that the certificate becomes valid, or `None` if this is a null certificate.

@@ -33,6 +33,11 @@ mod ffi {
         #[base = QFile]
         type QTemporaryFile;
 
+        #[doc(hidden)]
+        #[Self = "QTemporaryFile"]
+        #[rust_name = "create_native_file_ptr"]
+        fn createNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
+
         /// Returns `true` if the `QTemporaryFile` is in auto remove mode. Auto-remove mode will automatically delete the filename from disk upon destruction. This makes it very easy to create your `QTemporaryFile` object on the stack, fill it with data, read from it, and finally on function return it will automatically clean up after itself.
         ///
         /// Auto-remove is on by default.
@@ -78,12 +83,6 @@ mod ffi {
         /// If `template_name` is a relative path, the path will be relative to the current working directory. You can use [`QDir::temp_path()`](crate::QDir::temp_path) to construct `template_name` if you want use the system's temporary directory. It is important to specify the correct directory if the [`rename`](QTemporaryFile::rename) function will be called, as `QTemporaryFile` can only rename files within the same volume / filesystem as the temporary file itself was created on.
         #[rust_name = "set_file_template"]
         fn setFileTemplate(self: Pin<&mut QTemporaryFile>, template_name: &QString);
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qtemporaryfile_create_native_file"]
-        fn qtemporaryfileCreateNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
     }
 
     #[namespace = "rust::cxxqt1"]
@@ -151,7 +150,7 @@ impl QTemporaryFile {
     /// If `file` is not already a native file, then a `QTemporaryFile` is created in [`QDir::temp_path()`](crate::QDir::temp_path), the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.
     pub fn create_native_file(file: Pin<&mut QFile>) -> UniquePtr<Self> {
         // SAFETY: Qt returns a pointer that is either valid or null and is not owned.
-        unsafe { UniquePtr::from_raw(ffi::qtemporaryfile_create_native_file(file)) }
+        unsafe { UniquePtr::from_raw(Self::create_native_file_ptr(file)) }
     }
 
     /// Casts this object to `QIODevice`.

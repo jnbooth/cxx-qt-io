@@ -69,6 +69,11 @@ mod ffi {
     unsafe extern "C++" {
         type QHostAddress = super::QHostAddress;
 
+        #[doc(hidden)]
+        #[Self = "QHostAddress"]
+        #[rust_name = "parse_subnet_pair"]
+        fn parseSubnet(subnet: &QString) -> QPair_QHostAddress_i32;
+
         /// Sets the host address to null and sets the protocol to [`QAbstractSocketNetworkLayerProtocol::UnknownNetworkLayerProtocol`](crate::QAbstractSocketNetworkLayerProtocol::UnknownNetworkLayerProtocol).
         fn clear(&mut self);
 
@@ -187,9 +192,6 @@ mod ffi {
     unsafe extern "C++" {
         #[rust_name = "qhostaddress_to_ipv6_address"]
         fn qhostaddressToIPv6Address(address: &QHostAddress) -> QIpv6Addr;
-
-        #[rust_name = "qhostaddress_parse_subnet"]
-        fn qhostaddressParseSubnet(subnet: &QString) -> QPair_QHostAddress_i32;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -278,8 +280,7 @@ impl IsNonNull for QHostAddress {
 
 impl QHostAddress {
     pub fn parse_subnet(subnet: &QString) -> (QHostAddress, i32) {
-        let pair = ffi::qhostaddress_parse_subnet(subnet);
-        (pair.first, pair.second)
+        Self::parse_subnet_pair(subnet).into()
     }
 
     pub fn set_address<T>(&mut self, address: T)

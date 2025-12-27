@@ -19,6 +19,16 @@ mod ffi {
     unsafe extern "C++" {
         type QSslEllipticCurve = super::QSslEllipticCurve;
 
+        #[doc(hidden)]
+        #[Self = "QSslEllipticCurve"]
+        #[rust_name = "from_long_name_or_null"]
+        fn fromLongName(name: &QString) -> QSslEllipticCurve;
+
+        #[doc(hidden)]
+        #[Self = "QSslEllipticCurve"]
+        #[rust_name = "from_short_name_or_null"]
+        fn fromShortName(name: &QString) -> QSslEllipticCurve;
+
         /// Returns `true` if this elliptic curve is one of the named curves that can be used in the key exchange when using an elliptic curve cipher with TLS; `false` otherwise.
         #[rust_name = "is_tls_named_curve"]
         fn isTlsNamedCurve(&self) -> bool;
@@ -34,15 +44,6 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "short_name_or_empty"]
         fn shortName(&self) -> QString;
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qsslellipticcurve_from_long_name"]
-        fn qsslellipticcurveFromLongName(name: &QString) -> QSslEllipticCurve;
-
-        #[rust_name = "qsslellipticcurve_from_short_name"]
-        fn qsslellipticcurveFromShortName(name: &QString) -> QSslEllipticCurve;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -100,7 +101,7 @@ impl QSslEllipticCurve {
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_long_name(name: &QString) -> Result<Self, QSslEllipticCurveError> {
-        ffi::qsslellipticcurve_from_long_name(name).nonnull_or(QSslEllipticCurveError(()))
+        Self::from_long_name_or_null(name).nonnull_or(QSslEllipticCurveError(()))
     }
 
     /// Returns a `QSslEllipticCurve` instance representing the named curve `name`. The `name` is the conventional short name for the curve, as represented by RFC 4492 (for instance secp521r1), or as NIST short names (for instance P-256). The actual set of recognized names depends on the SSL implementation.
@@ -109,7 +110,7 @@ impl QSslEllipticCurve {
     ///
     /// **Note:** The OpenSSL implementation of this function treats the name case-sensitively.
     pub fn from_short_name(name: &QString) -> Result<Self, QSslEllipticCurveError> {
-        ffi::qsslellipticcurve_from_short_name(name).nonnull_or(QSslEllipticCurveError(()))
+        Self::from_short_name_or_null(name).nonnull_or(QSslEllipticCurveError(()))
     }
 
     /// Returns the conventional long name for this curve. If this curve is invalid, returns `None`.

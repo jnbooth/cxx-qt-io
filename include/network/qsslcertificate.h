@@ -33,31 +33,4 @@ struct IsRelocatable<SubjectAlternativeNamesIter> : ::std::true_type
 template<>
 struct IsRelocatable<SubjectAlternativeNamesValues> : ::std::true_type
 {};
-
-namespace cxxqtio1 {
-inline QList<QSslCertificate> (*qsslcertificateFromData)(const QByteArray&,
-                                                         QSsl::EncodingFormat) =
-  QSslCertificate::fromData;
-
-inline QList<QSslCertificate> (*qsslcertificateFromDevice)(
-  QIODevice*,
-  QSsl::EncodingFormat) = QSslCertificate::fromDevice;
-
-inline QList<QSslCertificate> (*qsslcertificateFromPath)(
-  const QString&,
-  QSsl::EncodingFormat,
-  QSslCertificatePatternSyntax) = QSslCertificate::fromPath;
-
-inline bool (*qsslcertificateImportPkcs12)(
-  QIODevice* device,
-  QSslKey* key,
-  QSslCertificate* certificate,
-  QList<QSslCertificate>* caCertificates,
-  const QByteArray& passPhrase) = QSslCertificate::importPkcs12;
-
-inline QList<QSslError> (*qsslcertificateVerify)(const QList<QSslCertificate>&,
-                                                 const QString&) =
-  QSslCertificate::verify;
-}
-
 }

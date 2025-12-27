@@ -41,6 +41,11 @@ mod ffi {
     unsafe extern "C++" {
         type QSslDiffieHellmanParameters = super::QSslDiffieHellmanParameters;
 
+        /// Returns the default `QSslDiffieHellmanParameters` used by [`QSslSocket`](crate::QSslSocket).
+        #[Self = "QSslDiffieHellmanParameters"]
+        #[rust_name = "default_parameters"]
+        fn defaultParameters() -> QSslDiffieHellmanParameters;
+
         /// Returns the error that caused the `QSslDiffieHellmanParameters` object to be invalid.
         fn error(&self) -> QSslDiffieHellmanParametersError;
 
@@ -65,9 +70,6 @@ mod ffi {
 
     #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
-        #[rust_name = "qssldiffiehellmanparameters_default_parameters"]
-        fn qssldiffiehellmanparametersDefaultParameters() -> QSslDiffieHellmanParameters;
-
         /// # Safety
         ///
         /// `device` must be valid.
@@ -160,11 +162,6 @@ impl QSslDiffieHellmanParameters {
         } else {
             Err(self.error())
         }
-    }
-
-    /// Returns the default `QSslDiffieHellmanParameters` used by [`QSslSocket`](crate::QSslSocket).
-    pub fn default_parameters() -> Self {
-        ffi::qssldiffiehellmanparameters_default_parameters()
     }
 
     /// Attempts to construct a `QSslDiffieHellmanParameters` object by reading from `device` in either PEM or DER form as specified by `encoding`.

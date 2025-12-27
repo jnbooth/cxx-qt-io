@@ -6,7 +6,7 @@ use std::pin::Pin;
 use cxx::UniquePtr;
 use cxx_qt::QObject;
 use cxx_qt::casting::Upcast;
-use cxx_qt_lib::{QByteArray, QString};
+use cxx_qt_lib::QString;
 
 use crate::qobject::debug_qobject;
 use crate::{
@@ -40,6 +40,24 @@ mod ffi {
         #[qobject]
         #[base = QFileDevice]
         type QFile;
+
+        /// This does the reverse of [`encode_name`](QFile::encode_name) using `local_file_name`.
+        #[Self = "QFile"]
+        #[rust_name = "decode_name"]
+        fn decodeName(local_file_name: &QByteArray) -> QString;
+
+        /// Converts `file_name` to an 8-bit encoding that you can use in native APIs. On Windows, the encoding is the one from active Windows (ANSI) codepage. On other platforms, this is UTF-8, for macOS in decomposed form (NFD).
+        #[Self = "QFile"]
+        #[rust_name = "encode_name"]
+        pub fn encodeName(file_name: &QString) -> QByteArray;
+
+        /// Returns `true` if Qt supports moving files to a trash (recycle bin) in the current operating system using the [`move_to_trash`](QFile::move_to_trash) function, `false` otherwise. Note that this function returning `true` does not imply [`move_to_trash`](QFile::move_to_trash) will succeed. In particular, this function does not check if the user has disabled the functionality in their settings.
+        ///
+        /// Introduced in Qt 6.9.
+        #[Self = "QFile"]
+        #[cfg(cxxqt_qt_version_at_least_6_9)]
+        #[rust_name = "supports_move_to_trash"]
+        pub fn supportsMoveToTrash() -> bool;
 
         /// Copies the file named [`self.file_name()`](QFileDevice::file_name) to `new_name`.
         ///
@@ -114,19 +132,6 @@ mod ffi {
         fn symLinkTarget(self: &QFile) -> QString;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qfile_decode_name"]
-        fn qfileDecodeName(name: &QByteArray) -> QString;
-
-        #[rust_name = "qfile_encode_name"]
-        fn qfileEncodeName(name: &QString) -> QByteArray;
-
-        #[cfg(cxxqt_qt_version_at_least_6_9)]
-        #[rust_name = "qfile_supports_move_to_trash"]
-        fn qfileSupportsMoveToTrash() -> bool;
-    }
-
     #[namespace = "rust::cxxqt1"]
     unsafe extern "C++" {
         include!("cxx-qt/casting.h");
@@ -172,16 +177,6 @@ impl QFile {
         ffi::qfile_init_default()
     }
 
-    /// This does the reverse of [`encode_name`](QFile::encode_name) using `local_file_name`.
-    pub fn decode_name(local_file_name: &QByteArray) -> QString {
-        ffi::qfile_decode_name(local_file_name)
-    }
-
-    /// Converts `file_name` to an 8-bit encoding that you can use in native APIs. On Windows, the encoding is the one from active Windows (ANSI) codepage. On other platforms, this is UTF-8, for macOS in decomposed form (NFD).
-    pub fn encode_name(file_name: &QString) -> QByteArray {
-        ffi::qfile_encode_name(file_name)
-    }
-
     /// Opens the existing file descriptor `fd` in the given `mode`. `handle_flags` may be used to specify additional options. Returns `true` if successful; otherwise returns `false`.
     ///
     /// When a `QFile` is opened using this function, behaviour of [`close`](QIODevice::close) is controlled by the [`QFileDeviceFileHandleFlag::AutoCloseHandle`](crate::QFileDeviceFileHandleFlag::AutoCloseHandle) flag. If [`QFileDeviceFileHandleFlag::AutoCloseHandle`](crate::QFileDeviceFileHandleFlag::AutoCloseHandle) is specified, and this function succeeds, then calling [`close`](QIODevice::close) closes the adopted handle. Otherwise, [`close`](QIODevice::close) does not actually close the file, but only flushes it.
@@ -196,14 +191,6 @@ impl QFile {
         handle_flags: QFileDeviceFileHandleFlags,
     ) -> bool {
         self.open_int(fd.into(), mode, handle_flags)
-    }
-
-    /// Returns `true` if Qt supports moving files to a trash (recycle bin) in the current operating system using the [`move_to_trash`](QFile::move_to_trash) function, `false` otherwise. Note that this function returning `true` does not imply [`move_to_trash`](QFile::move_to_trash) will succeed. In particular, this function does not check if the user has disabled the functionality in their settings.
-    ///
-    /// Introduced in Qt 6.9.
-    #[cfg(cxxqt_qt_version_at_least_6_9)]
-    pub fn supports_move_to_trash() -> bool {
-        ffi::qfile_supports_move_to_trash()
     }
 
     /// Casts this object to `QIODevice`.

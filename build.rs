@@ -219,7 +219,7 @@ fn main() {
             include_header!("include/core/qtemporaryfile.h"),
         ]);
 
-        builder = builder.build_rust(&[
+        builder = builder.build_cpp(&["fs/qdir"]).build_rust(&[
             "fs/qdir",
             "fs/qfile",
             "fs/qfiledevice",

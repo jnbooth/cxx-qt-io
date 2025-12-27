@@ -33,6 +33,15 @@ mod ffi {
     unsafe extern "C++" {
         type QDeadlineTimer = super::QDeadlineTimer;
 
+        /// Returns a `QDeadlineTimer` that is expired but is guaranteed to contain the current time. Objects created by this function can participate in the calculation of how long a timer is overdue, using the [`deadline`](QDeadlineTimer::deadline) function.
+        #[Self = "QDeadlineTimer"]
+        fn current(timer_type: TimerType) -> QDeadlineTimer;
+
+        #[doc(hidden)]
+        #[Self = "QDeadlineTimer"]
+        #[rust_name = "add_nsecs"]
+        fn addNSecs(timer: QDeadlineTimer, nsecs: qint64) -> QDeadlineTimer;
+
         #[doc(hidden)]
         #[rust_name = "deadline_qint64"]
         fn deadline(&self) -> qint64;
@@ -84,16 +93,6 @@ mod ffi {
         /// Returns the timer type is active for this object.
         #[rust_name = "timer_type"]
         fn timerType(&self) -> TimerType;
-
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qdeadlinetimer_add_nsecs"]
-        fn qdeadlinetimerAddNSecs(timer: QDeadlineTimer, nsecs: qint64) -> QDeadlineTimer;
-
-        #[rust_name = "qdeadlinetimer_current"]
-        fn qdeadlinetimerCurrent(timer_type: TimerType) -> QDeadlineTimer;
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -183,11 +182,6 @@ impl QDeadlineTimer {
         };
         this.set_duration(duration, timer_type);
         this
-    }
-
-    /// Returns a `QDeadlineTimer` that is expired but is guaranteed to contain the current time. Objects created by this function can participate in the calculation of how long a timer is overdue, using the [`deadline`](QDeadlineTimer::deadline) function.
-    pub fn current(timer_type: TimerType) -> Self {
-        ffi::qdeadlinetimer_current(timer_type)
     }
 
     /// Returns the absolute time point for the deadline stored in `QDeadlineTimer` object, calculated in milliseconds relative to the reference clock, the same as [`QElapsedTimer::msecs_since_reference`](https://doc.qt.io/qt-6/qelapsedtimer.html#msecsSinceReference). The value will be in the past if this `QDeadlineTimer` has expired.
@@ -334,14 +328,14 @@ impl Add<Duration> for QDeadlineTimer {
     /// Returns a `QDeadlineTimer` whose deadline is `rhs` later than the deadline stored in `self`. If `self` is set to never expire, this function returns a `QDeadlineTimer` that does not expire either.
     fn add(self, rhs: Duration) -> Self::Output {
         if let Ok(nsecs) = i64::try_from(rhs.as_nanos()) {
-            return ffi::qdeadlinetimer_add_nsecs(self, nsecs.into());
+            return Self::add_nsecs(self, nsecs.into());
         }
         let timer = ffi::qdeadlinetimer_plus(self, rhs.as_millis().try_into().unwrap_or(i64::MAX));
         let nsecs = rhs.subsec_nanos();
         if nsecs == 0 {
             timer
         } else {
-            ffi::qdeadlinetimer_add_nsecs(timer, i64::from(nsecs).into())
+            Self::add_nsecs(timer, i64::from(nsecs).into())
         }
     }
 }
@@ -359,14 +353,14 @@ impl Sub<Duration> for QDeadlineTimer {
     /// Returns a `QDeadlineTimer` whose deadline is `rhs` earlier than the deadline stored in `self`. If `self` is set to never expire, this function returns a `QDeadlineTimer` that does not expire either.
     fn sub(self, rhs: Duration) -> Self::Output {
         if let Ok(nsecs) = i64::try_from(rhs.as_nanos()) {
-            return ffi::qdeadlinetimer_add_nsecs(self, (-nsecs).into());
+            return Self::add_nsecs(self, (-nsecs).into());
         }
         let timer = ffi::qdeadlinetimer_minus(self, rhs.as_millis().try_into().unwrap_or(i64::MAX));
         let nsecs = rhs.subsec_nanos();
         if nsecs == 0 {
             timer
         } else {
-            ffi::qdeadlinetimer_add_nsecs(timer, (-i64::from(nsecs)).into())
+            Self::add_nsecs(timer, (-i64::from(nsecs)).into())
         }
     }
 }
