@@ -130,24 +130,25 @@ mod ffi {
         #[rust_name = "supports_ssl"]
         fn supportsSsl() -> bool;
 
+        /// This function returns backend-specific classes implemented by the backend named `backend_name`.
         #[doc(hidden)]
         #[Self = "QSslSocket"]
-        #[rust_name = "implemented_classes_opt"]
+        #[rust_name = "implemented_classes_for_backend"]
         fn implementedClasses(backend_name: &QString) -> QList_QSslImplementedClass;
 
-        #[doc(hidden)]
+        /// Returns `true` if a class `cl` is implemented by the backend named `backend_name`.
         #[Self = "QSslSocket"]
-        #[rust_name = "is_class_implemented_opt"]
+        #[rust_name = "is_class_implemented_for_backend"]
         fn isClassImplemented(cl: QSslImplementedClass, backend_name: &QString) -> bool;
 
-        #[doc(hidden)]
+        /// Returns `true` if a feature `ft` is supported by the backend named `backend_name`.
         #[Self = "QSslSocket"]
-        #[rust_name = "is_feature_supported_opt"]
+        #[rust_name = "is_feature_supported_for_backend"]
         fn isFeatureSupported(ft: QSslSupportedFeature, backend_name: &QString) -> bool;
 
-        #[doc(hidden)]
+        /// Returns `true` if `protocol` is supported by the backend named `backend_name`.
         #[Self = "QSslSocket"]
-        #[rust_name = "is_protocol_supported_opt"]
+        #[rust_name = "is_protocol_supported_for_backend"]
         fn isProtocolSupported(protocol: QSslSslProtocol, backend_name: &QString) -> bool;
 
         /// Returns `true` if a backend with name `backend_name` was set as active backend. `backend_name` must be one of names returned by [`QSslSocket::available_backends()`].
@@ -155,14 +156,14 @@ mod ffi {
         #[rust_name = "set_active_backend"]
         fn setActiveBackend(backend_name: &QString) -> bool;
 
-        #[doc(hidden)]
+        /// This function returns features supported by a backend named `backend_name`.
         #[Self = "QSslSocket"]
-        #[rust_name = "supported_features_opt"]
+        #[rust_name = "supported_features_for_backend"]
         fn supportedFeatures(backend_name: &QString) -> QList_QSslSupportedFeature;
 
-        #[doc(hidden)]
+        /// If a backend with name `backend_name` is available, this function returns the list of TLS protocol versions supported by this backend. Otherwise, this function returns an empty list. If `backend_name` is `None`, it is understood as a query about the currently active backend.
         #[Self = "QSslSocket"]
-        #[rust_name = "supported_protocols_opt"]
+        #[rust_name = "supported_protocols_for_backend"]
         fn supportedProtocols(backend_name: &QString) -> QList_QSslSslProtocol;
 
         /// Starts an encrypted connection to the device `host_name` on `port`, using `mode` as the open mode. This is equivalent to calling [`connect_to_host`](QAbstractSocket::connect_to_host) to establish the connection, followed by a call to [`start_client_encryption`](QSslSocket::start_client_encryption). The `protocol` parameter can be used to specify which network protocol to use (eg. IPv4 or IPv6). The `ssl_peer_name` enables the usage of a different host name for the certificate validation instead of the one used for the TCP connection (`host_name`).
@@ -551,39 +552,24 @@ impl QSslSocket {
         self.encrypted_bytes_to_write_qint64().into()
     }
 
-    /// This function returns backend-specific classes implemented by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
-    pub fn implemented_classes(backend_name: Option<&QString>) -> QList<QSslImplementedClass> {
-        match backend_name {
-            Some(backend_name) => Self::implemented_classes_opt(backend_name),
-            None => Self::implemented_classes_opt(&QString::default()),
-        }
+    /// This function returns backend-specific classes implemented by the currently active backend.
+    pub fn implemented_classes() -> QList<QSslImplementedClass> {
+        Self::implemented_classes_for_backend(&QString::default())
     }
 
-    /// Returns `true` if a class `cl` is implemented by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
-    pub fn is_class_implemented(cl: QSslImplementedClass, backend_name: Option<&QString>) -> bool {
-        match backend_name {
-            Some(backend_name) => Self::is_class_implemented_opt(cl, backend_name),
-            None => Self::is_class_implemented_opt(cl, &QString::default()),
-        }
+    /// Returns `true` if a class `cl` is implemented by the currently active backend.
+    pub fn is_class_implemented(cl: QSslImplementedClass) -> bool {
+        Self::is_class_implemented_for_backend(cl, &QString::default())
     }
 
-    /// Returns `true` if a feature `ft` is supported by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
-    pub fn is_feature_supported(ft: QSslSupportedFeature, backend_name: Option<&QString>) -> bool {
-        match backend_name {
-            Some(backend_name) => Self::is_feature_supported_opt(ft, backend_name),
-            None => Self::is_feature_supported_opt(ft, &QString::default()),
-        }
+    /// Returns `true` if a feature `ft` is supported by the currently active backend.
+    pub fn is_feature_supported(ft: QSslSupportedFeature) -> bool {
+        Self::is_feature_supported_for_backend(ft, &QString::default())
     }
 
-    /// Returns `true` if `protocol` is supported by the backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
-    pub fn is_protocol_supported(
-        protocol: QSslSslProtocol,
-        backend_name: Option<&QString>,
-    ) -> bool {
-        match backend_name {
-            Some(backend_name) => Self::is_protocol_supported_opt(protocol, backend_name),
-            None => Self::is_protocol_supported_opt(protocol, &QString::default()),
-        }
+    /// Returns `true` if `protocol` is supported by the currently active backend.
+    pub fn is_protocol_supported(protocol: QSslSslProtocol) -> bool {
+        Self::is_protocol_supported_for_backend(protocol, &QString::default())
     }
 
     /// Returns the socket's local certificate, or `None` if no local certificate has been assigned.
@@ -614,20 +600,14 @@ impl QSslSocket {
         }
     }
 
-    /// This function returns features supported by a backend named `backend_name`. If `backend_name` is `None`, it is understood as a query about the currently active backend.
-    pub fn supported_features(backend_name: Option<&QString>) -> QList<QSslSupportedFeature> {
-        match backend_name {
-            Some(backend_name) => Self::supported_features_opt(backend_name),
-            None => Self::supported_features_opt(&QString::default()),
-        }
+    /// This function returns features supported by the currently active backend.
+    pub fn supported_features() -> QList<QSslSupportedFeature> {
+        Self::supported_features_for_backend(&QString::default())
     }
 
     /// If a backend with name `backend_name` is available, this function returns the list of TLS protocol versions supported by this backend. Otherwise, this function returns an empty list. If `backend_name` is `None`, it is understood as a query about the currently active backend.
-    pub fn supported_protocols(backend_name: Option<&QString>) -> QList<QSslSslProtocol> {
-        match backend_name {
-            Some(backend_name) => Self::supported_protocols_opt(backend_name),
-            None => Self::supported_protocols_opt(&QString::default()),
-        }
+    pub fn supported_protocols() -> QList<QSslSslProtocol> {
+        Self::supported_protocols_for_backend(&QString::default())
     }
 
     /// Waits until the socket has completed the SSL handshake and has emitted [`encrypted`](QSslSocket::encrypted), or `duration`, whichever comes first. If [`encrypted`](QSslSocket::encrypted) has been emitted, this function returns `true`; otherwise (e.g., the socket is disconnected, or the SSL handshake fails), `false` is returned.

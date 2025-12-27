@@ -271,7 +271,7 @@ impl QUdpSocket {
     ///
     /// On failure, returns `None`.
     ///
-    /// If `max_size` is too small, the rest of the datagram will be lost. If `max_size` is `Some(0)`, the datagram will be discarded. If `max_size` is `None` (the default), this function will attempt to read the entire datagram.
+    /// If `max_size` is too small, the rest of the datagram will be lost. If `max_size` is `Some(0)`, the datagram will be discarded. If `max_size` is `None`, this function will attempt to read the entire datagram.
     pub fn receive_datagram(
         self: Pin<&mut Self>,
         max_size: Option<i64>,

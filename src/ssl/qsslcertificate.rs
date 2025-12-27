@@ -161,7 +161,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[Self = "QSslCertificate"]
-        #[rust_name = "from_device_ptr"]
+        #[rust_name = "from_device_unsafe"]
         unsafe fn fromDevice(
             device: *mut QIODevice,
             format: QSslEncodingFormat,
@@ -187,9 +187,11 @@ mod ffi {
             pass_phrase: &QByteArray,
         ) -> bool;
 
-        #[doc(hidden)]
+        /// Verifies a certificate chain. The chain to be verified is passed in the `certificate_chain` parameter. The first certificate in the list should be the leaf certificate of the chain to be verified. The certificate is also checked to see if it is valid for the specified `host_name`.
+        ///
+        /// Note that the root (CA) certificate should not be included in the list to be verified, this will be looked up automatically using the CA list specified in the default [`QSslConfiguration`](crate::QSslConfiguration), and, in addition, if possible, CA certificates loaded on demand on Unix and Windows.
         #[Self = "QSslCertificate"]
-        #[rust_name = "verify_opt"]
+        #[rust_name = "verify_for_host"]
         fn verify(
             certificate_chain: &QList_QSslCertificate,
             host_name: &QString,
@@ -471,17 +473,11 @@ impl QSslCertificate {
         }
     }
 
-    /// Verifies a certificate chain. The chain to be verified is passed in the `certificate_chain` parameter. The first certificate in the list should be the leaf certificate of the chain to be verified. If `host_name` is specified then the certificate is also checked to see if it is valid for the specified host name.
+    /// Verifies a certificate chain. The chain to be verified is passed in the `certificate_chain` parameter. The first certificate in the list should be the leaf certificate of the chain to be verified.
     ///
     /// Note that the root (CA) certificate should not be included in the list to be verified, this will be looked up automatically using the CA list specified in the default [`QSslConfiguration`](crate::QSslConfiguration), and, in addition, if possible, CA certificates loaded on demand on Unix and Windows.
-    pub fn verify(
-        certificate_chain: &QList<QSslCertificate>,
-        host_name: Option<&QString>,
-    ) -> QList<QSslError> {
-        match host_name {
-            Some(host_name) => Self::verify_opt(certificate_chain, host_name),
-            None => Self::verify_opt(certificate_chain, &QString::default()),
-        }
+    pub fn verify(certificate_chain: &QList<QSslCertificate>) -> QList<QSslError> {
+        Self::verify_for_host(certificate_chain, &QString::default())
     }
 
     /// Constructs a `QSslCertificate` by parsing the `format` encoded `data` and using the first available certificate found.
@@ -515,7 +511,7 @@ impl QSslCertificate {
         T: Upcast<QIODevice>,
     {
         // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
-        unsafe { Self::from_device_ptr(upcast_mut(unpin_for_qt(device)), format) }
+        unsafe { Self::from_device_unsafe(upcast_mut(unpin_for_qt(device)), format) }
     }
 
     /// Returns the date-time that the certificate becomes valid, or `None` if this is a null certificate.

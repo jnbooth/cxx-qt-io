@@ -35,7 +35,7 @@ mod ffi {
 
         #[doc(hidden)]
         #[Self = "QTemporaryFile"]
-        #[rust_name = "create_native_file_ptr"]
+        #[rust_name = "create_native_file_pointer"]
         fn createNativeFile(file: Pin<&mut QFile>) -> *mut QTemporaryFile;
 
         /// Returns `true` if the `QTemporaryFile` is in auto remove mode. Auto-remove mode will automatically delete the filename from disk upon destruction. This makes it very easy to create your `QTemporaryFile` object on the stack, fill it with data, read from it, and finally on function return it will automatically clean up after itself.
@@ -150,7 +150,7 @@ impl QTemporaryFile {
     /// If `file` is not already a native file, then a `QTemporaryFile` is created in [`QDir::temp_path()`](crate::QDir::temp_path), the contents of file is copied into it, and a pointer to the temporary file is returned. Does nothing and returns a null pointer if file is already a native file.
     pub fn create_native_file(file: Pin<&mut QFile>) -> UniquePtr<Self> {
         // SAFETY: Qt returns a pointer that is either valid or null and is not owned.
-        unsafe { UniquePtr::from_raw(Self::create_native_file_ptr(file)) }
+        unsafe { UniquePtr::from_raw(Self::create_native_file_pointer(file)) }
     }
 
     /// Casts this object to `QIODevice`.
