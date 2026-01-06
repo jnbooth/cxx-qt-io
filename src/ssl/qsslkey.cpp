@@ -11,12 +11,6 @@ qsslkeyToDer(const QSslKey& key)
 {
   return key.toDer();
 }
-
-QByteArray
-qsslkeyToPem(const QSslKey& key, const QByteArray& passPhrase)
-{
-  return key.toPem(passPhrase);
-}
 }
 
 }

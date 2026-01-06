@@ -175,7 +175,6 @@ fn main() {
         include_header!("include/core/qset/qset_private.h"),
         include_header!("include/core/qset/qset.h"),
         include_header!("include/core/qvariant/qvariant.h"),
-        include_header!("include/views.h"),
     ]);
 
     let mut builder = CxxQtBuilder::new()

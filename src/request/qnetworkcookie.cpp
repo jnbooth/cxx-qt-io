@@ -1,7 +1,6 @@
 #include "cxx-qt-io/qnetworkcookie.h"
 
 #include <cxx-qt-io/assertion_utils.h>
-#include <cxx-qt-io/views.h>
 
 assert_shared_pointer_type(QNetworkCookie);
 
@@ -12,10 +11,12 @@ QList<QNetworkCookie>
 qnetworkcookieParseCookies(::rust::Slice<const ::std::uint8_t> cookieString)
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
-  return QNetworkCookie::parseCookies(qbytearrayviewFromSlice(cookieString));
+  using Bytes = QByteArrayView;
 #else
-  return QNetworkCookie::parseCookies(qbytearrayFromRawData(cookieString));
+  using Bytes = QByteArray;
 #endif
+  return QNetworkCookie::parseCookies(Bytes(
+    reinterpret_cast<const char*>(cookieString.data()), cookieString.size()));
 }
 
 }

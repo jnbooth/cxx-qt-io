@@ -1,41 +1,54 @@
 #include "cxx-qt-io/qhttpheaders.h"
 
 #include <cxx-qt-io/assertion_utils.h>
-#include <cxx-qt-io/views.h>
 
 assert_shared_pointer_type(QHttpHeaders);
 
 namespace rust {
 namespace cxxqtio1 {
+namespace qhttpheaders {
+inline ::rust::Slice<const ::std::uint8_t>
+viewSlice(QByteArrayView view) noexcept
+{
+  return ::rust::Slice(reinterpret_cast<const ::std::uint8_t*>(view.data()),
+                       view.size());
+}
+
+inline ::rust::Str
+viewStr(QLatin1StringView view)
+{
+  return ::rust::Str(view.data(), view.size());
+}
+}
 
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersWellKnownHeaderName(QHttpHeaders::WellKnownHeader name)
 {
-  return qbytearrayviewAsSlice(QHttpHeaders::wellKnownHeaderName(name));
+  return qhttpheaders::viewSlice(QHttpHeaders::wellKnownHeaderName(name));
 }
 
 ::rust::Str
 qhttpheadersNameAt(const QHttpHeaders& headers, ::rust::isize i)
 {
-  return qlatin1stringviewAsStr(headers.nameAt(static_cast<qsizetype>(i)));
+  return qhttpheaders::viewStr(headers.nameAt(static_cast<qsizetype>(i)));
 }
 
 ::rust::Slice<const ::rust::u8>
 qhttpheadersValue(const QHttpHeaders& headers, QAnyStringView name)
 {
-  return qbytearrayviewAsSlice(headers.value(name));
+  return qhttpheaders::viewSlice(headers.value(name));
 }
 ::rust::Slice<const ::rust::u8>
 qhttpheadersValue(const QHttpHeaders& headers,
                   QHttpHeaders::WellKnownHeader name)
 {
-  return qbytearrayviewAsSlice(headers.value(name));
+  return qhttpheaders::viewSlice(headers.value(name));
 }
 
 ::rust::Slice<const ::rust::u8>
 qhttpheadersValueAt(const QHttpHeaders& headers, ::rust::isize i)
 {
-  return qbytearrayviewAsSlice(headers.valueAt(static_cast<qsizetype>(i)));
+  return qhttpheaders::viewSlice(headers.valueAt(static_cast<qsizetype>(i)));
 }
 
 bool

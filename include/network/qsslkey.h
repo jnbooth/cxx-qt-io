@@ -12,9 +12,6 @@ struct IsRelocatable<QSslKey> : ::std::true_type
 namespace cxxqtio1 {
 QByteArray
 qsslkeyToDer(const QSslKey& key);
-
-QByteArray
-qsslkeyToPem(const QSslKey& key, const QByteArray& passPhrase);
 }
 
 }

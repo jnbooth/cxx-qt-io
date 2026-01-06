@@ -48,6 +48,10 @@ mod ffi {
         /// Returns the type of the key (i.e., [`QSslKeyType::PublicKey`] or [`QSslKeyType::PrivateKey`]).
         #[cxx_name = "type"]
         fn key_type(&self) -> QSslKeyType;
+
+        /// Returns the key in PEM encoding. The result is encrypted with `pass_phrase` if the key is a private key.
+        #[rust_name = "to_pem_encrypted"]
+        fn toPem(&self, pass_phrase: &QByteArray) -> QByteArray;
     }
 
     #[namespace = "rust::cxxqtio1"]
@@ -55,10 +59,6 @@ mod ffi {
         #[doc(hidden)]
         #[rust_name = "qsslkey_to_der"]
         fn qsslkeyToDer(key: &QSslKey) -> QByteArray;
-
-        #[doc(hidden)]
-        #[rust_name = "qsslkey_to_pem"]
-        fn qsslkeyToPem(key: &QSslKey, pass_phrase: &QByteArray) -> QByteArray;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -202,12 +202,9 @@ impl QSslKey {
         ffi::qsslkey_to_der(self)
     }
 
-    /// Returns the key in PEM encoding. The result is encrypted with `pass_phrase` if the key is a private key and `pass_phrase` is provided.
-    pub fn to_pem(&self, pass_phrase: Option<&QByteArray>) -> QByteArray {
-        match pass_phrase {
-            Some(pass_phrase) => ffi::qsslkey_to_pem(self, pass_phrase),
-            None => ffi::qsslkey_to_pem(self, &QByteArray::default()),
-        }
+    /// Returns the key in PEM encoding.
+    pub fn to_pem(&self) -> QByteArray {
+        self.to_pem_encrypted(&QByteArray::default())
     }
 }
 
