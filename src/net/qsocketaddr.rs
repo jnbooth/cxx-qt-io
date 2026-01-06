@@ -73,6 +73,12 @@ impl From<(&str, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
     }
 }
 
+impl From<(&String, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
+    fn from((name, port, protocol): (&String, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
+        Self::Name(QString::from(name), port, protocol)
+    }
+}
+
 impl From<(String, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
     fn from((name, port, protocol): (String, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
         Self::Name(QString::from(&name), port, protocol)
