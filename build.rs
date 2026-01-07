@@ -35,61 +35,27 @@ impl Features {
             ssl: Self::env("SSL"),
         }
     }
-}
 
-struct HeaderBuilder {
-    dir: PathBuf,
-}
-
-impl HeaderBuilder {
-    pub fn new() -> Self {
-        let dir = PathBuf::from(env::var("OUT_DIR").unwrap())
-            .join("include")
-            .join("cxx-qt-io");
-        Self { dir }
-    }
-
-    pub fn create_header_dir(&self) {
-        fs::create_dir_all(&self.dir).expect("Failed to create include directory");
-    }
-
-    pub fn write_definitions(&self, features: &Features) {
+    pub fn definitions_file(&self) -> String {
         let mut definitions = "#pragma once\n".to_owned();
 
-        if features.fs {
+        if self.fs {
             definitions.push_str("#define CXX_QT_IO_FS_FEATURE\n");
         }
 
-        if features.net {
+        if self.net {
             definitions.push_str("#define CXX_QT_IO_NET_FEATURE\n");
         }
 
-        if features.request {
+        if self.request {
             definitions.push_str("#define CXX_QT_IO_REQUEST_FEATURE\n");
         }
 
-        if features.ssl {
+        if self.ssl {
             definitions.push_str("#define CXX_QT_IO_SSL_FEATURE\n");
         }
 
-        fs::write(self.dir.join("definitions.h"), definitions)
-            .expect("Failed to write definitions.h");
-    }
-
-    pub fn write_headers(&self, files: &[(&[u8], &OsStr)]) {
-        for &(file_contents, file_name) in files {
-            let out_path = self.dir.join(file_name);
-            let mut header = File::create(out_path).expect("Could not create header");
-            header
-                .write_all(file_contents)
-                .expect("Could not write header");
-        }
-    }
-}
-
-impl AsRef<Path> for HeaderBuilder {
-    fn as_ref(&self) -> &Path {
-        &self.dir
+        definitions
     }
 }
 
@@ -99,13 +65,11 @@ trait BridgeBuilder {
 }
 
 impl BridgeBuilder for CxxQtBuilder {
-    fn build_cpp(self, cpp_files: &[&str]) -> Self {
-        self.cc_builder(move |cc| {
-            for cpp_file in cpp_files {
-                cc.file(format!("src/{cpp_file}.cpp"));
-                println!("cargo::rerun-if-changed=src/{cpp_file}.cpp");
-            }
-        })
+    fn build_cpp(mut self, cpp_files: &[&str]) -> Self {
+        for cpp_file in cpp_files {
+            self = self.cpp_file(format!("src/{cpp_file}.cpp"));
+        }
+        self
     }
 
     fn build_rust(self, rust_bridges: &[&str]) -> Self {
@@ -113,7 +77,7 @@ impl BridgeBuilder for CxxQtBuilder {
     }
 }
 
-trait AtLeast {
+trait VersionExt {
     fn at_least(&self, major: u64, minor: u64) -> bool;
 
     fn find(&self, name: &str, versions: &[(u64, u64)]) -> String {
@@ -126,7 +90,7 @@ trait AtLeast {
     }
 }
 
-impl AtLeast for semver::Version {
+impl VersionExt for semver::Version {
     fn at_least(&self, major: u64, minor: u64) -> bool {
         self.major > major || (self.major == major && self.minor >= minor)
     }
@@ -143,13 +107,19 @@ fn main() {
     let qtbuild = QtBuild::new(qt_modules).expect("Could not find Qt installation");
     let version = qtbuild.version();
 
-    let header_dir = HeaderBuilder::new();
+    let header_dir = PathBuf::from(env::var("OUT_DIR").unwrap())
+        .join("include")
+        .join("cxx-qt-io");
 
-    header_dir.create_header_dir();
+    fs::create_dir_all(&header_dir).expect("Failed to create include directory");
 
-    header_dir.write_definitions(&features);
+    fs::write(
+        header_dir.join("definitions.h"),
+        features.definitions_file(),
+    )
+    .expect("Failed to write definitions.h");
 
-    header_dir.write_headers(&[
+    let mut headers: Vec<(&[u8], &OsStr)> = vec![
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
         include_header!("include/core/qbytearray.h"),
@@ -175,7 +145,7 @@ fn main() {
         include_header!("include/core/qset/qset_private.h"),
         include_header!("include/core/qset/qset.h"),
         include_header!("include/core/qvariant/qvariant.h"),
-    ]);
+    ];
 
     let mut builder = CxxQtBuilder::new()
         // Use a short name due to the Windows file path limit!
@@ -209,7 +179,7 @@ fn main() {
         ]);
 
     if features.fs {
-        header_dir.write_headers(&[
+        headers.extend_from_slice(&[
             include_header!("include/core/qdir.h"),
             include_header!("include/core/qfile.h"),
             include_header!("include/core/qfiledevice.h"),
@@ -230,7 +200,7 @@ fn main() {
     }
 
     if features.net {
-        header_dir.write_headers(&[
+        headers.extend_from_slice(&[
             include_header!("include/core/qlist/qlist_qhostaddress.h"),
             include_header!("include/core/qlist/qlist_qnetworkaddressentry.h"),
             include_header!("include/core/qlist/qlist_qnetworkdatagram.h"),
@@ -283,7 +253,7 @@ fn main() {
             ]);
 
         if version.at_least(6, 7) {
-            header_dir.write_headers(&[
+            headers.extend_from_slice(&[
                 include_header!("include/core/qlist/qlist_qhttpheaders.h"),
                 include_header!("include/network/qhttpheaders.h"),
             ]);
@@ -294,7 +264,7 @@ fn main() {
     }
 
     if features.request {
-        header_dir.write_headers(&[
+        headers.extend_from_slice(&[
             include_header!("include/core/qlist/qlist_qhstspolicy.h"),
             include_header!("include/core/qlist/qlist_qhttp2configuration.h"),
             include_header!("include/core/qlist/qlist_qhttppart.h"),
@@ -354,7 +324,7 @@ fn main() {
             ]);
 
         if version.at_least(6, 5) {
-            header_dir.write_headers(&[
+            headers.extend_from_slice(&[
                 include_header!("include/core/qlist/qlist_qhttp1configuration.h"),
                 include_header!("include/core/qset/qset_qhttp1configuration.h"),
                 include_header!("include/network/qhttp1configuration.h"),
@@ -370,7 +340,7 @@ fn main() {
     }
 
     if features.ssl {
-        header_dir.write_headers(&[
+        headers.extend_from_slice(&[
             include_header!("include/core/qcryptographichash.h"),
             include_header!("include/core/qlist/qlist_qdtlsgeneratorparameters.h"),
             include_header!("include/core/qlist/qlist_qocspresponse.h"),
@@ -457,9 +427,17 @@ fn main() {
             ]);
 
         if version.at_least(6, 4) {
-            header_dir.write_headers(&[include_header!("include/network/qsslserver.h")]);
+            headers.extend_from_slice(&[include_header!("include/network/qsslserver.h")]);
             builder = builder.build_rust(&["ssl/qsslserver"]);
         }
+    }
+
+    for &(file_contents, file_name) in &headers {
+        let out_path = header_dir.join(file_name);
+        let mut header = File::create(out_path).expect("Could not create header");
+        header
+            .write_all(file_contents)
+            .expect("Could not write header");
     }
 
     let interface = builder.build();
