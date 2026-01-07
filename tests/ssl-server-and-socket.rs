@@ -8,7 +8,7 @@ use cxx_qt_io::{
     QSslCertificate, QSslConfiguration, QSslError, QSslErrorSslError, QSslKey, QSslServer,
     QSslSocket,
 };
-use cxx_qt_lib::{QByteArray, QString};
+use cxx_qt_lib::QByteArray;
 use cxx_qt_lib_extras::QEventLoop;
 
 const CERT: &[u8] = include_bytes!("local.crt");
@@ -73,11 +73,9 @@ fn ssl_round_trip() {
             .as_tcp_server_mut()
             .listen(&QHostAddressSpecialAddress::Any.into(), PORT);
 
-        client_socket.as_mut().connect_to_host_encrypted(
-            &QString::from("localhost"),
-            PORT,
-            QIODevice::ReadWrite,
-        );
+        client_socket
+            .as_mut()
+            .connect_to_host_encrypted(("localhost", PORT), QIODevice::ReadWrite);
 
         assert!(
             wait_for_encrypted(&client_socket, TIMEOUT),

@@ -8,41 +8,58 @@ use crate::{QAbstractSocketNetworkLayerProtocol, QHostAddress, QHostAddressSpeci
 ///
 /// This struct is analogous to Rust's [`SocketAddr`].
 #[derive(Debug, PartialEq, Eq)]
-pub enum QSocketAddr {
-    Address(QHostAddress, u16),
-    Name(QString, u16, QAbstractSocketNetworkLayerProtocol),
+pub struct QSocketAddr {
+    pub name: QString,
+    pub port: u16,
+    pub protocol: QAbstractSocketNetworkLayerProtocol,
 }
 
 impl From<(QHostAddress, u16)> for QSocketAddr {
     fn from((addr, port): (QHostAddress, u16)) -> Self {
-        Self::Address(addr, port)
+        Self {
+            name: addr.to_qstring(),
+            port,
+            protocol: QAbstractSocketNetworkLayerProtocol::AnyIPProtocol,
+        }
     }
 }
 
 macro_rules! impl_from_address {
-    ($t:ty) => {
+    ($t:ty, $i:ident) => {
         impl From<($t, u16)> for QSocketAddr {
             fn from((addr, port): ($t, u16)) -> Self {
-                Self::Address(addr.into(), port)
+                Self {
+                    name: QHostAddress::from(addr).to_qstring(),
+                    port,
+                    protocol: QAbstractSocketNetworkLayerProtocol::$i,
+                }
             }
         }
     };
 }
 
-impl_from_address!(QHostAddressSpecialAddress);
-impl_from_address!(Ipv6Addr);
-impl_from_address!(IpAddr);
-impl_from_address!(Ipv4Addr);
+impl_from_address!(QHostAddressSpecialAddress, AnyIPProtocol);
+impl_from_address!(Ipv6Addr, IPv6Protocol);
+impl_from_address!(Ipv4Addr, IPv4Protocol);
+
+impl From<(IpAddr, u16)> for QSocketAddr {
+    fn from((addr, port): (IpAddr, u16)) -> Self {
+        match addr {
+            IpAddr::V4(addr) => QSocketAddr::from((addr, port)),
+            IpAddr::V6(addr) => QSocketAddr::from((addr, port)),
+        }
+    }
+}
 
 impl From<SocketAddrV4> for QSocketAddr {
     fn from(value: SocketAddrV4) -> Self {
-        Self::Address(QHostAddress::from(*value.ip()), value.port())
+        Self::from((*value.ip(), value.port()))
     }
 }
 
 impl From<SocketAddrV6> for QSocketAddr {
     fn from(value: SocketAddrV6) -> Self {
-        Self::Address(QHostAddress::from(*value.ip()), value.port())
+        Self::from((*value.ip(), value.port()))
     }
 }
 
@@ -55,42 +72,52 @@ impl From<SocketAddr> for QSocketAddr {
     }
 }
 
+macro_rules! impl_from_hostname {
+    ($t:ty) => {
+        impl From<($t, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
+            fn from(
+                (name, port, protocol): ($t, u16, QAbstractSocketNetworkLayerProtocol),
+            ) -> Self {
+                Self {
+                    name: QString::from(name),
+                    port,
+                    protocol,
+                }
+            }
+        }
+    };
+}
+
 impl From<(QString, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
     fn from((name, port, protocol): (QString, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
-        Self::Name(name, port, protocol)
+        Self {
+            name,
+            port,
+            protocol,
+        }
     }
 }
 
 impl From<(&QString, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
     fn from((name, port, protocol): (&QString, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
-        Self::Name(name.clone(), port, protocol)
+        Self {
+            name: name.clone(),
+            port,
+            protocol,
+        }
     }
 }
 
-impl From<(&str, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
-    fn from((name, port, protocol): (&str, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
-        Self::Name(QString::from(name), port, protocol)
-    }
-}
+impl_from_hostname!(&str);
+impl_from_hostname!(&String);
+impl_from_hostname!(String);
 
-impl From<(&String, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
-    fn from((name, port, protocol): (&String, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
-        Self::Name(QString::from(name), port, protocol)
-    }
-}
-
-impl From<(String, u16, QAbstractSocketNetworkLayerProtocol)> for QSocketAddr {
-    fn from((name, port, protocol): (String, u16, QAbstractSocketNetworkLayerProtocol)) -> Self {
-        Self::Name(QString::from(&name), port, protocol)
-    }
-}
-
-impl<S> From<(S, u16)> for QSocketAddr
+impl<T> From<(T, u16)> for QSocketAddr
 where
-    QSocketAddr: From<(S, u16, QAbstractSocketNetworkLayerProtocol)>,
+    QSocketAddr: From<(T, u16, QAbstractSocketNetworkLayerProtocol)>,
 {
     /// Connect using [`QAbstractSocketNetworkLayerProtocol::AnyIPProtocol`].
-    fn from((name, port): (S, u16)) -> Self {
+    fn from((name, port): (T, u16)) -> Self {
         Self::from((
             name,
             port,

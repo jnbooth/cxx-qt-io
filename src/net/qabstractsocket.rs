@@ -231,16 +231,7 @@ mod ffi {
         ) -> bool;
 
         #[doc(hidden)]
-        #[rust_name = "connect_to_host_address"]
-        fn connectToHost(
-            self: Pin<&mut QAbstractSocket>,
-            address: &QHostAddress,
-            port: u16,
-            open_mode: QIODeviceOpenMode,
-        );
-
-        #[doc(hidden)]
-        #[rust_name = "connect_to_host_name"]
+        #[rust_name = "connect_to_host_with"]
         fn connectToHost(
             self: Pin<&mut QAbstractSocket>,
             host_name: &QString,
@@ -457,14 +448,8 @@ impl QAbstractSocket {
     where
         A: Into<QSocketAddr>,
     {
-        match addr.into() {
-            QSocketAddr::Address(address, port) => {
-                self.connect_to_host_address(&address, port, mode);
-            }
-            QSocketAddr::Name(name, port, protocol) => {
-                self.connect_to_host_name(&name, port, mode, protocol);
-            }
-        }
+        let addr = addr.into();
+        self.connect_to_host_with(&addr.name, addr.port, mode, addr.protocol);
     }
 
     /// Returns the host address of the local socket if available; otherwise returns `None`.
