@@ -21,6 +21,7 @@ mod ffi {
     /// Describes the peer verification modes for [`QSslSocket`]. The default mode is [`AutoVerifyPeer`](QSslSocketPeerVerifyMode::AutoVerifyPeer), which selects an appropriate mode depending on the socket's [`QSslSocketSslMode`].
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslSocketPeerVerifyMode {
         /// [`QSslSocket`] will not request a certificate from the peer. You can set this mode if you are not interested in the identity of the other side of the connection. The connection will still be encrypted, and your socket will still send its local certificate to the peer if it's requested.
         VerifyNone,
@@ -35,6 +36,7 @@ mod ffi {
     /// Describes the connection modes available for [`QSslSocket`].
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslSocketSslMode {
         /// The socket is unencrypted. Its behavior is identical to [`QTcpSocket`].
         UnencryptedMode,
@@ -54,18 +56,8 @@ mod ffi {
 
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
-        type QIODeviceOpenMode = crate::QIODeviceOpenMode;
         include!("cxx-qt-io/qabstractsocket.h");
         type QAbstractSocket = crate::QAbstractSocket;
-        type QAbstractSocketNetworkLayerProtocol = crate::QAbstractSocketNetworkLayerProtocol;
-        include!("cxx-qt-io/qssl.h");
-        type QSslAlertLevel = crate::QSslAlertLevel;
-        type QSslAlertType = crate::QSslAlertType;
-        type QSslEncodingFormat = crate::QSslEncodingFormat;
-        type QSslImplementedClass = crate::QSslImplementedClass;
-        type QSslKeyAlgorithm = crate::QSslKeyAlgorithm;
-        type QSslSslProtocol = crate::QSslSslProtocol;
-        type QSslSupportedFeature = crate::QSslSupportedFeature;
         include!("cxx-qt-io/qsslcertificate.h");
         type QSslCertificate = crate::QSslCertificate;
         include!("cxx-qt-io/qsslcipher.h");
@@ -88,14 +80,29 @@ mod ffi {
         type QList_QSslSupportedFeature = cxx_qt_lib::QList<QSslSupportedFeature>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QIODeviceOpenMode = crate::QIODeviceOpenMode;
+        type QAbstractSocketNetworkLayerProtocol = crate::QAbstractSocketNetworkLayerProtocol;
+        include!("cxx-qt-io/qssl.h");
+        type QSslAlertLevel = crate::QSslAlertLevel;
+        type QSslAlertType = crate::QSslAlertType;
+        type QSslEncodingFormat = crate::QSslEncodingFormat;
+        type QSslImplementedClass = crate::QSslImplementedClass;
+        type QSslKeyAlgorithm = crate::QSslKeyAlgorithm;
+        type QSslSslProtocol = crate::QSslSslProtocol;
+        type QSslSupportedFeature = crate::QSslSupportedFeature;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qsslsocket.h");
         type QSslSocketPeerVerifyMode;
         type QSslSocketSslMode;
-        type QTcpSocket = crate::QTcpSocket;
     }
 
     unsafe extern "C++Qt" {
+        type QTcpSocket = crate::QTcpSocket;
         /// The `QSslSocket` class provides an SSL encrypted socket for both clients and servers.
         ///
         /// Qt Documentation: [QSslSocket](https://doc.qt.io/qt-6/qsslsocket.html#details)

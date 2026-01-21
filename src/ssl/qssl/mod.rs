@@ -9,6 +9,7 @@ mod ffi {
     /// Describes the key types for alternative name entries in [`QSslCertificate`](crate::QSslCertificate).
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslAlternativeNameEntryType {
         /// An email entry; the entry contains an email address that the certificate is valid for.
         EmailEntry,
@@ -21,6 +22,7 @@ mod ffi {
     /// Describes the two types of keys [`QSslKey`](crate::QSslKey) supports.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslKeyType {
         /// A private key.
         PrivateKey,
@@ -31,6 +33,7 @@ mod ffi {
     /// Describes supported encoding formats for certificates and keys.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslEncodingFormat {
         /// The PEM format.
         Pem,
@@ -41,6 +44,7 @@ mod ffi {
     /// Describes the different key algorithms supported by [`QSslKey`](crate::QSslKey).
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslKeyAlgorithm {
         /// A key that should be treated as a 'black box' by [`QSslKey`](crate::QSslKey). Allows applications to add support for facilities such as PKCS#11 that Qt does not currently offer natively.
         Opaque,
@@ -58,6 +62,7 @@ mod ffi {
     ///
     /// By default, [`SslOptionDisableEmptyFragments`](QSslSslOption::SslOptionDisableEmptyFragments) is turned on since this causes problems with a large number of servers. [`SslOptionDisableLegacyRenegotiation`](QSslSslOption::SslOptionDisableLegacyRenegotiation) is also turned on, since it introduces a security risk. [`SslOptionDisableCompression`](QSslSslOption::SslOptionDisableCompression) is turned on to prevent the attack publicised by CRIME. [`SslOptionDisableSessionPersistence`](QSslSslOption::SslOptionDisableSessionPersistence) is turned on to optimize memory usage. The other options are turned off.
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslSslOption {
         /// Disables the insertion of empty fragments into the data when using block ciphers. When enabled, this prevents some attacks (such as the BEAST attack), however it is incompatible with some servers.
         SslOptionDisableEmptyFragments = 0x01,
@@ -80,6 +85,7 @@ mod ffi {
     /// Describes the protocol of the cipher.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslSslProtocol {
         /// TLSv1.2.
         TlsV1_2 = 2,
@@ -108,6 +114,7 @@ mod ffi {
     /// Describes the level of an alert message.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslAlertLevel {
         /// Non-fatal alert message.
         Warning,
@@ -120,6 +127,7 @@ mod ffi {
     /// See [RFC 8446, section 6](https://datatracker.ietf.org/doc/html/rfc8446#section-6) for the possible values and their meaning.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslAlertType {
         CloseNotify,
         UnexpectedMessage = 10,
@@ -162,6 +170,7 @@ mod ffi {
     /// In QtNetwork TLS-related classes have public API, that may be left unimplemented by some backend, for example, our SecureTransport backend does not support server-side ALPN. Enumerators from this enum indicate that a particular feature is supported.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslSupportedFeature {
         /// Indicates that [`QSslCertificate::verify`](crate::QSslCertificate::verify) is implemented by the backend.
         CertificateVerification,
@@ -179,6 +188,7 @@ mod ffi {
         Alerts,
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qssl.h");
         type QSslAlternativeNameEntryType;
@@ -201,7 +211,7 @@ pub use ffi::{
 /// [`QFlags`] of [`QSslSslOption`].
 pub type QSslSslOptions = QFlags<QSslSslOption>;
 
-unsafe_impl_qflag!(QSslSslOption, "QSslSslOptions");
+unsafe_impl_qflag!(QSslSslOption, "rust::cxxqtio1::QSslSslOptions");
 
 impl fmt::Display for QSslKeyType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

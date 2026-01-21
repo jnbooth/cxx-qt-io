@@ -18,13 +18,16 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qtypes.h");
         type qintptr = cxx_qt_lib::qintptr;
-        include!("cxx-qt-io/qabstractsocket.h");
-        type QAbstractSocketSocketError = crate::QAbstractSocketSocketError;
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
         include!("cxx-qt-io/qnetworkproxy.h");
         type QNetworkProxy = crate::QNetworkProxy;
+    }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        include!("cxx-qt-io/qabstractsocket.h");
+        type QAbstractSocketSocketError = crate::QAbstractSocketSocketError;
     }
 
     extern "C++" {

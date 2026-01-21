@@ -22,6 +22,7 @@ use crate::util::IsNonNull;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QStandardPathsLocateOption {
         LocateFile,
         LocateDirectory,
@@ -34,6 +35,7 @@ mod ffi {
         type QStringList = cxx_qt_lib::QStringList;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qstandardpaths.h");
         type QStandardPathsLocateOption;
@@ -78,7 +80,10 @@ use ffi::QStandardPathsLocateOption;
 
 /// [`QFlags`] of [`QStandardPathsLocateOption`].
 type QStandardPathsLocateOptions = QFlags<QStandardPathsLocateOption>;
-unsafe_impl_qflag!(QStandardPathsLocateOption, "QStandardPathsLocateOptions");
+unsafe_impl_qflag!(
+    QStandardPathsLocateOption,
+    "rust::cxxqtio1::QStandardPathsLocateOptions"
+);
 
 impl QStandardPaths {
     const LOCATE_DIR: QStandardPathsLocateOptions =

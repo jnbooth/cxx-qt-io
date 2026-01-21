@@ -4,14 +4,14 @@
 
 #include "rust/cxx.h"
 
-using QHttpHeadersWellKnownHeader = QHttpHeaders::WellKnownHeader;
-
 namespace rust {
 template<>
 struct IsRelocatable<QHttpHeaders> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
+using QHttpHeadersWellKnownHeader = QHttpHeaders::WellKnownHeader;
+
 ::rust::Slice<const ::std::uint8_t>
 qhttpheadersWellKnownHeaderName(QHttpHeaders::WellKnownHeader name);
 

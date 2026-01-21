@@ -23,9 +23,13 @@ mod ffi {
 
         include!("cxx-qt-io/qfiledevice.h");
         type QFileDevice = crate::QFileDevice;
-        type QFileDeviceFileHandleFlags = crate::QFileDeviceFileHandleFlags;
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QFileDeviceFileHandleFlags = crate::QFileDeviceFileHandleFlags;
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
     }
 

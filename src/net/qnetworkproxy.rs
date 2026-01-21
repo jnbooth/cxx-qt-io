@@ -13,6 +13,7 @@ mod ffi {
     ///
     /// [`QNetworkProxy`] sets different capabilities by default when the object is created (see [`QNetworkProxyProxyType`] for a list of the defaults). However, it is possible to change the capabilities after the object has been created with [`QNetworkProxy::set_capabilities`].
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkProxyCapability {
         /// Ability to open transparent, tunneled TCP connections to a remote host. The proxy server relays the transmission verbatim from one side to the other and does no caching.
         TunnelingCapability = 0x0001,
@@ -35,6 +36,7 @@ mod ffi {
     /// There are two types of proxies that Qt understands: transparent proxies and caching proxies. The first group consists of proxies that can handle any arbitrary data transfer, while the second can only handle specific requests. The caching proxies only make sense for the specific classes where they can be used.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkProxyProxyType {
         /// Proxy is determined based on the application proxy set using [`QNetworkProxy::set_application_proxy`].
         DefaultProxy,
@@ -59,6 +61,10 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
     }
@@ -69,6 +75,7 @@ mod ffi {
         type QHttpHeaders = crate::QHttpHeaders;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkproxy.h");
         type QNetworkProxyCapability;
@@ -229,7 +236,10 @@ pub use ffi::{QNetworkProxyCapability, QNetworkProxyProxyType};
 /// [`QFlags`] of [`QNetworkProxyCapability`].
 pub type QNetworkProxyCapabilities = QFlags<QNetworkProxyCapability>;
 
-unsafe_impl_qflag!(QNetworkProxyCapability, "QNetworkProxyCapabilities");
+unsafe_impl_qflag!(
+    QNetworkProxyCapability,
+    "rust::cxxqtio1::QNetworkProxyCapabilities"
+);
 
 /// The `QNetworkProxy` class provides a network layer proxy.
 ///

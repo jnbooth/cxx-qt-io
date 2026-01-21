@@ -17,6 +17,10 @@ mod ffi {
 
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
     }

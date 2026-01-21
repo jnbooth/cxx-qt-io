@@ -4,15 +4,15 @@
 
 #include "rust/cxx.h"
 
-using QHstsPolicyPolicyFlag = QHstsPolicy::PolicyFlag;
-using QHstsPolicyPolicyFlags = QHstsPolicy::PolicyFlags;
-
 namespace rust {
 template<>
 struct IsRelocatable<QHstsPolicy> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
+using QHstsPolicyPolicyFlag = QHstsPolicy::PolicyFlag;
+using QHstsPolicyPolicyFlags = QHstsPolicy::PolicyFlags;
+
 QHstsPolicy
 qhstspolicyNew(const QDateTime& expiry,
                QHstsPolicyPolicyFlags flags,

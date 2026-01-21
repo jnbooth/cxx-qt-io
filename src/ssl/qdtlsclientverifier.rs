@@ -27,8 +27,8 @@ mod ffi {
 
     extern "C++" {
         include!("cxx-qt-io/qdtlsclientverifier.h");
-        type QDtlsGeneratorParameters = crate::QDtlsGeneratorParameters;
         type QDtlsError = crate::QDtlsError;
+        type QDtlsGeneratorParameters = crate::QDtlsGeneratorParameters;
     }
 
     unsafe extern "C++Qt" {

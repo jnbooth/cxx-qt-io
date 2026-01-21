@@ -11,6 +11,7 @@ mod ffi {
     /// Describes the status of the Next Protocol Negotiation (NPN) or Application-Layer Protocol Negotiation (ALPN).
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslConfigurationNextProtocolNegotiationStatus {
         /// No application protocol has been negotiated (yet).
         NextProtocolNegotiationNone,
@@ -27,21 +28,14 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-lib/qvariant.h");
         type QVariant = cxx_qt_lib::QVariant;
-        include!("cxx-qt-io/qssl.h");
-        type QSslEncodingFormat = crate::QSslEncodingFormat;
-        type QSslSslProtocol = crate::QSslSslProtocol;
-        type QSslSslOption = crate::QSslSslOption;
         include!("cxx-qt-io/qsslcertificate.h");
         type QSslCertificate = crate::QSslCertificate;
-        type QSslCertificatePatternSyntax = crate::QSslCertificatePatternSyntax;
         include!("cxx-qt-io/qsslcipher.h");
         type QSslCipher = crate::QSslCipher;
         include!("cxx-qt-io/qssldiffiehellmanparameters.h");
         type QSslDiffieHellmanParameters = crate::QSslDiffieHellmanParameters;
         include!("cxx-qt-io/qsslkey.h");
         type QSslKey = crate::QSslKey;
-        include!("cxx-qt-io/qsslsocket.h");
-        type QSslSocketPeerVerifyMode = crate::QSslSocketPeerVerifyMode;
         include!("cxx-qt-io/qlist.h");
         type QList_QByteArray = cxx_qt_lib::QList<cxx_qt_lib::QByteArray>;
         type QList_QSslCertificate = cxx_qt_lib::QList<QSslCertificate>;
@@ -51,6 +45,18 @@ mod ffi {
         type QMap_QByteArray_QVariant = cxx_qt_lib::QMap<crate::QMapPair_QByteArray_QVariant>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        include!("cxx-qt-io/qssl.h");
+        type QSslEncodingFormat = crate::QSslEncodingFormat;
+        type QSslSslProtocol = crate::QSslSslProtocol;
+        type QSslSslOption = crate::QSslSslOption;
+        type QSslCertificatePatternSyntax = crate::QSslCertificatePatternSyntax;
+        include!("cxx-qt-io/qsslsocket.h");
+        type QSslSocketPeerVerifyMode = crate::QSslSocketPeerVerifyMode;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qsslconfiguration.h");
         type QSslConfigurationNextProtocolNegotiationStatus;

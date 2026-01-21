@@ -13,6 +13,7 @@ use crate::{QIODevice, QSslEncodingFormat};
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslDiffieHellmanParametersError {
         /// No error occurred.
         NoError,
@@ -29,10 +30,15 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         include!("cxx-qt-io/qssl.h");
         type QSslEncodingFormat = crate::QSslEncodingFormat;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qssldiffiehellmanparameters.h");
         type QSslDiffieHellmanParametersError;

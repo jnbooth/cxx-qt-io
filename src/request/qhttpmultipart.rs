@@ -10,6 +10,7 @@ mod ffi {
     /// List of known content types for a multipart subtype as described in RFC 2046 and others.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QHttpMultiPartContentType {
         /// Corresponds to the "multipart/mixed" subtype, meaning the body parts are independent of each other, as described in RFC 2046.
         MixedType,
@@ -29,6 +30,7 @@ mod ffi {
         type QHttpPart = crate::QHttpPart;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qhttpmultipart.h");
         type QHttpMultiPartContentType;

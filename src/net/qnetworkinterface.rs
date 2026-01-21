@@ -13,6 +13,7 @@ mod ffi {
     ///
     /// Note that one network interface cannot be both broadcast-based and point-to-point.
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkInterfaceInterfaceFlag {
         /// The network interface is "up" - enabled by administrative action
         IsUp = 0x1,
@@ -31,6 +32,7 @@ mod ffi {
     /// Specifies the type of hardware (PHY layer, OSI level 1) this interface is, if it could be determined. Interface types that are not among those listed below will generally be listed as Unknown, though future versions of Qt may add new enumeration values.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkInterfaceInterfaceType {
         /// The interface type could not be determined or is not one of the other listed types.
         Unknown,
@@ -71,6 +73,7 @@ mod ffi {
         type QList_QNetworkInterface = cxx_qt_lib::QList<QNetworkInterface>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkinterface.h");
         type QNetworkInterfaceInterfaceFlag;
@@ -181,7 +184,7 @@ pub type QNetworkInterfaceInterfaceFlags = QFlags<QNetworkInterfaceInterfaceFlag
 
 unsafe_impl_qflag!(
     QNetworkInterfaceInterfaceFlag,
-    "QNetworkInterfaceInterfaceFlags"
+    "rust::cxxqtio1::QNetworkInterfaceInterfaceFlags"
 );
 
 /// The `QNetworkInterface` class provides a listing of the host's IP addresses and network interfaces.

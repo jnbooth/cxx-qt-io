@@ -12,6 +12,7 @@ use crate::util::IsNonNull;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QHostAddressConversionModeFlag {
         /// Convert IPv4-mapped IPv6 addresses ([RFC 4291 sect. 2.5.5.2](https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.2)) when comparing. Therefore a [`QHostAddress`] with address `::ffff:192.168.1.1`` will compare equal to one with `192.168.1.1`.
         ConvertV4MappedToIPv4 = 1,
@@ -29,6 +30,7 @@ mod ffi {
 
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QHostAddressSpecialAddress {
         /// The null address object. Equivalent to [`QHostAddress::default()`]. See also [`QHostAddress::is_null`].
         Null,
@@ -49,19 +51,26 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
-        include!("cxx-qt-io/qabstractsocket.h");
-        type QAbstractSocketNetworkLayerProtocol = crate::QAbstractSocketNetworkLayerProtocol;
         include!("cxx-qt-io/qpair_qhostaddress_i32.h");
         type QPair_QHostAddress_i32 = crate::QPair<crate::QHostAddress, i32>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        include!("cxx-qt-io/qabstractsocket.h");
+        type QAbstractSocketNetworkLayerProtocol = crate::QAbstractSocketNetworkLayerProtocol;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddressConversionModeFlag;
         #[allow(unused)]
         type QHostAddressConversionMode = crate::QHostAddressConversionMode;
         type QHostAddressSpecialAddress;
+    }
 
+    extern "C++" {
         #[cxx_name = "Q_IPV6ADDR"]
         type QIpv6Addr = super::QIpv6Addr;
     }
@@ -224,7 +233,10 @@ pub use ffi::{QHostAddressConversionModeFlag, QHostAddressSpecialAddress};
 /// [`QFlags`] of [`QHostAddressConversionModeFlag`].
 pub type QHostAddressConversionMode = QFlags<QHostAddressConversionModeFlag>;
 
-unsafe_impl_qflag!(QHostAddressConversionModeFlag, "QHostAddressConversionMode");
+unsafe_impl_qflag!(
+    QHostAddressConversionModeFlag,
+    "rust::cxxqtio1::QHostAddressConversionMode"
+);
 
 /// The `QHostAddress` class provides an IP address.
 ///

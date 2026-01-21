@@ -10,5 +10,4 @@ namespace rust {
 template<>
 struct IsRelocatable<QDtlsGeneratorParameters> : ::std::true_type
 {};
-
 }

@@ -21,6 +21,7 @@ mod ffi {
     ///
     /// Certain flags, such as [`Unbuffered`](QIODeviceOpenModeFlag::Unbufferred) and [`Truncate`](QIODeviceOpenModeFlag::Truncate), are meaningless when used with some subclasses. Some of these restrictions are implied by the type of device that is represented by a subclass. In other cases, the restriction may be due to the implementation, or may be imposed by the underlying platform; for example, [`QTcpSocket`](crate::QTcpSocket) does not support [`Unbuffered`](QIODeviceOpenModeFlag::Unbufferred) mode, and limitations in the native API prevent [`QFile`](crate::QFile) from supporting [`Unbuffered`](QIODeviceOpenModeFlag::Unbufferred) on Windows.
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QIODeviceOpenModeFlag {
         /// The device is not open.
         NotOpen = 0x0000,
@@ -53,6 +54,7 @@ mod ffi {
         type qint64 = cxx_qt_lib::qint64;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qiodevice.h");
         type QIODeviceOpenModeFlag;
@@ -306,7 +308,7 @@ pub use ffi::{QIODevice, QIODeviceOpenModeFlag};
 
 /// [`QFlags`] of [`QIODeviceOpenModeFlag`].
 pub type QIODeviceOpenMode = QFlags<QIODeviceOpenModeFlag>;
-unsafe_impl_qflag!(QIODeviceOpenModeFlag, "QIODeviceOpenMode");
+unsafe_impl_qflag!(QIODeviceOpenModeFlag, "rust::cxxqtio1::QIODeviceOpenMode");
 
 impl fmt::Debug for QIODevice {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

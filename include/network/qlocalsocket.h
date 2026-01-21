@@ -2,6 +2,8 @@
 
 #include <QtNetwork/QLocalSocket>
 
+namespace rust {
+namespace cxxqtio1 {
 using QLocalSocketLocalSocketError = QLocalSocket::LocalSocketError;
 using QLocalSocketLocalSocketState = QLocalSocket::LocalSocketState;
 
@@ -16,3 +18,5 @@ enum QLocalSocketSocketOption
 };
 using QLocalSocketSocketOptions = QFlags<QLocalSocketSocketOption>;
 #endif
+}
+}

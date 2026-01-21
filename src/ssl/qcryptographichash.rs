@@ -4,6 +4,7 @@ use std::fmt;
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QCryptographicHashAlgorithm {
         Md4,
         Md5,
@@ -30,6 +31,7 @@ mod ffi {
         Blake2s_256,
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qcryptographichash.h");
         type QCryptographicHashAlgorithm;

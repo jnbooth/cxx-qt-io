@@ -12,6 +12,10 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         include!("cxx-qt-io/qssl.h");
         type QSslSslProtocol = crate::QSslSslProtocol;
     }

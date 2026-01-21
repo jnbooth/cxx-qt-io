@@ -11,6 +11,7 @@ mod ffi {
     /// Describes all recognized errors that can occur during an SSL handshake.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslErrorSslError {
         NoError,
         UnableToGetIssuerCertificate,
@@ -60,6 +61,7 @@ mod ffi {
         type QSslCertificate = crate::QSslCertificate;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qsslerror.h");
         type QSslErrorSslError;

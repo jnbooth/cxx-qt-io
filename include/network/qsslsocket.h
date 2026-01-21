@@ -2,11 +2,11 @@
 
 #include <QtNetwork/QSslSocket>
 
+namespace rust {
+namespace cxxqtio1 {
 using QSslSocketPeerVerifyMode = QSslSocket::PeerVerifyMode;
 using QSslSocketSslMode = QSslSocket::SslMode;
 
-namespace rust {
-namespace cxxqtio1 {
 ::std::int64_t
 qsslsocketSslLibraryBuildVersionNumber();
 inline QString (*qsslsocketSslLibraryBuildVersionString)() =

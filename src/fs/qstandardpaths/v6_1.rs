@@ -14,6 +14,7 @@ mod ffi {
     #[cxx_name = "QStandardPathsStandardLocation"]
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QStandardPaths {
         /// Returns the user's desktop directory. This is a generic value. On systems with no concept of a desktop, this is the same as [`HomeLocation`](QStandardPaths::HomeLocation).
         DesktopLocation,
@@ -55,6 +56,7 @@ mod ffi {
         AppConfigLocation,
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qstandardpaths.h");
         #[cxx_name = "QStandardPathsStandardLocation"]

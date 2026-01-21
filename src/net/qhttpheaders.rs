@@ -10,6 +10,7 @@ use crate::RawHeaderList;
 mod ffi {
     /// List of well known headers as per [IANA registry](https://www.iana.org/assignments/http-fields).
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QHttpHeadersWellKnownHeader {
         // IANA Permanent status:
         AIM,
@@ -207,7 +208,10 @@ mod ffi {
         include!("cxx-qt-io/qlist_qpair_qbytearray_qbytearray.h");
         type QPair_QByteArray_QByteArray = crate::QPair<QByteArray, QByteArray>;
         type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;
+    }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         include!("cxx-qt-io/qhttpheaders.h");
         type QHttpHeadersWellKnownHeader;
     }

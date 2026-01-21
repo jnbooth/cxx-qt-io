@@ -2,12 +2,12 @@
 
 #include <QtCore/QStandardPaths>
 
+namespace rust {
+namespace cxxqtio1 {
 using QStandardPathsLocateOption = QStandardPaths::LocateOption;
 using QStandardPathsLocateOptions = QStandardPaths::LocateOptions;
 using QStandardPathsStandardLocation = QStandardPaths::StandardLocation;
 
-namespace rust {
-namespace cxxqtio1 {
 inline QString (*qstandardpathsDisplayName)(QStandardPaths::StandardLocation) =
   QStandardPaths::displayName;
 

@@ -2,10 +2,10 @@
 
 #include <QtNetwork/QNetworkAccessManager>
 
-using QNetworkAccessManagerOperation = QNetworkAccessManager::Operation;
-
 namespace rust {
 namespace cxxqtio1 {
+using QNetworkAccessManagerOperation = QNetworkAccessManager::Operation;
+
 QNetworkReply*
 qnetworkaccessmanagerOptions(QNetworkAccessManager& manager,
                              const QNetworkRequest& request);

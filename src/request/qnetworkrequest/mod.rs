@@ -16,6 +16,7 @@ mod ffi {
     /// Controls the caching mechanism of [`QNetworkAccessManager`](crate::QNetworkAccessManager).
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkRequestCacheLoadControl {
         /// Always load from network and do not check if the cache has a valid entry (similar to the "Reload" feature in browsers); in addition, force intermediate caches to re-validate.
         AlwaysNetwork,
@@ -30,6 +31,7 @@ mod ffi {
     /// Indicates if an aspect of the request's loading mechanism has been manually overridden, e.g. by Qt WebKit.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkRequestLoadControl {
         /// Default value: indicates default behaviour.
         Automatic,
@@ -40,6 +42,7 @@ mod ffi {
     /// This enum lists the possible network request priorities.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkRequestPriority {
         /// High priority.
         HighPriority = 1,
@@ -54,6 +57,7 @@ mod ffi {
     ///  Note: When Qt handles redirects it will, for legacy and compatibility reasons, issue the redirected request using GET when the server returns a 301 or 302 response, regardless of the original method used, unless it was HEAD.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkRequestRedirectPolicy {
         /// Not following any redirects.
         ManualRedirectPolicy,
@@ -108,14 +112,19 @@ mod ffi {
         type QSslConfiguration = crate::QSslConfiguration;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequestAttribute = super::QNetworkRequestAttribute;
         type QNetworkRequestCacheLoadControl;
-        type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
         type QNetworkRequestLoadControl;
         type QNetworkRequestPriority;
         type QNetworkRequestRedirectPolicy;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
     }
 
     unsafe extern "C++" {

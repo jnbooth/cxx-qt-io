@@ -15,6 +15,7 @@ use crate::{QHostAddress, QIODevice, QIODeviceOpenMode, QSocketAddr, SocketDescr
 #[cxx_qt::bridge]
 mod ffi {
     /// This enum describes the network layer protocol values used in Qt.
+    #[namespace = "rust::cxxqtio1"]
     #[repr(i32)]
     #[derive(Debug)]
     enum QAbstractSocketNetworkLayerProtocol {
@@ -29,6 +30,7 @@ mod ffi {
     }
 
     /// This enum describes the different flags you can pass to modify the behavior of [`QAbstractSocket::bind`].
+    #[namespace = "rust::cxxqtio1"]
     #[repr(i32)]
     enum QAbstractSocketBindFlag {
         /// The default option for the current platform. On Unix and macOS, this is equivalent to [`DontShareAddress`](QAbstractSocketBindFlag::DontShareAddress)` + `[`ReuseAddressHint`](QAbstractSocketBindFlag::ReuseAddressHint)), and on Windows, it is equivalent to [`ShareAddress`](QAbstractSocketBindFlag::ShareAddress).
@@ -42,6 +44,7 @@ mod ffi {
     }
 
     /// This enum describes the socket errors that can occur.
+    #[namespace = "rust::cxxqtio1"]
     #[repr(i32)]
     #[derive(Debug)]
     enum QAbstractSocketSocketError {
@@ -96,6 +99,7 @@ mod ffi {
     }
 
     /// This enum represents the options that can be set on a socket. If desired, they can be set after having received the [`QAbstractSocket::connected`] signal from the socket or after having received a new socket from a [`QTcpServer`](crate::QTcpServer).
+    #[namespace = "rust::cxxqtio1"]
     #[repr(i32)]
     #[derive(Debug)]
     enum QAbstractSocketSocketOption {
@@ -131,6 +135,7 @@ mod ffi {
     /// This enum describes the behavior of when the socket should hold back with continuing data transfer. The only notification currently supported is [`QSslSocket::ssl_errors`](crate::QSslSocket::ssl_errors).
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QAbstractSocketPauseMode {
         /// Do not pause data transfer on the socket. This is the default and matches the behavior of Qt 4.
         PauseNever = 0x0,
@@ -141,6 +146,7 @@ mod ffi {
     /// This enum describes the different states in which a socket can be.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QAbstractSocketSocketState {
         /// The socket is not connected.
         UnconnectedState,
@@ -161,6 +167,7 @@ mod ffi {
     /// This enum describes the transport layer protocol.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QAbstractSocketSocketType {
         /// TCP
         TcpSocket,
@@ -185,13 +192,18 @@ mod ffi {
         type QAuthenticator = crate::QAuthenticator;
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
-        type QIODeviceOpenMode = crate::QIODeviceOpenMode;
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
         include!("cxx-qt-io/qnetworkproxy.h");
         type QNetworkProxy = crate::QNetworkProxy;
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QIODeviceOpenMode = crate::QIODeviceOpenMode;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qabstractsocket.h");
         type QAbstractSocketNetworkLayerProtocol;
@@ -431,11 +443,17 @@ pub use ffi::{
 
 /// [`QFlags`] of [`QAbstractSocketBindFlag`].
 pub type QAbstractSocketBindMode = QFlags<QAbstractSocketBindFlag>;
-unsafe_impl_qflag!(QAbstractSocketBindFlag, "QAbstractSocketBindMode");
+unsafe_impl_qflag!(
+    QAbstractSocketBindFlag,
+    "rust::cxxqtio1::QAbstractSocketBindMode"
+);
 
 /// [`QFlags`] of [`QAbstractSocketPauseMode`].
 pub type QAbstractSocketPauseModes = QFlags<QAbstractSocketPauseMode>;
-unsafe_impl_qflag!(QAbstractSocketPauseMode, "QAbstractSocketPauseModes");
+unsafe_impl_qflag!(
+    QAbstractSocketPauseMode,
+    "rust::cxxqtio1::QAbstractSocketPauseModes"
+);
 
 impl fmt::Debug for QAbstractSocket {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

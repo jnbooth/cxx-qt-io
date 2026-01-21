@@ -4,14 +4,14 @@
 
 #include "rust/cxx.h"
 
-using QSslDiffieHellmanParametersError = QSslDiffieHellmanParameters::Error;
-
 namespace rust {
 template<>
 struct IsRelocatable<QSslDiffieHellmanParameters> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
+using QSslDiffieHellmanParametersError = QSslDiffieHellmanParameters::Error;
+
 QSslDiffieHellmanParameters
 qssldiffiehellmanparametersFromEncoded(QIODevice* device,
                                        QSsl::EncodingFormat encoding);

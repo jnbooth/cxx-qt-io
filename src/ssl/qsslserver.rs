@@ -17,11 +17,6 @@ mod ffi {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
 
-        include!("cxx-qt-io/qabstractsocket.h");
-        type QAbstractSocketSocketError = crate::QAbstractSocketSocketError;
-        include!("cxx-qt-io/qssl.h");
-        type QSslAlertLevel = crate::QSslAlertLevel;
-        type QSslAlertType = crate::QSslAlertType;
         include!("cxx-qt-io/qsslconfiguration.h");
         type QSslConfiguration = crate::QSslConfiguration;
         include!("cxx-qt-io/qsslerror.h");
@@ -30,6 +25,15 @@ mod ffi {
         type QSslPreSharedKeyAuthenticator = crate::QSslPreSharedKeyAuthenticator;
         include!("cxx-qt-io/qlist.h");
         type QList_QSslError = cxx_qt_lib::QList<QSslError>;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        include!("cxx-qt-io/qabstractsocket.h");
+        type QAbstractSocketSocketError = crate::QAbstractSocketSocketError;
+        include!("cxx-qt-io/qssl.h");
+        type QSslAlertLevel = crate::QSslAlertLevel;
+        type QSslAlertType = crate::QSslAlertType;
     }
 
     extern "C++" {

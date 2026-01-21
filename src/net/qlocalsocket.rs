@@ -20,6 +20,7 @@ use crate::{
 mod ffi {
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QLocalSocketLocalSocketError {
         /// The connection was refused by the peer (or timed out).
         ConnectionRefusedError,
@@ -47,6 +48,7 @@ mod ffi {
 
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QLocalSocketLocalSocketState {
         /// The socket is not connected.
         UnconnectedState = 0,
@@ -60,6 +62,7 @@ mod ffi {
 
     #[allow(unused)]
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QLocalSocketSocketOption {
         /// No options have been set.
         NoOptions = 0x0,
@@ -76,9 +79,14 @@ mod ffi {
 
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         type QIODeviceOpenMode = crate::QIODeviceOpenMode;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qlocalsocket.h");
         type QLocalSocketLocalSocketError;
@@ -244,7 +252,10 @@ pub use ffi::{QLocalSocket, QLocalSocketLocalSocketError, QLocalSocketLocalSocke
 #[allow(unused)]
 pub type QLocalSocketSocketOptions = QFlags<QLocalSocketSocketOption>;
 
-unsafe_impl_qflag!(QLocalSocketSocketOption, "QLocalSocketSocketOptions");
+unsafe_impl_qflag!(
+    QLocalSocketSocketOption,
+    "rust::cxxqtio1::QLocalSocketSocketOptions"
+);
 
 impl fmt::Debug for QLocalSocket {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

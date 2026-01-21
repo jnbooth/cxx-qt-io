@@ -19,6 +19,7 @@ mod ffi {
     /// The syntax used to interpret the meaning of the pattern.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslCertificatePatternSyntax {
         /// A rich Perl-like pattern matching syntax.
         RegularExpression,
@@ -31,6 +32,7 @@ mod ffi {
     /// Describes keys that you can pass to [`QSslCertificate::issuer_info`] or [`QSslCertificate::subject_info`] to get information about the certificate issuer or subject.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslCertificateSubjectInfo {
         /// "O" The name of the organization.
         Organization,
@@ -66,12 +68,8 @@ mod ffi {
         include!("cxx-qt-lib/qlist.h");
         type QList_QByteArray = cxx_qt_lib::QList<QByteArray>;
 
-        include!("cxx-qt-io/qcryptographichash.h");
-        type QCryptographicHashAlgorithm = crate::QCryptographicHashAlgorithm;
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
-        include!("cxx-qt-io/qssl.h");
-        type QSslEncodingFormat = crate::QSslEncodingFormat;
         include!("cxx-qt-io/qsslkey.h");
         type QSslKey = crate::QSslKey;
         include!("cxx-qt-io/qlist.h");
@@ -80,13 +78,19 @@ mod ffi {
         type QList_QSslError = cxx_qt_lib::QList<crate::QSslError>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
+        include!("cxx-qt-io/qcryptographichash.h");
+        type QCryptographicHashAlgorithm = crate::QCryptographicHashAlgorithm;
         include!("cxx-qt-io/qsslcertificate.h");
         type QSslCertificatePatternSyntax;
         type QSslCertificateSubjectInfo;
         type QSslAlternativeNameEntryType = crate::QSslAlternativeNameEntryType;
+        include!("cxx-qt-io/qssl.h");
+        type QSslEncodingFormat = crate::QSslEncodingFormat;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         type SubjectAlternativeNamesKeys = super::SubjectAlternativeNamesKeys;
 
@@ -99,6 +103,7 @@ mod ffi {
         unsafe fn key(&self) -> &QSslAlternativeNameEntryType;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         type SubjectAlternativeNamesIter = super::SubjectAlternativeNamesIter;
 
@@ -116,6 +121,7 @@ mod ffi {
         unsafe fn value(&self) -> &QString;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         type SubjectAlternativeNamesValues = super::SubjectAlternativeNamesValues;
 
@@ -128,6 +134,7 @@ mod ffi {
         unsafe fn value(&self) -> &QString;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     unsafe extern "C++" {
         type SubjectAlternativeNamesMap = super::SubjectAlternativeNamesMap;
 
@@ -616,7 +623,7 @@ pub struct SubjectAlternativeNamesKeys {
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesKeys {
-    type Id = type_id!("SubjectAlternativeNamesKeys");
+    type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesKeys");
     type Kind = cxx::kind::Trivial;
 }
 
@@ -641,7 +648,7 @@ pub struct SubjectAlternativeNamesIter {
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesIter {
-    type Id = type_id!("SubjectAlternativeNamesIter");
+    type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesIter");
     type Kind = cxx::kind::Trivial;
 }
 
@@ -666,7 +673,7 @@ pub struct SubjectAlternativeNamesValues {
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesValues {
-    type Id = type_id!("SubjectAlternativeNamesValues");
+    type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesValues");
     type Kind = cxx::kind::Trivial;
 }
 
@@ -704,6 +711,6 @@ impl fmt::Debug for SubjectAlternativeNamesMap {
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
 unsafe impl ExternType for SubjectAlternativeNamesMap {
-    type Id = type_id!("SubjectAlternativeNamesMap");
+    type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesMap");
     type Kind = cxx::kind::Trivial;
 }

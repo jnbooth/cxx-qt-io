@@ -40,6 +40,7 @@ mod ffi {
     /// This enum describes the current state of DTLS handshake for a [`QDtls`] connection.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QDtlsHandshakeState {
         /// Nothing done yet.
         HandshakeNotStarted,
@@ -61,28 +62,35 @@ mod ffi {
 
         include!("cxx-qt-io/qhostaddress.h");
         type QHostAddress = crate::QHostAddress;
-        include!("cxx-qt-io/qssl.h");
-        type QSslSslProtocol = crate::QSslSslProtocol;
         include!("cxx-qt-io/qsslcipher.h");
         type QSslCipher = crate::QSslCipher;
         include!("cxx-qt-io/qsslconfiguration.h");
         type QSslConfiguration = crate::QSslConfiguration;
         include!("cxx-qt-io/qsslpresharedkeyauthenticator.h");
         type QSslPreSharedKeyAuthenticator = crate::QSslPreSharedKeyAuthenticator;
-        include!("cxx-qt-io/qsslsocket.h");
-        type QSslSocketSslMode = crate::QSslSocketSslMode;
         include!("cxx-qt-io/qudpsocket.h");
         type QUdpSocket = crate::QUdpSocket;
         include!("cxx-qt-io/qlist.h");
         type QList_QSslError = cxx_qt_lib::QList<crate::QSslError>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        include!("cxx-qt-io/qssl.h");
+        type QSslSslProtocol = crate::QSslSslProtocol;
+        include!("cxx-qt-io/qsslsocket.h");
+        type QSslSocketSslMode = crate::QSslSocketSslMode;
+    }
+
     extern "C++" {
         include!("cxx-qt-io/qdtls.h");
         type QDtlsError;
-        type QDtlsHandshakeState;
-
         type QDtlsGeneratorParameters = crate::QDtlsGeneratorParameters;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QDtlsHandshakeState;
     }
 
     unsafe extern "C++Qt" {

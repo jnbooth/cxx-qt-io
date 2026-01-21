@@ -4,6 +4,7 @@ use std::fmt;
 mod ffi {
     /// List of known header types that [`QNetworkRequest`] parses. Each known header is also represented in raw form with its full HTTP name.
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkRequestKnownHeaders {
         /// Corresponds to the HTTP Content-Type header and contains a string containing the media (MIME) type and any auxiliary data (for instance, charset).
         ContentTypeHeader,
@@ -33,6 +34,7 @@ mod ffi {
         IfNoneMatchHeader,
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequestKnownHeaders;

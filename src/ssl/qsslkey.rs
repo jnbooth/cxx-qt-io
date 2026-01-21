@@ -18,6 +18,10 @@ mod ffi {
 
         include!("cxx-qt-io/qiodevice.h");
         type QIODevice = crate::QIODevice;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
         include!("cxx-qt-io/qssl.h");
         type QSslKeyAlgorithm = crate::QSslKeyAlgorithm;
         type QSslEncodingFormat = crate::QSslEncodingFormat;

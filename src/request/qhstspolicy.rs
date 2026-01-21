@@ -7,6 +7,7 @@ use cxx_qt_lib::{QDateTime, QFlags, QString};
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QHstsPolicyPolicyFlag {
         /// Indicates whether a policy must include subdomains.
         IncludeSubDomains = 1,
@@ -19,6 +20,7 @@ mod ffi {
         type QString = cxx_qt_lib::QString;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qhstspolicy.h");
         type QHstsPolicyPolicyFlag;
@@ -85,7 +87,10 @@ pub use ffi::QHstsPolicyPolicyFlag;
 
 /// [`QFlags`] of [`QHstsPolicyPolicyFlag`].
 pub type QHstsPolicyPolicyFlags = QFlags<QHstsPolicyPolicyFlag>;
-unsafe_impl_qflag!(QHstsPolicyPolicyFlag, "QHstsPolicyPolicyFlags");
+unsafe_impl_qflag!(
+    QHstsPolicyPolicyFlag,
+    "rust::cxxqtio1::QHstsPolicyPolicyFlags"
+);
 
 /// The `QHstsPolicy` class specifies that a host supports HTTP Strict Transport Security policy (HSTS).
 ///

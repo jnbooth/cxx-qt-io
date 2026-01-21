@@ -16,6 +16,7 @@ mod ffi {
     /// This enum describes the errors that may be returned by [`QFileDevice::error`].
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QFileDeviceFileError {
         /// No error occurred.
         NoError,
@@ -51,6 +52,7 @@ mod ffi {
 
     /// This enum is used when opening a file to specify additional options which only apply to files and not to a generic `QIODevice`.
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QFileDeviceFileHandleFlag {
         /// The file handle passed into [`QIODevice::open`] should be closed by [`QIODevice::close`], the default behavior is that [`QIODevice::close`] just flushes the file and the application is responsible for closing the file handle. When opening a file by name, this flag is ignored as Qt always owns the file handle and must close it.
         AutoCloseHandle = 0x0001,
@@ -64,6 +66,7 @@ mod ffi {
     ///
     /// [Qt Documentation: QFile::Permission](https://doc.qt.io/qt-6/qfiledevice.html#Permission-enum)
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QFileDevicePermission {
         /// The file is readable by the owner of the file.
         ReadOwner = 0x4000,
@@ -94,6 +97,7 @@ mod ffi {
     /// This enum is used by [`QFileDevice::file_time`] and [`QFileDevice::set_file_time`].
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QFileDeviceFileTime {
         /// When the file was most recently accessed (e.g. read or written to).
         FileAccessTime,
@@ -107,6 +111,7 @@ mod ffi {
 
     /// This enum describes special options that may be used by [`QFileDevice::map`].
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QFileDeviceMemoryMapFlag {
         /// No options.
         NoOptions = 0,
@@ -123,6 +128,7 @@ mod ffi {
         type qint64 = cxx_qt_lib::qint64;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qfiledevice.h");
         type QFileDeviceFileError;
@@ -132,11 +138,11 @@ mod ffi {
         type QFileDeviceMemoryMapFlags = super::QFileDeviceMemoryMapFlags;
         type QFileDevicePermission;
         type QFileDevicePermissions = super::QFileDevicePermissions;
-
-        type QIODevice = crate::QIODevice;
     }
 
     unsafe extern "C++Qt" {
+        type QIODevice = crate::QIODevice;
+
         /// The `QFileDevice` class provides an interface for reading from and writing to open files.
         ///
         /// Qt Documentation: [QFileDevice](https://doc.qt.io/qt-6/qfiledevice.html#details)
@@ -227,15 +233,24 @@ pub use ffi::{
 
 /// [`QFlags`] of [`QFileDevicePermission`].
 pub type QFileDevicePermissions = QFlags<QFileDevicePermission>;
-unsafe_impl_qflag!(QFileDevicePermission, "QFileDevicePermissions");
+unsafe_impl_qflag!(
+    QFileDevicePermission,
+    "rust::cxxqtio1::QFileDevicePermissions"
+);
 
 /// [`QFlags`] of [`QFileDeviceFileHandleFlag`].
 pub type QFileDeviceFileHandleFlags = QFlags<QFileDeviceFileHandleFlag>;
-unsafe_impl_qflag!(QFileDeviceFileHandleFlag, "QFileDeviceFileHandleFlags");
+unsafe_impl_qflag!(
+    QFileDeviceFileHandleFlag,
+    "rust::cxxqtio1::QFileDeviceFileHandleFlags"
+);
 
 /// [`QFlags`] of [`QFileDeviceMemoryMapFlag`].
 pub type QFileDeviceMemoryMapFlags = QFlags<QFileDeviceMemoryMapFlag>;
-unsafe_impl_qflag!(QFileDeviceMemoryMapFlag, "QFileDeviceMemoryMapFlags");
+unsafe_impl_qflag!(
+    QFileDeviceMemoryMapFlag,
+    "rust::cxxqtio1::QFileDeviceMemoryMapFlags"
+);
 
 impl fmt::Debug for QFileDevice {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

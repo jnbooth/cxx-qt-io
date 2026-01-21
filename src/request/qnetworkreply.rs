@@ -20,6 +20,7 @@ mod ffi {
     /// Indicates all possible error conditions found during the processing of the request.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkReplyNetworkError {
         NoError = 0,
 
@@ -114,16 +115,20 @@ mod ffi {
 
         include!("cxx-qt-io/qnetworkaccessmanager.h");
         type QNetworkAccessManager = crate::QNetworkAccessManager;
-        type QNetworkAccessManagerOperation = crate::QNetworkAccessManagerOperation;
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequest = crate::QNetworkRequest;
-        type QNetworkRequestAttribute = crate::QNetworkRequestAttribute;
-        type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
         include!("cxx-qt-io/qpair.h");
         type QPair_QByteArray_QByteArray =
             crate::QPair<cxx_qt_lib::QByteArray, cxx_qt_lib::QByteArray>;
         include!("cxx-qt-io/qlist.h");
         type QList_QPair_QByteArray_QByteArray = cxx_qt_lib::QList<QPair_QByteArray_QByteArray>;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QNetworkAccessManagerOperation = crate::QNetworkAccessManagerOperation;
+        type QNetworkRequestAttribute = crate::QNetworkRequestAttribute;
+        type QNetworkRequestKnownHeaders = crate::QNetworkRequestKnownHeaders;
     }
 
     #[cfg(cxxqt_qt_version_at_least_6_7)]
@@ -147,9 +152,13 @@ mod ffi {
         type QList_QSslError = cxx_qt_lib::QList<crate::QSslError>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkreply.h");
         type QNetworkReplyNetworkError;
+    }
+
+    extern "C++" {
         type QIODevice = crate::QIODevice;
     }
 

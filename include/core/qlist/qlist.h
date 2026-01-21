@@ -93,7 +93,7 @@ using QList_QHttpHeadersWellKnownHeader = QList<QHttpHeaders::WellKnownHeader>;
 #endif
 
 #ifdef CXX_QT_IO_REQUEST_FEATURE
-using QList_QNetworkCookieRawForm = QList<QNetworkCookieRawForm>;
+using QList_QNetworkCookieRawForm = QList<QNetworkCookie::RawForm>;
 using QList_QNetworkCookieSameSite = QList<QNetworkCookie::SameSite>;
 #endif
 

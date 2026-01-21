@@ -2,6 +2,8 @@
 
 #include <QtNetwork/QSsl>
 
+namespace rust {
+namespace cxxqtio1 {
 using QSslKeyType = QSsl::KeyType;
 using QSslEncodingFormat = QSsl::EncodingFormat;
 using QSslImplementedClass = QSsl::ImplementedClass;
@@ -13,3 +15,5 @@ using QSslSslOption = QSsl::SslOption;
 using QSslSslOptions = QSsl::SslOptions;
 using QSslAlertLevel = QSsl::AlertLevel;
 using QSslAlertType = QSsl::AlertType;
+}
+}

@@ -1,6 +1,7 @@
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkRequestAttribute {
         /// Replies only, type: `QMetaType::Int` (no default) Indicates the HTTP status code received from the HTTP server (like 200, 304, 404, 401, etc.). If the connection was not HTTP-based, this attribute will not be present.
         HttpStatusCodeAttribute,
@@ -70,6 +71,7 @@ mod ffi {
         UserMax = 32767,
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequestAttribute;

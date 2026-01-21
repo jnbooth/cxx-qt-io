@@ -10,6 +10,7 @@ use crate::util::MSecs;
 #[cxx::bridge]
 mod ffi {
     #[repr(i32)]
+    #[namespace = "rust::cxxqtio1"]
     enum QDeadlineTimerForeverConstant {
         Forever,
     }
@@ -25,6 +26,7 @@ mod ffi {
         type TimerType = crate::TimerType;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qdeadlinetimer.h");
         type QDeadlineTimerForeverConstant;

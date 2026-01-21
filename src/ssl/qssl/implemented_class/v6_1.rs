@@ -6,6 +6,7 @@ mod ffi {
     /// In QtNetwork, some classes have backend-specific implementation and thus can be left unimplemented. Enumerators in this enum indicate, which class has a working implementation in the backend.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QSslImplementedClass {
         /// Class [`QSslKey`](crate::QSslKey).
         Key,
@@ -21,6 +22,7 @@ mod ffi {
         Dtls,
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qssl.h");
         type QSslImplementedClass;

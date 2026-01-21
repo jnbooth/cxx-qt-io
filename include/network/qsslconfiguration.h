@@ -4,15 +4,15 @@
 
 #include "rust/cxx.h"
 
-using QSslConfigurationNextProtocolNegotiationStatus =
-  QSslConfiguration::NextProtocolNegotiationStatus;
-
 namespace rust {
 template<>
 struct IsRelocatable<QSslConfiguration> : ::std::true_type
 {};
 
 namespace cxxqtio1 {
+using QSslConfigurationNextProtocolNegotiationStatus =
+  QSslConfiguration::NextProtocolNegotiationStatus;
+
 ::rust::String
 qsslconfigurationALPNProtocolHTTP2();
 

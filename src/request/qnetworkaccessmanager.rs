@@ -20,6 +20,7 @@ mod ffi {
     /// Indicates the operation this reply is processing.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkAccessManagerOperation {
         /// retrieve headers operation (created with [`QNetworkAccessManager::head`])
         HeadOperation = 1,
@@ -61,10 +62,14 @@ mod ffi {
         type QNetworkReply = crate::QNetworkReply;
         include!("cxx-qt-io/qnetworkrequest.h");
         type QNetworkRequest = crate::QNetworkRequest;
-        type QNetworkRequestRedirectPolicy = crate::QNetworkRequestRedirectPolicy;
 
         include!("cxx-qt-io/qlist.h");
         type QList_QHstsPolicy = cxx_qt_lib::QList<QHstsPolicy>;
+    }
+
+    #[namespace = "rust::cxxqtio1"]
+    extern "C++" {
+        type QNetworkRequestRedirectPolicy = crate::QNetworkRequestRedirectPolicy;
     }
 
     #[cfg(feature = "ssl")]
@@ -76,6 +81,7 @@ mod ffi {
         type QList_QSslError = cxx_qt_lib::QList<crate::QSslError>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkaccessmanager.h");
         type QNetworkAccessManagerOperation;

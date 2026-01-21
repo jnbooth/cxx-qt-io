@@ -13,6 +13,7 @@ mod ffi {
     /// Note that only the [`Full`](QNetworkCookieRawForm::Full) form of the cookie can be parsed back into its original contents.
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkCookieRawForm {
         /// Makes [`QNetworkCookie::to_raw_form`] return only the `"NAME=VALUE"` part of the cookie, as suitable for sending back to a server in a client request's `Cookie` header. Multiple cookies are separated by a semi-colon in the `Cookie` header field.
         NameAndValueOnly,
@@ -22,6 +23,7 @@ mod ffi {
 
     #[repr(i32)]
     #[derive(Debug)]
+    #[namespace = "rust::cxxqtio1"]
     enum QNetworkCookieSameSite {
         /// The `SameSite` attribute is not set. Can be interpreted as [`None`](QNetworkCookieSameSite::None) or [`Lax`](QNetworkCookieSameSite::Lax) by the browser.
         Default,
@@ -47,6 +49,7 @@ mod ffi {
         type QList_QNetworkCookie = cxx_qt_lib::QList<QNetworkCookie>;
     }
 
+    #[namespace = "rust::cxxqtio1"]
     extern "C++" {
         include!("cxx-qt-io/qnetworkcookie.h");
         type QNetworkCookieRawForm;

@@ -4,5 +4,8 @@
 
 #include "qdtlsgeneratorparameters.h"
 
-using QDtlsGeneratorParameters = QDtls::GeneratorParameters;
+namespace rust {
+namespace cxxqtio1 {
 using QDtlsHandshakeState = QDtls::HandshakeState;
+}
+}
