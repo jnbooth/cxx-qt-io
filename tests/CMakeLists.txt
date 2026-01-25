@@ -12,14 +12,6 @@ function(add_acceptance_tests TEST_NAME)
     set(CPP_TEST_NAME test_${TEST_NAME}_cpp_tests)
     add_test(NAME ${CPP_TEST_NAME} COMMAND $<TARGET_FILE:${TARGET_NAME}>)
 
-    if (NOT APPLE)
-       set_tests_properties(
-          ${CPP_TEST_NAME}
-          PROPERTIES
-          ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
-          )
-    endif()
-
     set_tests_properties(
        ${CPP_TEST_NAME}
        PROPERTIES

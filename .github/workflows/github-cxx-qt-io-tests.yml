@@ -69,7 +69,6 @@ jobs:
             # FIXME: valgrind complains about invalid debuginfo. Might be fixed when Ubuntu updates to valgrind 3.20
             # https://bugs.kde.org/show_bug.cgi?id=452758
             ctest_args: --exclude-regex '^(example_qml_features_test_valgrind|example_qml_minimal_myobject_test_valgrind)$'
-            qt_qpa_platform: offscreen
             cargo_dir: ~/.cargo
             build_type: Release
             packages-extra: >-
@@ -90,7 +89,6 @@ jobs:
             # FIXME: qmltestrunner fails to import QtQuick module
             # https://github.com/KDAB/cxx-qt/issues/110
             ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun|.*valgrind)$'
-            qt_qpa_platform: cocoa
             cargo_dir: ~/.cargo
             cc: clang
             cxx: clang++
@@ -105,7 +103,6 @@ jobs:
             cores: 4
             ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun|.*valgrind)$'
             exe_suffix: .exe
-            qt_qpa_platform: windows
             cargo_dir: C:\Users\runneradmin\.cargo
             cc: cl
             cxx: cl
@@ -120,7 +117,6 @@ jobs:
             cores: 4
             ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun|.*valgrind)$'
             exe_suffix: .exe
-            qt_qpa_platform: windows
             cargo_dir: C:\Users\runneradmin\.cargo
             cc: cl
             cxx: cl
@@ -197,6 +193,5 @@ jobs:
         run: ctest ${{ matrix.ctest_args }} -C ${{ matrix.build_type }} -T test --output-on-failure --parallel ${{ matrix.cores }}
         working-directory: ./build
         env:
-          QT_QPA_PLATFORM: ${{ matrix.qt_qpa_platform }}
           QT_SELECT: qt${{ matrix.qt_version }}
           DYLD_FRAMEWORK_PATH: ${{ matrix.dyld_framework_path }}
