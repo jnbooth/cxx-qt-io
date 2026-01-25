@@ -10,14 +10,10 @@ cmake_minimum_required(VERSION 3.24)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-option(BUILD_TESTING "Build the tests for CXX-Qt-IO" ON)
-
 project(cxx_qt_io)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-include(CompilerCaching)
 
 # Enable extra Qt definitions for all projects
 add_compile_definitions(
@@ -48,34 +44,36 @@ if(NOT "${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
     endif()
 endif()
 
-# Set our extra command options for valgrind
-# TODO: we need to come up with a better way to suppress "possibly lost" errors.
-# Suppression file doesn't work because there is a ton of mangled names that won't remain stable.
-set(MEMORYCHECK_COMMAND_OPTIONS --error-exitcode=1 --errors-for-leak-kinds=definite --leak-check=full --trace-children=yes --track-origins=yes --show-possibly-lost=no)
-
 # Enable testing (this needs to be called before subdirs are added to detect tests in them)
 enable_testing()
 
-# Create helper method which adds a valgrind test with the given binary
-function(add_valgrind_test NAME_WITH_PREFIX BINARY WORKING_DIRECTORY)
-    if("${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
-       if (NOT WIN32)
-           MESSAGE(STATUS "valgrind not found. Please install it")
-       endif()
-    else()
-       add_test(NAME ${NAME_WITH_PREFIX}_valgrind
-           COMMAND ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS} --gen-suppressions=all ${BINARY}
-           WORKING_DIRECTORY "${WORKING_DIRECTORY}"
-       )
-    endif()
-endfunction()
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    # Create helper method which adds a valgrind test with the given binary
+    function(add_valgrind_test NAME_WITH_PREFIX BINARY WORKING_DIRECTORY)
+        if("${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
+          MESSAGE(STATUS "valgrind not found. Please install it")
+        else()
+          add_test(NAME ${NAME_WITH_PREFIX}_valgrind
+              COMMAND ${MEMORYCHECK_COMMAND}
+               --error-exitcode=1
+               --errors-for-leak-kinds=definite
+               --leak-check=full
+               --trace-children=yes
+               --track-origins=yes
+               --show-possibly-lost=no
+              --gen-suppressions=all ${BINARY}
+              WORKING_DIRECTORY "${WORKING_DIRECTORY}"
+          )
+        endif()
+    endfunction()
+endif()
 
 get_target_property(QMAKE Qt::qmake IMPORTED_LOCATION)
 set(CARGO_ENV "QMAKE=set:${QMAKE}")
 set(RUNTIME_ENV "")
 
 # On windows, Qt dll needs to be in the PATH for the tests to run
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_TESTING)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     execute_process(
         COMMAND ${QMAKE} -query QT_INSTALL_BINS
         OUTPUT_VARIABLE QT_INSTALL_BINS
@@ -110,16 +108,14 @@ endif()
 # from the main build.
 set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
-if(BUILD_TESTING)
-    add_subdirectory(tests)
-    add_test(NAME cargo_tests COMMAND cargo test --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
-    add_test(NAME cargo_doc COMMAND cargo doc --release --all-features --target-dir ${CARGO_TARGET_DIR})
-    add_test(NAME cargo_clippy COMMAND cargo clippy --release --all-features --target-dir ${CARGO_TARGET_DIR} -- -D warnings)
+add_subdirectory(tests)
+add_test(NAME cargo_tests COMMAND cargo test --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
+add_test(NAME cargo_doc COMMAND cargo doc --release --all-features --target-dir ${CARGO_TARGET_DIR})
+add_test(NAME cargo_clippy COMMAND cargo clippy --release --all-features --target-dir ${CARGO_TARGET_DIR} -- -D warnings)
 
-    set_tests_properties(cargo_tests cargo_clippy PROPERTIES
-        ENVIRONMENT_MODIFICATION "${CARGO_ENV}"
-    )
-    set_tests_properties(cargo_doc PROPERTIES
-        ENVIRONMENT_MODIFICATION "${CARGO_ENV};RUSTDOCFLAGS=set:--deny=warnings"
-    )
-endif()
+set_tests_properties(cargo_tests cargo_clippy PROPERTIES
+    ENVIRONMENT_MODIFICATION "${CARGO_ENV}"
+)
+set_tests_properties(cargo_doc PROPERTIES
+    ENVIRONMENT_MODIFICATION "${CARGO_ENV};RUSTDOCFLAGS=set:--deny=warnings"
+)

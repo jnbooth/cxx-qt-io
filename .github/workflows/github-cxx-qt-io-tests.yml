@@ -66,9 +66,6 @@ jobs:
             aqt_arch: "linux_gcc_64"
             aqt_host: "linux"
             cores: 4
-            # FIXME: valgrind complains about invalid debuginfo. Might be fixed when Ubuntu updates to valgrind 3.20
-            # https://bugs.kde.org/show_bug.cgi?id=452758
-            ctest_args: --exclude-regex '^(example_qml_features_test_valgrind|example_qml_minimal_myobject_test_valgrind)$'
             cargo_dir: ~/.cargo
             build_type: Release
             packages-extra: >-
@@ -84,9 +81,7 @@ jobs:
             # https://doc.qt.io/qt-6.7/macos.html#target-platforms
             macosx_deployment_target: "13.0"
             cores: 3
-            # FIXME: qmltestrunner fails to import QtQuick module
-            # https://github.com/KDAB/cxx-qt/issues/110
-            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun|.*valgrind)$'
+            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun)$'
             cargo_dir: ~/.cargo
             cc: clang
             cxx: clang++
@@ -99,7 +94,7 @@ jobs:
             aqt_arch: "win64_msvc2019_64"
             aqt_host: "windows"
             cores: 4
-            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun|.*valgrind)$'
+            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun)$'
             exe_suffix: .exe
             cargo_dir: C:\Users\runneradmin\.cargo
             cc: cl
@@ -113,7 +108,7 @@ jobs:
             aqt_arch: "win64_msvc2022_64"
             aqt_host: "windows"
             cores: 4
-            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun|.*valgrind)$'
+            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun)$'
             exe_suffix: .exe
             cargo_dir: C:\Users\runneradmin\.cargo
             cc: cl
