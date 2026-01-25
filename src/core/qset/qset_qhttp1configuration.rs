@@ -94,3 +94,13 @@ pub(crate) fn len(s: &ffi::QSet_QHttp1Configuration) -> isize {
 pub(crate) fn reserve(s: &mut ffi::QSet_QHttp1Configuration, size: isize) {
     ffi::qset_reserve_QHttp1Configuration(s, size);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

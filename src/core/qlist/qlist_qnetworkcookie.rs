@@ -100,3 +100,13 @@ pub(crate) fn len(s: &ffi::QList_QNetworkCookie) -> isize {
 pub(crate) fn remove(s: &mut ffi::QList_QNetworkCookie, pos: isize) {
     ffi::qlist_remove_QNetworkCookie(s, pos);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

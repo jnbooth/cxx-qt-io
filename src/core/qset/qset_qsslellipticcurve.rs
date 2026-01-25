@@ -88,3 +88,13 @@ pub(crate) fn len(s: &ffi::QSet_QSslEllipticCurve) -> isize {
 pub(crate) fn reserve(s: &mut ffi::QSet_QSslEllipticCurve, size: isize) {
     ffi::qset_reserve_QSslEllipticCurve(s, size);
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}
