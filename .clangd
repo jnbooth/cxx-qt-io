@@ -1,6 +1,5 @@
 CompileFlags:
   Add:
-    - -DCXX_QT_GUI_FEATURE=1
     - -DCXX_QT_IO_FS_FEATURE=1
     - -DCXX_QT_IO_NET_FEATURE=1
     - -DCXX_QT_IO_REQUEST_FEATURE=1

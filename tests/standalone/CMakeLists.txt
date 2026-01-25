@@ -11,11 +11,11 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Network Test)
+find_package(Qt6 REQUIRED COMPONENTS Core Network Test)
 
 if(MSVC)
     set_property(
-        TARGET Qt6::Core Qt6::Gui Qt6::Network Qt6::Test
+        TARGET Qt6::Core Qt6::Network Qt6::Test
         PROPERTY MAP_IMPORTED_CONFIG_DEBUG "RELEASE")
 endif()
 
@@ -35,7 +35,7 @@ set(CRATE standalone)
 cxx_qt_import_crate(
     MANIFEST_PATH rust/Cargo.toml
     CRATES ${CRATE}
-    QT_MODULES Qt::Core Qt::Gui Qt::Network
+    QT_MODULES Qt::Core Qt::Network
 )
 
 add_executable(${APP_NAME}
@@ -50,6 +50,5 @@ target_link_libraries(${APP_NAME}
   ${CRATE}
   Qt::Test
   Qt::Core
-  Qt::Gui
   Qt::Network
 )

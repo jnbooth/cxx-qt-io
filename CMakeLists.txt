@@ -34,7 +34,7 @@ add_compile_definitions(
 
 # QMAKE environment variable is needed by qt-build-utils to ensure that Cargo
 # uses the same installation of Qt as CMake does.
-find_package(Qt6 COMPONENTS Core Gui Network Test)
+find_package(Qt6 COMPONENTS Core Network Test)
 if(NOT Qt6_FOUND)
     message(FATAL_ERROR "cxx-qt-io only supports Qt 6 builds.")
 endif()
