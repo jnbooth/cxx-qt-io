@@ -1,0 +1,11 @@
+{
+   qt_6_register_string_qstring
+   Memcheck:Addr16
+   ...
+   fun:*Compiler*StringTableGenerator*registerString*QString
+   ...
+   fun:*QQmlDataBlob*tryDone*
+   fun:*QQmlTypeLoader*setCachedUnit*QQmlDataBlob*QQmlPrivate*CachedQmlUnit*
+   fun:*QQmlTypeLoader*Load*CachedLoader*QQmlDataBlob*Mode*
+   ...
+}
