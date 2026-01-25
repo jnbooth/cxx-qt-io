@@ -72,8 +72,6 @@ jobs:
             cargo_dir: ~/.cargo
             build_type: Release
             packages-extra: >-
-              libgl1-mesa-dev
-              libvulkan-dev
               libxkbcommon-dev
 
           - name: macOS 15 (clang) Qt6
@@ -152,7 +150,6 @@ jobs:
         run: >-
           sudo apt-get update &&
           sudo apt-get install -y
-          ninja-build
           libssl-dev
           pkg-config
           valgrind
@@ -166,17 +163,7 @@ jobs:
       - name: "[macOS] Install dependencies"
         if: runner.os == 'macOS'
         # automake is needed for building libicu which is a dependency of Qt
-        run: brew install automake autoconf-archive ninja
-
-      # Required for CMake to find Ninja
-      - name: "[Windows] Set up MSVC Developer Command Prompt"
-        if: runner.os == 'Windows'
-        uses: seanmiddleditch/gha-setup-vsdevenv@v5
-
-      # Enable tmate debugging of manually-triggered workflows if the input option was provided
-      - name: Setup tmate session
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.tmate_debugging }}
-        uses: mxschmitt/action-tmate@v3
+        run: brew install automake autoconf-archive
 
       - name: "Configure"
         run: >-
