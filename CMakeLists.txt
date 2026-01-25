@@ -52,8 +52,6 @@ endif()
 # TODO: we need to come up with a better way to suppress "possibly lost" errors.
 # Suppression file doesn't work because there is a ton of mangled names that won't remain stable.
 set(MEMORYCHECK_COMMAND_OPTIONS --error-exitcode=1 --errors-for-leak-kinds=definite --leak-check=full --trace-children=yes --track-origins=yes --show-possibly-lost=no)
-# A suppressions file which silences errors from other libs like QtCore
-set(MEMORYCHECK_SUPPRESSIONS_FILE "${CMAKE_SOURCE_DIR}/valgrind_suppressions.txt")
 
 # Enable testing (this needs to be called before subdirs are added to detect tests in them)
 enable_testing()
@@ -66,7 +64,7 @@ function(add_valgrind_test NAME_WITH_PREFIX BINARY WORKING_DIRECTORY)
        endif()
     else()
        add_test(NAME ${NAME_WITH_PREFIX}_valgrind
-           COMMAND ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS} --suppressions=${MEMORYCHECK_SUPPRESSIONS_FILE} --gen-suppressions=all ${BINARY}
+           COMMAND ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS} --gen-suppressions=all ${BINARY}
            WORKING_DIRECTORY "${WORKING_DIRECTORY}"
        )
     endif()
