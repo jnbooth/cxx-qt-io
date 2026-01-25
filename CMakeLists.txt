@@ -98,7 +98,3 @@ set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
 add_subdirectory(tests)
 add_test(NAME cargo_tests COMMAND cargo test --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
-
-set_tests_properties(cargo_tests cargo_clippy PROPERTIES
-    ENVIRONMENT_MODIFICATION "${CARGO_ENV}"
-)
