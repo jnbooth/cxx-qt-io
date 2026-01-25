@@ -131,13 +131,21 @@ impl IsNonNull for QSslCipher {
 }
 
 impl QSslCipher {
-    /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
+    fn into_result(self) -> Result<Self, QSslCipherError> {
+        if self.is_null() {
+            Err(QSslCipherError(()))
+        } else {
+            Ok(self)
+        }
+    }
+
+    /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
     ///
     /// To construct a cipher without specifying a protocol, use `QSslCipher::from(name)`.
     ///
     /// Returns an error if `name` and `protocol` do not correctly identify a supported cipher.
     pub fn new(name: &QString, protocol: QSslSslProtocol) -> Result<Self, QSslCipherError> {
-        ffi::qsslcipher_init_protocol(name, protocol).nonnull_or(QSslCipherError(()))
+        ffi::qsslcipher_init_protocol(name, protocol).into_result()
     }
 }
 
@@ -159,7 +167,7 @@ impl TryFrom<&QString> for QSslCipher {
     ///
     /// Returns an error if `name` and `protocol` do not correctly identify a supported cipher.
     fn try_from(value: &QString) -> Result<Self, Self::Error> {
-        ffi::qsslcipher_init_name(value).nonnull_or(QSslCipherError(()))
+        ffi::qsslcipher_init_name(value).into_result()
     }
 }
 

@@ -68,14 +68,6 @@ pub(crate) trait IsNonNull: Sized {
             None
         }
     }
-
-    fn nonnull_or<E>(self, err: E) -> Result<Self, E> {
-        if Self::is_nonnull(&self) {
-            Ok(self)
-        } else {
-            Err(err)
-        }
-    }
 }
 
 impl<T: IsNonNull> IsNonNull for Pin<&mut T> {

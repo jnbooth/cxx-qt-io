@@ -150,6 +150,14 @@ impl IsNonNull for QSslKey {
 }
 
 impl QSslKey {
+    fn into_result(self) -> Result<Self, DecodeSslKeyError> {
+        if self.is_null() {
+            Err(DecodeSslKeyError(()))
+        } else {
+            Ok(self)
+        }
+    }
+
     /// Constructs a `QSslKey` by reading and decoding data from a `device` using a specified `algorithm` and `encoding` format. `key_type` specifies whether the key is public or private.
     ///
     /// If the key is encrypted then `pass_phrase` is used to decrypt it.
@@ -175,7 +183,7 @@ impl QSslKey {
                 pass_phrase,
             )
         }
-        .nonnull_or(DecodeSslKeyError(()))
+        .into_result()
     }
 
     /// Constructs a `QSslKey` by decoding the string in the byte array `encoded` using a specified `algorithm` and `encoding` format. `key_type` specifies whether the key is public or private.
@@ -190,8 +198,7 @@ impl QSslKey {
         key_type: QSslKeyType,
         pass_phrase: &QByteArray,
     ) -> Result<Self, DecodeSslKeyError> {
-        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase)
-            .nonnull_or(DecodeSslKeyError(()))
+        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase).into_result()
     }
 
     /// Returns the length of the key in bits, or `None` if the key is null.

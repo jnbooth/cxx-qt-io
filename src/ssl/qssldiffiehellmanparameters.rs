@@ -163,10 +163,11 @@ impl IsNonNull for QSslDiffieHellmanParameters {
 
 impl QSslDiffieHellmanParameters {
     fn into_result(self) -> Result<Self, QSslDiffieHellmanParametersError> {
-        if self.is_valid() {
+        let error = self.error();
+        if error == QSslDiffieHellmanParametersError::NoError {
             Ok(self)
         } else {
-            Err(self.error())
+            Err(error)
         }
     }
 
