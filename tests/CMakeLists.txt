@@ -26,7 +26,7 @@ function(add_acceptance_tests TEST_NAME)
        ENVIRONMENT_MODIFICATION "${RUNTIME_ENV}"
     )
 
-    if ((NOT WIN32) AND COMMAND add_valgrind_test)
+    if (NOT WIN32 AND COMMAND add_valgrind_test)
        add_valgrind_test(
           test_${TEST_NAME} $<TARGET_FILE:${TARGET_NAME}>
           ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME}

@@ -284,7 +284,7 @@ jobs:
           key: ${{ matrix.os }}_sccache-0.9.1-patched_mdbook-0.4.36_mdbook-linkcheck-0.7.7
       - name: "Build Rust tools"
         if: steps.rust-tools-cache.outputs.cache-hit != 'true'
-        run: cargo install --no-default-features sccache
+        run: cargo install --no-default-features sccache --version 0.12.0
 
       # We want our compiler cache to always update to the newest state.
       # The best way for us to achieve this is to **always** update the cache after every landed commit.
