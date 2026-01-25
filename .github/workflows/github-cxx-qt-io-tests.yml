@@ -56,6 +56,90 @@ jobs:
     # Run after pre checks
     needs: [clang_format, rust_format_check, shellcheck]
     strategy:
+      matrix:
+        include:
+          - name: Qt 6.9
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.9.0"
+
+          - name: Qt 6.8
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.8.0"
+
+          - name: Qt 6.7
+            os: ubuntu-24.04
+            qt_version: 6
+            aqt_version: "6.7.0"
+
+          - name: Qt 6.6
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.6.0"
+
+          - name: Qt 6.5
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.5.0"
+
+          - name: Qt 6.4
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.4.0"
+
+          - name: Qt 6.3
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.3.0"
+
+          - name: Qt 6.2
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.2.0"
+
+          - name: Qt 6.1
+            os: ubuntu-22.04
+            qt_version: 6
+            aqt_version: "6.1.0"
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.name }}
+
+    steps:
+      - name: "Clone Git repository"
+        uses: actions/checkout@v6
+      - name: "Install Rust toolchain"
+        run: |
+          rustup default stable
+          rustup component add clippy
+
+      # Version info found using https://ddalcino.github.io/aqt-list-server/
+      - name: "Install Qt"
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ matrix.aqt_version }}
+          host: "linux"
+          target: "desktop"
+          arch: "linux_gcc_64"
+          tools: "tools_cmake"
+          cache: true
+
+      - name: "Install dependencies"
+        run: >-
+          sudo apt-get update &&
+          sudo apt-get install -y
+          libssl-dev
+          pkg-config
+          libxkbcommon-dev
+
+      - name: "Build"
+        run: cargo clippy --all-features
+
+  test:
+    # Run after pre checks
+    needs: [clang_format, rust_format_check, shellcheck]
+    strategy:
       fail-fast: false
       matrix:
         include:
