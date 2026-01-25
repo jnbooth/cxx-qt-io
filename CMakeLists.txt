@@ -33,14 +33,6 @@ endif()
 
 add_definitions(-DQT_NO_CONTEXTLESS_CONNECT)
 
-find_program(MEMORYCHECK_COMMAND valgrind)
-if(NOT "${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
-    if (NOT WIN32)
-       MESSAGE(STATUS "Valgrind found! Tests based on valgrind must be executed.")
-    endif()
-endif()
-
-# Enable testing (this needs to be called before subdirs are added to detect tests in them)
 enable_testing()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -106,12 +98,7 @@ set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
 add_subdirectory(tests)
 add_test(NAME cargo_tests COMMAND cargo test --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
-add_test(NAME cargo_doc COMMAND cargo doc --release --all-features --target-dir ${CARGO_TARGET_DIR})
-add_test(NAME cargo_clippy COMMAND cargo clippy --release --all-features --target-dir ${CARGO_TARGET_DIR} -- -D warnings)
 
 set_tests_properties(cargo_tests cargo_clippy PROPERTIES
     ENVIRONMENT_MODIFICATION "${CARGO_ENV}"
-)
-set_tests_properties(cargo_doc PROPERTIES
-    ENVIRONMENT_MODIFICATION "${CARGO_ENV};RUSTDOCFLAGS=set:--deny=warnings"
 )

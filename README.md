@@ -111,6 +111,7 @@ Licensed under [MIT license](https://github.com/jnbooth/cxx-qt-io/LICENSE).
 Test utilities are adapted from KDAB's own tests in the [cxx-qt](https://github.com/KDAB/cxx-qt) repository under its [MIT License](https://github.com/KDAB/cxx-qt/blob/main/LICENSES/MIT.txt):
 
 - [CMakeLists.txt](./CMakeLists.txt)
+- [tests/CMakeLists.txt](./tests/CMakeLists.txt)
 - [github/workflows/github-cxx-qt-io-tests.yml](./.github/workflows/github-cxx-qt-io-tests.yml)
 
 SPDX license attributions are present in all adapted files.

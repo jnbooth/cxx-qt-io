@@ -7,25 +7,7 @@
 
 name: cxx-qt-io tests
 on:
-  push:
-    branches:
-      - "main"
-      - '[0-9]+\.[0-9]+\.x'
   pull_request:
-  merge_group:
-  schedule:
-    # Run daily at 01:01
-    # This ensures CI still works and ensures the cache remains active
-    - cron: "1 1 * * *"
-  workflow_dispatch:
-    inputs:
-      tmate_debugging:
-        type: boolean
-        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
-        required: false
-        default: false
-
-# Cancel any previous runs for the same pull request
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name || github.run_id }}
   cancel-in-progress: true
@@ -58,92 +40,87 @@ jobs:
     strategy:
       matrix:
         include:
+          - name: Qt 6.10
+            os: ubuntu-24.04
+            aqt_version: 6.10.1
+            aqt_arch: linux_gcc_64
+
           - name: Qt 6.9
             os: ubuntu-24.04
-            qt_version: 6
-            aqt_version: "6.9.0"
-            aqt_arch: "linux_gcc_64"
+            aqt_version: 6.9.0
+            aqt_arch: linux_gcc_64
 
           - name: Qt 6.8
             os: ubuntu-24.04
-            qt_version: 6
-            aqt_version: "6.8.0"
-            aqt_arch: "linux_gcc_64"
+            aqt_version: 6.8.0
+            aqt_arch: linux_gcc_64
 
           - name: Qt 6.7
             os: ubuntu-24.04
-            qt_version: 6
-            aqt_version: "6.7.0"
-            aqt_arch: "linux_gcc_64"
+            aqt_version: 6.7.0
+            aqt_arch: linux_gcc_64
 
           - name: Qt 6.6
             os: ubuntu-22.04
-            qt_version: 6
-            aqt_version: "6.6.0"
-            aqt_arch: "gcc_64"
+            aqt_version: 6.6.0
+            aqt_arch: gcc_64
 
           - name: Qt 6.5
             os: ubuntu-22.04
-            qt_version: 6
-            aqt_version: "6.5.0"
-            aqt_arch: "gcc_64"
+            aqt_version: 6.5.0
+            aqt_arch: gcc_64
 
           - name: Qt 6.4
             os: ubuntu-22.04
-            qt_version: 6
-            aqt_version: "6.4.0"
-            aqt_arch: "gcc_64"
+            aqt_version: 6.4.0
+            aqt_arch: gcc_64
 
           - name: Qt 6.3
             os: ubuntu-22.04
-            qt_version: 6
-            aqt_version: "6.3.0"
-            aqt_arch: "gcc_64"
+            aqt_version: 6.3.0
+            aqt_arch: gcc_64
 
           - name: Qt 6.2
             os: ubuntu-22.04
-            qt_version: 6
-            aqt_version: "6.2.0"
-            aqt_arch: "gcc_64"
+            aqt_version: 6.2.0
+            aqt_arch: gcc_64
 
           - name: Qt 6.1
             os: ubuntu-22.04
-            qt_version: 6
-            aqt_version: "6.1.0"
-            aqt_arch: "gcc_64"
+            aqt_version: 6.1.0
+            aqt_arch: gcc_64
 
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.name }}
+    name: Build - ${{ matrix.name }}
 
     steps:
-      - name: "Clone Git repository"
+      - name: Clone Git repository
         uses: actions/checkout@v6
-      - name: "Install Rust toolchain"
+      - name: Install Rust toolchain
         run: |
           rustup default stable
           rustup component add clippy
 
-      # Version info found using https://ddalcino.github.io/aqt-list-server/
-      - name: "Install Qt"
+      - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ matrix.aqt_version }}
-          host: "linux"
-          target: "desktop"
+          host: linux
+          target: desktop
           arch: ${{ matrix.aqt_arch }}
-          tools: "tools_cmake"
+          tools: tools_cmake
           cache: true
 
-      - name: "Install dependencies"
-        run: >-
-          sudo apt-get update &&
-          sudo apt-get install -y
-          libssl-dev
-          pkg-config
-          libxkbcommon-dev
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev pkg-config
 
-      - name: "Build"
-        run: cargo clippy --all-features
+      - name: Build package
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Build documentation
+        run: cargo doc --release --all-features -- -D warnings
 
   test:
     # Run after pre checks
@@ -152,121 +129,96 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu 24.04 (gcc) Qt6
+          - name: Ubuntu 24.04 (gcc)
             os: ubuntu-24.04
-            qt_version: 6
-            aqt_version: "6.10.1"
-            aqt_arch: "linux_gcc_64"
-            aqt_host: "linux"
+            aqt_version: 6.10.1
+            aqt_arch: linux_gcc_64
+            aqt_host: linux
             cores: 4
-            cargo_dir: ~/.cargo
             build_type: Release
-            packages-extra: >-
-              libxkbcommon-dev
 
-          - name: macOS 15 (clang) Qt6
+          - name: macOS 15 (clang)
             os: macos-15
-            qt_version: 6
-            aqt_version: "6.10.1"
-            aqt_arch: "clang_64"
-            aqt_host: "mac"
+            aqt_version: 6.10.1
+            aqt_arch: clang_64
+            aqt_host: mac
             dyld_framework_path: /Users/runner/work/cxx-qt/Qt/6.10.1/macos/lib
-            # https://doc.qt.io/qt-6.7/macos.html#target-platforms
-            macosx_deployment_target: "13.0"
+            macosx_deployment_target: 13.0
             cores: 3
-            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun)$'
-            cargo_dir: ~/.cargo
             cc: clang
             cxx: clang++
             build_type: Release
 
-          - name: Windows 2022 (MSVC2019) Qt6
+          - name: Windows 2022 (MSVC2019)
             os: windows-2022
-            qt_version: 6
-            aqt_version: "6.7.3"
-            aqt_arch: "win64_msvc2019_64"
-            aqt_host: "windows"
+            aqt_version: 6.7.3
+            aqt_arch: win64_msvc2019_64
+            aqt_host: windows
             cores: 4
-            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun)$'
-            exe_suffix: .exe
-            cargo_dir: C:\Users\runneradmin\.cargo
             cc: cl
             cxx: cl
             build_type: Release
-            # Use a Debug build to ensure we can build and run tests in Debug mode with MSVC
-          - name: Windows 2022 (MSVC2022) Qt6 Debug
+
+          - name: Windows 2022 (MSVC2022) Debug
             os: windows-2022
-            qt_version: 6
-            aqt_version: "6.10.1"
-            aqt_arch: "win64_msvc2022_64"
-            aqt_host: "windows"
+            aqt_version: 6.10.1
+            aqt_arch: win64_msvc2022_64
+            aqt_host: windows
             cores: 4
-            ctest_args: --exclude-regex '^(cargo_clippy|cargo_doc|cargo_build_rerun)$'
-            exe_suffix: .exe
-            cargo_dir: C:\Users\runneradmin\.cargo
             cc: cl
             cxx: cl
             build_type: Debug
 
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.name }}
+    name: Test - ${{ matrix.name }}
     env:
-      # ld: warning: object file (LIB) was built for newer macOS version (12.7) than being linked (12.0)
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.macosx_deployment_target }}
+      CMAKE_BUILD_PARALLEL_LEVEL: ${{ matrix.cores }}
 
     steps:
-      - name: "Clone Git repository"
+      - name: Clone Git repository
         uses: actions/checkout@v6
-      - name: "Install Rust toolchain"
+      - name: Install Rust toolchain
         run: |
           rustup default stable
           rustup component add clippy
 
-      # Version info found using https://ddalcino.github.io/aqt-list-server/
-      - name: "Install Qt"
+      - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ matrix.aqt_version }}
           host: ${{ matrix.aqt_host }}
-          target: "desktop"
+          target: desktop
           arch: ${{ matrix.aqt_arch }}
-          tools: "tools_cmake"
+          tools: tools_cmake
           cache: true
 
       - name: "[Ubuntu] Install dependencies"
         if: runner.os == 'Linux'
-        run: >-
-          sudo apt-get update &&
-          sudo apt-get install -y
-          libssl-dev
-          pkg-config
-          valgrind
-          ${{ matrix.packages-extra }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev pkg-config valgrind
 
-      # hack around https://bugs.launchpad.net/ubuntu/+source/qtchooser/+bug/1964763
       - name: "[Ubuntu] Add Qt6 tools to PATH"
-        if: runner.os == 'Linux' && matrix.qt_version == 6
+        if: runner.os == 'Linux'
         run: echo "PATH=/usr/lib/qt6/bin:${PATH}" >> "${GITHUB_ENV}"
 
       - name: "[macOS] Install dependencies"
         if: runner.os == 'macOS'
-        # automake is needed for building libicu which is a dependency of Qt
         run: brew install automake autoconf-archive
 
-      - name: "Configure"
-        run: >-
-          cmake ${{ matrix.cmake_args }}
-          -D CMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -S . -B build
+      - name: Configure
+        run: cmake -D CMAKE_BUILD_TYPE=${{ matrix.build_type }} -S . -B build
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
-      - name: "Build"
-        run: cmake --build build --config ${{ matrix.build_type }} --parallel ${{ matrix.cores }}
 
-      - name: "Test"
-        run: ctest ${{ matrix.ctest_args }} -C ${{ matrix.build_type }} -T test --output-on-failure --parallel ${{ matrix.cores }}
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Test
+        run: ctest -C ${{ matrix.build_type }} -T test --output-on-failure
         working-directory: ./build
         env:
-          QT_SELECT: qt${{ matrix.qt_version }}
+          QT_SELECT: qt6
           DYLD_FRAMEWORK_PATH: ${{ matrix.dyld_framework_path }}
