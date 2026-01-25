@@ -8,8 +8,6 @@
 
 cmake_minimum_required(VERSION 3.24)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 project(cxx_qt_io)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -28,8 +26,6 @@ add_compile_definitions(
     QT_USE_QSTRINGBUILDER
 )
 
-# QMAKE environment variable is needed by qt-build-utils to ensure that Cargo
-# uses the same installation of Qt as CMake does.
 find_package(Qt6 COMPONENTS Core Network Test)
 if(NOT Qt6_FOUND)
     message(FATAL_ERROR "cxx-qt-io only supports Qt 6 builds.")
@@ -48,11 +44,11 @@ endif()
 enable_testing()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    # Create helper method which adds a valgrind test with the given binary
-    function(add_valgrind_test NAME_WITH_PREFIX BINARY WORKING_DIRECTORY)
-        if("${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
-          MESSAGE(STATUS "valgrind not found. Please install it")
-        else()
+    find_program(MEMORYCHECK_COMMAND valgrind)
+    if("${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
+      MESSAGE(STATUS "valgrind not found. Please install it")
+    else()
+      function(add_valgrind_test NAME_WITH_PREFIX BINARY WORKING_DIRECTORY)
           add_test(NAME ${NAME_WITH_PREFIX}_valgrind
               COMMAND ${MEMORYCHECK_COMMAND}
                --error-exitcode=1
@@ -64,8 +60,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
               --gen-suppressions=all ${BINARY}
               WORKING_DIRECTORY "${WORKING_DIRECTORY}"
           )
-        endif()
-    endfunction()
+        endfunction()
+    endif()
 endif()
 
 get_target_property(QMAKE Qt::qmake IMPORTED_LOCATION)
