@@ -35,7 +35,6 @@ set(CRATE standalone)
 cxx_qt_import_crate(
     MANIFEST_PATH rust/Cargo.toml
     CRATES ${CRATE}
-    LOCKED
     QT_MODULES Qt::Core Qt::Gui Qt::Network
 )
 

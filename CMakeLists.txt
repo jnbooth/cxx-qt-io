@@ -114,9 +114,9 @@ set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
-    add_test(NAME cargo_tests COMMAND cargo test --locked --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
-    add_test(NAME cargo_doc COMMAND cargo doc --locked --release --all-features --target-dir ${CARGO_TARGET_DIR})
-    add_test(NAME cargo_clippy COMMAND cargo clippy --locked --release --all-features --target-dir ${CARGO_TARGET_DIR} -- -D warnings)
+    add_test(NAME cargo_tests COMMAND cargo test --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
+    add_test(NAME cargo_doc COMMAND cargo doc --release --all-features --target-dir ${CARGO_TARGET_DIR})
+    add_test(NAME cargo_clippy COMMAND cargo clippy --release --all-features --target-dir ${CARGO_TARGET_DIR} -- -D warnings)
 
     set_tests_properties(cargo_tests cargo_clippy PROPERTIES
         ENVIRONMENT_MODIFICATION "${CARGO_ENV}"
