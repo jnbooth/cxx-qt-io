@@ -90,19 +90,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND BUILD_TESTING)
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
-    execute_process(
-        COMMAND ${QMAKE} -query QT_INSTALL_QML
-        OUTPUT_VARIABLE QT_INSTALL_QML
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-
     list(
         APPEND
         RUNTIME_ENV
         "PATH=path_list_append:${QT_INSTALL_BINS}"
         "QT_PLUGIN_PATH=path_list_append:${QT_INSTALL_PLUGINS}"
-        "QML_IMPORT_PATH=path_list_append:${QT_INSTALL_QML}"
-        "QML2_IMPORT_PATH=path_list_append:${QT_INSTALL_QML}"
     )
     list(APPEND CARGO_ENV ${RUNTIME_ENV})
 endif()
@@ -121,6 +113,7 @@ endif()
 set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
 if(BUILD_TESTING)
+    add_subdirectory(tests)
     add_test(NAME cargo_tests COMMAND cargo test --locked --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
     add_test(NAME cargo_doc COMMAND cargo doc --locked --release --all-features --target-dir ${CARGO_TARGET_DIR})
     add_test(NAME cargo_clippy COMMAND cargo clippy --locked --release --all-features --target-dir ${CARGO_TARGET_DIR} -- -D warnings)
