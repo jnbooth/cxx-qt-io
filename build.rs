@@ -142,7 +142,6 @@ fn main() {
         // Use a short name due to the Windows file path limit!
         // We don't re-export these headers anyway
         .include_prefix("private")
-        .crate_include_root(Some("include/".to_owned()))
         .include_dir(&header_dir)
         .cpp_files(&[
             "src/core/qbuffer.cpp",
