@@ -120,7 +120,7 @@ jobs:
         run: cargo clippy --all-targets --all-features -- -D warnings
 
       - name: Build documentation
-        run: cargo doc --release --all-features -- -D warnings
+        run: cargo doc --release --all-features
 
   test:
     # Run after pre checks
