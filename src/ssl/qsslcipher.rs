@@ -79,12 +79,6 @@ mod ffi {
     }
 }
 
-impl IsNonNull for QSslCipher {
-    fn is_nonnull(value: &Self) -> bool {
-        !value.is_null()
-    }
-}
-
 /// The `QSslCipher` class represents an SSL cryptographic cipher.
 ///
 /// Qt Documentation: [QSslCipher](https://doc.qt.io/qt-6/qsslcipher.html#details)
@@ -130,6 +124,12 @@ impl fmt::Debug for QSslCipher {
     }
 }
 
+impl IsNonNull for QSslCipher {
+    fn is_nonnull(value: &Self) -> bool {
+        !value.is_null()
+    }
+}
+
 impl QSslCipher {
     /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
     ///
@@ -167,4 +167,19 @@ impl TryFrom<&QString> for QSslCipher {
 unsafe impl ExternType for QSslCipher {
     type Id = type_id!("QSslCipher");
     type Kind = cxx::kind::Trivial;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::QSslConfiguration;
+
+    #[test]
+    fn nonnull() {
+        let ciphers = QSslConfiguration::supported_ciphers();
+        let cipher = ciphers
+            .get(0)
+            .expect("no SSL ciphers are supported on this device");
+        assert_nonnull!(cipher, QSslCipher::default());
+    }
 }

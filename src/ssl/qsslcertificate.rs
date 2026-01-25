@@ -325,6 +325,8 @@ mod ffi {
         #[rust_name = "qsslcertificate_drop"]
         fn drop(certificate: &mut QSslCertificate);
 
+        #[rust_name = "qsslcertificate_default"]
+        fn construct() -> QSslCertificate;
         #[rust_name = "qsslcertificate_init_device"]
         unsafe fn construct(device: *mut QIODevice, format: QSslEncodingFormat) -> QSslCertificate;
         #[rust_name = "qsslcertificate_init_data"]
@@ -389,6 +391,13 @@ impl PartialEq for QSslCertificate {
 }
 
 impl Eq for QSslCertificate {}
+
+impl Default for QSslCertificate {
+    /// Constructs a null certificate.
+    fn default() -> Self {
+        ffi::qsslcertificate_default()
+    }
+}
 
 impl fmt::Debug for QSslCertificate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -71,12 +71,6 @@ impl Default for QSslEllipticCurve {
     }
 }
 
-impl IsNonNull for QSslEllipticCurve {
-    fn is_nonnull(value: &Self) -> bool {
-        value.is_valid()
-    }
-}
-
 impl fmt::Debug for QSslEllipticCurve {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("QSslEllipticCurve")
@@ -91,6 +85,12 @@ impl fmt::Debug for QSslEllipticCurve {
 impl fmt::Display for QSslEllipticCurve {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.short_name_or_empty().fmt(f)
+    }
+}
+
+impl IsNonNull for QSslEllipticCurve {
+    fn is_nonnull(value: &Self) -> bool {
+        value.is_valid()
     }
 }
 
@@ -136,5 +136,17 @@ pub struct QSslEllipticCurveError(pub(crate) ());
 impl fmt::Display for QSslEllipticCurveError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("the supplied name is not a supported elliptic curve")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert!(!crate::util::IsNonNull::is_nonnull(
+            &QSslEllipticCurve::default()
+        ));
     }
 }

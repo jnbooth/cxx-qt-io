@@ -243,3 +243,15 @@ impl fmt::Display for DecodeSslKeyError {
         f.write_str("unable to decode file data to SSL key or certificate")
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        let key_data = include_bytes!("../../tests/local.key");
+        let key = QSslKey::try_from(&QByteArray::from(key_data)).expect("unable to parse key data");
+        assert_nonnull!(key, QSslKey::default());
+    }
+}
