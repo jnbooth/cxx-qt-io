@@ -11,12 +11,6 @@ use crate::util::IsNonNull;
 #[derive(Copy, Clone, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct SocketDescriptor(isize);
 
-impl IsNonNull for SocketDescriptor {
-    fn is_nonnull(value: &Self) -> bool {
-        value.0 != -1
-    }
-}
-
 impl fmt::Debug for SocketDescriptor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt(f)
@@ -26,6 +20,12 @@ impl fmt::Debug for SocketDescriptor {
 impl fmt::Display for SocketDescriptor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt(f)
+    }
+}
+
+impl IsNonNull for SocketDescriptor {
+    fn is_nonnull(value: &Self) -> bool {
+        value.0 != -1
     }
 }
 
@@ -67,5 +67,15 @@ impl From<SocketDescriptor> for FileDescriptor {
     fn from(value: SocketDescriptor) -> Self {
         #[allow(clippy::cast_possible_truncation)]
         Self::from(isize::from(value) as i32)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(SocketDescriptor(0), SocketDescriptor(-1));
     }
 }

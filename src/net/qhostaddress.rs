@@ -284,6 +284,7 @@ impl fmt::Display for QHostAddress {
         IpAddr::from(self).fmt(f)
     }
 }
+
 impl IsNonNull for QHostAddress {
     fn is_nonnull(value: &Self) -> bool {
         !value.is_null()

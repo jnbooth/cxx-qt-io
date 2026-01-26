@@ -28,6 +28,12 @@ impl fmt::Display for FileDescriptor {
     }
 }
 
+impl IsNonNull for FileDescriptor {
+    fn is_nonnull(value: &Self) -> bool {
+        value.0 != -1
+    }
+}
+
 impl From<i32> for FileDescriptor {
     fn from(value: i32) -> Self {
         Self(value)
@@ -40,8 +46,12 @@ impl From<FileDescriptor> for i32 {
     }
 }
 
-impl IsNonNull for FileDescriptor {
-    fn is_nonnull(value: &Self) -> bool {
-        value.0 != -1
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(FileDescriptor(0), FileDescriptor(-1));
     }
 }

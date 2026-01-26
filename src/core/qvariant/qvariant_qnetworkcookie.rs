@@ -33,3 +33,11 @@ pub(crate) fn construct(value: &ffi::QNetworkCookie) -> ffi::QVariant {
 pub(crate) fn value_or_default(variant: &ffi::QVariant) -> ffi::QNetworkCookie {
     ffi::qvariant_value_or_default_QNetworkCookie(variant)
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn can_convert() {
+        assert!(!super::can_convert(&cxx_qt_lib::QVariant::default()));
+    }
+}

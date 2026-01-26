@@ -325,6 +325,8 @@ mod ffi {
         #[rust_name = "qsslcertificate_drop"]
         fn drop(certificate: &mut QSslCertificate);
 
+        #[rust_name = "qsslcertificate_default"]
+        fn construct() -> QSslCertificate;
         #[rust_name = "qsslcertificate_init_device"]
         unsafe fn construct(device: *mut QIODevice, format: QSslEncodingFormat) -> QSslCertificate;
         #[rust_name = "qsslcertificate_init_data"]
@@ -390,6 +392,13 @@ impl PartialEq for QSslCertificate {
 
 impl Eq for QSslCertificate {}
 
+impl Default for QSslCertificate {
+    /// Constructs a null certificate.
+    fn default() -> Self {
+        ffi::qsslcertificate_default()
+    }
+}
+
 impl fmt::Debug for QSslCertificate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("QSslCertificate")
@@ -424,6 +433,14 @@ impl IsNonNull for QSslCertificate {
 }
 
 impl QSslCertificate {
+    fn into_result(self) -> Result<Self, DecodeSslKeyError> {
+        if self.is_null() {
+            Err(DecodeSslKeyError(()))
+        } else {
+            Ok(self)
+        }
+    }
+
     /// Imports a PKCS#12 (pfx) file from the specified device. A PKCS#12 file is a bundle that can contain a number of certificates and keys. This method reads a single `key`, its `certificate` and any associated `ca_certificates` from the bundle. If a `pass_phrase` is specified then this will be used to decrypt the bundle. Returns `true` if the PKCS#12 file was successfully loaded.
     ///
     /// **Note:** The `device` must be open and ready to be read from.
@@ -494,7 +511,7 @@ impl QSslCertificate {
         data: &QByteArray,
         format: QSslEncodingFormat,
     ) -> Result<Self, DecodeSslKeyError> {
-        ffi::qsslcertificate_init_data(data, format).nonnull_or(DecodeSslKeyError(()))
+        ffi::qsslcertificate_init_data(data, format).into_result()
     }
 
     /// Constructs a `QSslCertificate` by reading `format` encoded data from `device` and using the first certificate found.
@@ -509,7 +526,7 @@ impl QSslCertificate {
     {
         // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
         unsafe { ffi::qsslcertificate_init_device(upcast_mut(unpin_for_qt(device)), format) }
-            .nonnull_or(DecodeSslKeyError(()))
+            .into_result()
     }
 
     /// Searches for and parses all certificates in `device` that are encoded in the specified `format` and returns them in a list of certificates.
@@ -713,4 +730,17 @@ impl fmt::Debug for SubjectAlternativeNamesMap {
 unsafe impl ExternType for SubjectAlternativeNamesMap {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesMap");
     type Kind = cxx::kind::Trivial;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        let cert_data = include_bytes!("../../tests/local.crt");
+        let cert = QSslCertificate::try_from(&QByteArray::from(cert_data))
+            .expect("unable to parse certificate");
+        assert_nonnull!(cert, QSslCertificate::default());
+    }
 }

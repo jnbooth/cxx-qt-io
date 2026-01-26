@@ -79,12 +79,6 @@ mod ffi {
     }
 }
 
-impl IsNonNull for QSslCipher {
-    fn is_nonnull(value: &Self) -> bool {
-        !value.is_null()
-    }
-}
-
 /// The `QSslCipher` class represents an SSL cryptographic cipher.
 ///
 /// Qt Documentation: [QSslCipher](https://doc.qt.io/qt-6/qsslcipher.html#details)
@@ -130,14 +124,28 @@ impl fmt::Debug for QSslCipher {
     }
 }
 
+impl IsNonNull for QSslCipher {
+    fn is_nonnull(value: &Self) -> bool {
+        !value.is_null()
+    }
+}
+
 impl QSslCipher {
-    /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol (if supplied) must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
+    fn into_result(self) -> Result<Self, QSslCipherError> {
+        if self.is_null() {
+            Err(QSslCipherError(()))
+        } else {
+            Ok(self)
+        }
+    }
+
+    /// Constructs a `QSslCipher` object for the cipher determined by `name` and `protocol`. The constructor accepts only supported ciphers (i.e., the name and protocol must identify a cipher in the list of ciphers returned by [`QSslConfiguration::supported_ciphers()`](crate::QSslConfiguration::supported_ciphers)).
     ///
     /// To construct a cipher without specifying a protocol, use `QSslCipher::from(name)`.
     ///
     /// Returns an error if `name` and `protocol` do not correctly identify a supported cipher.
     pub fn new(name: &QString, protocol: QSslSslProtocol) -> Result<Self, QSslCipherError> {
-        ffi::qsslcipher_init_protocol(name, protocol).nonnull_or(QSslCipherError(()))
+        ffi::qsslcipher_init_protocol(name, protocol).into_result()
     }
 }
 
@@ -159,7 +167,7 @@ impl TryFrom<&QString> for QSslCipher {
     ///
     /// Returns an error if `name` and `protocol` do not correctly identify a supported cipher.
     fn try_from(value: &QString) -> Result<Self, Self::Error> {
-        ffi::qsslcipher_init_name(value).nonnull_or(QSslCipherError(()))
+        ffi::qsslcipher_init_name(value).into_result()
     }
 }
 
@@ -167,4 +175,19 @@ impl TryFrom<&QString> for QSslCipher {
 unsafe impl ExternType for QSslCipher {
     type Id = type_id!("QSslCipher");
     type Kind = cxx::kind::Trivial;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::QSslConfiguration;
+
+    #[test]
+    fn nonnull() {
+        let ciphers = QSslConfiguration::supported_ciphers();
+        let cipher = ciphers
+            .get(0)
+            .expect("no SSL ciphers are supported on this device");
+        assert_nonnull!(cipher, QSslCipher::default());
+    }
 }

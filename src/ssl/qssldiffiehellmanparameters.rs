@@ -114,12 +114,6 @@ mod ffi {
 
 pub use ffi::QSslDiffieHellmanParametersError;
 
-impl IsNonNull for QSslDiffieHellmanParameters {
-    fn is_nonnull(value: &Self) -> bool {
-        value.is_valid()
-    }
-}
-
 /// The `QSslDiffieHellmanParameters` class provides an interface for Diffie-Hellman parameters for servers.
 ///
 /// Qt Documentation: [QSslDiffieHellmanParameters](https://doc.qt.io/qt-6/qssldiffiehellmanparameters.html#details)
@@ -161,12 +155,19 @@ impl fmt::Debug for QSslDiffieHellmanParameters {
     }
 }
 
+impl IsNonNull for QSslDiffieHellmanParameters {
+    fn is_nonnull(value: &Self) -> bool {
+        value.is_valid()
+    }
+}
+
 impl QSslDiffieHellmanParameters {
     fn into_result(self) -> Result<Self, QSslDiffieHellmanParametersError> {
-        if self.is_valid() {
+        let error = self.error();
+        if error == QSslDiffieHellmanParametersError::NoError {
             Ok(self)
         } else {
-            Err(self.error())
+            Err(error)
         }
     }
 
@@ -215,5 +216,17 @@ unsafe impl ExternType for QSslDiffieHellmanParameters {
 impl fmt::Display for QSslDiffieHellmanParametersError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(self, f)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert!(crate::util::IsNonNull::is_nonnull(
+            &QSslDiffieHellmanParameters::default_parameters()
+        ));
     }
 }

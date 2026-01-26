@@ -150,6 +150,14 @@ impl IsNonNull for QSslKey {
 }
 
 impl QSslKey {
+    fn into_result(self) -> Result<Self, DecodeSslKeyError> {
+        if self.is_null() {
+            Err(DecodeSslKeyError(()))
+        } else {
+            Ok(self)
+        }
+    }
+
     /// Constructs a `QSslKey` by reading and decoding data from a `device` using a specified `algorithm` and `encoding` format. `key_type` specifies whether the key is public or private.
     ///
     /// If the key is encrypted then `pass_phrase` is used to decrypt it.
@@ -175,7 +183,7 @@ impl QSslKey {
                 pass_phrase,
             )
         }
-        .nonnull_or(DecodeSslKeyError(()))
+        .into_result()
     }
 
     /// Constructs a `QSslKey` by decoding the string in the byte array `encoded` using a specified `algorithm` and `encoding` format. `key_type` specifies whether the key is public or private.
@@ -190,8 +198,7 @@ impl QSslKey {
         key_type: QSslKeyType,
         pass_phrase: &QByteArray,
     ) -> Result<Self, DecodeSslKeyError> {
-        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase)
-            .nonnull_or(DecodeSslKeyError(()))
+        ffi::qsslkey_init_data(encoded, algorithm, encoding, key_type, pass_phrase).into_result()
     }
 
     /// Returns the length of the key in bits, or `None` if the key is null.
@@ -241,5 +248,17 @@ pub struct DecodeSslKeyError(pub(crate) ());
 impl fmt::Display for DecodeSslKeyError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str("unable to decode file data to SSL key or certificate")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        let key_data = include_bytes!("../../tests/local.key");
+        let key = QSslKey::try_from(&QByteArray::from(key_data)).expect("unable to parse key data");
+        assert_nonnull!(key, QSslKey::default());
     }
 }

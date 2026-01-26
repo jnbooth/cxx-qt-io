@@ -300,3 +300,16 @@ impl fmt::Display for QNetworkInterfaceInterfaceType {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn nonnull() {
+        assert_nonnull!(
+            QNetworkInterface::all_interfaces().get(0).unwrap(),
+            QNetworkInterface::default(),
+        );
+    }
+}

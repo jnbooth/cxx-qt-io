@@ -160,6 +160,16 @@ pub(crate) fn remove(hash: &mut ffi::$QHASH, key: &$FK) -> bool {
 }
 
 pub struct QHashPair_$SUFFIX;
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}
 EOF
     rustfmt +nightly "$SCRIPTPATH/qhash_$LOWER.rs"
 }

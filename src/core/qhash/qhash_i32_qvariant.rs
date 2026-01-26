@@ -96,3 +96,13 @@ pub(crate) fn remove(hash: &mut ffi::QHash_i32_QVariant, key: &i32) -> bool {
 }
 
 pub struct QHashPair_i32_QVariant;
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}

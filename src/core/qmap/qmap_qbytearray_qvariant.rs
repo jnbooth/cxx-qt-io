@@ -116,3 +116,13 @@ unsafe impl ExternType for QMapPair_QByteArray_QVariant {
     type Id = type_id!("QMapPair_QByteArray_QVariant");
     type Kind = cxx::kind::Trivial;
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn len() {
+        let empty = super::default();
+        assert_eq!(super::len(&empty), 0);
+        std::mem::drop(empty);
+    }
+}
