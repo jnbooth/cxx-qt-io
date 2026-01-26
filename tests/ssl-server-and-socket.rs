@@ -1,4 +1,4 @@
-#![cfg(feature = "ssl")]
+#![cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_4))]
 mod common;
 use std::time::{Duration, Instant};
 

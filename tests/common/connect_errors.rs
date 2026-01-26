@@ -15,7 +15,7 @@ impl ConnectErrors for cxx_qt_io::QTcpServer {
     }
 }
 
-#[cfg(feature = "ssl")]
+#[cfg(all(feature = "ssl", cxxqt_qt_version_at_least_6_4))]
 impl ConnectErrors for cxx_qt_io::QSslServer {
     fn connect_errors(mut self: Pin<&mut Self>, context: &'static str) {
         self.as_mut()

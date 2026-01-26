@@ -1,0 +1,20 @@
+[package]
+name = "standalone"
+version = "0.1.0"
+authors = ["Joshua Booth <joshua.n.booth@gmail.com>"]
+edition = "2024"
+license = "MIT"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+cxx = "1.0.144"
+cxx-qt = "0.8.0"
+cxx-qt-lib = "0.8.0"
+cxx-qt-io = { path = "../../../", features = ["full"] }
+
+[build-dependencies]
+cxx-qt-build = "0.8.0"
+qt-build-utils = "0.8.0"
+semver = "1.0"
