@@ -314,6 +314,9 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
+        #[rust_name = "subjectalternativenamesmap_drop"]
+        fn drop(map: &mut SubjectAlternativeNamesMap);
+
         #[rust_name = "qsslcertificate_drop"]
         fn drop(certificate: &mut QSslCertificate);
 
@@ -706,6 +709,12 @@ impl FusedIterator for SubjectAlternativeNamesValues {}
 #[repr(C)]
 pub struct SubjectAlternativeNamesMap {
     _space: MaybeUninit<usize>,
+}
+
+impl Drop for SubjectAlternativeNamesMap {
+    fn drop(&mut self) {
+        ffi::subjectalternativenamesmap_drop(self);
+    }
 }
 
 impl SubjectAlternativeNamesMap {
