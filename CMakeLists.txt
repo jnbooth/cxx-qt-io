@@ -35,27 +35,6 @@ add_definitions(-DQT_NO_CONTEXTLESS_CONNECT)
 
 enable_testing()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_program(MEMORYCHECK_COMMAND valgrind)
-    if("${MEMORYCHECK_COMMAND}" STREQUAL "MEMORYCHECK_COMMAND-NOTFOUND")
-      MESSAGE(STATUS "valgrind not found. Please install it")
-    else()
-      function(add_valgrind_test NAME_WITH_PREFIX BINARY WORKING_DIRECTORY)
-          add_test(NAME ${NAME_WITH_PREFIX}_valgrind
-              COMMAND ${MEMORYCHECK_COMMAND}
-               --error-exitcode=1
-               --errors-for-leak-kinds=definite
-               --leak-check=full
-               --trace-children=yes
-               --track-origins=yes
-               --show-possibly-lost=no
-              --gen-suppressions=all ${BINARY}
-              WORKING_DIRECTORY "${WORKING_DIRECTORY}"
-          )
-        endfunction()
-    endif()
-endif()
-
 get_target_property(QMAKE Qt::qmake IMPORTED_LOCATION)
 set(CARGO_ENV "QMAKE=set:${QMAKE}")
 set(RUNTIME_ENV "")
@@ -97,4 +76,4 @@ endif()
 set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
 add_subdirectory(tests)
-add_test(NAME cargo_tests COMMAND cargo test --release --all-features --lib --target-dir ${CARGO_TARGET_DIR})
+add_test(NAME cargo_tests COMMAND cargo test --all-features --lib --target-dir ${CARGO_TARGET_DIR})

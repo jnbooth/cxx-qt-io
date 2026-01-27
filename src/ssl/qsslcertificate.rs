@@ -6,7 +6,7 @@ use std::ptr;
 
 use cxx::{ExternType, type_id};
 use cxx_qt::casting::Upcast;
-use cxx_qt_lib::{QByteArray, QDateTime, QList, QString, QStringList};
+use cxx_qt_lib::{QByteArray, QDateTime, QFlags, QList, QString, QStringList};
 
 use crate::util::{IsNonNull, unpin_for_qt, upcast_mut};
 use crate::{
@@ -310,14 +310,6 @@ mod ffi {
         fn qmultimapIter(map: &SubjectAlternativeNamesMap) -> SubjectAlternativeNamesIter;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        include!("cxx-qt-io/qbytearray.h");
-
-        #[rust_name = "qbytearray_to_base64"]
-        fn qbytearrayToBase64(bytes: &QByteArray) -> QByteArray;
-    }
-
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -406,7 +398,9 @@ impl fmt::Debug for QSslCertificate {
             .field("serial_number", &self.serial_number())
             .field(
                 "digest",
-                &ffi::qbytearray_to_base64(&self.digest(QCryptographicHashAlgorithm::Md5)),
+                &self
+                    .digest(QCryptographicHashAlgorithm::Md5)
+                    .to_base64(QFlags::default()),
             )
             .field("issuer", &self.issuer_display_name())
             .field("subject", &self.subject_display_name())

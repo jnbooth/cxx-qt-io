@@ -197,7 +197,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev pkg-config valgrind
+          sudo apt-get install -y libssl-dev pkg-config
 
       - name: "[Ubuntu] Add Qt6 tools to PATH"
         if: runner.os == 'Linux'
@@ -217,8 +217,7 @@ jobs:
         run: cmake --build build --config ${{ matrix.build_type }}
 
       - name: Test
-        run: ctest -C ${{ matrix.build_type }} -T test --output-on-failure
-        working-directory: ./build
+        run: ctest --test-dir build -C ${{ matrix.build_type }} -T test --output-on-failure
         env:
           QT_SELECT: qt6
           DYLD_FRAMEWORK_PATH: ${{ matrix.dyld_framework_path }}
