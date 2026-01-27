@@ -192,15 +192,13 @@ mod ffi {
         #[rust_name = "to_ipv4_address"]
         unsafe fn toIPv4Address(&self, ok: *mut bool) -> u32;
 
+        #[doc(hidden)]
+        #[rust_name = "to_ipv6_address"]
+        #[allow(private_interfaces)]
+        fn toIPv6Address(&self) -> QIpv6Addr;
+
         #[rust_name = "to_qstring"]
         fn toString(&self) -> QString;
-
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qhostaddress_to_ipv6_address"]
-        fn qhostaddressToIPv6Address(address: &QHostAddress) -> QIpv6Addr;
     }
 
     #[namespace = "rust::cxxqtlib1"]
@@ -370,7 +368,7 @@ impl From<Ipv6Addr> for QHostAddress {
 
 impl From<&QHostAddress> for Ipv6Addr {
     fn from(value: &QHostAddress) -> Self {
-        ffi::qhostaddress_to_ipv6_address(value).into()
+        value.to_ipv6_address().into()
     }
 }
 

@@ -314,6 +314,9 @@ mod ffi {
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
 
+        #[rust_name = "subjectalternativenamesmap_drop"]
+        fn drop(map: &mut SubjectAlternativeNamesMap);
+
         #[rust_name = "qsslcertificate_drop"]
         fn drop(certificate: &mut QSslCertificate);
 
@@ -632,7 +635,7 @@ pub struct SubjectAlternativeNamesKeys {
     _end: MaybeUninit<usize>,
 }
 
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
+// SAFETY: Defined in include/core/qmultimap.h
 unsafe impl ExternType for SubjectAlternativeNamesKeys {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesKeys");
     type Kind = cxx::kind::Trivial;
@@ -657,7 +660,7 @@ pub struct SubjectAlternativeNamesIter {
     _end: MaybeUninit<usize>,
 }
 
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
+// SAFETY: Defined in include/core/qmultimap.h
 unsafe impl ExternType for SubjectAlternativeNamesIter {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesIter");
     type Kind = cxx::kind::Trivial;
@@ -682,7 +685,7 @@ pub struct SubjectAlternativeNamesValues {
     _end: MaybeUninit<usize>,
 }
 
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
+// SAFETY: Defined in include/core/qmultimap.h
 unsafe impl ExternType for SubjectAlternativeNamesValues {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesValues");
     type Kind = cxx::kind::Trivial;
@@ -706,6 +709,12 @@ impl FusedIterator for SubjectAlternativeNamesValues {}
 #[repr(C)]
 pub struct SubjectAlternativeNamesMap {
     _space: MaybeUninit<usize>,
+}
+
+impl Drop for SubjectAlternativeNamesMap {
+    fn drop(&mut self) {
+        ffi::subjectalternativenamesmap_drop(self);
+    }
 }
 
 impl SubjectAlternativeNamesMap {

@@ -208,16 +208,17 @@ impl QDeadlineTimer {
     pub fn duration_since(&self, earlier: QDeadlineTimer) -> Result<Duration, QDeadlineTimerError> {
         const FOREVER: i64 = i64::MAX;
 
-        #[allow(clippy::cast_sign_loss)]
         #[inline]
         fn construct_duration(
             constructor: fn(u64) -> Duration,
             diff: i64,
         ) -> Result<Duration, QDeadlineTimerError> {
             if diff >= 0 {
-                Ok(constructor(diff as u64))
+                Ok(constructor(diff.cast_unsigned()))
             } else {
-                Err(QDeadlineTimerError::IsPast(constructor((-diff) as u64)))
+                Err(QDeadlineTimerError::IsPast(constructor(
+                    (-diff).cast_unsigned(),
+                )))
             }
         }
 

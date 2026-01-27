@@ -4,6 +4,6 @@
 
 #include <cxx-qt-io/definitions.h>
 
-#ifdef CXX_QT_IO_NETWORK_FEATURE
+#ifdef CXX_QT_IO_NET_FEATURE
 #include "qpair_qhostaddress_i32.h"
 #endif

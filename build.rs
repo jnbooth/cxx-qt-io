@@ -146,7 +146,6 @@ fn main() {
             "src/core/qbuffer.cpp",
             "src/core/qdeadlinetimer.cpp",
             "src/core/qhash/qhash.cpp",
-            "src/core/qiodevice.cpp",
             "src/core/qlist/qlist.cpp",
             "src/core/qmap/qmap.cpp",
             "src/core/qobject.cpp",
@@ -216,6 +215,7 @@ fn main() {
                 "src/net/qhostaddress.cpp",
                 "src/net/qnetworkaddressentry.cpp",
                 "src/net/qnetworkdatagram.cpp",
+                "src/net/qnetworkinterface.cpp",
                 "src/net/qnetworkproxy.cpp",
             ])
             .files(&[
@@ -276,7 +276,6 @@ fn main() {
 
         builder = builder
             .cpp_files(&[
-                "src/request/qabstractnetworkcache.cpp",
                 "src/request/qnetworkaccessmanager.cpp",
                 "src/request/qnetworkcachemetadata.cpp",
                 "src/request/qhstspolicy.cpp",
@@ -371,6 +370,7 @@ fn main() {
                 "src/ssl/qocspresponse.cpp",
                 "src/ssl/qsslcertificate.cpp",
                 "src/ssl/qsslcertificateextension.cpp",
+                "src/ssl/qsslcipher.cpp",
                 "src/ssl/qsslconfiguration.cpp",
                 "src/ssl/qssldiffiehellmanparameters.cpp",
                 "src/ssl/qsslellipticcurve.cpp",

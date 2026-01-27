@@ -44,6 +44,7 @@ add_executable(${APP_NAME}
   cpp/qdeadlinetimer.h
   cpp/qdtlsgeneratorparameters.h
   cpp/qfile.h
+  cpp/qsslconfiguration.h
 )
 
 target_include_directories(${APP_NAME} PRIVATE cpp)

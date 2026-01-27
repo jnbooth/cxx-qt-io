@@ -87,6 +87,13 @@ mod ffi {
         #[rust_name = "temp_path"]
         fn tempPath() -> QString;
     }
+
+    #[namespace = "rust::cxxqtlib1"]
+    unsafe extern "C++" {
+        include!("cxx-qt-lib/common.h");
+        #[rust_name = "qdir_drop"]
+        fn drop(dir: &mut QDir);
+    }
 }
 
 /// The `QDir` class provides access to directory structures and their contents.
@@ -95,6 +102,12 @@ mod ffi {
 #[repr(C)]
 pub struct QDir {
     _space: MaybeUninit<usize>,
+}
+
+impl Drop for QDir {
+    fn drop(&mut self) {
+        ffi::qdir_drop(self);
+    }
 }
 
 // SAFETY: Static checks on the C++ side to ensure the size is the same.
