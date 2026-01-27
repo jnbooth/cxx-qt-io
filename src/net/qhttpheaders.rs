@@ -559,9 +559,7 @@ impl QHttpHeaders {
     }
 
     pub fn to_list_of_pairs(&self) -> RawHeaderList {
-        RawHeaderList {
-            inner: self.to_list_of_pairs_qlist(),
-        }
+        self.to_list_of_pairs_qlist().into()
     }
 
     /// Returns the value of the (first) header `name`, or `None` if it doesn't exist.
@@ -614,7 +612,7 @@ impl QHttpHeaders {
 
 impl From<&RawHeaderList> for QHttpHeaders {
     fn from(value: &RawHeaderList) -> Self {
-        Self::from_list_of_pairs(&value.inner)
+        Self::from_list_of_pairs(value.as_ref())
     }
 }
 

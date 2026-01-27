@@ -174,14 +174,12 @@ impl IsNonNull for QNetworkCacheMetaData {
 impl QNetworkCacheMetaData {
     /// Returns a list of all raw headers that are set in this meta data. The list is in the same order that the headers were set.
     pub fn raw_headers(&self) -> RawHeaderList {
-        RawHeaderList {
-            inner: self.raw_headers_qlist(),
-        }
+        self.raw_headers_qlist().into()
     }
 
     /// Sets the raw headers to `list`.
     pub fn set_raw_headers(&mut self, list: &RawHeaderList) {
-        self.set_raw_headers_qlist(&list.inner);
+        self.set_raw_headers_qlist(list.as_ref());
     }
 }
 

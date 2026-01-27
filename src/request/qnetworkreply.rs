@@ -13,7 +13,7 @@ use cxx_qt_lib::{QAnyStringView, QByteArray};
 use crate::QSslConfiguration;
 use crate::qobject::debug_qobject;
 use crate::util::IsNonNull;
-use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders};
+use crate::{QIODevice, QNetworkRequestAttribute, QNetworkRequestKnownHeaders, RawHeaderList};
 
 #[cxx_qt::bridge]
 mod ffi {
@@ -247,8 +247,8 @@ mod ffi {
         #[rust_name = "raw_header_list"]
         fn rawHeaderList(self: &QNetworkReply) -> QList_QByteArray;
 
-        /// Returns a list of raw header pairs.
-        #[rust_name = "raw_header_pairs"]
+        #[doc(hidden)]
+        #[rust_name = "raw_header_pairs_qlist"]
         fn rawHeaderPairs(self: &QNetworkReply) -> &QList_QPair_QByteArray_QByteArray;
 
         #[doc(hidden)]
@@ -425,6 +425,11 @@ impl QNetworkReply {
         T: Into<QAnyStringView<'a>>,
     {
         self.raw_header_view(header_name.into())
+    }
+
+    /// Returns a list of raw header pairs.
+    pub fn raw_header_pairs(&self) -> RawHeaderList {
+        self.raw_header_pairs_qlist().clone().into()
     }
 
     /// Returns the size of the read buffer, in bytes.

@@ -52,10 +52,20 @@ mod ffi {
 /// Qt Documentation: [QNetworkCacheMetaData::RawHeaderList](https://doc.qt.io/qt-6/qnetworkcachemetadata.html#RawHeaderList-typedef)
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct RawHeaderList {
-    pub(crate) inner: QList<QPair<QByteArray, QByteArray>>,
+    inner: QList<QPair<QByteArray, QByteArray>>,
+}
+
+impl From<QList<QPair<QByteArray, QByteArray>>> for RawHeaderList {
+    fn from(value: QList<QPair<QByteArray, QByteArray>>) -> Self {
+        Self { inner: value }
+    }
 }
 
 impl RawHeaderList {
+    pub(crate) fn as_ref(&self) -> &QList<QPair<QByteArray, QByteArray>> {
+        &self.inner
+    }
+
     /// Inserts a name-value pair at the end of the list.
     pub fn append(&mut self, name: &QByteArray, value: &QByteArray) {
         ffi::header_list_append(&mut self.inner, name, value);
@@ -73,8 +83,7 @@ impl RawHeaderList {
 
     /// Returns the item at `index` position in the list.
     pub fn get(&self, index: isize) -> Option<(&QByteArray, &QByteArray)> {
-        let pair = self.inner.get(index)?;
-        Some((&pair.first, &pair.second))
+        Some(self.inner.get(index)?.into())
     }
 
     /// Returns the index position of the first occurrence of a pair with name `name` in the list,
@@ -206,8 +215,7 @@ impl<'a> Iterator for Iter<'a> {
     type Item = (&'a QByteArray, &'a QByteArray);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let next = self.inner.next()?;
-        Some((&next.first, &next.second))
+        Some(self.inner.next()?.into())
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
