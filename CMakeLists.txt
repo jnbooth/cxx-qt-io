@@ -93,31 +93,9 @@ else()
     set(BUILD_DIR .)
 endif()
 
-function(add_acceptance_tests TEST_NAME)
-    set(TARGET_NAME tests_${TEST_NAME})
-
-    set(CPP_TEST_NAME test_${TEST_NAME}_cpp_tests)
-    add_test(NAME ${CPP_TEST_NAME} COMMAND $<TARGET_FILE:${TARGET_NAME}>)
-
-    set_tests_properties(
-       ${CPP_TEST_NAME}
-       PROPERTIES
-       ENVIRONMENT_MODIFICATION "${RUNTIME_ENV}"
-    )
-
-    if (COMMAND add_valgrind_test)
-       add_valgrind_test(
-          test_${TEST_NAME} $<TARGET_FILE:${TARGET_NAME}>
-          ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME}
-       )
-    endif()
-endfunction()
-
 # Set the target dir to the same that Corrosion uses to reuse build artifacts
 # from the main build.
 set(CARGO_TARGET_DIR "${CMAKE_BINARY_DIR}/${BUILD_DIR}/cargo/build")
 
+add_subdirectory(tests)
 add_test(NAME cargo_tests COMMAND cargo test --all-features --lib --target-dir ${CARGO_TARGET_DIR})
-
-add_subdirectory(tests/standalone)
-add_acceptance_tests(standalone)
