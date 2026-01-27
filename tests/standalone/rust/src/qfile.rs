@@ -1,7 +1,7 @@
 use cxx::UniquePtr;
 
 #[cxx::bridge]
-mod qdir_cxx {
+mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qstring.h");
         type QString = cxx_qt_lib::QString;
@@ -12,13 +12,14 @@ mod qdir_cxx {
         type QFile = cxx_qt_io::QFile;
     }
 
+    #[namespace = "ffi::qfile"]
     extern "Rust" {
-        fn construct_qfile(name: &QString) -> UniquePtr<QFile>;
+        fn construct(name: &QString) -> UniquePtr<QFile>;
     }
 }
 
-use qdir_cxx::{QFile, QString};
+use ffi::{QFile, QString};
 
-fn construct_qfile(name: &QString) -> UniquePtr<QFile> {
+fn construct(name: &QString) -> UniquePtr<QFile> {
     QFile::new(name)
 }

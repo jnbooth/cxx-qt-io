@@ -40,6 +40,9 @@ cxx_qt_import_crate(
 
 add_executable(${APP_NAME}
   cpp/main.cpp
+  cpp/qbuffer.h
+  cpp/qdeadlinetimer.h
+  cpp/qdtlsgeneratorparameters.h
   cpp/qfile.h
 )
 

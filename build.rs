@@ -113,7 +113,6 @@ fn main() {
     let mut headers: Vec<(&[u8], &OsStr)> = vec![
         include_header!("include/assertion_utils.h"),
         include_header!("include/common.h"),
-        include_header!("include/core/qbytearray.h"),
         include_header!("include/core/qbuffer.h"),
         include_header!("include/core/qdeadlinetimer.h"),
         include_header!("include/core/qhash/qhash_i32_qvariant.h"),
@@ -145,7 +144,6 @@ fn main() {
         .include_dir(&header_dir)
         .cpp_files(&[
             "src/core/qbuffer.cpp",
-            "src/core/qbytearray.cpp",
             "src/core/qdeadlinetimer.cpp",
             "src/core/qhash/qhash.cpp",
             "src/core/qiodevice.cpp",

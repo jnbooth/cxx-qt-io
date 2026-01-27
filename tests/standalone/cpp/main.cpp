@@ -1,21 +1,28 @@
 #include <QtCore/QScopedPointer>
 #include <QtTest/QTest>
 
+#include "qbuffer.h"
+#include "qdeadlinetimer.h"
+#include "qdtlsgeneratorparameters.h"
 #include "qfile.h"
+
+static int app_argc;
+static char** app_argv;
+
+template<typename T>
+int
+runTest()
+{
+  QTest::Internal::callInitMain<T>();
+  T test;
+  return QTest::qExec(&test, app_argc, app_argv);
+}
 
 int
 main(int argc, char* argv[])
 {
-  int status = 0;
-  auto runTest = [&status, argc, argv](QScopedPointer<QObject> obj) {
-    if (status == 0) {
-      status |= QTest::qExec(obj.data(), argc, argv);
-    } else {
-      qWarning() << "Previous test failed, so skipping:" << obj.data();
-    }
-  };
+  QCoreApplication app(argc, argv);
 
-  runTest(QScopedPointer<QObject>(new QFileTest));
-
-  return status;
+  return runTest<QBufferTest>() | runTest<QDeadlineTimerTest>() |
+         runTest<QDtlsGeneratorParametersTest>() | runTest<QFileTest>();
 }

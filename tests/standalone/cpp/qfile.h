@@ -12,7 +12,7 @@ private Q_SLOTS:
   void construct()
   {
     const QString name = QStringLiteral("file.txt");
-    const auto f = construct_qfile(name);
-    QCOMPARE(f->fileName(), name);
+    const auto file = ffi::qfile::construct(name);
+    QCOMPARE(file->fileName(), name);
   }
 };
