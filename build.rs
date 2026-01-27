@@ -143,10 +143,8 @@ fn main() {
         .include_prefix("private")
         .include_dir(&header_dir)
         .cpp_files(&[
-            "src/core/qbuffer.cpp",
             "src/core/qdeadlinetimer.cpp",
             "src/core/qhash/qhash.cpp",
-            "src/core/qiodevice.cpp",
             "src/core/qlist/qlist.cpp",
             "src/core/qmap/qmap.cpp",
             "src/core/qobject.cpp",
@@ -276,7 +274,6 @@ fn main() {
 
         builder = builder
             .cpp_files(&[
-                "src/request/qabstractnetworkcache.cpp",
                 "src/request/qnetworkaccessmanager.cpp",
                 "src/request/qnetworkcachemetadata.cpp",
                 "src/request/qhstspolicy.cpp",

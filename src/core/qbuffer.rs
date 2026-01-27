@@ -16,6 +16,8 @@ mod ffi {
     extern "C++" {
         include!("cxx-qt-lib/qbytearray.h");
         type QByteArray = cxx_qt_lib::QByteArray;
+        include!("cxx-qt-lib/qtypes.h");
+        type qsizetype = cxx_qt_lib::qsizetype;
     }
 
     extern "C++" {
@@ -47,6 +49,14 @@ mod ffi {
         #[rust_name = "set_buffer"]
         fn setData(self: Pin<&mut QBuffer>, data: &QByteArray);
 
+        /// # Safety
+        ///
+        /// `data` must be valid and `size` must be no greater than the maximum length of
+        /// the value stored at `data`.
+        #[doc(hidden)]
+        #[rust_name = "set_data_unsafe"]
+        unsafe fn setData(self: Pin<&mut QBuffer>, data: *const c_char, size: qsizetype);
+
         /// Makes `QBuffer` use the `QByteArray` pointed to by `byte_array` as its internal buffer. `QBuffer` doesn't take ownership of the `QByteArray`.
         ///
         /// Does nothing if [`self.is_open()`](QIODevice::is_open) is `true`.
@@ -60,12 +70,6 @@ mod ffi {
         /// The caller is responsible for ensuring that `byte_array` remains valid until the `QBuffer` is destroyed, or until this function is called again to change the buffer.
         #[rust_name = "set_buffer_mut"]
         unsafe fn setBuffer(self: Pin<&mut QBuffer>, byte_array: *mut QByteArray);
-    }
-
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qbuffer_set_data"]
-        fn qbufferSetData(buffer: Pin<&mut QBuffer>, data: &[u8]);
     }
 
     #[namespace = "rust::cxxqt1"]
@@ -127,7 +131,11 @@ impl QBuffer {
 
     /// Sets the contents of the internal buffer to be `data`.
     pub fn set_data<T: AsRef<[u8]>>(self: Pin<&mut Self>, data: T) {
-        ffi::qbuffer_set_data(self, data.as_ref());
+        let data = data.as_ref();
+        // SAFETY: `data.as_ptr()` is valid and its size is not greater than `data.len()`.
+        unsafe {
+            self.set_data_unsafe(data.as_ptr().cast(), data.len().cast_signed().into());
+        }
     }
 
     /// Casts this object to `QIODevice`.

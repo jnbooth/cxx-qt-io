@@ -52,6 +52,22 @@ mod ffi {
         #[rust_name = "default_parameters"]
         fn defaultParameters() -> QSslDiffieHellmanParameters;
 
+        #[doc(hidden)]
+        #[Self = "QSslDiffieHellmanParameters"]
+        #[rust_name = "from_encoded_device_unsafe"]
+        unsafe fn fromEncoded(
+            device: *mut QIODevice,
+            encoding: QSslEncodingFormat,
+        ) -> QSslDiffieHellmanParameters;
+
+        #[doc(hidden)]
+        #[Self = "QSslDiffieHellmanParameters"]
+        #[rust_name = "from_encoded_bytes"]
+        fn fromEncoded(
+            bytes: &QByteArray,
+            encoding: QSslEncodingFormat,
+        ) -> QSslDiffieHellmanParameters;
+
         /// Returns the error that caused the `QSslDiffieHellmanParameters` object to be invalid.
         fn error(&self) -> QSslDiffieHellmanParametersError;
 
@@ -74,27 +90,6 @@ mod ffi {
         fn isValid(&self) -> bool;
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        /// # Safety
-        ///
-        /// `device` must be valid.
-        #[rust_name = "qssldiffiehellmanparameters_from_encoded_device"]
-        unsafe fn qssldiffiehellmanparametersFromEncoded(
-            device: *mut QIODevice,
-            encoding: QSslEncodingFormat,
-        ) -> QSslDiffieHellmanParameters;
-
-        #[rust_name = "qssldiffiehellmanparameters_from_encoded_qbytearray"]
-        fn qssldiffiehellmanparametersFromEncoded(
-            encoded: &QByteArray,
-            encoding: QSslEncodingFormat,
-        ) -> QSslDiffieHellmanParameters;
-
-        #[rust_name = "qssldiffiehellmanparameters_debug"]
-        fn qssldiffiehellmanparametersDebug(params: &QSslDiffieHellmanParameters) -> QString;
-    }
-
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -109,6 +104,9 @@ mod ffi {
 
         #[rust_name = "qssldiffiehellmanparameters_eq"]
         fn operatorEq(a: &QSslDiffieHellmanParameters, b: &QSslDiffieHellmanParameters) -> bool;
+
+        #[rust_name = "qssldiffiehellmanparameters_to_debug_qstring"]
+        fn toDebugQString(value: &QSslDiffieHellmanParameters) -> QString;
     }
 }
 
@@ -151,7 +149,10 @@ impl Eq for QSslDiffieHellmanParameters {}
 
 impl fmt::Debug for QSslDiffieHellmanParameters {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        ffi::qssldiffiehellmanparameters_debug(self).fmt(f)
+        const TRIM_UNTIL: usize = "QSslDiffieHellmanParameters(".len();
+        let debug = ffi::qssldiffiehellmanparameters_to_debug_qstring(self);
+        let data = debug.as_slice();
+        String::from_utf16_lossy(&data[TRIM_UNTIL..data.len() - 1]).fmt(f)
     }
 }
 
@@ -180,13 +181,8 @@ impl QSslDiffieHellmanParameters {
         T: Upcast<QIODevice>,
     {
         // SAFETY: `unpin_for_qt(device)` is passed directly to Qt.
-        unsafe {
-            ffi::qssldiffiehellmanparameters_from_encoded_device(
-                upcast_mut(unpin_for_qt(device)),
-                encoding,
-            )
-        }
-        .into_result()
+        unsafe { Self::from_encoded_device_unsafe(upcast_mut(unpin_for_qt(device)), encoding) }
+            .into_result()
     }
 
     /// Attempts to construct a `QSslDiffieHellmanParameters` object using the byte array `encoded` in either PEM or DER form as specified by `encoding`.
@@ -194,7 +190,7 @@ impl QSslDiffieHellmanParameters {
         encoded: &QByteArray,
         encoding: QSslEncodingFormat,
     ) -> Result<Self, QSslDiffieHellmanParametersError> {
-        ffi::qssldiffiehellmanparameters_from_encoded_qbytearray(encoded, encoding).into_result()
+        Self::from_encoded_bytes(encoded, encoding).into_result()
     }
 }
 
@@ -202,8 +198,7 @@ impl TryFrom<&QByteArray> for QSslDiffieHellmanParameters {
     type Error = QSslDiffieHellmanParametersError;
 
     fn try_from(value: &QByteArray) -> Result<Self, Self::Error> {
-        ffi::qssldiffiehellmanparameters_from_encoded_qbytearray(value, QSslEncodingFormat::Pem)
-            .into_result()
+        Self::from_encoded_data(value, QSslEncodingFormat::Pem)
     }
 }
 

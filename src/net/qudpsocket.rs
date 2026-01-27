@@ -202,7 +202,7 @@ impl QUdpSocket {
         // and `&raw mut port` are valid.
         let result = unsafe {
             self.as_mut().read_datagram_unsafe(
-                data.as_mut_ptr().cast::<c_char>(),
+                data.as_mut_ptr().cast(),
                 data.len() as i64,
                 address.as_mut_ptr(),
                 &raw mut port,
@@ -305,7 +305,7 @@ impl QUdpSocket {
         // SAFETY: `data.as_ptr()` is valid and its size is not greater than `data.len()`.
         let result = unsafe {
             self.as_mut().write_datagram_unsafe(
-                data.as_ptr().cast::<c_char>(),
+                data.as_ptr().cast(),
                 data.len() as i64,
                 address,
                 port,

@@ -388,17 +388,6 @@ mod ffi {
         fn testSslOption(&self, option: QSslSslOption) -> bool;
     }
 
-    // #[cfg(test)]
-    #[allow(unused)]
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qsslconfiguration_alpnprotocolhttp2"]
-        fn qsslconfigurationALPNProtocolHTTP2() -> String;
-
-        #[rust_name = "qsslconfiguration_nextprotocolhttp1_1"]
-        fn qsslconfigurationNextProtocolHttp1_1() -> String;
-    }
-
     #[namespace = "rust::cxxqtlib1"]
     unsafe extern "C++" {
         include!("cxx-qt-lib/common.h");
@@ -533,22 +522,6 @@ unsafe impl ExternType for QSslConfiguration {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn alpn_protocol_http2_matches() {
-        assert_eq!(
-            QSslConfiguration::ALPNProtocolHTTP2,
-            ffi::qsslconfiguration_alpnprotocolhttp2()
-        );
-    }
-
-    #[test]
-    fn next_protocol_http1_1_matches() {
-        assert_eq!(
-            QSslConfiguration::NextProtocolHttp1_1,
-            ffi::qsslconfiguration_nextprotocolhttp1_1()
-        );
-    }
 
     #[test]
     fn nonnull() {

@@ -117,6 +117,37 @@ mod ffi {
         #[rust_name = "get_char_unsafe"]
         unsafe fn getChar(self: Pin<&mut QIODevice>, c: *mut c_char) -> bool;
 
+        /// Returns `true` if the device is open; otherwise returns `false`. A device is open if it can be read from and/or written to. By default, this function returns `false` if [`self.open_mode()`](QIODevice::open_mode) returns [`QIODeviceOpenModeFlag::NotOpen`].
+        #[rust_name = "is_open"]
+        pub fn isOpen(self: &QIODevice) -> bool;
+
+        /// Returns `true` if data can be read from the device; otherwise returns `false`. Use [`bytes_available`](QIODevice::bytes_available) to determine how many bytes can be read.
+        #[rust_name = "is_readable"]
+        pub fn isReadable(self: &QIODevice) -> bool;
+
+        /// Returns `true` if a transaction is in progress on the device, otherwise `false`.
+        #[rust_name = "is_transaction_started"]
+        fn isTransactionStarted(self: &QIODevice) -> bool;
+
+        /// Returns `true` if this device is sequential; otherwise returns `false`.
+        ///
+        /// Sequential devices, as opposed to a random-access devices, have no concept of a start, an end, a size, or a current position, and they do not support seeking. You can only read from the device when it reports that data is available. The most common example of a sequential device is a network socket. On Unix, special files such as `/dev/zero` and fifo pipes are sequential.
+        ///
+        /// Regular files, on the other hand, do support random access. They have both a size and a current position, and they also support seeking backwards and forwards in the data stream. Regular files are non-sequential.
+        #[rust_name = "is_sequential"]
+        fn isSequential(self: &QIODevice) -> bool;
+
+        /// Returns `true` if the [`QIODeviceOpenModeFlag::Text`] flag is enabled; otherwise returns `false`.
+        #[rust_name = "is_text_mode_enabled"]
+        fn isTextModeEnabled(self: &QIODevice) -> bool;
+
+        /// Returns `true` if data can be written to the device; otherwise returns `false`.
+        #[rust_name = "is_writable"]
+        fn isWritable(self: &QIODevice) -> bool;
+
+        /// Opens the device and sets [`self.open_mode()`](QIODevice::open_mode) to `mode`. Returns `true` if successful; otherwise returns `false`.
+        pub fn open(self: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
+
         /// Returns the mode in which the device has been opened; i.e. [`QIODeviceOpenModeFlag::ReadOnly`] or [`QIODeviceOpenModeFlag::WriteOnly`].
         #[rust_name = "open_mode"]
         fn openMode(self: &QIODevice) -> QIODeviceOpenMode;
@@ -277,30 +308,6 @@ mod ffi {
         fn readyRead(self: Pin<&mut QIODevice>);
     }
 
-    #[namespace = "rust::cxxqtio1"]
-    unsafe extern "C++" {
-        #[rust_name = "qiodevice_is_open"]
-        fn qiodeviceIsOpen(device: &QIODevice) -> bool;
-
-        #[rust_name = "qiodevice_is_readable"]
-        fn qiodeviceIsReadable(device: &QIODevice) -> bool;
-
-        #[rust_name = "qiodevice_is_sequential"]
-        fn qiodeviceIsSequential(device: &QIODevice) -> bool;
-
-        #[rust_name = "qiodevice_is_text_mode_enabled"]
-        fn qiodeviceIsTextModeEnabled(device: &QIODevice) -> bool;
-
-        #[rust_name = "qiodevice_is_transaction_started"]
-        fn qiodeviceIsTransactionStarted(device: &QIODevice) -> bool;
-
-        #[rust_name = "qiodevice_is_writable"]
-        fn qiodeviceIsWritable(device: &QIODevice) -> bool;
-
-        #[rust_name = "qiodevice_open"]
-        fn qiodeviceOpen(device: Pin<&mut QIODevice>, mode: QIODeviceOpenMode) -> bool;
-    }
-
     impl UniquePtr<QIODevice> {}
 }
 
@@ -359,52 +366,13 @@ impl QIODevice {
     /// Reads one byte from the device and stores it in `c`. Returns `true` on success; otherwise returns `false`.
     pub fn get_byte(self: Pin<&mut Self>, c: &mut u8) -> bool {
         // SAFETY: `c` is valid.
-        unsafe { self.get_char_unsafe(ptr::from_mut(c).cast::<c_char>()) }
+        unsafe { self.get_char_unsafe(ptr::from_mut(c).cast()) }
     }
 
     /// Reads one byte character from the device and stores it in `c`. Returns `true` on success; otherwise returns `false`.
     pub fn get_char(self: Pin<&mut Self>, c: &mut c_char) -> bool {
         // SAFETY: `c` is valid.
         unsafe { self.get_char_unsafe(c) }
-    }
-
-    /// Returns `true` if the device is open; otherwise returns `false`. A device is open if it can be read from and/or written to. By default, this function returns `false` if [`self.open_mode()`](QIODevice::open_mode) returns [`QIODeviceOpenModeFlag::NotOpen`].
-    pub fn is_open(&self) -> bool {
-        ffi::qiodevice_is_open(self)
-    }
-
-    /// Returns `true` if data can be read from the device; otherwise returns `false`. Use [`bytes_available`](QIODevice::bytes_available) to determine how many bytes can be read.
-    pub fn is_readable(&self) -> bool {
-        ffi::qiodevice_is_readable(self)
-    }
-
-    /// Returns `true` if this device is sequential; otherwise returns `false`.
-    ///
-    /// Sequential devices, as opposed to a random-access devices, have no concept of a start, an end, a size, or a current position, and they do not support seeking. You can only read from the device when it reports that data is available. The most common example of a sequential device is a network socket. On Unix, special files such as `/dev/zero` and fifo pipes are sequential.
-    ///
-    /// Regular files, on the other hand, do support random access. They have both a size and a current position, and they also support seeking backwards and forwards in the data stream. Regular files are non-sequential.
-    pub fn is_sequential(&self) -> bool {
-        ffi::qiodevice_is_sequential(self)
-    }
-
-    /// Returns `true` if the [`QIODeviceOpenModeFlag::Text`] flag is enabled; otherwise returns `false`.
-    pub fn is_text_mode_enabled(&self) -> bool {
-        ffi::qiodevice_is_text_mode_enabled(self)
-    }
-
-    /// Returns `true` if a transaction is in progress on the device, otherwise `false`.
-    pub fn is_transaction_started(&self) -> bool {
-        ffi::qiodevice_is_transaction_started(self)
-    }
-
-    /// Returns `true` if data can be written to the device; otherwise returns `false`.
-    pub fn is_writable(&self) -> bool {
-        ffi::qiodevice_is_writable(self)
-    }
-
-    /// Opens the device and sets [`self.open_mode()`](QIODevice::open_mode) to `mode`. Returns `true` if successful; otherwise returns `false`.
-    pub fn open(self: Pin<&mut Self>, mode: QIODeviceOpenMode) -> bool {
-        ffi::qiodevice_open(self, mode)
     }
 
     /// Reads bytes from the device into `data`, without side effects (i.e., if you call [`read`](QIODevice::read) after this function, you will get the same data). Returns the number of bytes read. If an error occurs, such as when attempting to peek a device opened in [`QIODeviceOpenModeFlag::WriteOnly`] mode, this function returns the error.
@@ -414,7 +382,7 @@ impl QIODevice {
         // SAFETY: `data.as_mut_ptr()` is valid and its size is not greater than `data.len()`.
         let result = unsafe {
             self.as_mut()
-                .peek_unsafe(data.as_mut_ptr().cast::<c_char>(), data.len() as i64)
+                .peek_unsafe(data.as_mut_ptr().cast(), data.len() as i64)
         };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
@@ -467,7 +435,7 @@ impl QIODevice {
         // SAFETY: `data.as_mut_ptr()` is valid and its size is not greater than `data.len()`.
         let result = unsafe {
             self.as_mut()
-                .read_unsafe(data.as_mut_ptr().cast::<c_char>(), data.len() as i64)
+                .read_unsafe(data.as_mut_ptr().cast(), data.len() as i64)
         };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
@@ -503,7 +471,7 @@ impl QIODevice {
         // SAFETY: `data.as_mut_ptr()` is valid and its size is not greater than `data.len()`.
         let result = unsafe {
             self.as_mut()
-                .read_line_unsafe(data.as_mut_ptr().cast::<c_char>(), data.len() as i64)
+                .read_line_unsafe(data.as_mut_ptr().cast(), data.len() as i64)
         };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);
@@ -644,7 +612,7 @@ impl QIODevice {
         // SAFETY: `data.as_ptr()` is valid and its size is not greater than `data.len()`.
         let result = unsafe {
             self.as_mut()
-                .write_unsafe(data.as_ptr().cast::<c_char>(), data.len() as i64)
+                .write_unsafe(data.as_ptr().cast(), data.len() as i64)
         };
         if let Ok(n) = usize::try_from(result) {
             return Ok(n);

@@ -7,6 +7,7 @@ fn main() {
             "src/qdeadlinetimer.rs",
             "src/qdtlsgeneratorparameters.rs",
             "src/qfile.rs",
+            "src/qsslconfiguration.rs",
         ])
         .build();
 }
