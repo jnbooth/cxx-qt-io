@@ -7,11 +7,8 @@
 add_subdirectory(standalone)
 
 function(add_acceptance_tests TEST_NAME)
-    set(TARGET_NAME tests_${TEST_NAME})
-
     set(CPP_TEST_NAME test_${TEST_NAME}_cpp_tests)
-    add_test(NAME ${CPP_TEST_NAME} COMMAND $<TARGET_FILE:${TARGET_NAME}>)
-
+    add_test(NAME ${CPP_TEST_NAME} COMMAND $<TARGET_FILE:tests_${TEST_NAME}>)
     set_tests_properties(
        ${CPP_TEST_NAME}
        PROPERTIES
