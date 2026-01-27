@@ -214,6 +214,7 @@ fn main() {
                 "src/net/qhostaddress.cpp",
                 "src/net/qnetworkaddressentry.cpp",
                 "src/net/qnetworkdatagram.cpp",
+                "src/net/qnetworkinterface.cpp",
                 "src/net/qnetworkproxy.cpp",
             ])
             .files(&[
@@ -368,6 +369,7 @@ fn main() {
                 "src/ssl/qocspresponse.cpp",
                 "src/ssl/qsslcertificate.cpp",
                 "src/ssl/qsslcertificateextension.cpp",
+                "src/ssl/qsslcipher.cpp",
                 "src/ssl/qsslconfiguration.cpp",
                 "src/ssl/qssldiffiehellmanparameters.cpp",
                 "src/ssl/qsslellipticcurve.cpp",

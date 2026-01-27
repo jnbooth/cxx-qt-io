@@ -635,7 +635,7 @@ pub struct SubjectAlternativeNamesKeys {
     _end: MaybeUninit<usize>,
 }
 
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
+// SAFETY: Defined in include/core/qmultimap.h
 unsafe impl ExternType for SubjectAlternativeNamesKeys {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesKeys");
     type Kind = cxx::kind::Trivial;
@@ -660,7 +660,7 @@ pub struct SubjectAlternativeNamesIter {
     _end: MaybeUninit<usize>,
 }
 
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
+// SAFETY: Defined in include/core/qmultimap.h
 unsafe impl ExternType for SubjectAlternativeNamesIter {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesIter");
     type Kind = cxx::kind::Trivial;
@@ -685,7 +685,7 @@ pub struct SubjectAlternativeNamesValues {
     _end: MaybeUninit<usize>,
 }
 
-// SAFETY: Static checks on the C++ side to ensure the size is the same.
+// SAFETY: Defined in include/core/qmultimap.h
 unsafe impl ExternType for SubjectAlternativeNamesValues {
     type Id = type_id!("rust::cxxqtio1::SubjectAlternativeNamesValues");
     type Kind = cxx::kind::Trivial;
