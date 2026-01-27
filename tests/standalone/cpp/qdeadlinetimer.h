@@ -20,9 +20,9 @@ private Q_SLOTS:
 
   void construct_nanos()
   {
-    const auto timer = ffi::qdeadlinetimer::from_nanos(1234500);
+    const auto timer = ffi::qdeadlinetimer::from_nanos(1234500000);
     const auto time = timer.remainingTimeNSecs();
-    QCOMPARE_GT(time, 1234000);
-    QCOMPARE_LT(time, 1235000);
+    QCOMPARE_GT(time, 123400000);
+    QCOMPARE_LT(time, 123500000);
   }
 };
