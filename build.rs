@@ -143,6 +143,7 @@ fn main() {
         .include_prefix("private")
         .include_dir(&header_dir)
         .cpp_files(&[
+            "src/core/qbuffer.cpp",
             "src/core/qdeadlinetimer.cpp",
             "src/core/qhash/qhash.cpp",
             "src/core/qlist/qlist.cpp",
